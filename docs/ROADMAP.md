@@ -18,7 +18,7 @@ This document outlines tentative phases for Gabriel. Dates are aspirational and 
 
 - Organize user notes and security data into a searchable store.
 - Provide advanced LLM-driven recommendations.
-- Explore synergy with other projects like dspace robotics and f2clipboard workflows.
+- Explore synergy with [sigma](https://github.com/futuroptimist/sigma) as a push-to-talk interface for local LLM interactions.
 
 ## Phase 3+: Real World Monitoring (long term)
 

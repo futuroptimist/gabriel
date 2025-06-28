@@ -1,12 +1,12 @@
 # Gabriel
 
-Gabriel is an open source "guardian angel" LLM aimed at helping individuals securely navigate the digital world. The project intends to provide actionable security advice, maintain personal knowledge about the user's environment (with their consent), and eventually offer local AI-assisted monitoring. Our guiding principle is to keep user data private and handle AI inference locally via [token.place](https://github.com/futuroptimist/token.place).
+Gabriel is an open source "guardian angel" LLM aimed at helping individuals securely navigate the digital world. The project intends to provide actionable security advice, maintain personal knowledge about the user's environment (with their consent), and eventually offer local AI-assisted monitoring. Our guiding principle is to keep user data private and handle AI inference locally. When possible we rely on [token.place](https://github.com/futuroptimist/token.place) for encrypted inference, though a fully offline path using components like `llama-cpp-python` is also supported.
 
 ## Goals
 
 - Offer community-first, dignity-focused security guidance.
-- Integrate with token.place to run LLMs locally, avoiding cloud exfiltration.
-- Encourage cross-project collaboration with [dspace](https://github.com/democratizedspace/dspace), [f2clipboard](https://github.com/futuroptimist/f2clipboard), and similar efforts.
+- Integrate with token.place or fully local inference to avoid cloud exfiltration.
+- Encourage collaboration with [token.place](https://github.com/futuroptimist/token.place) and [sigma](https://github.com/futuroptimist/sigma) as complementary projects.
 - Provide a gentle on-ramp toward eventual real-world monitoring capabilities.
 
 ## Roadmap

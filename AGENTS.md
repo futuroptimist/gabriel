@@ -9,3 +9,4 @@ This repository welcomes improvements from automated agents and human contributo
 * There are currently no automated tests. Mention this in your PR summary and consider adding tests using `pytest`.
 * Summaries and PR messages should include citations to relevant files.
 * Append new questions to `docs/FAQ.md` rather than removing existing items.
+* Run `pytest` to confirm tests pass (even if none are collected) before opening a PR.
