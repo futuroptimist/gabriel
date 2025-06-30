@@ -22,5 +22,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
    - Contributions are welcome via pull request.
 10. **Desired repository structure or directories to avoid?**
    - Keep the layout intuitive; there are no forbidden directories at this time.
+11. **Is there a defined threat model for Gabriel?**
+   - See [docs/THREAT_MODEL.md](THREAT_MODEL.md) for the latest threat model and security assumptions.
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
