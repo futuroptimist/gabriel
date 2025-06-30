@@ -1,0 +1,23 @@
+# Threat Model
+
+Gabriel aims to act as a privacy-first assistant that helps users maintain situational awareness about their digital security. The initial focus is on local execution with optional encrypted inference through [token.place](https://github.com/futuroptimist/token.place).
+
+## Security Assumptions
+
+- Users operate Gabriel on hardware they control.
+- Network connectivity is optional and should be minimized.
+- Secrets such as API keys should be stored in environment variables or encrypted files, never committed to source control.
+- Logs must avoid collecting personally identifiable information (PII) by default.
+
+## Attack Surface
+
+- Compromise of the local machine running Gabriel.
+- Leakage of secrets through misconfigured logging or unencrypted storage.
+- Exposure when calling external APIs if not using an encrypted channel.
+
+## Mitigations
+
+- Encourage filesystem encryption and strong access controls.
+- Provide examples of secure key storage using tools like `keyring` or OS keychains.
+- Limit logs to debug-level messages and strip sensitive data before writing.
+- Prefer offline models or encrypted inference when possible.
