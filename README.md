@@ -40,7 +40,7 @@ pytest
 
 ## Threat Model
 
-See [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for security assumptions and mitigations. In short, secrets should be stored outside of version control and logs should avoid PII.
+See [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for security assumptions and mitigations. In short, secrets should be stored outside of version control and logs should avoid PII. Additional risks related to the flywheel approach are captured in [docs/FLYWHEEL_RISK_MODEL.md](docs/FLYWHEEL_RISK_MODEL.md).
 
 ## Roadmap
 

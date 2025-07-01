@@ -24,5 +24,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
    - Keep the layout intuitive; there are no forbidden directories at this time.
 11. **Is there a defined threat model for Gabriel?**
    - See [docs/THREAT_MODEL.md](THREAT_MODEL.md) for the latest threat model and security assumptions.
+12. **How does the flywheel approach impact Gabriel's risk management?**
+   - Risks and mitigations for continuous automation are described in [docs/FLYWHEEL_RISK_MODEL.md](FLYWHEEL_RISK_MODEL.md).
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
