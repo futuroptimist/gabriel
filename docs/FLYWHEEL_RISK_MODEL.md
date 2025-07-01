@@ -1,6 +1,6 @@
 # Flywheel Risk Model
 
-This document outlines potential risks and mitigations when applying the **flywheel** approach to the Gabriel project. Gabriel acts as a "productive Worry-as-a-Service" (WaaS) assistant that helps users secure their digital lives. The flywheel repo proposes a continuous improvement loop where automated agents generate new tasks and code. While powerful, this model introduces security and governance concerns.
+This document outlines potential risks and mitigations when applying the **flywheel** approach to the Gabriel project. Gabriel acts as a "productive Worry-as-a-Service" (WaaS) assistant that helps users secure their digital lives. The [flywheel repository](https://github.com/futuroptimist/flywheel) demonstrates a continuous improvement loop where automated agents generate new tasks and code. While powerful, this model introduces security and governance concerns.
 
 ## First-order Effects
 
