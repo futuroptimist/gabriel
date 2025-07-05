@@ -3,6 +3,7 @@
 Gabriel is an open source "guardian angel" LLM aimed at helping individuals securely navigate the digital world. The project intends to provide actionable security advice, maintain personal knowledge about the user's environment (with their consent), and eventually offer local AI-assisted monitoring. Our guiding principle is to keep user data private and handle AI inference locally. When possible we rely on [token.place](https://github.com/futuroptimist/token.place) for encrypted inference, though a fully offline path using components like `llama-cpp-python` is also supported.
 
 ![License](https://img.shields.io/github/license/futuroptimist/gabriel)
+![Coverage](https://codecov.io/gh/futuroptimist/gabriel/branch/main/graph/badge.svg)
 
 ## Goals
 
@@ -56,7 +57,7 @@ We use `AGENTS.md` to outline repository-specific instructions for automated age
 
 ## CI & Security
 
-The repository includes a GitHub Actions workflow that runs `flake8` and `bandit` to catch style issues and common security mistakes. Dependabot is configured to monitor Python dependencies weekly.
+The repository includes a GitHub Actions workflow that runs `flake8`, `bandit`, and `pytest` with coverage reporting. Results are uploaded to Codecov, and the badge above reflects the latest `main` branch coverage. Dependabot monitors Python dependencies weekly.
 
 ## FAQ
 
