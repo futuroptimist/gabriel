@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+.venv/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Test results
+.tox/
+
+# Editor files
+*.swp

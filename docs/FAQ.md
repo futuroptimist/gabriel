@@ -28,3 +28,5 @@ This FAQ lists questions we have for the maintainers and community. Answers will
    - Risks and mitigations for continuous automation are described in [docs/FLYWHEEL_RISK_MODEL.md](FLYWHEEL_RISK_MODEL.md).
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
+13. **Is test coverage tracked?**
+   - Basic tests live under `tests/`. Use `coverage run -m pytest` followed by `coverage report` to see coverage statistics.

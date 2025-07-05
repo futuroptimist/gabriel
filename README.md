@@ -20,7 +20,7 @@ The project is organized into four tentative modules:
 3. **Notification** – optional alerts or recommendations sent to the user.
 4. **User Interface** – CLI or lightweight UI for interacting with Gabriel.
 
-This modular structure keeps responsibilities clear and allows future extensions like phishing detection or network monitoring.
+This modular structure keeps responsibilities clear and allows future extensions like phishing detection or network monitoring. A small `gabriel.security` module demonstrates helper functions such as password strength checks and log sanitization, complete with tests.
 
 ## Getting Started
 
@@ -32,10 +32,16 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Run `pytest` (even though no tests exist yet) to ensure your environment is ready:
+Run `pytest` to exercise the test suite:
 
 ```bash
 pytest
+```
+Optionally check coverage:
+
+```bash
+coverage run -m pytest
+coverage report
 ```
 
 ## Threat Model

@@ -1,1 +1,2 @@
-# Core dependencies will be added as the project evolves
+pytest
+coverage
