@@ -3,7 +3,7 @@
 Gabriel is an open source "guardian angel" LLM aimed at helping individuals securely navigate the digital world. The project intends to provide actionable security advice, maintain personal knowledge about the user's environment (with their consent), and eventually offer local AI-assisted monitoring. Our guiding principle is to keep user data private and handle AI inference locally. When possible we rely on [token.place](https://github.com/futuroptimist/token.place) for encrypted inference, though a fully offline path using components like `llama-cpp-python` is also supported.
 
 ![License](https://img.shields.io/github/license/futuroptimist/gabriel)
-![Coverage](./coverage.svg)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
 ## Goals
 
@@ -30,7 +30,8 @@ Gabriel requires Python 3.10 or later. Clone the repository and install dependen
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
+pre-commit install
 ```
 
 Run `pytest` with coverage enabled:
@@ -53,7 +54,7 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for a more detailed roadmap. Early milest
 
 ## Contributing
 
-We use `AGENTS.md` to outline repository-specific instructions for automated agents. Additional contributor guidelines live in [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md). Please read them before opening pull requests.
+We use `AGENTS.md` to outline repository-specific instructions for automated agents. Additional contributor guidelines live in [CONTRIBUTING.md](CONTRIBUTING.md). Please read them before opening pull requests.
 
 ## CI & Security
 

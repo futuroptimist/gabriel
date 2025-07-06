@@ -13,10 +13,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v1
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          uv pip install --system -r requirements.txt
       - name: Run tests with coverage
         run: |
           pytest --cov=gabriel --cov-report=term-missing --cov-report=xml
