@@ -26,5 +26,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
    - See [docs/THREAT_MODEL.md](THREAT_MODEL.md) for the latest threat model and security assumptions.
 12. **How does the flywheel approach impact Gabriel's risk management?**
    - Risks and mitigations for continuous automation are described in [docs/FLYWHEEL_RISK_MODEL.md](FLYWHEEL_RISK_MODEL.md).
+13. **What new flywheel features require extra caution?**
+   - The `crawl` subcommand now collects commit data across repositories. Use read-only tokens and avoid scanning private repos without permission.
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
