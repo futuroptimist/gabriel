@@ -27,6 +27,8 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 12. **How does the flywheel approach impact Gabriel's risk management?**
    - Risks and mitigations for continuous automation are described in [docs/FLYWHEEL_RISK_MODEL.md](FLYWHEEL_RISK_MODEL.md).
 13. **What new flywheel features require extra caution?**
-   - The `crawl` subcommand now collects commit data across repositories. Use read-only tokens and avoid scanning private repos without permission.
+- The `crawl` subcommand now collects commit data across repositories. Use read-only tokens and avoid scanning private repos without permission.
+14. **What improvements are recommended for token.place integration?**
+   - See [docs/TOKEN_PLACE_IMPROVEMENTS.md](TOKEN_PLACE_IMPROVEMENTS.md) for suggested mitigations against relay compromise and network attacks.
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
