@@ -35,3 +35,11 @@ This page consolidates security and feature enhancements suggested for repositor
 - [ ] Keep all audio processing local to preserve privacy.
 - [ ] Document simple installation steps so Gabriel users can try sigma.
 
+## axel
+
+- [ ] Document `.gitignore` verification for `local/` directories
+- [ ] Provide token rotation guidance in docs
+- [ ] Add THREAT_MODEL.md with cross-repo considerations
+- [ ] Explore encrypting `local/discord/` notes
+- [ ] Review permissions for integrated tools (token.place, gabriel)
+
