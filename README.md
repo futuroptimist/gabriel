@@ -46,6 +46,8 @@ See [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for security assumptions and mi
 
 For recommendations on securing token.place relays and servers, see [docs/TOKEN_PLACE_IMPROVEMENTS.md](docs/TOKEN_PLACE_IMPROVEMENTS.md).
 
+For additional checklists covering improvements to related projects, see [docs/IMPROVEMENT_CHECKLISTS.md](docs/IMPROVEMENT_CHECKLISTS.md).
+
 ## Roadmap
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for a more detailed roadmap. Early milestones include:
