@@ -42,15 +42,15 @@ python -m pytest --cov=gabriel --cov-report=term-missing
 
 ## Threat Model
 
-See [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for security assumptions and mitigations. In short, secrets should be stored outside of version control and logs should avoid PII. Additional risks related to the flywheel approach are captured in [docs/FLYWHEEL_RISK_MODEL.md](docs/FLYWHEEL_RISK_MODEL.md).
+See [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) for security assumptions and mitigations. In short, secrets should be stored outside of version control and logs should avoid PII. Additional risks related to the flywheel approach are captured in [docs/gabriel/FLYWHEEL_RISK_MODEL.md](docs/gabriel/FLYWHEEL_RISK_MODEL.md).
 
-For recommendations on securing token.place relays and servers, see [docs/TOKEN_PLACE_IMPROVEMENTS.md](docs/TOKEN_PLACE_IMPROVEMENTS.md).
+For recommendations on securing token.place relays and servers, see [docs/related/token_place/TOKEN_PLACE_IMPROVEMENTS.md](docs/related/token_place/TOKEN_PLACE_IMPROVEMENTS.md).
 
 For additional checklists covering improvements to related projects, see [docs/IMPROVEMENT_CHECKLISTS.md](docs/IMPROVEMENT_CHECKLISTS.md).
 
 ## Roadmap
 
-See [docs/ROADMAP.md](docs/ROADMAP.md) for a more detailed roadmap. Early milestones include:
+See [docs/gabriel/ROADMAP.md](docs/gabriel/ROADMAP.md) for a more detailed roadmap. Early milestones include:
 
 1. Establishing repository guidelines and a base documentation structure.
 2. Collecting security best practices for self-hosted services.
@@ -66,4 +66,4 @@ The repository includes a GitHub Actions workflow that runs `flake8` and `bandit
 
 ## FAQ
 
-We maintain an evolving list of questions for clarification in [docs/FAQ.md](docs/FAQ.md). Feel free to add your own or answer existing ones.
+We maintain an evolving list of questions for clarification in [docs/gabriel/FAQ.md](docs/gabriel/FAQ.md). Feel free to add your own or answer existing ones.
