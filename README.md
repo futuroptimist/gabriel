@@ -40,14 +40,6 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
-## Threat Model
-
-See [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) for security assumptions and mitigations. In short, secrets should be stored outside of version control and logs should avoid PII. Additional risks related to the flywheel approach are captured in [docs/gabriel/FLYWHEEL_RISK_MODEL.md](docs/gabriel/FLYWHEEL_RISK_MODEL.md).
-
-For recommendations on securing token.place relays and servers, see [docs/related/token_place/IMPROVEMENTS.md](docs/related/token_place/IMPROVEMENTS.md).
-
-For additional checklists covering improvements to related projects, see [docs/IMPROVEMENT_CHECKLISTS.md](docs/IMPROVEMENT_CHECKLISTS.md).
-
 ## Tracked Repositories
 
 The table below summarizes all repositories where we currently maintain
