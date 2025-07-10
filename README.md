@@ -48,6 +48,21 @@ For recommendations on securing token.place relays and servers, see [docs/relate
 
 For additional checklists covering improvements to related projects, see [docs/IMPROVEMENT_CHECKLISTS.md](docs/IMPROVEMENT_CHECKLISTS.md).
 
+## Tracked Repositories
+
+The table below summarizes all repositories where we currently maintain
+improvement tasks or security audits. Following these links will jump to the
+relevant documentation.
+
+| Repository | Improvement Docs | Threat Model |
+|------------|-----------------|--------------|
+| Gabriel (this repo) | [ROADMAP.md](docs/gabriel/ROADMAP.md) | [THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) |
+| token.place | [TOKEN_PLACE_IMPROVEMENTS.md](docs/related/token_place/TOKEN_PLACE_IMPROVEMENTS.md) | N/A |
+| PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism](docs/IMPROVEMENT_CHECKLISTS.md#photoprism) | N/A |
+| VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden) | N/A |
+| sigma | [IMPROVEMENT_CHECKLISTS.md#sigma](docs/IMPROVEMENT_CHECKLISTS.md#sigma) | N/A |
+| axel | [IMPROVEMENTS.md](docs/related/axel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/axel/THREAT_MODEL.md) |
+
 ## Roadmap
 
 See [docs/gabriel/ROADMAP.md](docs/gabriel/ROADMAP.md) for a more detailed roadmap. Early milestones include:
