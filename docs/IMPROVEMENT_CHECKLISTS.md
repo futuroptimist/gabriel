@@ -3,6 +3,9 @@
 This page consolidates security and feature enhancements suggested for repositories related to Gabriel.
 Where a dedicated document exists, follow the link below. Otherwise tasks are listed inline.
 
+## Gabriel (self)
+See [gabriel/IMPROVEMENTS.md](gabriel/IMPROVEMENTS.md).
+
 ## token.place
 See [related/token_place/IMPROVEMENTS.md](related/token_place/IMPROVEMENTS.md).
 
