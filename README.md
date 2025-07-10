@@ -44,7 +44,7 @@ python -m pytest --cov=gabriel --cov-report=term-missing
 
 See [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) for security assumptions and mitigations. In short, secrets should be stored outside of version control and logs should avoid PII. Additional risks related to the flywheel approach are captured in [docs/gabriel/FLYWHEEL_RISK_MODEL.md](docs/gabriel/FLYWHEEL_RISK_MODEL.md).
 
-For recommendations on securing token.place relays and servers, see [docs/related/token_place/TOKEN_PLACE_IMPROVEMENTS.md](docs/related/token_place/TOKEN_PLACE_IMPROVEMENTS.md).
+For recommendations on securing token.place relays and servers, see [docs/related/token_place/IMPROVEMENTS.md](docs/related/token_place/IMPROVEMENTS.md).
 
 For additional checklists covering improvements to related projects, see [docs/IMPROVEMENT_CHECKLISTS.md](docs/IMPROVEMENT_CHECKLISTS.md).
 
@@ -57,11 +57,16 @@ relevant documentation.
 | Repository | Improvement Docs | Threat Model |
 |------------|-----------------|--------------|
 | Gabriel (this repo) | [ROADMAP.md](docs/gabriel/ROADMAP.md) | [THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) |
-| token.place | [TOKEN_PLACE_IMPROVEMENTS.md](docs/related/token_place/TOKEN_PLACE_IMPROVEMENTS.md) | N/A |
+| token.place | [IMPROVEMENTS.md](docs/related/token_place/IMPROVEMENTS.md) | N/A |
+| DSPACE | [IMPROVEMENTS.md](docs/related/dspace/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/dspace/THREAT_MODEL.md) |
+| flywheel | [IMPROVEMENTS.md](docs/related/flywheel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/flywheel/THREAT_MODEL.md) |
+| f2clipboard | [IMPROVEMENTS.md](docs/related/f2clipboard/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/f2clipboard/THREAT_MODEL.md) |
+| axel | [IMPROVEMENTS.md](docs/related/axel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/axel/THREAT_MODEL.md) |
+| sigma | [IMPROVEMENTS.md](docs/related/sigma/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/sigma/THREAT_MODEL.md) |
+| gitshelves | [IMPROVEMENTS.md](docs/related/gitshelves/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/gitshelves/THREAT_MODEL.md) |
+| wove | [IMPROVEMENTS.md](docs/related/wove/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/wove/THREAT_MODEL.md) |
 | PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism](docs/IMPROVEMENT_CHECKLISTS.md#photoprism) | N/A |
 | VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden) | N/A |
-| sigma | [IMPROVEMENT_CHECKLISTS.md#sigma](docs/IMPROVEMENT_CHECKLISTS.md#sigma) | N/A |
-| axel | [IMPROVEMENTS.md](docs/related/axel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/axel/THREAT_MODEL.md) |
 
 ## Roadmap
 

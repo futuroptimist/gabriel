@@ -29,6 +29,6 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 13. **What new flywheel features require extra caution?**
 - The `crawl` subcommand now collects commit data across repositories. Use read-only tokens and avoid scanning private repos without permission.
 14. **What improvements are recommended for token.place integration?**
-   - See [../related/token_place/TOKEN_PLACE_IMPROVEMENTS.md](../related/token_place/TOKEN_PLACE_IMPROVEMENTS.md) for suggested mitigations against relay compromise and network attacks.
+   - See [../related/token_place/IMPROVEMENTS.md](../related/token_place/IMPROVEMENTS.md) for suggested mitigations against relay compromise and network attacks.
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
