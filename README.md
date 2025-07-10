@@ -48,7 +48,7 @@ relevant documentation.
 
 | Repository | Improvement Docs | Threat Model |
 |------------|-----------------|--------------|
-| Gabriel (this repo) | [ROADMAP.md](docs/gabriel/ROADMAP.md) | [THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) |
+| Gabriel (this repo) | [IMPROVEMENTS.md](docs/gabriel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) |
 | token.place | [IMPROVEMENTS.md](docs/related/token_place/IMPROVEMENTS.md) | N/A |
 | DSPACE | [IMPROVEMENTS.md](docs/related/dspace/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/dspace/THREAT_MODEL.md) |
 | flywheel | [IMPROVEMENTS.md](docs/related/flywheel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/flywheel/THREAT_MODEL.md) |
