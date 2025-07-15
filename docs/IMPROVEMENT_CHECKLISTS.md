@@ -30,6 +30,9 @@ See [related/gitshelves/IMPROVEMENTS.md](related/gitshelves/IMPROVEMENTS.md).
 ## wove
 See [related/wove/IMPROVEMENTS.md](related/wove/IMPROVEMENTS.md).
 
+## sugarkube
+See [related/sugarkube/IMPROVEMENTS.md](related/sugarkube/IMPROVEMENTS.md).
+
 ## PhotoPrism
 - [ ] Enable HTTPS by default and use strong admin credentials.
 - [ ] Store images outside of the application container with strict permissions.
