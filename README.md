@@ -57,6 +57,7 @@ relevant documentation.
 | sigma | [IMPROVEMENTS.md](docs/related/sigma/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/sigma/THREAT_MODEL.md) |
 | gitshelves | [IMPROVEMENTS.md](docs/related/gitshelves/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/gitshelves/THREAT_MODEL.md) |
 | wove | [IMPROVEMENTS.md](docs/related/wove/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/wove/THREAT_MODEL.md) |
+| sugarkube | [IMPROVEMENTS.md](docs/related/sugarkube/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/sugarkube/THREAT_MODEL.md) |
 | PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism](docs/IMPROVEMENT_CHECKLISTS.md#photoprism) | N/A |
 | VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden) | N/A |
 
