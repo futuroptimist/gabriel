@@ -12,6 +12,8 @@ Gabriel is an open source "guardian angel" LLM aimed at helping individuals secu
 - Encourage collaboration with [token.place](https://github.com/futuroptimist/token.place) and [sigma](https://github.com/futuroptimist/sigma) as complementary projects.
 - Provide a gentle on-ramp toward eventual real-world monitoring capabilities.
 
+For a philosophical look at these goals through the lens of the "Sword of Damocles" parable, see [SWORD_OF_DAMOCLES.md](docs/gabriel/SWORD_OF_DAMOCLES.md).
+
 ## Architecture Overview
 
 The project is organized into four tentative modules:
