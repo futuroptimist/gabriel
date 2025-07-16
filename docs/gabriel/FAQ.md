@@ -30,5 +30,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 - The `crawl` subcommand now collects commit data across repositories. Use read-only tokens and avoid scanning private repos without permission.
 14. **What improvements are recommended for token.place integration?**
    - See [../related/token_place/IMPROVEMENTS.md](../related/token_place/IMPROVEMENTS.md) for suggested mitigations against relay compromise and network attacks.
+15. **Why reference the Sword of Damocles in Gabriel's documentation?**
+   - The parable illustrates the constant risk that accompanies greater resources and privilege online. [SWORD_OF_DAMOCLES.md](SWORD_OF_DAMOCLES.md) explains how Gabriel aims to alleviate that danger through local, privacy-first design.
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
