@@ -134,3 +134,4 @@ photoprism
 unencrypted
 untrusted
 vaultwarden
+Codecov
