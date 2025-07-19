@@ -33,6 +33,6 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 15. **Why reference the Sword of Damocles in Gabriel's documentation?**
    - The parable illustrates the constant risk that accompanies greater resources and privilege online. [SWORD_OF_DAMOCLES.md](SWORD_OF_DAMOCLES.md) explains how Gabriel aims to alleviate that danger through local, privacy-first design.
 16. **How is test coverage reported?**
-   - Coverage reports are uploaded to Codecov through a GitHub Actions workflow.
+   - Coverage reports are uploaded to [Codecov](https://about.codecov.io/) through a GitHub Actions workflow.
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
