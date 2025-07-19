@@ -23,4 +23,3 @@ This document outlines assumed threats and mitigations when using axel.
 - Limit bot permissions to only what is necessary for message ingestion.
 - Consider optional encryption or regular cleanup of the `local/discord/` directory.
 - Document a checklist for verifying `.gitignore` entries and reviewing token usage.
-
