@@ -22,6 +22,10 @@ jobs:
         run: |
           pytest --cov=gabriel --cov-report=term-missing --cov-report=xml
           coverage-badge -o coverage.svg -f
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Commit coverage badge
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: EndBug/add-and-commit@v9
