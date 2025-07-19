@@ -80,7 +80,7 @@ We use `AGENTS.md` to outline repository-specific instructions for automated age
 
 ## CI & Security
 
-The repository includes a GitHub Actions workflow that runs `flake8` and `bandit` to catch style issues and common security mistakes. Dependabot is configured to monitor Python dependencies weekly.
+The repository includes GitHub Actions workflows for linting, testing, and documentation. `flake8` and `bandit` catch style issues and common security mistakes, while coverage results are uploaded to Codecov after tests run. Dependabot monitors Python dependencies weekly.
 
 ## FAQ
 
