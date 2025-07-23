@@ -45,6 +45,12 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+### Runbook & 3D Viewer
+
+This repo now mirrors flywheel's development helpers. `runbook.yml` lists
+typical tasks and `viewer/` hosts a basic Three.js scene. Launch `make preview`
+to open the viewer locally.
+
 ## Tracked Repositories
 
 The table below summarizes all repositories where we currently maintain

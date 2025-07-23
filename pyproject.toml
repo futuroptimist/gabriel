@@ -1,0 +1,16 @@
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 88
+
+[tool.pytest.ini_options]
+addopts = "--cov=gabriel --cov-report=xml --cov-report=term"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["gabriel"]
+branch = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
