@@ -1,0 +1,27 @@
+# Gabriel
+
+> Privacy-first "guardian angel" LLM that offers local security guidance. Runs on Python 3.10+ and supports offline or encrypted inference via [token.place](https://github.com/futuroptimist/token.place).
+
+Gabriel encourages minimal telemetry and keeps user data local. Documentation covers threat models, improvement plans and example prompts.
+
+## Docs
+- [README](README.md): Project overview
+- [Threat Model](docs/gabriel/THREAT_MODEL.md)
+- [Improvements](docs/gabriel/IMPROVEMENTS.md)
+- [FAQ](docs/gabriel/FAQ.md)
+
+## Related Projects
+- [token.place](https://github.com/futuroptimist/token.place): Encrypted inference API
+- [sigma](https://github.com/futuroptimist/sigma): Optional analysis helpers
+
+## Models
+- GPT-4o-2024-05-13
+- Claude-3 Opus
+- Mistral Large
+- Llama3-70b-Instruct
+- Qwen1.5 1.8B
+- Gemma 2B
+
+## Optional
+- [Flywheel Risk Model](docs/gabriel/FLYWHEEL_RISK_MODEL.md)
+- [Roadmap](docs/gabriel/ROADMAP.md)

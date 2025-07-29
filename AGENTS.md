@@ -1,12 +1,31 @@
-# Instructions for LLM Contributors
+# Gabriel Agents Guidelines
 
-This repository welcomes improvements from automated agents and human contributors. Please follow these guidelines:
+> Guidance for OpenAI Codex and human contributors. These instructions follow the [AGENTS.md spec](https://gist.github.com/dpaluy/cc42d59243b0999c1b3f9cf60dfd3be6) and the [Agents.md Guide](https://agentsmd.net/).
 
-* Keep user privacy and security central. Avoid adding analytics or unapproved network calls.
-* Use lightweight, well-understood dependencies. Discuss heavy additions before including them.
-* Update documentation (`README.md`, files under `docs/`) whenever behavior or design changes.
-* If you introduce code, prefer Python 3.10+ and standard tooling. Provide a `requirements.txt` if dependencies are needed.
-* A minimal test suite exists. Ensure it passes by running `pytest` with coverage before opening a PR.
-* Summaries and PR messages should include citations to relevant files.
-* Append new questions to `docs/FAQ.md` rather than removing existing items.
-* Run `pytest` to confirm tests pass (even if none are collected) before opening a PR.
+## Overview
+
+- Prioritise user privacy and security. Avoid analytics or network calls unless discussed.
+- Use lightweight Python 3.10+ dependencies. Document them in `requirements.txt`.
+- Keep documentation (`README.md`, `docs/`) updated with any behaviour or design change.
+- Add meaningful variable and function names and include docstrings for complex logic.
+- Follow PEP8 style; run `pre-commit run --all-files` before committing.
+- Append questions to `docs/gabriel/FAQ.md` rather than removing existing items.
+
+## Testing Requirements
+
+Run the full test suite before submitting changes:
+
+```bash
+pre-commit run --all-files
+pytest --cov=gabriel --cov-report=term-missing
+```
+
+## Pull Request Guidelines
+
+1. Clearly describe the change and reference relevant issues.
+2. Ensure all tests pass and include screenshots for UI changes if applicable.
+3. Keep PRs focused on a single concern and include citations in the description.
+
+## Programmatic Checks
+
+All checks above must pass prior to merging. This helps maintain code quality and security.
