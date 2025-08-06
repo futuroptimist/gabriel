@@ -97,4 +97,3 @@ Return **only** the diff.
 - Keep prompts short and specific.
 - Regenerate this doc when repository conventions change.
 - Ask questions by appending to `docs/gabriel/FAQ.md`.
-
