@@ -45,6 +45,10 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+### Offline Usage
+
+For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
+
 ### Runbook & 3D Viewer
 
 This repo now mirrors flywheel's development helpers. `runbook.yml` lists
