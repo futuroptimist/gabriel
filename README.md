@@ -45,6 +45,9 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+For storing secrets in the system keyring, see
+[docs/gabriel/SECRET_STORAGE.md](docs/gabriel/SECRET_STORAGE.md).
+
 ### Runbook & 3D Viewer
 
 This repo now mirrors flywheel's development helpers. `runbook.yml` lists
