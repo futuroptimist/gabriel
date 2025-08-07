@@ -1,4 +1,6 @@
-from gabriel.utils import add, subtract
+from gabriel.utils import add, subtract, store_secret, get_secret
+import keyring
+from keyring.backend import KeyringBackend
 
 
 def test_add():
@@ -15,3 +17,29 @@ def test_subtract():
 
 def test_subtract_negative_result():
     assert subtract(3, 5) == -2  # nosec B101
+
+
+class InMemoryKeyring(KeyringBackend):
+    """Simple in-memory keyring backend for testing."""
+
+    priority = 1
+
+    def __init__(self) -> None:
+        self._storage: dict[tuple[str, str], str] = {}
+
+    def get_password(self, system: str, username: str) -> str | None:  # noqa: D401
+        return self._storage.get((system, username))
+
+    def set_password(
+        self, system: str, username: str, password: str
+    ) -> None:  # noqa: D401
+        self._storage[(system, username)] = password
+
+    def delete_password(self, system: str, username: str) -> None:  # noqa: D401
+        self._storage.pop((system, username), None)
+
+
+def test_store_and_get_secret():
+    keyring.set_keyring(InMemoryKeyring())
+    store_secret("service", "user", "hunter2")
+    assert get_secret("service", "user") == "hunter2"  # nosec B101

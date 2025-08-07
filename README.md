@@ -45,6 +45,18 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+### Secret Storage Example
+
+Gabriel includes helpers for persisting secrets using the system keyring.
+Store a secret for later retrieval:
+
+```python
+from gabriel import store_secret, get_secret
+
+store_secret("example-service", "alice", "s3cr3t")
+assert get_secret("example-service", "alice") == "s3cr3t"
+```
+
 ### Runbook & 3D Viewer
 
 This repo now mirrors flywheel's development helpers. `runbook.yml` lists
