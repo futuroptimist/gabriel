@@ -20,7 +20,7 @@ Gabriel aims to act as a privacy-first assistant that helps users maintain situa
 ## Mitigations
 
 - Encourage filesystem encryption and strong access controls.
-- Provide examples of secure key storage using tools like `keyring` or OS keychains.
+- Include examples of secure key storage using tools like `keyring` or OS keychains.
 - Limit logs to debug-level messages and strip sensitive data before writing.
 - Prefer offline models or encrypted inference when possible.
 - Use pre-commit hooks and CI checks to block risky automated changes.

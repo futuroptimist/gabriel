@@ -4,3 +4,4 @@ coverage
 coverage-badge
 pytest-cov
 detect-secrets
+keyring
