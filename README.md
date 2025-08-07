@@ -45,6 +45,10 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+### Offline Usage
+
+For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
+
 For storing secrets in the system keyring, see
 [docs/gabriel/SECRET_STORAGE.md](docs/gabriel/SECRET_STORAGE.md).
 
