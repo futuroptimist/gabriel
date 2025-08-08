@@ -1,4 +1,4 @@
-from gabriel.utils import add, subtract, store_secret, get_secret
+from gabriel.utils import add, subtract, multiply, store_secret, get_secret
 import keyring
 from keyring.backend import KeyringBackend
 
@@ -17,6 +17,14 @@ def test_subtract():
 
 def test_subtract_negative_result():
     assert subtract(3, 5) == -2  # nosec B101
+
+
+def test_multiply():
+    assert multiply(2, 3) == 6  # nosec B101
+
+
+def test_multiply_with_negative_number():
+    assert multiply(-2, 3) == -6  # nosec B101
 
 
 class InMemoryKeyring(KeyringBackend):
