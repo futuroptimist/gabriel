@@ -25,6 +25,10 @@ def test_multiply():
     assert multiply(2, 3) == 6  # nosec B101
 
 
+def test_multiply_negative_numbers():
+    assert multiply(-2, -3) == 6  # nosec B101
+    
+    
 def test_multiply_with_negative_number():
     assert multiply(-2, 3) == -6  # nosec B101
 
