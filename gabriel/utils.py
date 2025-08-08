@@ -24,8 +24,19 @@ def store_secret(service: str, username: str, secret: str) -> None:
         The user identifier for the secret.
     secret:
         The secret value to store.
+
+    Raises
+    ------
+    RuntimeError
+        If the ``keyring`` package is not installed.
     """
-    import keyring
+    try:
+        import keyring
+    except ImportError as exc:  # pragma: no cover - exercised via tests
+        raise RuntimeError(
+            "The `keyring` package is required to store secrets. "
+            "Install it via `pip install keyring`."
+        ) from exc
 
     keyring.set_password(service, username, secret)
 
@@ -33,8 +44,22 @@ def store_secret(service: str, username: str, secret: str) -> None:
 def get_secret(service: str, username: str) -> str | None:
     """Retrieve a secret from the system keyring.
 
-    Returns ``None`` if no secret is stored for the given ``service`` and ``username``.
+    Returns
+    -------
+    str | None
+        The stored secret or ``None`` if no value is found.
+
+    Raises
+    ------
+    RuntimeError
+        If the ``keyring`` package is not installed.
     """
-    import keyring
+    try:
+        import keyring
+    except ImportError as exc:  # pragma: no cover - exercised via tests
+        raise RuntimeError(
+            "The `keyring` package is required to retrieve secrets. "
+            "Install it via `pip install keyring`."
+        ) from exc
 
     return keyring.get_password(service, username)
