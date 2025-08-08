@@ -1,6 +1,8 @@
 from gabriel.utils import add, subtract, store_secret, get_secret
 import keyring
 from keyring.backend import KeyringBackend
+import builtins
+import pytest
 
 
 def test_add():
@@ -43,3 +45,23 @@ def test_store_and_get_secret():
     keyring.set_keyring(InMemoryKeyring())
     store_secret("service", "user", "hunter2")
     assert get_secret("service", "user") == "hunter2"  # nosec B101
+
+
+@pytest.mark.parametrize(
+    "func,args",
+    [
+        (store_secret, ("svc", "user", "pw")),
+        (get_secret, ("svc", "user")),
+    ],
+)
+def test_keyring_missing(monkeypatch, func, args):
+    real_import = builtins.__import__
+
+    def fake_import(name, *a, **k):
+        if name == "keyring":
+            raise ModuleNotFoundError
+        return real_import(name, *a, **k)
+
+    monkeypatch.setattr(builtins, "__import__", fake_import)
+    with pytest.raises(RuntimeError, match="keyring"):  # nosec B101
+        func(*args)

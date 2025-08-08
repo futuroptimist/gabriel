@@ -22,6 +22,7 @@ def load_token() -> str | None:
 ```
 
 Install `keyring` with `pip install keyring` if it is not already
-available. The library encrypts secrets using the platform's preferred
-backend and avoids storing plaintext passwords in the repository or
-environment variables.
+available. Gabriel's ``store_secret`` and ``get_secret`` helpers raise a
+``RuntimeError`` when the package is missing. The library encrypts secrets
+using the platform's preferred backend and avoids storing plaintext
+passwords in the repository or environment variables.
