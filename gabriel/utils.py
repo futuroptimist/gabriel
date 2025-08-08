@@ -8,6 +8,11 @@ def subtract(a: int, b: int) -> int:
     return a - b
 
 
+def multiply(a: int, b: int) -> int:
+    """Return the product of ``a`` and ``b``."""
+    return a * b
+
+
 def store_secret(service: str, username: str, secret: str) -> None:
     """Store ``secret`` in the system keyring.
 

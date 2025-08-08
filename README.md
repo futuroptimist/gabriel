@@ -45,6 +45,13 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+Example usage of arithmetic helpers:
+
+```python
+from gabriel import add, multiply
+print(multiply(add(2, 3), 4))  # 20
+```
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
