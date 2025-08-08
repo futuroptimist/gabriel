@@ -10,3 +10,4 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Provide examples of encrypted secret storage using `keyring` ([SECRET_STORAGE.md](SECRET_STORAGE.md)).
 - [x] Document how to run Gabriel completely offline with local models. See [OFFLINE.md](OFFLINE.md).
 - [x] Harden pre-commit hooks to prevent accidental secret leaks.
+- [x] Add `multiply` helper with test coverage.
