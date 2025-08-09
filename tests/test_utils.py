@@ -1,4 +1,4 @@
-from gabriel.utils import add, subtract, multiply, store_secret, get_secret
+from gabriel.utils import add, subtract, multiply, divide, store_secret, get_secret
 import keyring
 from keyring.backend import KeyringBackend
 import builtins
@@ -31,6 +31,19 @@ def test_multiply_negative_numbers():
 
 def test_multiply_with_negative_number():
     assert multiply(-2, 3) == -6  # nosec B101
+
+
+def test_divide():
+    assert divide(6, 3) == 2  # nosec B101
+
+
+def test_divide_negative_numbers():
+    assert divide(-6, -3) == 2  # nosec B101
+
+
+def test_divide_by_zero():
+    with pytest.raises(ZeroDivisionError):
+        divide(1, 0)
 
 
 class InMemoryKeyring(KeyringBackend):
