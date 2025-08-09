@@ -140,3 +140,5 @@ str
 plaintext
 cpp
 GGUF
+Nextcloud
+nextcloud
