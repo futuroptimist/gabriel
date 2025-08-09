@@ -44,3 +44,14 @@ See [related/sugarkube/IMPROVEMENTS.md](related/sugarkube/IMPROVEMENTS.md).
 - [ ] Configure environment variables for strong encryption keys.
 - [ ] Enable automatic database backups and verify restore procedures.
 - [ ] Restrict admin interface access to trusted networks or VPN.
+
+## Zulip
+- [ ] Enforce HTTPS with HSTS ([docs][zulip-security]).
+- [ ] Enable two-factor auth and restrict admin access ([docs][zulip-auth]).
+- [ ] Schedule encrypted backups for PostgreSQL and uploads ([docs][zulip-backup]).
+- [ ] Apply updates promptly using the official upgrade guide ([docs][zulip-upgrade]).
+
+[zulip-security]: https://zulip.readthedocs.io/en/stable/production/security.html
+[zulip-auth]: https://zulip.readthedocs.io/en/stable/production/authentication.html
+[zulip-backup]: https://zulip.readthedocs.io/en/stable/production/backup.html
+[zulip-upgrade]: https://zulip.readthedocs.io/en/stable/production/upgrade.html
