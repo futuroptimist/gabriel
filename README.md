@@ -83,6 +83,7 @@ relevant documentation.
 | gitshelves | [IMPROVEMENTS.md](docs/related/gitshelves/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/gitshelves/THREAT_MODEL.md) |
 | wove | [IMPROVEMENTS.md](docs/related/wove/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/wove/THREAT_MODEL.md) |
 | sugarkube | [IMPROVEMENTS.md](docs/related/sugarkube/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/sugarkube/THREAT_MODEL.md) |
+| Nextcloud | [IMPROVEMENTS.md](docs/related/nextcloud/IMPROVEMENTS.md) | N/A |
 | PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism](docs/IMPROVEMENT_CHECKLISTS.md#photoprism) | N/A |
 | VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden) | N/A |
 
