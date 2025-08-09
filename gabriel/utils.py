@@ -13,6 +13,13 @@ def multiply(a: int, b: int) -> int:
     return a * b
 
 
+def divide(a: int, b: int) -> float:
+    """Return the result of ``a`` divided by ``b``."""
+    if b == 0:
+        raise ZeroDivisionError("Cannot divide by zero.")
+    return a / b
+
+
 def store_secret(service: str, username: str, secret: str) -> None:
     """Store ``secret`` in the system keyring.
 
