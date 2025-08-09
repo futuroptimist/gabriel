@@ -33,6 +33,17 @@ See [related/wove/IMPROVEMENTS.md](related/wove/IMPROVEMENTS.md).
 ## sugarkube
 See [related/sugarkube/IMPROVEMENTS.md](related/sugarkube/IMPROVEMENTS.md).
 
+## Nextcloud
+- [ ] Enforce HTTPS with HSTS; see [hardening guide][nc-harden].
+- [ ] Require [two-factor authentication][nc-2fa] for all users.
+- [ ] Schedule [encrypted backups][nc-backup] and test restores.
+- [ ] Apply [security updates][nc-upgrade] promptly for server and apps.
+
+[nc-harden]: https://docs.nextcloud.com/server/latest/admin_manual/installation/harden_server.html
+[nc-2fa]: https://docs.nextcloud.com/server/latest/admin_manual/configuration_user/user_authentication_twofactor.html
+[nc-backup]: https://docs.nextcloud.com/server/latest/admin_manual/maintenance/backup.html
+[nc-upgrade]: https://docs.nextcloud.com/server/latest/admin_manual/maintenance/upgrade.html
+
 ## PhotoPrism
 - [ ] Enable HTTPS by default and use strong admin credentials.
 - [ ] Store images outside of the application container with strict permissions.
