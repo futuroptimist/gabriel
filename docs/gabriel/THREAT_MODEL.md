@@ -1,12 +1,16 @@
 # Threat Model
 
-Gabriel aims to act as a privacy-first assistant that helps users maintain situational awareness about their digital security. The initial focus is on local execution with optional encrypted inference through [token.place](https://github.com/futuroptimist/token.place).
+Gabriel aims to act as a privacy-first assistant that helps users maintain
+situational awareness about their digital security. The initial focus is on
+local execution with optional encrypted inference through
+[token.place](https://github.com/futuroptimist/token.place).
 
 ## Security Assumptions
 
 - Users operate Gabriel on hardware they control.
 - Network connectivity is optional and should be minimized.
-- Secrets such as API keys should be stored in environment variables or encrypted files, never committed to source control.
+- Secrets such as API keys should be stored in environment variables or
+  encrypted files, never committed to source control.
 - Logs must avoid collecting personally identifiable information (PII) by default.
 
 ## Attack Surface
@@ -25,3 +29,16 @@ Gabriel aims to act as a privacy-first assistant that helps users maintain situa
 - Prefer offline models or encrypted inference when possible.
 - Use pre-commit hooks and CI checks to block risky automated changes.
 - Restrict cross-repo crawl tokens to read-only scope and sanitize output.
+
+## Common Security Gaps and Mitigations
+
+| Area | Potential Gap | Mitigation |
+|------|---------------|------------|
+| Patch management | Outdated OS or packages with known CVEs | Automate updates; scan regularly. |
+| Network exposure | Unneeded open ports or services | Restrict firewalls; close unused ports. |
+| Auth & access | Weak passwords or excess privilege | Enforce strong passwords, MFA, and RBAC. |
+| Data protection | Unencrypted data at rest or in transit | Encrypt both ways; rotate keys. |
+| Logging & monitoring | Missing or misconfigured logs | Centralize logs; alert on anomalies. |
+| Backup & recovery | No or untested backups | Use versioned backups; verify restores. |
+| Third-party deps | Unvetted or unsigned software | Verify sources; scan dependencies. |
+| Config management | Ad-hoc changes without review | Use config-as-code with review. |
