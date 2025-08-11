@@ -107,6 +107,8 @@ uploaded to [Codecov](https://codecov.io/) after tests run.
 Pre-commit hooks also run `detect-secrets` to prevent accidental credential leaks.
 Dependabot monitors Python dependencies weekly.
 
+See [SECURITY_GAPS.md](docs/SECURITY_GAPS.md) for common gaps and mitigations.
+
 ## FAQ
 
 We maintain an evolving list of questions for clarification in [docs/gabriel/FAQ.md](docs/gabriel/FAQ.md). Feel free to add your own or answer existing ones.

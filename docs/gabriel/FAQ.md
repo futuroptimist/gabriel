@@ -35,4 +35,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 16. **How is test coverage reported?**
    - Coverage reports are uploaded to [Codecov](https://about.codecov.io/) through a GitHub Actions workflow.
 
+17. **Where can I find common security gaps and mitigations?**
+   - See [../SECURITY_GAPS.md](../SECURITY_GAPS.md) for a summary of typical risks and fixes.
+
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
