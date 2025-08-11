@@ -12,3 +12,13 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Harden pre-commit hooks to prevent accidental secret leaks.
 - [x] Add `multiply` helper with test coverage.
 - [x] Cover `divide` helper with tests for negative values.
+- [ ] Add `delete_secret` helper to revoke stored credentials (`gabriel/utils.py`,
+      `tests/test_utils.py`). *Aligns with flywheel best practices.*
+- [ ] Integrate `mypy` into pre-commit for static type checks (`.pre-commit-config.yaml`).
+      *Aligns with flywheel best practices.*
+- [ ] Expand arithmetic helpers with `power` and `modulo` operations
+      (`gabriel/utils.py`, `tests/test_utils.py`).
+- [ ] Add CLI entry points for arithmetic utilities (`pyproject.toml`,
+      `gabriel/utils.py`).
+- [ ] Test `divide` with negative numbers and floats for complete coverage
+      (`gabriel/utils.py`, `tests/test_utils.py`).
