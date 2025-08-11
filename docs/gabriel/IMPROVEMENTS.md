@@ -11,6 +11,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Document how to run Gabriel completely offline with local models. See [OFFLINE.md](OFFLINE.md).
 - [x] Harden pre-commit hooks to prevent accidental secret leaks.
 - [x] Add `multiply` helper with test coverage.
+- [x] Add `delete_secret` helper to remove stored secrets.
 - [ ] Add `delete_secret` helper to revoke stored credentials (`gabriel/utils.py`,
       `tests/test_utils.py`). *Aligns with flywheel best practices.*
 - [ ] Integrate `mypy` into pre-commit for static type checks (`.pre-commit-config.yaml`).
