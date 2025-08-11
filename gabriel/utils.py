@@ -70,3 +70,16 @@ def get_secret(service: str, username: str) -> str | None:
         ) from exc
 
     return keyring.get_password(service, username)
+
+
+def delete_secret(service: str, username: str) -> None:
+    """Delete a secret from the system keyring."""
+    try:
+        import keyring
+    except ImportError as exc:  # pragma: no cover - exercised via tests
+        raise RuntimeError(
+            "The `keyring` package is required to delete secrets. "
+            "Install it via `pip install keyring`."
+        ) from exc
+
+    keyring.delete_password(service, username)

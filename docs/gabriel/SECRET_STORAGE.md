@@ -19,10 +19,14 @@ def save_token(token: str) -> None:
 def load_token() -> str | None:
     """Retrieve token from the system keyring."""
     return keyring.get_password(SERVICE, USERNAME)
+
+def delete_token() -> None:
+    """Remove token from the system keyring."""
+    keyring.delete_password(SERVICE, USERNAME)
 ```
 
 Install `keyring` with `pip install keyring` if it is not already
-available. Gabriel's ``store_secret`` and ``get_secret`` helpers raise a
-``RuntimeError`` when the package is missing. The library encrypts secrets
-using the platform's preferred backend and avoids storing plaintext
-passwords in the repository or environment variables.
+available. Gabriel's ``store_secret``, ``get_secret``, and ``delete_secret`` helpers
+raise a ``RuntimeError`` when the package is missing. The library encrypts secrets
+using the platform's preferred backend and avoids storing plaintext passwords in the
+repository or environment variables.

@@ -1,6 +1,14 @@
 """Core utilities for the Gabriel project."""
 
-from .utils import add, subtract, multiply, divide, store_secret, get_secret
+from .utils import (
+    add,
+    subtract,
+    multiply,
+    divide,
+    store_secret,
+    get_secret,
+    delete_secret,
+)
 
 __all__ = [
     "add",
@@ -9,4 +17,5 @@ __all__ = [
     "divide",
     "store_secret",
     "get_secret",
+    "delete_secret",
 ]

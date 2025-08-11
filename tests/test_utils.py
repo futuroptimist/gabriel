@@ -5,6 +5,7 @@ from gabriel.utils import (
     divide,
     store_secret,
     get_secret,
+    delete_secret,
 )
 import keyring
 from keyring.backend import KeyringBackend
@@ -69,10 +70,12 @@ class InMemoryKeyring(KeyringBackend):
         self._storage.pop((system, username), None)
 
 
-def test_store_and_get_secret():
+def test_store_get_and_delete_secret():
     keyring.set_keyring(InMemoryKeyring())
     store_secret("service", "user", "hunter2")
     assert get_secret("service", "user") == "hunter2"  # nosec B101
+    delete_secret("service", "user")
+    assert get_secret("service", "user") is None  # nosec B101
 
 
 @pytest.mark.parametrize(
@@ -80,6 +83,7 @@ def test_store_and_get_secret():
     [
         (store_secret, ("svc", "user", "pw")),
         (get_secret, ("svc", "user")),
+        (delete_secret, ("svc", "user")),
     ],
 )
 def test_keyring_missing(monkeypatch, func, args):
