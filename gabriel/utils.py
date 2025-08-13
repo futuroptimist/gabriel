@@ -20,6 +20,18 @@ def divide(a: int, b: int) -> float:
     return a / b
 
 
+def power(a: int, b: int) -> int:
+    """Return ``a`` raised to the power of ``b``."""
+    return a**b
+
+
+def modulo(a: int, b: int) -> int:
+    """Return the remainder of ``a`` divided by ``b``."""
+    if b == 0:
+        raise ZeroDivisionError("Cannot modulo by zero.")
+    return a % b
+
+
 def store_secret(service: str, username: str, secret: str) -> None:
     """Store ``secret`` in the system keyring.
 
