@@ -3,6 +3,8 @@ from gabriel.utils import (
     subtract,
     multiply,
     divide,
+    power,
+    modulo,
     store_secret,
     get_secret,
     delete_secret,
@@ -48,6 +50,19 @@ def test_divide():
 def test_divide_by_zero():
     with pytest.raises(ZeroDivisionError):
         divide(1, 0)
+
+
+def test_power():
+    assert power(2, 3) == 8  # nosec B101
+
+
+def test_modulo():
+    assert modulo(5, 2) == 1  # nosec B101
+
+
+def test_modulo_by_zero():
+    with pytest.raises(ZeroDivisionError):
+        modulo(1, 0)
 
 
 class InMemoryKeyring(KeyringBackend):
