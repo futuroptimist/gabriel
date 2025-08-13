@@ -50,6 +50,29 @@ def test_divide_by_zero():
         divide(1, 0)
 
 
+@pytest.mark.parametrize(
+    "a,b,expected",
+    [
+        (-6, 3, -2),
+        (6, -3, -2),
+        (-6, -3, 2),
+    ],
+)
+def test_divide_negative_numbers(a, b, expected):
+    assert divide(a, b) == expected  # nosec B101
+
+
+@pytest.mark.parametrize(
+    "a,b,expected",
+    [
+        (5, 2, 2.5),
+        (-7.5, 2.5, -3.0),
+    ],
+)
+def test_divide_floats(a, b, expected):
+    assert divide(a, b) == expected  # nosec B101
+
+
 class InMemoryKeyring(KeyringBackend):
     """Simple in-memory keyring backend for testing."""
 

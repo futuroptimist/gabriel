@@ -13,7 +13,7 @@ def multiply(a: int, b: int) -> int:
     return a * b
 
 
-def divide(a: int, b: int) -> float:
+def divide(a: float, b: float) -> float:
     """Return the result of ``a`` divided by ``b``."""
     if b == 0:
         raise ZeroDivisionError("Cannot divide by zero.")
