@@ -45,6 +45,16 @@ def test_divide():
     assert divide(6, 3) == 2  # nosec B101
 
 
+def test_divide_negative_numbers():
+    assert divide(-6, 3) == -2  # nosec B101
+    assert divide(6, -3) == -2  # nosec B101
+    assert divide(-6, -3) == 2  # nosec B101
+
+
+def test_divide_floats():
+    assert divide(7.5, 2.5) == 3.0  # nosec B101
+
+
 def test_divide_by_zero():
     with pytest.raises(ZeroDivisionError):
         divide(1, 0)

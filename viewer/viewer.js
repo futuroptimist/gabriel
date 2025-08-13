@@ -2,6 +2,7 @@ const mv = document.getElementById('mv');
 const explode = document.getElementById('explode');
 const legend = document.getElementById('legend');
 const dark = document.getElementById('dark');
+const start = document.getElementById('start');
 let nodes = [];
 
 mv.addEventListener('load', () => {
@@ -11,8 +12,10 @@ mv.addEventListener('load', () => {
   legend.innerHTML = '';
   nodes.forEach((n, i) => {
     const li = document.createElement('li');
-    li.textContent = n.name || `part-${i}`;
-    li.onclick = () => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = n.name || `part-${i}`;
+    btn.addEventListener('click', () => {
       if (li.classList.toggle('hidden')) {
         n.visible = false;
       } else {
@@ -27,7 +30,8 @@ mv.addEventListener('load', () => {
           nodes.forEach((m) => (m.visible = true));
         }
       }
-    };
+    });
+    li.appendChild(btn);
     legend.appendChild(li);
   });
 });
@@ -41,4 +45,8 @@ explode.addEventListener('input', () => {
 
 dark.addEventListener('click', () => {
   document.body.classList.toggle('dark');
+});
+
+start.addEventListener('click', () => {
+  mv.play();
 });
