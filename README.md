@@ -48,8 +48,10 @@ python -m pytest --cov=gabriel --cov-report=term-missing
 Example usage of arithmetic helpers:
 
 ```python
-from gabriel import add, multiply, divide
-print(divide(multiply(add(2, 3), 4), 2))  # 10.0
+from gabriel import add, multiply, divide, power, modulo
+
+print(power(add(2, 3), 2))       # 25
+print(modulo(multiply(7, 3), 5)) # 1
 ```
 
 ### Offline Usage
