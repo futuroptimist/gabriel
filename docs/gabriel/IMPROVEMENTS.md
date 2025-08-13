@@ -18,7 +18,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Add CLI entry points for arithmetic utilities (`pyproject.toml`,
       `gabriel/utils.py`).
-- [ ] Test `divide` with negative numbers and floats for complete coverage
+- [x] Test `divide` with negative numbers and floats for complete coverage
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Integrate `pip-audit` into pre-commit to detect vulnerable dependencies
       (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
