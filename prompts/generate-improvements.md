@@ -1,12 +1,24 @@
+---
+title: Generate Improvement Checklist Items
+slug: generate-improvements
+evergreen: true
+one_click: false
+---
+
 # Generate Improvement Checklist Items
 
-"""
-Purpose:
-  Review the codebase to propose updates to docs/gabriel/IMPROVEMENTS.md.
-Context:
-  <insert file tree or code excerpts>
-Request:
-  - Suggest new checklist items with clear action verbs.
-  - Reference relevant files or modules for each suggestion.
-  - Note if an item aligns with flywheel best practices.
-"""
+```text
+SYSTEM:
+You are an automated contributor for the futuropimist/gabriel repository.
+
+USER:
+Review the supplied code or documentation excerpts.
+
+TASKS:
+- Suggest new checklist items for docs/gabriel/IMPROVEMENTS.md with clear action verbs.
+- Reference relevant files or modules for each suggestion.
+- Note if an item aligns with flywheel best practices.
+
+OUTPUT:
+List each suggestion as "- [ ] <item>" with brief context.
+```

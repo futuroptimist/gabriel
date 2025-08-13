@@ -62,8 +62,17 @@ For storing secrets in the system keyring, see
 ### Runbook & 3D Viewer
 
 This repo now mirrors flywheel's development helpers. `runbook.yml` lists
-typical tasks and `viewer/` hosts a basic Three.js scene. Launch `make preview`
-to open the viewer locally.
+typical tasks and `viewer/` hosts a basic scene powered by a self-hosted copy of
+`@google/model-viewer` to avoid third-party CDNs. The viewer provides Play and
+Toggle Dark buttons plus a privacy note that all rendering happens locally.
+Launch `make preview` to open it.
+
+To refresh `model-viewer.min.js`, run:
+
+```bash
+curl -L https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js \
+  -o viewer/model-viewer.min.js
+```
 
 ## Tracked Repositories
 
