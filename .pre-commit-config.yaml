@@ -9,7 +9,7 @@ repos:
     rev: v2.4.0
     hooks:
       - id: codespell
-        args: ["--ignore-words", "dict/allow.txt", "--skip", "*.lock,*.svg"]
+        args: ["--ignore-words", "dict/allow.txt", "--skip", "*.lock,*.svg,viewer/model-viewer.min.js"]
   - repo: https://github.com/psf/black
     rev: 23.7.0
     hooks:
@@ -27,4 +27,4 @@ repos:
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        args: ['--baseline', '.secrets.baseline']
+        args: ['--baseline', '.secrets.baseline', '--exclude-files', 'viewer/model-viewer.min.js']
