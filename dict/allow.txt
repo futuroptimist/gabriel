@@ -87,6 +87,7 @@ YOURTOKEN
 
 htmlcontent
 installable
+linter
 OpenSCAD
 LaTeX
 tfrac
