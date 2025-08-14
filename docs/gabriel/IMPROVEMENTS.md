@@ -25,5 +25,5 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Align Black's `line-length` with repo standard of 100 chars (`pyproject.toml`).
 - [ ] Support float inputs in arithmetic helpers (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Add CLI entry points for secret management (`pyproject.toml`, `gabriel/utils.py`).
-- [ ] Implement `floordiv` helper with test coverage (`gabriel/utils.py`,
+- [x] Implement `floordiv` helper with test coverage (`gabriel/utils.py`,
       `tests/test_utils.py`).
