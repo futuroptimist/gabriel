@@ -45,10 +45,11 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
-Example usage of arithmetic helpers:
+Example usage of arithmetic helpers (ints and floats):
 
 ```python
 from gabriel import add, multiply, divide, power, modulo
+print(add(2.5, 3.5))  # 6.0
 print(divide(multiply(add(2, 3), 4), 2))  # 10.0
 print(power(2, 3))  # 8
 print(modulo(7, 3))  # 1

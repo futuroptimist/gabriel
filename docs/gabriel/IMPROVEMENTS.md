@@ -21,9 +21,9 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Test `divide` with negative numbers and floats for complete coverage
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Integrate `pip-audit` into pre-commit to detect vulnerable dependencies
-      (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+   (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [ ] Align Black's `line-length` with repo standard of 100 chars (`pyproject.toml`).
-- [ ] Support float inputs in arithmetic helpers (`gabriel/utils.py`, `tests/test_utils.py`).
+- [x] Support float inputs in arithmetic helpers (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Add CLI entry points for secret management (`pyproject.toml`, `gabriel/utils.py`).
 - [ ] Implement `floordiv` helper with test coverage (`gabriel/utils.py`,
       `tests/test_utils.py`).
