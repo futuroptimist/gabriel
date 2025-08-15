@@ -51,3 +51,14 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [ ] Create setup script referenced in `runbook.yml` for developer onboarding
       (`runbook.yml`, `scripts/setup.sh`).
+- [ ] Run pre-commit hooks in CI to enforce linting and security checks
+      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Enforce a minimum coverage threshold of 90% in tests (`pyproject.toml`,
+      `.github/workflows/coverage.yml`). *Aligns with flywheel best practices.*
+- [ ] Implement `gcd` helper with test coverage (`gabriel/utils.py`,
+      `tests/test_utils.py`).
+- [ ] Log secret operations for auditability using the standard `logging`
+      module (`gabriel/utils.py`).
+- [ ] Scan Docker images for vulnerabilities during CI (`docker/Dockerfile`,
+      `.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
