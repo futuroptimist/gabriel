@@ -6,6 +6,7 @@ from gabriel.utils import (
     power,
     modulo,
     floordiv,
+    sqrt,
     store_secret,
     get_secret,
     delete_secret,
@@ -113,6 +114,16 @@ def test_floordiv_floats():
 def test_floordiv_by_zero():
     with pytest.raises(ZeroDivisionError):
         floordiv(1, 0)
+
+
+def test_sqrt():
+    assert sqrt(9) == 3.0  # nosec B101
+    assert sqrt(2.25) == 1.5  # nosec B101
+
+
+def test_sqrt_negative():
+    with pytest.raises(ValueError):
+        sqrt(-1)
 
 
 class InMemoryKeyring(KeyringBackend):

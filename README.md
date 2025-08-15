@@ -50,12 +50,13 @@ Example usage of arithmetic helpers:
 These helpers accept both integers and floats.
 
 ```python
-from gabriel import add, multiply, divide, power, modulo, floordiv
+from gabriel import add, multiply, divide, power, modulo, floordiv, sqrt
 print(add(2.5, 3.5))  # 6.0
 print(divide(multiply(add(2, 3), 4), 2))  # 10.0
 print(power(2, 3))  # 8
 print(modulo(7, 3))  # 1
 print(floordiv(7, 2))  # 3
+print(sqrt(9))  # 3.0
 ```
 
 ### Offline Usage
