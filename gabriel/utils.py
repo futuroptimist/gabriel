@@ -35,6 +35,16 @@ def modulo(a: int, b: int) -> int:
     return a % b
 
 
+def floordiv(a: float | int, b: float | int) -> float:
+    """Return the floor division of ``a`` by ``b``.
+
+    Supports both integers and floats.
+    """
+    if b == 0:
+        raise ZeroDivisionError("Cannot floor-divide by zero.")
+    return a // b
+
+
 def store_secret(service: str, username: str, secret: str) -> None:
     """Store ``secret`` in the system keyring.
 
