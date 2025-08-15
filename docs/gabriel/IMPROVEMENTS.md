@@ -33,8 +33,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/workflows/codeql.yml`). *Aligns with flywheel best practices.*
 - [ ] Create `SECURITY.md` with vulnerability disclosure guidelines
       (`SECURITY.md`). *Aligns with flywheel best practices.*
-- [ ] Implement `sqrt` helper with test coverage (`gabriel/utils.py`,
-      `tests/test_utils.py`).
+  - [x] Implement `sqrt` helper with test coverage (`gabriel/utils.py`,
+       `tests/test_utils.py`).
 - [ ] Add `lint` and `test` targets to `Makefile` for developer convenience
       (`Makefile`).
 - [ ] Provide GitHub issue templates for bugs and features

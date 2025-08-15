@@ -5,6 +5,7 @@ from gabriel.utils import (
     divide,
     power,
     modulo,
+    sqrt,
     store_secret,
     get_secret,
     delete_secret,
@@ -73,6 +74,15 @@ def test_modulo():
 def test_modulo_by_zero():
     with pytest.raises(ZeroDivisionError):
         modulo(1, 0)
+
+
+def test_sqrt():
+    assert sqrt(16) == 4.0  # nosec B101
+
+
+def test_sqrt_negative():
+    with pytest.raises(ValueError):
+        sqrt(-1)
 
 
 class InMemoryKeyring(KeyringBackend):

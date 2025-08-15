@@ -1,3 +1,6 @@
+import math
+
+
 def add(a: int, b: int) -> int:
     """Return the sum of ``a`` and ``b``."""
     return a + b
@@ -33,6 +36,19 @@ def modulo(a: int, b: int) -> int:
     if b == 0:
         raise ZeroDivisionError("Cannot modulo by zero.")
     return a % b
+
+
+def sqrt(a: float | int) -> float:
+    """Return the square root of ``a``.
+
+    Raises
+    ------
+    ValueError
+        If ``a`` is negative.
+    """
+    if a < 0:
+        raise ValueError("Cannot take square root of a negative number.")
+    return math.sqrt(a)
 
 
 def store_secret(service: str, username: str, secret: str) -> None:
