@@ -59,6 +59,6 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Implement `gcd` helper with test coverage (`gabriel/utils.py`,
       `tests/test_utils.py`).
 - [ ] Log secret operations for auditability using the standard `logging`
-      module (`gabriel/utils.py`).
+      module (`gabriel/utils.py`, `tests/test_utils.py`). *Aligns with flywheel best practices.*
 - [ ] Scan Docker images for vulnerabilities during CI (`docker/Dockerfile`,
       `.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
