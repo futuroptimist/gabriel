@@ -86,9 +86,7 @@ class InMemoryKeyring(KeyringBackend):
     def get_password(self, system: str, username: str) -> str | None:  # noqa: D401
         return self._storage.get((system, username))
 
-    def set_password(
-        self, system: str, username: str, password: str
-    ) -> None:  # noqa: D401
+    def set_password(self, system: str, username: str, password: str) -> None:  # noqa: D401
         self._storage[(system, username)] = password
 
     def delete_password(self, system: str, username: str) -> None:  # noqa: D401
