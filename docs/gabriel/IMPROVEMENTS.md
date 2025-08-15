@@ -40,3 +40,14 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Provide GitHub issue templates for bugs and features
       (`.github/ISSUE_TEMPLATE/bug_report.yml`,
       `.github/ISSUE_TEMPLATE/feature_request.yml`).
+- [ ] Expand Dependabot to monitor GitHub Actions updates (`.github/dependabot.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Add Release Drafter configuration for automated changelog
+      (`.github/release-drafter.yml`). *Aligns with flywheel best practices.*
+- [ ] Add `isort` to pre-commit for consistent import ordering
+      (`.pre-commit-config.yaml`, `pyproject.toml`).
+- [ ] Add Python version matrix in CI to test against 3.10 and 3.11
+      (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Create setup script referenced in `runbook.yml` for developer onboarding
+      (`runbook.yml`, `scripts/setup.sh`).
