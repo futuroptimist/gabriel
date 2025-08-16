@@ -117,6 +117,8 @@ uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is comm
 Pre-commit hooks also run `detect-secrets` to prevent accidental credential leaks.
 Dependabot monitors Python dependencies weekly.
 
+For vulnerability disclosure guidelines, see [SECURITY.md](SECURITY.md).
+
 ## FAQ
 
 We maintain an evolving list of questions for clarification in [docs/gabriel/FAQ.md](docs/gabriel/FAQ.md). Feel free to add your own or answer existing ones.
