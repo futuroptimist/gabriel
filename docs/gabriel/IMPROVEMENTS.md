@@ -31,7 +31,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       `.github/workflows/ci.yml`). *Aligns with flywheel best practices.*
 - [ ] Add CodeQL workflow for static application security testing
       (`.github/workflows/codeql.yml`). *Aligns with flywheel best practices.*
-- [ ] Create `SECURITY.md` with vulnerability disclosure guidelines
+- [x] Create `SECURITY.md` with vulnerability disclosure guidelines
       (`SECURITY.md`). *Aligns with flywheel best practices.*
 - [x] Implement `sqrt` helper with test coverage (`gabriel/utils.py`,
       `tests/test_utils.py`).
