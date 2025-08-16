@@ -25,12 +25,20 @@ def test_add_negative_numbers():
     assert add(-1, -2) == -3  # nosec B101
 
 
+def test_add_floats():
+    assert add(1.5, 2.5) == 4.0  # nosec B101
+
+
 def test_subtract():
     assert subtract(5, 3) == 2  # nosec B101
 
 
 def test_subtract_negative_result():
     assert subtract(3, 5) == -2  # nosec B101
+
+
+def test_subtract_floats():
+    assert subtract(5.5, 3.5) == 2.0  # nosec B101
 
 
 def test_multiply():
@@ -43,6 +51,10 @@ def test_multiply_negative_numbers():
 
 def test_multiply_with_negative_number():
     assert multiply(-2, 3) == -6  # nosec B101
+
+
+def test_multiply_floats():
+    assert multiply(2.5, 4.0) == 10.0  # nosec B101
 
 
 def test_divide():
@@ -68,8 +80,16 @@ def test_power():
     assert power(2, 3) == 8  # nosec B101
 
 
+def test_power_floats():
+    assert power(2.0, 3.0) == 8.0  # nosec B101
+
+
 def test_modulo():
     assert modulo(5, 2) == 1  # nosec B101
+
+
+def test_modulo_floats():
+    assert modulo(5.5, 2.0) == 1.5  # nosec B101
 
 
 def test_modulo_by_zero():

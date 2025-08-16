@@ -1,18 +1,29 @@
 import math
 
+"""Utility helpers for arithmetic operations and secret management."""
 
-def add(a: int, b: int) -> int:
-    """Return the sum of ``a`` and ``b``."""
+
+def add(a: float | int, b: float | int) -> float | int:
+    """Return the sum of ``a`` and ``b``.
+
+    Supports both integers and floats.
+    """
     return a + b
 
 
-def subtract(a: int, b: int) -> int:
-    """Return the result of ``a`` minus ``b``."""
+def subtract(a: float | int, b: float | int) -> float | int:
+    """Return the result of ``a`` minus ``b``.
+
+    Supports both integers and floats.
+    """
     return a - b
 
 
-def multiply(a: int, b: int) -> int:
-    """Return the product of ``a`` and ``b``."""
+def multiply(a: float | int, b: float | int) -> float | int:
+    """Return the product of ``a`` and ``b``.
+
+    Supports both integers and floats.
+    """
     return a * b
 
 
@@ -26,13 +37,19 @@ def divide(a: float | int, b: float | int) -> float:
     return a / b
 
 
-def power(a: int, b: int) -> int:
-    """Return ``a`` raised to the power of ``b``."""
+def power(a: float | int, b: float | int) -> float | int:
+    """Return ``a`` raised to the power of ``b``.
+
+    Supports both integers and floats.
+    """
     return a**b
 
 
-def modulo(a: int, b: int) -> int:
-    """Return ``a`` modulo ``b``."""
+def modulo(a: float | int, b: float | int) -> float | int:
+    """Return ``a`` modulo ``b``.
+
+    Supports both integers and floats.
+    """
     if b == 0:
         raise ZeroDivisionError("Cannot modulo by zero.")
     return a % b
