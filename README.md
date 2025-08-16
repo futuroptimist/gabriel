@@ -45,6 +45,13 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+Common tasks are available via the `Makefile`:
+
+```bash
+make lint  # run pre-commit checks
+make test  # run the test suite with coverage
+```
+
 Example usage of arithmetic helpers:
 
 These helpers accept both integers and floats.
