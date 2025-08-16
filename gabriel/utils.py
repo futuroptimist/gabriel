@@ -1,3 +1,5 @@
+import math
+
 """Utility helpers for arithmetic operations and secret management."""
 
 
@@ -61,6 +63,21 @@ def floordiv(a: float | int, b: float | int) -> float:
     if b == 0:
         raise ZeroDivisionError("Cannot floor-divide by zero.")
     return a // b
+
+
+def sqrt(a: float | int) -> float:
+    """Return the square root of ``a``.
+
+    Supports both integers and floats.
+
+    Raises
+    ------
+    ValueError
+        If ``a`` is negative.
+    """
+    if a < 0:
+        raise ValueError("Cannot take the square root of a negative number.")
+    return math.sqrt(a)
 
 
 def store_secret(service: str, username: str, secret: str) -> None:
