@@ -35,7 +35,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`SECURITY.md`). *Aligns with flywheel best practices.*
 - [x] Implement `sqrt` helper with test coverage (`gabriel/utils.py`,
       `tests/test_utils.py`).
-- [ ] Add `lint` and `test` targets to `Makefile` for developer convenience
+- [x] Add `lint` and `test` targets to `Makefile` for developer convenience
       (`Makefile`).
 - [ ] Provide GitHub issue templates for bugs and features
       (`.github/ISSUE_TEMPLATE/bug_report.yml`,
