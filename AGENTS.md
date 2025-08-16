@@ -6,7 +6,7 @@
 
 - Prioritise user privacy and security. Avoid analytics or network calls unless discussed.
 - Use lightweight Python 3.10+ dependencies. Document them in `requirements.txt`.
-- Keep documentation (`README.md`, `docs/`) updated with any behaviour or design change.
+- Keep documentation (`README.md`, `docs/`) updated with any behavior or design change.
 - Add meaningful variable and function names and include docstrings for complex logic.
 - Follow PEP8 style; run `pre-commit run --all-files` before committing.
 - Append questions to `docs/gabriel/FAQ.md` rather than removing existing items.
