@@ -35,4 +35,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 16. **How is test coverage reported?**
    - Coverage reports are uploaded to [Codecov](https://about.codecov.io/) through a GitHub Actions workflow.
 
+17. **How does Gabriel mitigate prompt-injection or hidden instruction attacks?**
+   - Treat code, documentation, and dependencies as untrusted; review automated changes and run security scans before executing them.
+
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
