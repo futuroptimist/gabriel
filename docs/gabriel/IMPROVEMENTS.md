@@ -37,7 +37,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       `tests/test_utils.py`).
 - [x] Add `lint` and `test` targets to `Makefile` for developer convenience
       (`Makefile`).
-- [ ] Provide GitHub issue templates for bugs and features
+- [x] Provide GitHub issue templates for bugs and features
       (`.github/ISSUE_TEMPLATE/bug_report.yml`,
       `.github/ISSUE_TEMPLATE/feature_request.yml`).
 - [ ] Expand Dependabot to monitor GitHub Actions updates (`.github/dependabot.yml`).
