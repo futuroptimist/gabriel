@@ -144,3 +144,4 @@ GGUF
 Nextcloud
 nextcloud
 svg
+WebGL
