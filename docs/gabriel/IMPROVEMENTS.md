@@ -51,3 +51,13 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [ ] Create setup script referenced in `runbook.yml` for developer onboarding
       (`runbook.yml`, `scripts/setup.sh`).
+- [ ] Add ESLint to pre-commit for viewer JavaScript
+      (`viewer/viewer.js`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+- [ ] Document Docker build and run instructions for local development
+      (`docker/Dockerfile`, `README.md`).
+- [ ] Implement environment variable fallback when `keyring` is unavailable
+      (`gabriel/utils.py`, `tests/test_utils.py`). *Aligns with flywheel best practices.*
+- [ ] Use `decimal.Decimal` in arithmetic helpers to improve precision
+      (`gabriel/utils.py`, `tests/test_utils.py`).
+- [ ] Enable multi-architecture Docker builds for `amd64` and `arm64`
+      (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
