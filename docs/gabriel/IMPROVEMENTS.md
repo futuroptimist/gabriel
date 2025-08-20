@@ -51,3 +51,13 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [ ] Create setup script referenced in `runbook.yml` for developer onboarding
       (`runbook.yml`, `scripts/setup.sh`).
+- [ ] Scan for zero-width characters and hidden text via pre-commit hook
+      (`.pre-commit-config.yaml`, `docs/gabriel/THREAT_MODEL.md`).
+      *Aligns with flywheel best practices.*
+- [ ] Add Jest unit tests for the WebGL viewer (`viewer/viewer.js`).
+- [ ] Enforce minimum test coverage in CI using `--cov-fail-under`
+      (`pyproject.toml`, `.github/workflows/coverage.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Add markdown link checker to pre-commit and CI to prevent stale references
+      (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
+      *Aligns with flywheel best practices.*
