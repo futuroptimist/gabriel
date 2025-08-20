@@ -20,7 +20,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       `gabriel/utils.py`).
 - [x] Test `divide` with negative numbers and floats for complete coverage
       (`gabriel/utils.py`, `tests/test_utils.py`).
-- [ ] Integrate `pip-audit` into pre-commit to detect vulnerable dependencies
+- [x] Integrate `pip-audit` into pre-commit to detect vulnerable dependencies
       (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [x] Align Black's `line-length` with repo standard of 100 chars (`pyproject.toml`).
 - [x] Support float inputs in arithmetic helpers (`gabriel/utils.py`, `tests/test_utils.py`).
@@ -37,7 +37,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       `tests/test_utils.py`).
 - [x] Add `lint` and `test` targets to `Makefile` for developer convenience
       (`Makefile`).
-- [ ] Provide GitHub issue templates for bugs and features
+- [x] Provide GitHub issue templates for bugs and features
       (`.github/ISSUE_TEMPLATE/bug_report.yml`,
       `.github/ISSUE_TEMPLATE/feature_request.yml`).
 - [ ] Expand Dependabot to monitor GitHub Actions updates (`.github/dependabot.yml`).
@@ -61,3 +61,13 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Add markdown link checker to pre-commit and CI to prevent stale references
       (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
       *Aligns with flywheel best practices.*
+- [ ] Add ESLint to pre-commit for viewer JavaScript
+      (`viewer/viewer.js`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+- [ ] Document Docker build and run instructions for local development
+      (`docker/Dockerfile`, `README.md`).
+- [ ] Implement environment variable fallback when `keyring` is unavailable
+      (`gabriel/utils.py`, `tests/test_utils.py`). *Aligns with flywheel best practices.*
+- [ ] Use `decimal.Decimal` in arithmetic helpers to improve precision
+      (`gabriel/utils.py`, `tests/test_utils.py`).
+- [ ] Enable multi-architecture Docker builds for `amd64` and `arm64`
+      (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
