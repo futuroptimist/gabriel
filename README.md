@@ -45,6 +45,12 @@ Run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+Spell check documentation:
+
+```bash
+pyspelling -c .spellcheck.yaml
+```
+
 Common tasks are available via the `Makefile`:
 
 ```bash

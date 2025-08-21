@@ -145,3 +145,4 @@ Nextcloud
 nextcloud
 svg
 WebGL
+pyspelling
