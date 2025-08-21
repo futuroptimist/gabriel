@@ -1,0 +1,10 @@
+{
+  "id": "docs-spellcheck-container",
+  "date": "2025-08-20",
+  "component": "docs workflow",
+  "rootCause": "Spell check action ran inside container without aspell dictionaries, causing job failure.",
+  "resolution": "Install aspell and run pyspelling directly in workflow; add test to enforce spell check.",
+  "references": [
+    "https://github.com/futuroptimist/gabriel/actions/runs/17093224104"
+  ]
+}

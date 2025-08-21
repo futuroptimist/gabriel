@@ -5,4 +5,5 @@ coverage-badge
 pytest-cov
 detect-secrets
 pip-audit
+pyspelling
 keyring
