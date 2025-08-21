@@ -1,13 +1,11 @@
-import subprocess
 from pathlib import Path
+import sys
+
+from pyspelling import __main__ as pyspelling_main
 
 
-def test_spellcheck_docs() -> None:
+def test_spellcheck_docs(monkeypatch) -> None:
     root = Path(__file__).resolve().parents[1]
-    result = subprocess.run(
-        ["pyspelling", "-c", ".spellcheck.yaml"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-    )
-    assert result.returncode == 0, result.stdout + result.stderr
+    monkeypatch.chdir(root)
+    monkeypatch.setattr(sys, "argv", ["pyspelling", "-c", ".spellcheck.yaml"])
+    assert pyspelling_main.main() is False  # nosec B101
