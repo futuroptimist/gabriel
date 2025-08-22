@@ -143,3 +143,50 @@ def delete_secret(service: str, username: str) -> None:
         ) from exc
 
     keyring.delete_password(service, username)
+
+
+def main() -> None:
+    """CLI entry point for arithmetic helpers."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Gabriel arithmetic utilities")
+    parser.add_argument(
+        "operation",
+        choices=[
+            "add",
+            "subtract",
+            "multiply",
+            "divide",
+            "power",
+            "modulo",
+            "floordiv",
+            "sqrt",
+        ],
+    )
+    parser.add_argument("a", type=float)
+    parser.add_argument("b", type=float, nargs="?")
+    args = parser.parse_args()
+
+    ops = {
+        "add": add,
+        "subtract": subtract,
+        "multiply": multiply,
+        "divide": divide,
+        "power": power,
+        "modulo": modulo,
+        "floordiv": floordiv,
+        "sqrt": sqrt,
+    }
+
+    if args.operation == "sqrt":
+        result = ops[args.operation](args.a)
+    else:
+        if args.b is None:
+            parser.error("operation requires two operands")
+        result = ops[args.operation](args.a, args.b)
+
+    print(result)
+
+
+if __name__ == "__main__":
+    main()

@@ -72,6 +72,13 @@ print(floordiv(7, 2))  # 3
 print(sqrt(9))  # 3.0
 ```
 
+You can also call these helpers from the command line:
+
+```bash
+gabriel-calc add 2 3
+gabriel-calc sqrt 9
+```
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
