@@ -44,7 +44,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [ ] Add Release Drafter configuration for automated changelog
       (`.github/release-drafter.yml`). *Aligns with flywheel best practices.*
-- [ ] Add `isort` to pre-commit for consistent import ordering
+- [x] Add `isort` to pre-commit for consistent import ordering
       (`.pre-commit-config.yaml`, `pyproject.toml`).
 - [ ] Add Python version matrix in CI to test against 3.10 and 3.11
       (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).

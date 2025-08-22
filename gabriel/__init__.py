@@ -2,16 +2,16 @@
 
 from .utils import (
     add,
-    subtract,
-    multiply,
+    delete_secret,
     divide,
-    power,
-    modulo,
     floordiv,
+    get_secret,
+    modulo,
+    multiply,
+    power,
     sqrt,
     store_secret,
-    get_secret,
-    delete_secret,
+    subtract,
 )
 
 __all__ = [
