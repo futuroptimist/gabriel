@@ -42,6 +42,14 @@ See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 - [ ] Set up scheduled backups to a secure location.
 - [ ] Review third-party plugins for security issues before enabling them.
 
+## Plausible Analytics
+See [Plausible docs](https://plausible.io/docs/self-hosting).
+
+- [ ] Serve behind a reverse proxy with HTTPS enabled.
+- [ ] Rotate the `SECRET_KEY_BASE` and database passwords regularly.
+- [ ] Limit network access to the statistics database.
+- [ ] Enable automatic off-site backups for the analytics database.
+
 ## VaultWarden
 - [ ] Serve the interface over HTTPS with a trusted certificate.
 - [ ] Configure environment variables for strong encryption keys.
