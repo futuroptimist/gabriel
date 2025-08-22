@@ -152,15 +152,7 @@ def test_store_get_and_delete_secret():
     assert get_secret("service", "user") is None  # nosec B101
 
 
-@pytest.mark.parametrize(
-    "func,args",
-    [
-        (store_secret, ("svc", "user", "pw")),
-        (get_secret, ("svc", "user")),
-        (delete_secret, ("svc", "user")),
-    ],
-)
-def test_keyring_missing(monkeypatch, func, args):
+def test_secret_env_fallback(monkeypatch):
     real_import = builtins.__import__
 
     def fake_import(name, *a, **k):
@@ -169,5 +161,8 @@ def test_keyring_missing(monkeypatch, func, args):
         return real_import(name, *a, **k)
 
     monkeypatch.setattr(builtins, "__import__", fake_import)
-    with pytest.raises(RuntimeError, match="keyring"):  # nosec B101
-        func(*args)
+
+    store_secret("svc", "user", "pw")
+    assert get_secret("svc", "user") == "pw"  # nosec B101
+    delete_secret("svc", "user")
+    assert get_secret("svc", "user") is None  # nosec B101
