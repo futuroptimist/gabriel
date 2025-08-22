@@ -71,3 +71,17 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Enable multi-architecture Docker builds for `amd64` and `arm64`
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+- [ ] Remove duplicate `pip-audit` hooks to streamline pre-commit configuration
+      (`.pre-commit-config.yaml`).
+- [ ] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
+      *Aligns with flywheel best practices.*
+- [ ] Generate API docs with Sphinx and publish under `docs/`
+      (`gabriel/utils.py`, `docs/`). *Aligns with flywheel best practices.*
+- [ ] Scan Docker images for vulnerabilities in CI using `trivy`
+      (`docker/Dockerfile`, `.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+- [ ] Define project metadata in `pyproject.toml` for packaging and distribution (`pyproject.toml`).
+      *Aligns with flywheel best practices.*
+- [ ] Cache dependencies in GitHub Actions to speed up CI
+      (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`).
+- [ ] Add Markdown linting to pre-commit and CI (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
+      *Aligns with flywheel best practices.*
