@@ -146,3 +146,4 @@ nextcloud
 svg
 WebGL
 pyspelling
+docstring
