@@ -87,4 +87,31 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
 - [ ] Format viewer assets with Prettier via pre-commit
       (`viewer/viewer.js`, `.pre-commit-config.yaml`).
+- [ ] Remove duplicate `pip-audit` hooks to streamline pre-commit configuration
+      (`.pre-commit-config.yaml`).
+- [ ] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
+      *Aligns with flywheel best practices.*
+- [ ] Generate API docs with Sphinx and publish under `docs/`
+      (`gabriel/utils.py`, `docs/`). *Aligns with flywheel best practices.*
+- [ ] Scan Docker images for vulnerabilities in CI using `trivy`
+      (`docker/Dockerfile`, `.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+- [ ] Define project metadata in `pyproject.toml` for packaging and distribution (`pyproject.toml`).
+      *Aligns with flywheel best practices.*
+- [ ] Cache dependencies in GitHub Actions to speed up CI
+      (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`).
+- [ ] Add Markdown linting to pre-commit and CI (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
+- [ ] Integrate `trufflehog` secret scanning into pre-commit and CI
+      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Add property-based tests using `hypothesis` for arithmetic and secret helpers
+      (`tests/test_utils.py`, `requirements.txt`, `pyproject.toml`).
+      *Aligns with flywheel best practices.*
+- [ ] Generate API documentation with `mkdocs` and publish to GitHub Pages
+      (`docs/`, `pyproject.toml`, `.github/workflows/docs.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Expand Dependabot to monitor Docker base image updates
+      (`.github/dependabot.yml`, `docker/Dockerfile`).
+      *Aligns with flywheel best practices.*
+- [ ] Document usage and setup steps for the WebGL viewer
+      (`viewer/viewer.js`, `README.md`).
       *Aligns with flywheel best practices.*
