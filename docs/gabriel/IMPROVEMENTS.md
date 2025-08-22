@@ -65,7 +65,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`viewer/viewer.js`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [ ] Document Docker build and run instructions for local development
       (`docker/Dockerfile`, `README.md`).
-- [ ] Implement environment variable fallback when `keyring` is unavailable
+- [x] Implement environment variable fallback when `keyring` is unavailable
       (`gabriel/utils.py`, `tests/test_utils.py`). *Aligns with flywheel best practices.*
 - [ ] Use `decimal.Decimal` in arithmetic helpers to improve precision
       (`gabriel/utils.py`, `tests/test_utils.py`).

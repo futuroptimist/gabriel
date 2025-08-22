@@ -25,8 +25,10 @@ def delete_token() -> None:
     keyring.delete_password(SERVICE, USERNAME)
 ```
 
-Install `keyring` with `pip install keyring` if it is not already
-available. Gabriel's ``store_secret``, ``get_secret``, and ``delete_secret`` helpers
-raise a ``RuntimeError`` when the package is missing. The library encrypts secrets
-using the platform's preferred backend and avoids storing plaintext passwords in the
-repository or environment variables.
+Install `keyring` with `pip install keyring` if it is not already available.
+When the package is missing, Gabriel's ``store_secret``, ``get_secret``, and
+``delete_secret`` helpers gracefully fall back to environment variables named
+``GABRIEL_SECRET_<SERVICE>_<USERNAME>``. This fallback avoids runtime errors but
+does not provide encryption, so prefer using ``keyring`` whenever possible. The
+library encrypts secrets using the platform's preferred backend and prevents
+storing plaintext passwords in the repository or environment variables.

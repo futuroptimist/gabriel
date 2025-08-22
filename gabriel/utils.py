@@ -1,4 +1,6 @@
 import math
+import os
+import re
 
 """Utility helpers for arithmetic operations and secret management."""
 
@@ -80,8 +82,18 @@ def sqrt(a: float | int) -> float:
     return math.sqrt(a)
 
 
+def _env_secret_key(service: str, username: str) -> str:
+    """Return the environment variable key for a given ``service`` and ``username``."""
+
+    safe = re.sub(r"\W+", "_", f"{service}_{username}").upper()
+    return f"GABRIEL_SECRET_{safe}"
+
+
 def store_secret(service: str, username: str, secret: str) -> None:
-    """Store ``secret`` in the system keyring.
+    """Store ``secret`` using ``keyring`` or environment variables.
+
+    If the optional ``keyring`` dependency is unavailable, the secret is stored in an
+    environment variable named via :func:`_env_secret_key`.
 
     Parameters
     ----------
@@ -91,55 +103,43 @@ def store_secret(service: str, username: str, secret: str) -> None:
         The user identifier for the secret.
     secret:
         The secret value to store.
-
-    Raises
-    ------
-    RuntimeError
-        If the ``keyring`` package is not installed.
     """
     try:
         import keyring
-    except ImportError as exc:  # pragma: no cover - exercised via tests
-        raise RuntimeError(
-            "The `keyring` package is required to store secrets. "
-            "Install it via `pip install keyring`."
-        ) from exc
-
-    keyring.set_password(service, username, secret)
+    except ImportError:  # pragma: no cover - exercised via tests
+        os.environ[_env_secret_key(service, username)] = secret
+    else:
+        keyring.set_password(service, username, secret)
 
 
 def get_secret(service: str, username: str) -> str | None:
-    """Retrieve a secret from the system keyring.
+    """Retrieve a stored secret.
+
+    Attempts to use ``keyring`` and falls back to environment variables when the
+    package is unavailable.
 
     Returns
     -------
     str | None
         The stored secret or ``None`` if no value is found.
-
-    Raises
-    ------
-    RuntimeError
-        If the ``keyring`` package is not installed.
     """
     try:
         import keyring
-    except ImportError as exc:  # pragma: no cover - exercised via tests
-        raise RuntimeError(
-            "The `keyring` package is required to retrieve secrets. "
-            "Install it via `pip install keyring`."
-        ) from exc
+    except ImportError:  # pragma: no cover - exercised via tests
+        return os.environ.get(_env_secret_key(service, username))
 
     return keyring.get_password(service, username)
 
 
 def delete_secret(service: str, username: str) -> None:
-    """Delete a secret from the system keyring."""
+    """Delete a stored secret.
+
+    Works with ``keyring`` when available and otherwise clears the corresponding
+    environment variable.
+    """
     try:
         import keyring
-    except ImportError as exc:  # pragma: no cover - exercised via tests
-        raise RuntimeError(
-            "The `keyring` package is required to delete secrets. "
-            "Install it via `pip install keyring`."
-        ) from exc
-
-    keyring.delete_password(service, username)
+    except ImportError:  # pragma: no cover - exercised via tests
+        os.environ.pop(_env_secret_key(service, username), None)
+    else:
+        keyring.delete_password(service, username)
