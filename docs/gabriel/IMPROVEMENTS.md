@@ -65,9 +65,63 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`viewer/viewer.js`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [ ] Document Docker build and run instructions for local development
       (`docker/Dockerfile`, `README.md`).
-- [ ] Implement environment variable fallback when `keyring` is unavailable
+- [x] Implement environment variable fallback when `keyring` is unavailable
       (`gabriel/utils.py`, `tests/test_utils.py`). *Aligns with flywheel best practices.*
 - [ ] Use `decimal.Decimal` in arithmetic helpers to improve precision
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Enable multi-architecture Docker builds for `amd64` and `arm64`
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+- [ ] Run `pre-commit` hooks in CI to ensure local and CI checks match
+      (`.github/workflows/ci.yml`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+- [ ] Remove duplicate `pip-audit` entries to streamline pre-commit config
+      (`.pre-commit-config.yaml`).
+- [ ] Add `CODEOWNERS` for clear code ownership (`.github/CODEOWNERS`).
+      *Aligns with flywheel best practices.*
+- [ ] Integrate `flake8-docstrings` into pre-commit for docstring style checks
+      (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+- [ ] Test on Linux, macOS, and Windows in CI
+      (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
+- [ ] Remove duplicate `pip-audit` hook to streamline dependency scanning
+      (`.pre-commit-config.yaml`).
+- [ ] Add markdown linting to pre-commit for doc style consistency
+      (`.pre-commit-config.yaml`, `docs/**`).
+      *Aligns with flywheel best practices.*
+- [ ] Enforce docstring conventions using `pydocstyle` or similar
+      (`.pre-commit-config.yaml`, `gabriel/utils.py`).
+      *Aligns with flywheel best practices.*
+- [ ] Cache Python dependencies in CI workflows to improve build times
+      (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`,
+      `.github/workflows/docs.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Scan Docker images for vulnerabilities during builds
+      (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+- [ ] Format viewer assets with Prettier via pre-commit
+      (`viewer/viewer.js`, `.pre-commit-config.yaml`).
+- [ ] Remove duplicate `pip-audit` hooks to streamline pre-commit configuration
+      (`.pre-commit-config.yaml`).
+- [ ] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
+      *Aligns with flywheel best practices.*
+- [ ] Generate API docs with Sphinx and publish under `docs/`
+      (`gabriel/utils.py`, `docs/`). *Aligns with flywheel best practices.*
+- [ ] Scan Docker images for vulnerabilities in CI using `trivy`
+      (`docker/Dockerfile`, `.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+- [ ] Define project metadata in `pyproject.toml` for packaging and distribution (`pyproject.toml`).
+      *Aligns with flywheel best practices.*
+- [ ] Cache dependencies in GitHub Actions to speed up CI
+      (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`).
+- [ ] Add Markdown linting to pre-commit and CI (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
+- [ ] Integrate `trufflehog` secret scanning into pre-commit and CI
+      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Add property-based tests using `hypothesis` for arithmetic and secret helpers
+      (`tests/test_utils.py`, `requirements.txt`, `pyproject.toml`).
+      *Aligns with flywheel best practices.*
+- [ ] Generate API documentation with `mkdocs` and publish to GitHub Pages
+      (`docs/`, `pyproject.toml`, `.github/workflows/docs.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Expand Dependabot to monitor Docker base image updates
+      (`.github/dependabot.yml`, `docker/Dockerfile`).
+      *Aligns with flywheel best practices.*
+- [ ] Document usage and setup steps for the WebGL viewer
+      (`viewer/viewer.js`, `README.md`).
+      *Aligns with flywheel best practices.*
