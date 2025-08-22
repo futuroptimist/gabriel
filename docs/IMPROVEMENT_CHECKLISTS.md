@@ -33,6 +33,15 @@ See [related/wove/IMPROVEMENTS.md](related/wove/IMPROVEMENTS.md).
 ## sugarkube
 See [related/sugarkube/IMPROVEMENTS.md](related/sugarkube/IMPROVEMENTS.md).
 
+## Home Assistant
+- [ ] Enable HTTPS using Let's Encrypt or a reverse proxy ([docs][ha-https]).
+- [ ] Protect the web interface with strong credentials and MFA ([docs][ha-auth]).
+- [ ] Limit external access to trusted networks or VPN ([docs][ha-vpn]).
+
+[ha-https]: https://www.home-assistant.io/docs/ecosystem/letsencrypt/
+[ha-auth]: https://www.home-assistant.io/docs/authentication/
+[ha-vpn]: https://www.home-assistant.io/integrations/vpn/
+
 ## Nextcloud
 See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 
