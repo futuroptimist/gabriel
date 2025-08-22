@@ -1,20 +1,22 @@
+import builtins
+
+import keyring
+import pytest
+from keyring.backend import KeyringBackend
+
 from gabriel.utils import (
     add,
-    subtract,
-    multiply,
+    delete_secret,
     divide,
-    power,
-    modulo,
     floordiv,
+    get_secret,
+    modulo,
+    multiply,
+    power,
     sqrt,
     store_secret,
-    get_secret,
-    delete_secret,
+    subtract,
 )
-import keyring
-from keyring.backend import KeyringBackend
-import builtins
-import pytest
 
 
 def test_add():

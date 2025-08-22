@@ -1,5 +1,5 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 from pyspelling import __main__ as pyspelling_main
 
