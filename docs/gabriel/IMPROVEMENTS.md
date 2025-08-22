@@ -81,6 +81,22 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [ ] Test on Linux, macOS, and Windows in CI
       (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
+- [ ] Remove duplicate `pip-audit` hook to streamline dependency scanning
+      (`.pre-commit-config.yaml`).
+- [ ] Add markdown linting to pre-commit for doc style consistency
+      (`.pre-commit-config.yaml`, `docs/**`).
+      *Aligns with flywheel best practices.*
+- [ ] Enforce docstring conventions using `pydocstyle` or similar
+      (`.pre-commit-config.yaml`, `gabriel/utils.py`).
+      *Aligns with flywheel best practices.*
+- [ ] Cache Python dependencies in CI workflows to improve build times
+      (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`,
+      `.github/workflows/docs.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Scan Docker images for vulnerabilities during builds
+      (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+- [ ] Format viewer assets with Prettier via pre-commit
+      (`viewer/viewer.js`, `.pre-commit-config.yaml`).
 - [ ] Remove duplicate `pip-audit` hooks to streamline pre-commit configuration
       (`.pre-commit-config.yaml`).
 - [ ] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
