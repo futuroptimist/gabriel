@@ -71,6 +71,16 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Enable multi-architecture Docker builds for `amd64` and `arm64`
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+- [ ] Run `pre-commit` hooks in CI to ensure local and CI checks match
+      (`.github/workflows/ci.yml`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+- [ ] Remove duplicate `pip-audit` entries to streamline pre-commit config
+      (`.pre-commit-config.yaml`).
+- [ ] Add `CODEOWNERS` for clear code ownership (`.github/CODEOWNERS`).
+      *Aligns with flywheel best practices.*
+- [ ] Integrate `flake8-docstrings` into pre-commit for docstring style checks
+      (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+- [ ] Test on Linux, macOS, and Windows in CI
+      (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
 - [ ] Remove duplicate `pip-audit` hook to streamline dependency scanning
       (`.pre-commit-config.yaml`).
 - [ ] Add markdown linting to pre-commit for doc style consistency
