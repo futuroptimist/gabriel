@@ -33,6 +33,15 @@ See [related/wove/IMPROVEMENTS.md](related/wove/IMPROVEMENTS.md).
 ## sugarkube
 See [related/sugarkube/IMPROVEMENTS.md](related/sugarkube/IMPROVEMENTS.md).
 
+## Docker
+- [ ] Run the daemon in rootless mode to drop root privileges ([docs][docker-rootless]).
+- [ ] Enable Docker Content Trust to verify signed images ([docs][docker-trust]).
+- [ ] Use user ID remapping to isolate container file systems ([docs][docker-userns]).
+
+[docker-rootless]: https://docs.docker.com/engine/security/rootless/
+[docker-trust]: https://docs.docker.com/engine/security/trust/
+[docker-userns]: https://docs.docker.com/engine/security/userns-remap/
+
 ## Nextcloud
 See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 
