@@ -73,7 +73,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
 - [ ] Run `pre-commit` hooks in CI to ensure local and CI checks match
       (`.github/workflows/ci.yml`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
-- [ ] Remove duplicate `pip-audit` entries to streamline pre-commit config
+- [x] Remove duplicate `pip-audit` entries to streamline pre-commit config
       (`.pre-commit-config.yaml`).
 - [ ] Add `CODEOWNERS` for clear code ownership (`.github/CODEOWNERS`).
       *Aligns with flywheel best practices.*
@@ -81,8 +81,6 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [ ] Test on Linux, macOS, and Windows in CI
       (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
-- [ ] Remove duplicate `pip-audit` hook to streamline dependency scanning
-      (`.pre-commit-config.yaml`).
 - [ ] Add markdown linting to pre-commit for doc style consistency
       (`.pre-commit-config.yaml`, `docs/**`).
       *Aligns with flywheel best practices.*
@@ -97,8 +95,6 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
 - [ ] Format viewer assets with Prettier via pre-commit
       (`viewer/viewer.js`, `.pre-commit-config.yaml`).
-- [ ] Remove duplicate `pip-audit` hooks to streamline pre-commit configuration
-      (`.pre-commit-config.yaml`).
 - [ ] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
       *Aligns with flywheel best practices.*
 - [ ] Generate API docs with Sphinx and publish under `docs/`
