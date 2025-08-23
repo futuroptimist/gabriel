@@ -125,3 +125,15 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Document usage and setup steps for the WebGL viewer
       (`viewer/viewer.js`, `README.md`).
       *Aligns with flywheel best practices.*
+- [ ] Integrate `commitlint` to enforce Conventional Commits
+      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
+      *Aligns with flywheel best practices.*
+- [ ] Add `.editorconfig` for consistent editor formatting
+      (`.editorconfig`). *Aligns with flywheel best practices.*
+- [ ] Create `.dockerignore` to reduce Docker build context
+      (`.dockerignore`, `docker/Dockerfile`). *Aligns with flywheel best practices.*
+- [ ] Split arithmetic and secret helpers into dedicated modules
+      (`gabriel/utils.py`, `tests/test_utils.py`).
+- [ ] Integrate `semgrep` static analysis into pre-commit and CI
+      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
+      *Aligns with flywheel best practices.*
