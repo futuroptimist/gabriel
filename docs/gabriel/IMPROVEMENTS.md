@@ -12,7 +12,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Harden pre-commit hooks to prevent accidental secret leaks.
 - [x] Add `multiply` helper with test coverage.
 - [x] Add `delete_secret` helper to remove stored secrets.
-- [ ] Integrate `mypy` into pre-commit for static type checks (`.pre-commit-config.yaml`).
+- [x] Integrate `mypy` into pre-commit for static type checks (`.pre-commit-config.yaml`).
       *Aligns with flywheel best practices.*
 - [x] Expand arithmetic helpers with `power` and `modulo` operations
       (`gabriel/utils.py`, `tests/test_utils.py`).
