@@ -144,6 +144,7 @@ GGUF
 Nextcloud
 nextcloud
 svg
+Syncthing
 WebGL
 pyspelling
 docstring

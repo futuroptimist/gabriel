@@ -51,6 +51,12 @@ See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 - [ ] Set up scheduled backups to a secure location.
 - [ ] Review third-party plugins for security issues before enabling them.
 
+## Syncthing
+- [ ] Serve GUI over HTTPS via reverse proxy ([docs](https://docs.syncthing.net/users/https.html)).
+- [ ] Disable global discovery and relays on trusted networks
+  ([docs](https://docs.syncthing.net/users/discovery.html)).
+- [ ] Audit IDs and remove unknown connections ([repo](https://github.com/syncthing/syncthing)).
+
 ## VaultWarden
 - [ ] Serve the interface over HTTPS with a trusted certificate.
 - [ ] Configure environment variables for strong encryption keys.
