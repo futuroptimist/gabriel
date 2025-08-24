@@ -72,6 +72,13 @@ print(floordiv(7, 2))  # 3
 print(sqrt(9))  # 3.0
 ```
 
+These helpers can also be invoked from the command line:
+
+```bash
+python -m gabriel.utils add 2 3
+# 5.0
+```
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).

@@ -1,4 +1,6 @@
 import builtins
+import subprocess
+import sys
 
 import keyring
 import pytest
@@ -126,6 +128,16 @@ def test_sqrt():
 def test_sqrt_negative():
     with pytest.raises(ValueError):
         sqrt(-1)
+
+
+def test_cli_addition():
+    result = subprocess.run(
+        [sys.executable, "-m", "gabriel.utils", "add", "2", "3"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert result.stdout.strip() == "5.0"  # nosec B101
 
 
 class InMemoryKeyring(KeyringBackend):

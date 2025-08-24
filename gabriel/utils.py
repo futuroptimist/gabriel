@@ -1,3 +1,4 @@
+import argparse
 import math
 import os
 import re
@@ -143,3 +144,39 @@ def delete_secret(service: str, username: str) -> None:
         os.environ.pop(_env_secret_key(service, username), None)
     else:
         keyring.delete_password(service, username)
+
+
+CLI_OPS = {
+    "add": add,
+    "subtract": subtract,
+    "multiply": multiply,
+    "divide": divide,
+    "power": power,
+    "modulo": modulo,
+    "floordiv": floordiv,
+    "sqrt": sqrt,
+}
+
+
+def cli(argv: list[str] | None = None) -> None:
+    """Simple command-line interface for arithmetic helpers."""
+    parser = argparse.ArgumentParser(description="Gabriel arithmetic helpers")
+    parser.add_argument("operation", choices=CLI_OPS.keys())
+    parser.add_argument("a", type=float, help="first operand")
+    parser.add_argument("b", type=float, nargs="?", help="second operand when required")
+    args = parser.parse_args(argv)
+
+    if args.operation == "sqrt":
+        if args.b is not None:
+            parser.error("sqrt takes exactly one argument")
+        result = CLI_OPS["sqrt"](args.a)
+    else:
+        if args.b is None:
+            parser.error(f"{args.operation} requires two arguments")
+        result = CLI_OPS[args.operation](args.a, args.b)
+
+    print(result)
+
+
+if __name__ == "__main__":  # pragma: no cover - exercised in tests
+    cli()
