@@ -57,10 +57,11 @@ def modulo(a: float | int, b: float | int) -> float | int:
     return a % b
 
 
-def floordiv(a: float | int, b: float | int) -> float:
+def floordiv(a: float | int, b: float | int) -> float | int:
     """Return the floor division of ``a`` by ``b``.
 
-    Supports both integers and floats.
+    Supports both integers and floats. Returns an ``int`` when both operands are
+    integers, otherwise a ``float``.
     """
     if b == 0:
         raise ZeroDivisionError("Cannot floor-divide by zero.")

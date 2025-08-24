@@ -1,4 +1,5 @@
 import builtins
+from typing import get_type_hints
 
 import keyring
 import pytest
@@ -116,6 +117,10 @@ def test_floordiv_floats():
 def test_floordiv_by_zero():
     with pytest.raises(ZeroDivisionError):
         floordiv(1, 0)
+
+
+def test_floordiv_return_type_annotation():
+    assert get_type_hints(floordiv)["return"] == float | int
 
 
 def test_sqrt():
