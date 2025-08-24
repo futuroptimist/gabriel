@@ -16,7 +16,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [x] Expand arithmetic helpers with `power` and `modulo` operations
       (`gabriel/utils.py`, `tests/test_utils.py`).
-- [ ] Add CLI entry points for arithmetic utilities (`pyproject.toml`,
+- [x] Add CLI entry points for arithmetic utilities (`pyproject.toml`,
       `gabriel/utils.py`).
 - [x] Test `divide` with negative numbers and floats for complete coverage
       (`gabriel/utils.py`, `tests/test_utils.py`).

@@ -1,3 +1,10 @@
+[project]
+name = "gabriel"
+version = "0.1.0"
+
+[project.scripts]
+gabriel = "gabriel.utils:main"
+
 [tool.isort]
 profile = "black"
 
