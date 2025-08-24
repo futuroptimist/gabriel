@@ -124,7 +124,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Integrate `commitlint` to enforce Conventional Commits
       (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
       *Aligns with flywheel best practices.*
-- [ ] Add `.editorconfig` for consistent editor formatting
+- [x] Add `.editorconfig` for consistent editor formatting
       (`.editorconfig`). *Aligns with flywheel best practices.*
 - [ ] Create `.dockerignore` to reduce Docker build context
       (`.dockerignore`, `docker/Dockerfile`). *Aligns with flywheel best practices.*
