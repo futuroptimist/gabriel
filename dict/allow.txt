@@ -148,3 +148,4 @@ Syncthing
 WebGL
 pyspelling
 docstring
+calc

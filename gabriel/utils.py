@@ -1,3 +1,4 @@
+import argparse
 import math
 import os
 import re
@@ -143,3 +144,49 @@ def delete_secret(service: str, username: str) -> None:
         os.environ.pop(_env_secret_key(service, username), None)
     else:
         keyring.delete_password(service, username)
+
+
+def main(argv: list[str] | None = None) -> None:
+    """Run arithmetic helpers from the command line.
+
+    Parameters
+    ----------
+    argv:
+        Optional list of arguments to parse instead of ``sys.argv``.
+    """
+    parser = argparse.ArgumentParser(description="Gabriel arithmetic utilities")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    def add_binary(name: str) -> None:
+        sp = subparsers.add_parser(name)
+        sp.add_argument("a", type=float)
+        sp.add_argument("b", type=float)
+
+    for name in ("add", "subtract", "multiply", "divide", "power", "modulo", "floordiv"):
+        add_binary(name)
+
+    sqrt_parser = subparsers.add_parser("sqrt")
+    sqrt_parser.add_argument("a", type=float)
+
+    args = parser.parse_args(argv)
+
+    funcs = {
+        "add": add,
+        "subtract": subtract,
+        "multiply": multiply,
+        "divide": divide,
+        "power": power,
+        "modulo": modulo,
+        "floordiv": floordiv,
+    }
+
+    if args.command == "sqrt":
+        result = sqrt(args.a)
+    else:
+        result = funcs[args.command](args.a, args.b)
+
+    print(result)
+
+
+if __name__ == "__main__":  # pragma: no cover - CLI entry point
+    main()

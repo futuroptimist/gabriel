@@ -10,6 +10,7 @@ from gabriel.utils import (
     divide,
     floordiv,
     get_secret,
+    main,
     modulo,
     multiply,
     power,
@@ -168,3 +169,13 @@ def test_secret_env_fallback(monkeypatch):
     assert get_secret("svc", "user") == "pw"  # nosec B101
     delete_secret("svc", "user")
     assert get_secret("svc", "user") is None  # nosec B101
+
+
+def test_cli_add(capsys):
+    main(["add", "2", "3"])
+    assert capsys.readouterr().out.strip() == "5.0"  # nosec B101
+
+
+def test_cli_sqrt(capsys):
+    main(["sqrt", "9"])
+    assert capsys.readouterr().out.strip() == "3.0"  # nosec B101
