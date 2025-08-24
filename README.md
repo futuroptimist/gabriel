@@ -6,6 +6,7 @@ Gabriel is an open source "guardian angel" LLM aimed at helping individuals secu
 [![Tests](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/coverage.yml?label=tests)](https://github.com/futuroptimist/gabriel/actions/workflows/coverage.yml)
 [![Coverage](https://raw.githubusercontent.com/futuroptimist/gabriel/main/coverage.svg)](https://codecov.io/gh/futuroptimist/gabriel)
 [![Docs](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/docs.yml?label=docs&branch=main)](https://github.com/futuroptimist/gabriel/actions/workflows/docs.yml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/codeql.yml?label=codeql)](https://github.com/futuroptimist/gabriel/actions/workflows/codeql.yml)
 [![License](https://img.shields.io/github/license/futuroptimist/gabriel)](LICENSE)
 
 ## Goals
