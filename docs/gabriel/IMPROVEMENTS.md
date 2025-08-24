@@ -75,7 +75,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/workflows/ci.yml`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [x] Remove duplicate `pip-audit` entries to streamline pre-commit config
       (`.pre-commit-config.yaml`).
-- [ ] Add `CODEOWNERS` for clear code ownership (`.github/CODEOWNERS`).
+- [x] Add `CODEOWNERS` for clear code ownership (`.github/CODEOWNERS`).
       *Aligns with flywheel best practices.*
 - [ ] Integrate `flake8-docstrings` into pre-commit for docstring style checks
       (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
