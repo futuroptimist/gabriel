@@ -1,10 +1,13 @@
 # Improvement Checklists
 
-This page consolidates security and feature enhancements suggested for repositories related to Gabriel.
+This page consolidates security and feature enhancements for repositories related to Gabriel.
 Where a dedicated document exists, follow the link below. Otherwise tasks are listed inline.
 
 ## Gabriel (self)
 See [gabriel/IMPROVEMENTS.md](gabriel/IMPROVEMENTS.md).
+
+## futuroptimist
+See [related/futuroptimist/IMPROVEMENTS.md](related/futuroptimist/IMPROVEMENTS.md).
 
 ## token.place
 See [related/token_place/IMPROVEMENTS.md](related/token_place/IMPROVEMENTS.md).
@@ -32,6 +35,12 @@ See [related/wove/IMPROVEMENTS.md](related/wove/IMPROVEMENTS.md).
 
 ## sugarkube
 See [related/sugarkube/IMPROVEMENTS.md](related/sugarkube/IMPROVEMENTS.md).
+
+## pr-reaper
+See [related/pr-reaper/IMPROVEMENTS.md](related/pr-reaper/IMPROVEMENTS.md).
+
+## jobbot3000
+See [related/jobbot3000/IMPROVEMENTS.md](related/jobbot3000/IMPROVEMENTS.md).
 
 ## Docker
 - [ ] Run the daemon in rootless mode to drop root privileges ([docs][docker-rootless]).

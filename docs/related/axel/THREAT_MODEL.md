@@ -3,6 +3,13 @@
 The **axel** repository organizes collections of repositories and runs a local Discord bot for capturing messages.
 This document outlines assumed threats and mitigations when using axel.
 
+## Current Snapshot (2025-09-24)
+
+- **Operational context:** Axel continuously reads repository metadata and Discord check-ins to
+  keep a quest backlog fresh.
+- **Notable dependencies:** Integrations with Futuroptimist tooling (`gabriel`, `token.place`,
+  etc.) expand the trust boundary and make secret management critical.
+
 ## Security Assumptions
 
 - Axel runs on hardware controlled by the user.

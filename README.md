@@ -102,21 +102,52 @@ improvement tasks or security audits. Following these links will jump to the
 relevant documentation.
 
 | Repository | Improvement Docs | Threat Model |
-|------------|-----------------|--------------|
-| Gabriel (this repo) | [IMPROVEMENTS.md](docs/gabriel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) |
-| token.place | [IMPROVEMENTS.md](docs/related/token_place/IMPROVEMENTS.md) | N/A |
-| DSPACE | [IMPROVEMENTS.md](docs/related/dspace/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/dspace/THREAT_MODEL.md) |
-| flywheel | [IMPROVEMENTS.md](docs/related/flywheel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/flywheel/THREAT_MODEL.md) |
-| f2clipboard | [IMPROVEMENTS.md](docs/related/f2clipboard/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/f2clipboard/THREAT_MODEL.md) |
-| axel | [IMPROVEMENTS.md](docs/related/axel/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/axel/THREAT_MODEL.md) |
-| sigma | [IMPROVEMENTS.md](docs/related/sigma/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/sigma/THREAT_MODEL.md) |
-| gitshelves | [IMPROVEMENTS.md](docs/related/gitshelves/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/gitshelves/THREAT_MODEL.md) |
-| wove | [IMPROVEMENTS.md](docs/related/wove/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/wove/THREAT_MODEL.md) |
-| sugarkube | [IMPROVEMENTS.md](docs/related/sugarkube/IMPROVEMENTS.md) | [THREAT_MODEL.md](docs/related/sugarkube/THREAT_MODEL.md) |
-| pr-reaper | [IMPROVEMENTS.md](docs/related/pr-reaper/IMPROVEMENTS.md) | N/A |
-| Nextcloud | [IMPROVEMENTS.md](docs/related/nextcloud/IMPROVEMENTS.md) | N/A |
-| PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism](docs/IMPROVEMENT_CHECKLISTS.md#photoprism) | N/A |
-| VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden) | N/A |
+|------------|------------------|--------------|
+| Gabriel (this repo) | [IMPROVEMENTS.md][gabriel-improve] | [THREAT_MODEL.md][gabriel-threat] |
+| futuroptimist | [IMPROVEMENTS.md][futuroptimist-improve] | [THREAT_MODEL.md][futuroptimist-threat] |
+| token.place | [IMPROVEMENTS.md][token-place-improve] | N/A |
+| DSPACE | [IMPROVEMENTS.md][dspace-improve] | [THREAT_MODEL.md][dspace-threat] |
+| flywheel | [IMPROVEMENTS.md][flywheel-improve] | [THREAT_MODEL.md][flywheel-threat] |
+| f2clipboard | [IMPROVEMENTS.md][f2clipboard-improve] | [THREAT_MODEL.md][f2clipboard-threat] |
+| axel | [IMPROVEMENTS.md][axel-improve] | [THREAT_MODEL.md][axel-threat] |
+| sigma | [IMPROVEMENTS.md][sigma-improve] | [THREAT_MODEL.md][sigma-threat] |
+| gitshelves | [IMPROVEMENTS.md][gitshelves-improve] | [THREAT_MODEL.md][gitshelves-threat] |
+| wove | [IMPROVEMENTS.md][wove-improve] | [THREAT_MODEL.md][wove-threat] |
+| sugarkube | [IMPROVEMENTS.md][sugarkube-improve] | [THREAT_MODEL.md][sugarkube-threat] |
+| pr-reaper | [IMPROVEMENTS.md][pr-reaper-improve] | [THREAT_MODEL.md][pr-reaper-threat] |
+| jobbot3000 | [IMPROVEMENTS.md][jobbot-improve] | [THREAT_MODEL.md][jobbot-threat] |
+| Nextcloud | [IMPROVEMENTS.md][nextcloud-improve] | N/A |
+| PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism][photoprism-improve] | N/A |
+| VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden][vaultwarden-improve] | N/A |
+
+[gabriel-improve]: docs/gabriel/IMPROVEMENTS.md
+[gabriel-threat]: docs/gabriel/THREAT_MODEL.md
+[futuroptimist-improve]: docs/related/futuroptimist/IMPROVEMENTS.md
+[futuroptimist-threat]: docs/related/futuroptimist/THREAT_MODEL.md
+[token-place-improve]: docs/related/token_place/IMPROVEMENTS.md
+[dspace-improve]: docs/related/dspace/IMPROVEMENTS.md
+[dspace-threat]: docs/related/dspace/THREAT_MODEL.md
+[flywheel-improve]: docs/related/flywheel/IMPROVEMENTS.md
+[flywheel-threat]: docs/related/flywheel/THREAT_MODEL.md
+[f2clipboard-improve]: docs/related/f2clipboard/IMPROVEMENTS.md
+[f2clipboard-threat]: docs/related/f2clipboard/THREAT_MODEL.md
+[axel-improve]: docs/related/axel/IMPROVEMENTS.md
+[axel-threat]: docs/related/axel/THREAT_MODEL.md
+[sigma-improve]: docs/related/sigma/IMPROVEMENTS.md
+[sigma-threat]: docs/related/sigma/THREAT_MODEL.md
+[gitshelves-improve]: docs/related/gitshelves/IMPROVEMENTS.md
+[gitshelves-threat]: docs/related/gitshelves/THREAT_MODEL.md
+[wove-improve]: docs/related/wove/IMPROVEMENTS.md
+[wove-threat]: docs/related/wove/THREAT_MODEL.md
+[sugarkube-improve]: docs/related/sugarkube/IMPROVEMENTS.md
+[sugarkube-threat]: docs/related/sugarkube/THREAT_MODEL.md
+[pr-reaper-improve]: docs/related/pr-reaper/IMPROVEMENTS.md
+[pr-reaper-threat]: docs/related/pr-reaper/THREAT_MODEL.md
+[jobbot-improve]: docs/related/jobbot3000/IMPROVEMENTS.md
+[jobbot-threat]: docs/related/jobbot3000/THREAT_MODEL.md
+[nextcloud-improve]: docs/related/nextcloud/IMPROVEMENTS.md
+[photoprism-improve]: docs/IMPROVEMENT_CHECKLISTS.md#photoprism
+[vaultwarden-improve]: docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden
 
 ## Roadmap
 

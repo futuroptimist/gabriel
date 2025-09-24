@@ -7,6 +7,7 @@ This directory collects example prompts for using an LLM with Gabriel. These pro
 - [Scan for Bright and Dark Patterns](scan-bright-dark-patterns.md)
 - [Generate Improvement Checklist Items](generate-improvements.md)
 - [Update Flywheel Risk Model](update-risk-model.md)
+- [Refresh Related Project Knowledge](refresh-related-projects.md)
 
 ## Example: Summarize Security Posture
 

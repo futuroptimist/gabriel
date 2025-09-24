@@ -2,6 +2,13 @@
 
 This document summarizes potential enhancements for the `token.place` project based on our analysis of its architecture and threat model. The goal is to strengthen relay and server node security while preserving the privacy-first design.
 
+## Current Snapshot (2025-09-24)
+
+- **Status:** ✅ in the Futuroptimist related project feed
+- **Focus:** Secure peer-to-peer generative AI network using ephemeral, encrypted tokens so
+  volunteers can share idle compute without account creation.
+- **Key components:** Relay nodes, server nodes, and lightweight clients (web + CLI).
+
 ## Recommended Improvements
 
 - **Rate limiting and authentication**

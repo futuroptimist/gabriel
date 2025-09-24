@@ -3,6 +3,12 @@
 flywheel offers a standardized setup for reproducible releases.
 This placeholder covers initial considerations.
 
+## Current Snapshot (2025-09-24)
+
+- **Template scope:** Ships lint/test/docs/release automation plus pre-wired LLM agent support.
+- **Risk posture:** Any misconfiguration propagates to downstream projects, so tightening
+  security defaults has outsized impact.
+
 ## Security Assumptions
 
 - Maintainers run CI on trusted GitHub infrastructure.
