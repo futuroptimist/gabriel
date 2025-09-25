@@ -116,6 +116,7 @@ relevant documentation.
 | sugarkube | [IMPROVEMENTS.md][sugarkube-improve] | [THREAT_MODEL.md][sugarkube-threat] |
 | pr-reaper | [IMPROVEMENTS.md][pr-reaper-improve] | [THREAT_MODEL.md][pr-reaper-threat] |
 | jobbot3000 | [IMPROVEMENTS.md][jobbot-improve] | [THREAT_MODEL.md][jobbot-threat] |
+| danielsmith.io | [IMPROVEMENTS.md][danielsmith-io-improve] | [THREAT_MODEL.md][danielsmith-io-threat] |
 | Nextcloud | [IMPROVEMENTS.md][nextcloud-improve] | N/A |
 | PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism][photoprism-improve] | N/A |
 | VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden][vaultwarden-improve] | N/A |
@@ -145,6 +146,8 @@ relevant documentation.
 [pr-reaper-threat]: docs/related/pr-reaper/THREAT_MODEL.md
 [jobbot-improve]: docs/related/jobbot3000/IMPROVEMENTS.md
 [jobbot-threat]: docs/related/jobbot3000/THREAT_MODEL.md
+[danielsmith-io-improve]: docs/related/danielsmith_io/IMPROVEMENTS.md
+[danielsmith-io-threat]: docs/related/danielsmith_io/THREAT_MODEL.md
 [nextcloud-improve]: docs/related/nextcloud/IMPROVEMENTS.md
 [photoprism-improve]: docs/IMPROVEMENT_CHECKLISTS.md#photoprism
 [vaultwarden-improve]: docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden
