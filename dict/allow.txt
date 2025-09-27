@@ -16,6 +16,7 @@ README
 RSA
 YOURNAME
 auth
+autoplay
 axel
 axel's
 backend
@@ -102,7 +103,9 @@ localhost
 dropdown
 IRL
 repurpose
+rescan
 config
+cov
 PRs
 changelogs
 STLs
@@ -124,8 +127,10 @@ cybersecurity
 datasets
 exfiltration
 filesystem
+formatters
 gitshelves
 integrations
+pytest
 keychains
 misconfiguration
 misconfigured
@@ -135,6 +140,7 @@ photoprism
 unencrypted
 untrusted
 vaultwarden
+vuln
 Codecov
 keyring
 str
