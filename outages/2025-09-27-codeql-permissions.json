@@ -1,0 +1,10 @@
+{
+  "id": "codeql-permissions-incident",
+  "date": "2025-09-27",
+  "component": "codeql workflow",
+  "rootCause": "CodeQL analyze step lacked security-events write permission, so SARIF upload failed with a permissions error.",
+  "resolution": "Added security-events write permission to the CodeQL workflow so analysis results upload correctly.",
+  "references": [
+    "https://github.com/futuroptimist/gabriel/actions/runs/18023853299/job/51287009469"
+  ]
+}
