@@ -1,20 +1,26 @@
 # flywheel Threat Model
 
-flywheel offers a standardized setup for reproducible releases.
-This placeholder covers initial considerations.
+The **flywheel** template helps repos bootstrap linting, testing, docs, and CAD workflows.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Template scope:** Ships lint/test/docs/release automation plus pre-wired LLM agent support.
-- **Risk posture:** Any misconfiguration propagates to downstream projects, so tightening
-  security defaults has outsized impact.
+- **Operational context:** Provides a baseline CI/CD stack (lint, tests, docs, security scan) and
+  status reporting for downstream projects.
+- **Key changes since 2025-09-24:** Repository roster docs were refreshed; automation, templates,
+  and CAD assets remain the same.
+- **Risks to monitor:** Secrets in GitHub Actions, large binary artifacts in STL exports, and the
+  nightly scanning scripts that enumerate dependent repos.
 
-## Security Assumptions
+## Threats
 
-- Maintainers run CI on trusted GitHub infrastructure.
-- Secrets for releases are stored as encrypted repository secrets.
+- **Supply chain:** npm and Python dependencies may be hijacked.
+- **Credential leakage:** Docs and scripts show how to integrate PATs; misconfiguration can leak
+  tokens.
+- **Artifact tampering:** Generated STL/GLB files could contain malicious payloads if the build
+  pipeline is compromised.
 
-## Potential Risks
+## Mitigations
 
-- Misconfigured CI could leak tokens via logs.
-- Build artifacts might include sensitive files if not filtered.
+- Keep `dependabot` and lockfiles current.
+- Use GitHub environments or OpenID Connect for workflows that need secrets.
+- Require reviews on prompt-doc updates and STL changes to detect suspicious diffs.

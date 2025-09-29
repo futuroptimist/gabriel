@@ -1,15 +1,23 @@
 # Suggested Improvements for DSPACE
 
-This document collects enhancement ideas for the [dspace](https://github.com/democratizedspace/dspace) project.
+This document tracks enhancement ideas for the
+[democratizedspace/dspace](https://github.com/democratizedspace/dspace/tree/v3) repository.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Status:** ✅ (as of the Futuroptimist related projects rollup)
-- **Focus:** Retro-futurist idle sim (@v3) where quests teach real-world hobbies with NPC guides.
-- **Deployment:** Designed to run offline so your base keeps growing without an internet signal.
+- **Status:** ✅ per the Futuroptimist roster (v3 branch).
+- **Stack:** pnpm-managed monorepo with a Svelte/TypeScript frontend, Python tooling, and Ansible
+  automation for quest publishing.
+- **Conventions:** Uses `outages/` to log CI incidents, `scripts/` benchmarks to guard quest data,
+  and Vitest/Jest/Vitest-style suites alongside Python tests.
+- **Security delta:** PR #1906 landed large batches of new quest assets and outage entries while
+  extending regression tests for quest validation and metrics; no infrastructure changes.
+- **Watchlist:** Keep an eye on the asset bloat and ensure CDN or storage buckets enforce size
+  limits; confirm new quests receive the expected telemetry sanitisation.
 
-## Checklist
+## Improvement Themes
 
-- [ ] Provide offline installation instructions.
-- [ ] Document the quest creation pipeline for contributors.
-- [ ] Clarify how local save data is stored and backed up.
+- [ ] Document content signing or checksum workflows so community quest bundles are tamper evident.
+- [ ] Expand automated checks that ensure newly added assets stay within privacy and licensing
+      guidelines.
+- [ ] Review quest telemetry collectors whenever new tutorials or offline flows are introduced.

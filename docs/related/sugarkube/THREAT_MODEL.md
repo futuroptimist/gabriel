@@ -1,25 +1,24 @@
 # sugarkube Threat Model
 
-sugarkube automates infrastructure deployments. This outline describes assumed risks and mitigations when using the tool.
+The **sugarkube** project delivers an off-grid Raspberry Pi cluster platform with scripted
+provisioning and rich documentation.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Deployment target:** Solar-assisted Raspberry Pi clusters orchestrated with k3s for
-  off-grid experimentation.
-- **Operational concerns:** Edge environments may lack physical security and reliable power,
-  increasing the need for tamper-resistant configs.
+- **Operational context:** Builds pi images, manages k3s clusters, and documents solar hardware.
+- **Key changes since 2025-09-24:** Major documentation and script expansion introduced new CI
+  workflows, QR code assets, and onboarding helpers.
+- **Risks to monitor:** Credential handling in pi image builders, telemetry publishing scripts, and
+  the growing number of workflow secrets.
 
-## Security Assumptions
+## Threats
 
-- Users run sugarkube on hardware they control.
-- Deployments may target cloud environments with sensitive credentials.
-
-## Potential Risks
-
-- Leaked secrets in deployment configuration files.
-- Misconfigured access controls in generated infrastructure.
+- **Secrets exposure:** Cloud-init files and scripts may embed API keys.
+- **Supply chain:** Pi image dependencies and KiCad exports could be tampered with.
+- **Operational drift:** Telemetry collectors or workflow bots might gain excessive privileges.
 
 ## Mitigations
 
-- Keep sensitive values in environment variables or secret stores.
-- Review generated resources for least-privilege permissions.
+- Keep `scripts/scan-secrets.py` and tests enforcing secret hygiene up to date.
+- Document environment variables separately for local vs. CI image builds.
+- Rotate tokens used by automation (Cloudflare, GitHub) and monitor audit logs for unusual access.

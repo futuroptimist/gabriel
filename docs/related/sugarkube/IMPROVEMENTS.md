@@ -1,16 +1,23 @@
 # Suggested Improvements for sugarkube
 
-This document lists potential enhancements for the [sugarkube](https://github.com/futuroptimist/sugarkube) repository.
+This document highlights improvement ideas for the
+[futuroptimist/sugarkube](https://github.com/futuroptimist/sugarkube) repository.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Status:** ✅ in the Futuroptimist related projects lineup
-- **Focus:** Solar-powered k3s platform and cube art installation for Raspberry Pi clusters,
-  designed for off-grid edge Kubernetes that's plug-and-play.
-- **Differentiator:** Blends infrastructure automation with interactive physical art.
+- **Status:** ✅ per the Futuroptimist roster.
+- **Stack:** Python automation, shell scripts, KiCad assets, docs with Markdown and HTML, and
+  extensive pytest/BATS suites.
+- **Conventions:** Prompt docs live under `docs/prompts/codex/`, outages catalog incidents, and
+  `scripts/` host provisioning helpers for Raspberry Pi clusters.
+- **Security delta:** PR #1148 shipped the `start_here` CLI helper, new CI workflows (pi-image,
+  spellcheck, SCAD to STL), and detailed docs for pi image building—expanding attack surface if
+  secrets leak during automation.
+- **Watchlist:** Keep scanning the new `docs/images/qr/` assets for embedded secrets and verify that
+  telemetry scripts respect opt-in defaults.
 
-## Checklist
+## Improvement Themes
 
-- [ ] Document install steps for offline use.
-- [ ] Provide examples of customizing build workflows.
-- [ ] Outline integration paths with other Futuroptimist projects.
+- [ ] Publish explicit threat boundaries for the pi image builder scripts (cloud vs. local runs).
+- [ ] Document procedures for revoking access if the `workflow_artifact_notifier` bot token leaks.
+- [ ] Ensure Cloudflare tunnel templates ship with least-privilege credentials and rotate guidance.

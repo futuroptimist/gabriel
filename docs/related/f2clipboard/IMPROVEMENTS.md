@@ -1,16 +1,22 @@
 # Suggested Improvements for f2clipboard
 
-This document suggests enhancements for the [f2clipboard](https://github.com/futuroptimist/f2clipboard) utility.
+This document captures follow-up opportunities for the
+[futuroptimist/f2clipboard](https://github.com/futuroptimist/f2clipboard) project.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Status:** ✅ in the Futuroptimist related projects feed
-- **Focus:** CLI that parses Codex task pages, captures failing GitHub logs, and copies concise
-  debugging summaries directly to the clipboard.
-- **Usage:** Optimized for fast incident triage across Futuroptimist repos.
+- **Status:** ✅ in the Futuroptimist roster.
+- **Stack:** Python 3 CLI packaged with `pyproject.toml`, optional GitHub Action (`action.yml`), and
+  pytest suites with VCR cassettes.
+- **Conventions:** Prompt docs moved under `docs/prompts/codex/`; scripts run via `scripts/checks.sh`
+  and `pre-commit` handles formatting.
+- **Security delta:** PR #143 introduced full CLI modules, secret handling helpers, and prompt docs
+  relocation. New `secret.py` and plugin loaders warrant review of credential storage practices.
+- **Watchlist:** Verify `.env` guidance stays current and that cached Codex transcripts purge secrets
+  after use.
 
-## Checklist
+## Improvement Themes
 
-- [ ] Add cross-platform clipboard support examples.
-- [ ] Include pre-built binaries for major operating systems.
-- [ ] Write a minimal security review for handling large file lists.
+- [ ] Document best practices for storing GitHub tokens referenced by the CLI and GitHub Action.
+- [ ] Expand integration tests covering the optional Jira plugin across failure cases.
+- [ ] Publish a security note describing how to rotate cached task data in `~/.f2clipboard`.
