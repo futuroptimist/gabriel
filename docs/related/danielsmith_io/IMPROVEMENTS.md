@@ -1,16 +1,21 @@
 # Suggested Improvements for danielsmith.io
 
-This document tracks enhancement ideas for the [danielsmith.io](https://github.com/futuroptimist/danielsmith.io) repository.
+This document summarizes follow-ups for the
+[futuroptimist/danielsmith.io](https://github.com/futuroptimist/danielsmith.io) repository.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Status:** Newly added to the Futuroptimist related projects list.
-- **Focus:** Vite + Three.js playground for an isometric personal site experience with keyboard controls.
-- **Primary integration:** Shares Flywheel-style automation (lint, tests, docs) while experimenting with spatial UX.
+- **Status:** ✅ in the Futuroptimist roster.
+- **Stack:** Vite + Three.js site with TypeScript, Playwright/Vitest tests, and npm-managed
+  workflows.
+- **Conventions:** Prompt docs live under `docs/prompts/codex/`, scripts generate floorplan diagrams,
+  and CI captures launch screenshots.
+- **Security delta:** Latest commit refreshed the launch screenshot workflow and kept automation in
+  place; no new backend components were added.
+- **Watchlist:** Monitor Playwright artifacts for PII and ensure resume assets stay current.
 
-## Checklist
+## Improvement Themes
 
-- [ ] Add accessibility affordances such as focus outlines, reduced-motion toggles, and screen reader copy for the 3D scene.
-- [ ] Expand input handling beyond keyboard to cover touch/gamepad per the backlog roadmap, guarding against duplicate event firing.
-- [ ] Document and automate WebGL capability fallbacks (e.g., static render, explanatory copy) inside the smoke test workflow.
-- [ ] Capture lightweight visual regression snapshots during `npm run smoke` to detect unintended material/light changes.
+- [ ] Document how to rotate assets in `docs/resume` without leaking personal data.
+- [ ] Provide a hardening guide for hosting the Vite build on static providers.
+- [ ] Add instructions for purging cached screenshots if credentials appear.

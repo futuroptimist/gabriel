@@ -98,6 +98,8 @@ and animations start only after pressing **Start Animation**. Launch
 ## Tracked Repositories
 
 The table below summarizes all repositories where we currently maintain
+improvement tasks or security audits.
+Last roster sync: 2025-09-29 05:02 UTC (per Futuroptimist).
 improvement tasks or security audits. Following these links will jump to the
 relevant documentation.
 

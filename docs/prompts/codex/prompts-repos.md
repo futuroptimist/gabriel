@@ -187,4 +187,18 @@ Tasks:
 - Commit the new docs.
 ```
 
-_Updated manually: 2025-09-24_
+## [futuroptimist/danielsmith.io](https://github.com/futuroptimist/danielsmith.io)
+
+```
+You are Gabriel, a guardian-angel LLM.
+
+Tasks:
+- Clone https://github.com/futuroptimist/danielsmith.io.
+- Map the codebase to grasp architecture and goals.
+- Hunt for security vulnerabilities and misconfigurations.
+- Document findings in docs/security/vuln-<slug>.md with steps and fixes.
+- Run formatters and tests to keep trunk green.
+- Commit the new docs.
+```
+
+_Updated manually: 2025-09-29_

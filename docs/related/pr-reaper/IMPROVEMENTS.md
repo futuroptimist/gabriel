@@ -1,16 +1,21 @@
-# Suggested Improvements for PR Reaper
+# Suggested Improvements for pr-reaper
 
-This document collects recommended enhancements for the [pr-reaper](https://github.com/futuroptimist/pr-reaper) repository.
+This document tracks recommendations for the
+[futuroptimist/pr-reaper](https://github.com/futuroptimist/pr-reaper) repository.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Status:** ✅ in the Futuroptimist related projects list
-- **Focus:** GitHub Action that bulk-closes your own stale pull requests with a dry-run safety
-  valve.
-- **Primary integration:** Works across repositories bootstrapped from the `flywheel` template.
+- **Status:** ✅ on the Futuroptimist roster.
+- **Stack:** Node.js CLI (pnpm/npm) with GitHub Action automation and lightweight TypeScript-free
+  scripts.
+- **Conventions:** Prompts relocated to `docs/prompts/codex/`, workflows manage PR cleanup and CI,
+  and `scripts/scan-secrets.py` is bundled for local validation.
+- **Security delta:** PR #20 added status badges, a `close-my-open-prs` workflow, and standard repo
+  scaffolding; new workflows introduce GitHub token usage that must remain scoped.
+- **Watchlist:** Audit workflow permissions and ensure automation uses dry-run mode by default.
 
-## Checklist
+## Improvement Themes
 
-- [ ] Add configuration examples for filtering by label, branch pattern, and repository owner.
-- [ ] Document dry-run telemetry to reassure maintainers before enabling destructive mode.
-- [ ] Provide guidance on combining PR archiving with Dependency Review workflows.
+- [ ] Document how to run the `close-my-open-prs` workflow safely against forks.
+- [ ] Provide rate-limit guidance when sweeping large PR backlogs.
+- [ ] Add integration tests that simulate dry-run vs. destructive modes.

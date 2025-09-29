@@ -1,21 +1,24 @@
 # pr-reaper Threat Model
 
-pr-reaper automates the closure of stale pull requests via GitHub Actions workflows.
-This document captures current assumptions and risks.
+The **pr-reaper** tool automates closing stale pull requests in bulk.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Workflow:** Runs as a scheduled GitHub Action that performs dry-run analysis before
-  optionally closing PRs authored by the repository owner.
-- **Touchpoints:** Requires a token with `repo` scope to close PRs across multiple projects.
+- **Operational context:** Runs as a CLI or GitHub Action that iterates through repositories using a
+  personal access token.
+- **Key changes since 2025-09-24:** New workflows and docs formalized automation; functionality
+  remains focused on GitHub API interactions.
+- **Risks to monitor:** Token scopes for closing PRs, rate-limit handling, and ensuring dry-run mode
+  stays default.
 
-## Security Assumptions
+## Threats
 
-- GitHub-hosted runners execute the workflow with repository-scoped tokens.
-- Dry-run mode is used to validate configuration before enabling destructive actions.
+- **Token misuse:** Leaked PATs could let attackers close or modify PRs.
+- **Mass closure accidents:** Misconfigured filters may close active PRs.
+- **Workflow escalation:** GitHub Actions might gain write access beyond intention.
 
-## Potential Risks
+## Mitigations
 
-- Misconfigured filters could close active or collaborative pull requests unexpectedly.
-- Stored tokens or workflow secrets might be abused if workflow files are compromised.
-- Lack of audit logging could make it difficult to prove which PRs were closed by automation.
+- Encourage fine-grained PATs or GitHub Apps with repository-specific scopes.
+- Keep dry-run mode on by default and require explicit confirmation for destructive runs.
+- Log actions to provide audit trails when sweeping PRs.

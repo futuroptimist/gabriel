@@ -1,16 +1,20 @@
 # Suggested Improvements for wove
 
-This document lists enhancements for the [wove](https://github.com/futuroptimist/wove) knitting toolkit.
+This document tracks opportunities for the
+[futuroptimist/wove](https://github.com/futuroptimist/wove) repository.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Status:** ✅ per the Futuroptimist related project dashboard
-- **Focus:** Open toolkit for learning to knit and crochet while evolving toward robotic looms,
-  bridging CAD workflows with textiles.
-- **Unique angle:** Connects digital pattern design with physical fiber arts.
+- **Status:** ✅ via the Futuroptimist roster.
+- **Stack:** Python utilities, OpenSCAD models, Sphinx docs, and pytest.
+- **Conventions:** Prompt docs live under `docs/prompts-codex*.md`, hardware CAD assets pair with STL
+  exports, and CI covers lint/tests/docs.
+- **Security delta:** PR #105 added full repository overview docs, codified workflows, and new STL
+  assets. No networked services were introduced, but contributors should vet large STL additions.
+- **Watchlist:** Monitor `dict/allow.txt` growth and ensure the viewer pipeline remains reproducible.
 
-## Checklist
+## Improvement Themes
 
-- [ ] Expand documentation on supported knitting patterns.
-- [ ] Provide calibration steps for different looms.
-- [ ] Outline a plugin system for custom stitch generators.
+- [ ] Add a signed checksum list for published STL files.
+- [ ] Document safe disposal for scrap filament and electronics from the knitting machine builds.
+- [ ] Provide an architecture diagram showing how scripts assemble CAD artifacts.

@@ -1,16 +1,21 @@
 # Suggested Improvements for gitshelves
 
-This document collects enhancement ideas for the [gitshelves](https://github.com/futuroptimist/gitshelves) project.
+This document highlights possible enhancements for
+[futuroptimist/gitshelves](https://github.com/futuroptimist/gitshelves).
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Status:** ✅ in the Futuroptimist rollup
-- **Focus:** Turns GitHub contributions into stackable 3D-printable blocks sized for Gridfinity
-  baseplates, transforming commit history into physical shelf art.
-- **Notable angle:** Bridges software activity with tangible maker projects.
+- **Status:** ✅ in the Futuroptimist roster.
+- **Stack:** Python CLI with OpenSCAD/SCAD templates, pytest suites, and npm-based viewer assets.
+- **Conventions:** Prompt docs relocated to `docs/prompts/codex/`, viewer HTML lives under `docs/`,
+  and `gitshelves/scad.py` renders STL output.
+- **Security delta:** Prompt doc move plus refreshed CLI/tests (PR #109) expanded automation but did
+  not modify STL generation logic.
+- **Watchlist:** Ensure `dict/allow.txt` stays aligned with new SCAD terminology and keep SCAD
+  renders in CI to detect tampering.
 
-## Checklist
+## Improvement Themes
 
-- [ ] Provide more examples of customizing 3D models.
-- [ ] Document recommended slicer settings for prints.
-- [ ] Investigate support for other version control platforms.
+- [ ] Document how to validate STL checksums before printing block sets.
+- [ ] Provide guidance on distributing viewer builds without exposing GitHub API tokens.
+- [ ] Consider adding a sandbox mode for rendering contributions before merging.

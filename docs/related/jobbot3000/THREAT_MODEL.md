@@ -1,23 +1,23 @@
 # jobbot3000 Threat Model
 
-jobbot3000 automates job discovery and application tracking for self-hosted seekers.
-This document outlines the current threat considerations.
+The **jobbot3000** project automates job searches, resume generation, and interview prep.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Automations:** Scrapes job boards, enriches listings with LLM summaries, and stores
-  application tasks locally.
-- **Data sensitivity:** Handles resumes, cover letters, and employer communications that may
-  contain personally identifiable information.
+- **Operational context:** Node CLI ingests postings, runs LLM prompts, and outputs deliverables.
+- **Key changes since 2025-09-24:** Resume bundle enforcement and expanded docs/workflows increased
+  the scope of automation but did not introduce new external services.
+- **Risks to monitor:** Handling of personal data (resumes, transcripts), token scopes for scraping
+  APIs, and CLI storage paths.
 
-## Security Assumptions
+## Threats
 
-- The service runs on user-controlled infrastructure with encrypted storage for personal data.
-- External integrations (email, calendars, ATS APIs) use scoped credentials stored outside source
-  control.
+- **Data leakage:** Resume PDFs and transcripts may contain sensitive personal information.
+- **Token compromise:** API keys for job boards or OpenAI could leak via logs.
+- **Automation drift:** Scripts that auto-apply to jobs might send stale or incorrect info.
 
-## Potential Risks
+## Mitigations
 
-- Improperly secured storage could leak resumes or job history.
-- Automated scraping may trigger IP blocking or legal concerns without rate limiting.
-- Prompt injections in scraped listings could manipulate downstream LLM summarization steps.
+- Provide clear retention policies and default to deleting generated artifacts after export.
+- Mask tokens in logs and use environment variables rather than checked-in config.
+- Keep tests covering output bundles to ensure required files (like `resume.pdf`) are present.

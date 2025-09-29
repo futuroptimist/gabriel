@@ -3,12 +3,15 @@
 The `futuroptimist` repository orchestrates reproducible pipelines, datasets, and release assets
 for the broader Futuroptimist ecosystem.
 
-## Current Snapshot (2025-09-24)
+## Current Snapshot (2025-09-29)
 
-- **Workload mix:** Data processing scripts, media asset preparation, and CI pipelines supporting
-  recurring YouTube episodes.
-- **Interdependencies:** Serves as the coordination hub that kicks off jobs across `flywheel`,
-  `token.place`, `gabriel`, and other repositories.
+- **Operational context:** Coordinates scripts, runbooks, and outage reports that keep the YouTube
+  production pipeline healthy while feeding dependent projects such as `flywheel`, `token.place`,
+  and `gabriel`.
+- **Key changes since 2025-09-24:** README gains an hourly roster refresh workflow to highlight
+  stale dependencies; no privileged services were added.
+- **Risks to monitor:** Workflow secrets used by publishing scripts, storage of media artifacts,
+  and access tokens shared with downstream automation.
 
 ## Security Assumptions
 
