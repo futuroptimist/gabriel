@@ -109,8 +109,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Integrate `trufflehog` secret scanning into pre-commit and CI
       (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
       *Aligns with flywheel best practices.*
-- [ ] Add property-based tests using `hypothesis` for arithmetic and secret helpers
-      (`tests/test_utils.py`, `requirements.txt`, `pyproject.toml`).
+- [x] Add property-based tests using `hypothesis` for arithmetic and secret helpers
+      (`tests/test_utils.py`, `requirements.txt`, `gabriel/utils.py`).
       *Aligns with flywheel best practices.*
 - [ ] Generate API documentation with `mkdocs` and publish to GitHub Pages
       (`docs/`, `pyproject.toml`, `.github/workflows/docs.yml`).
