@@ -102,9 +102,22 @@ def test_power_zero_negative_exponent():
         power(0, -1)
 
 
+def test_power_zero_negative_fractional_exponent():
+    with pytest.raises(ZeroDivisionError):
+        power(0, Decimal("-0.5"))
+
+
+def test_power_zero_fractional_positive_exponent():
+    assert power(0, Decimal("0.5")) == Decimal("0")  # nosec B101
+
+
 def test_power_invalid_complex_result():
     with pytest.raises(ValueError):
         power(-8, 0.5)
+
+
+def test_power_fractional_extreme_precision():
+    assert power(Decimal("1e-400"), Decimal("0.5")) == Decimal("1E-200")  # nosec B101
 
 
 def test_modulo():

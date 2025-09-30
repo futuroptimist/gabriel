@@ -1,7 +1,7 @@
 import argparse
 import os
 import re
-from decimal import ROUND_FLOOR, Decimal, InvalidOperation
+from decimal import ROUND_FLOOR, Decimal, InvalidOperation, localcontext
 
 """Utility helpers for arithmetic operations and secret management."""
 
@@ -62,10 +62,22 @@ def power(a: Numeric, b: Numeric) -> Decimal:
             raise ZeroDivisionError("0.0 cannot be raised to a negative power")
         return base**exponent
 
-    float_result = float(base) ** float(exponent)
-    if isinstance(float_result, complex):
+    if base == 0:
+        if exponent < 0:
+            raise ZeroDivisionError("0.0 cannot be raised to a negative power")
+        return Decimal(0)
+
+    if base < 0:
         raise ValueError("Invalid power operation for complex result.")
-    return Decimal(str(float_result))
+
+    with localcontext() as ctx:
+        ctx.prec += 10
+        try:
+            result = (exponent * base.ln()).exp()
+        except (InvalidOperation, ValueError) as error:  # pragma: no cover - decimal domain errors
+            raise ValueError("Invalid power operation for complex result.") from error
+
+    return +result
 
 
 def modulo(a: Numeric, b: Numeric) -> Decimal:
