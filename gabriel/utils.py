@@ -87,11 +87,12 @@ def _env_secret_key(service: str, username: str) -> str:
     """Return a normalized environment variable key for ``service`` and ``username``."""
 
     raw = f"{service}_{username}"
-    sanitized = re.sub(r"\W+", "_", raw)
-    trimmed = sanitized.strip("_")
-    if not trimmed:
-        trimmed = "IDENTIFIER"
-    safe = trimmed.upper()
+    sanitized = re.sub(r"\W", "_", raw)
+    if sanitized.strip("_"):
+        sanitized = sanitized.lstrip("_")
+    else:
+        sanitized = "IDENTIFIER"
+    safe = sanitized.upper()
     return f"GABRIEL_SECRET_{safe}"
 
 

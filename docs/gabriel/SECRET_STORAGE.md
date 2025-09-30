@@ -29,9 +29,10 @@ Install `keyring` with `pip install keyring` if it is not already available.
 When the package is missing, Gabriel's ``store_secret``, ``get_secret``, and
 ``delete_secret`` helpers gracefully fall back to sanitized environment
 variables named ``GABRIEL_SECRET_<IDENTIFIER>``. The identifier is derived from
-``<SERVICE>`` and ``<USERNAME>`` by uppercasing them, collapsing punctuation to
-single underscores, and trimming leading or trailing separators to prevent
-unstable keys. This fallback avoids runtime errors but does not provide
-encryption, so prefer using ``keyring`` whenever possible. The library encrypts
-secrets using the platform's preferred backend and prevents storing plaintext
-passwords in the repository or environment variables.
+``<SERVICE>`` and ``<USERNAME>`` by converting them to uppercase, replacing each
+punctuation character with an underscore, and preserving any trailing
+separators so distinct credentials remain unique. This fallback avoids runtime
+errors but does not provide encryption, so prefer using ``keyring`` whenever
+possible. The library encrypts secrets using the platform's preferred backend
+and prevents storing plaintext passwords in the repository or environment
+variables.
