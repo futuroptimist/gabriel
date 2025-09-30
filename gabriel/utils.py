@@ -1,86 +1,122 @@
 import argparse
-import math
 import os
 import re
+from decimal import ROUND_FLOOR, Decimal, InvalidOperation, localcontext
 
 """Utility helpers for arithmetic operations and secret management."""
 
 
-def add(a: float | int, b: float | int) -> float | int:
-    """Return the sum of ``a`` and ``b``.
+Numeric = float | int | Decimal
 
-    Supports both integers and floats.
+
+def _to_decimal(value: Numeric) -> Decimal:
+    """Return ``value`` as a :class:`~decimal.Decimal`.
+
+    Floats are converted via ``str`` to avoid binary rounding artefacts.
     """
-    return a + b
+
+    if isinstance(value, Decimal):
+        return value
+    if isinstance(value, int):
+        return Decimal(value)
+    if isinstance(value, float):
+        return Decimal(str(value))
+    msg = f"Unsupported numeric type: {type(value)!r}"
+    raise TypeError(msg)
 
 
-def subtract(a: float | int, b: float | int) -> float | int:
-    """Return the result of ``a`` minus ``b``.
+def add(a: Numeric, b: Numeric) -> Decimal:
+    """Return the sum of ``a`` and ``b`` with decimal precision."""
 
-    Supports both integers and floats.
-    """
-    return a - b
+    return _to_decimal(a) + _to_decimal(b)
 
 
-def multiply(a: float | int, b: float | int) -> float | int:
-    """Return the product of ``a`` and ``b``.
+def subtract(a: Numeric, b: Numeric) -> Decimal:
+    """Return the result of ``a`` minus ``b`` with decimal precision."""
 
-    Supports both integers and floats.
-    """
-    return a * b
+    return _to_decimal(a) - _to_decimal(b)
 
 
-def divide(a: float | int, b: float | int) -> float:
-    """Return the result of ``a`` divided by ``b``.
+def multiply(a: Numeric, b: Numeric) -> Decimal:
+    """Return the product of ``a`` and ``b`` with decimal precision."""
 
-    Supports both integers and floats.
-    """
-    if b == 0:
+    return _to_decimal(a) * _to_decimal(b)
+
+
+def divide(a: Numeric, b: Numeric) -> Decimal:
+    """Return the result of ``a`` divided by ``b`` with decimal precision."""
+
+    denominator = _to_decimal(b)
+    if denominator == 0:
         raise ZeroDivisionError("Cannot divide by zero.")
-    return a / b
+    return _to_decimal(a) / denominator
 
 
-def power(a: float | int, b: float | int) -> float | int:
-    """Return ``a`` raised to the power of ``b``.
+def power(a: Numeric, b: Numeric) -> Decimal:
+    """Return ``a`` raised to the power of ``b`` with decimal precision."""
 
-    Supports both integers and floats.
-    """
-    return a**b
+    base = _to_decimal(a)
+    exponent = _to_decimal(b)
+    if exponent == exponent.to_integral_value():
+        if base == 0 and exponent < 0:
+            raise ZeroDivisionError("0.0 cannot be raised to a negative power")
+        return base**exponent
+
+    if base == 0:
+        if exponent < 0:
+            raise ZeroDivisionError("0.0 cannot be raised to a negative power")
+        return Decimal(0)
+
+    if base < 0:
+        raise ValueError("Invalid power operation for complex result.")
+
+    with localcontext() as ctx:
+        ctx.prec += 10
+        try:
+            result = (exponent * base.ln()).exp()
+        except (InvalidOperation, ValueError) as error:  # pragma: no cover - decimal domain errors
+            raise ValueError("Invalid power operation for complex result.") from error
+
+    return +result
 
 
-def modulo(a: float | int, b: float | int) -> float | int:
-    """Return ``a`` modulo ``b``.
+def modulo(a: Numeric, b: Numeric) -> Decimal:
+    """Return ``a`` modulo ``b`` with decimal precision."""
 
-    Supports both integers and floats.
-    """
-    if b == 0:
+    denominator = _to_decimal(b)
+    if denominator == 0:
         raise ZeroDivisionError("Cannot modulo by zero.")
-    return a % b
+    numerator = _to_decimal(a)
+    quotient = (numerator / denominator).to_integral_value(rounding=ROUND_FLOOR)
+    return numerator - denominator * quotient
 
 
-def floordiv(a: float | int, b: float | int) -> float:
-    """Return the floor division of ``a`` by ``b``.
+def floordiv(a: Numeric, b: Numeric) -> Decimal:
+    """Return the floor division of ``a`` by ``b`` with decimal precision."""
 
-    Supports both integers and floats.
-    """
-    if b == 0:
+    denominator = _to_decimal(b)
+    if denominator == 0:
         raise ZeroDivisionError("Cannot floor-divide by zero.")
-    return a // b
+    numerator = _to_decimal(a)
+    return (numerator / denominator).to_integral_value(rounding=ROUND_FLOOR)
 
 
-def sqrt(a: float | int) -> float:
-    """Return the square root of ``a``.
-
-    Supports both integers and floats.
+def sqrt(a: Numeric) -> Decimal:
+    """Return the square root of ``a`` with decimal precision.
 
     Raises
     ------
     ValueError
         If ``a`` is negative.
     """
-    if a < 0:
+
+    value = _to_decimal(a)
+    if value < 0:
         raise ValueError("Cannot take the square root of a negative number.")
-    return math.sqrt(a)
+    try:
+        return value.sqrt()
+    except InvalidOperation as error:  # pragma: no cover - mirrored in decimal
+        raise ValueError("Cannot take the square root of a negative number.") from error
 
 
 def _env_secret_key(service: str, username: str) -> str:
@@ -165,14 +201,14 @@ def main(argv: list[str] | None = None) -> None:
 
     def add_binary(name: str) -> None:
         sp = subparsers.add_parser(name)
-        sp.add_argument("a", type=float)
-        sp.add_argument("b", type=float)
+        sp.add_argument("a", type=Decimal)
+        sp.add_argument("b", type=Decimal)
 
     for name in ("add", "subtract", "multiply", "divide", "power", "modulo", "floordiv"):
         add_binary(name)
 
     sqrt_parser = subparsers.add_parser("sqrt")
-    sqrt_parser.add_argument("a", type=float)
+    sqrt_parser.add_argument("a", type=Decimal)
 
     args = parser.parse_args(argv)
 

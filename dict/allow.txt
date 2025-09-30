@@ -87,6 +87,8 @@ SHA
 YOURTOKEN
 
 htmlcontent
+floordiv
+isinstance
 installable
 linter
 OpenSCAD
@@ -150,6 +152,7 @@ GGUF
 Nextcloud
 nextcloud
 svg
+sqrt
 Syncthing
 WebGL
 pyspelling
