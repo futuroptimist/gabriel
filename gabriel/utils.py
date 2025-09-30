@@ -84,9 +84,14 @@ def sqrt(a: float | int) -> float:
 
 
 def _env_secret_key(service: str, username: str) -> str:
-    """Return the environment variable key for a given ``service`` and ``username``."""
+    """Return a normalized environment variable key for ``service`` and ``username``."""
 
-    safe = re.sub(r"\W+", "_", f"{service}_{username}").upper()
+    raw = f"{service}_{username}"
+    sanitized = re.sub(r"\W+", "_", raw)
+    condensed = re.sub(r"_+", "_", sanitized).strip("_")
+    if not condensed:
+        condensed = "IDENTIFIER"
+    safe = condensed.upper()
     return f"GABRIEL_SECRET_{safe}"
 
 

@@ -1,10 +1,15 @@
 import builtins
+import os
+import string
 
 import keyring
 import pytest
+from hypothesis import assume, given, settings
+from hypothesis import strategies as st
 from keyring.backend import KeyringBackend
 
 from gabriel.utils import (
+    _env_secret_key,
     add,
     delete_secret,
     divide,
@@ -179,3 +184,110 @@ def test_cli_add(capsys):
 def test_cli_sqrt(capsys):
     main(["sqrt", "9"])
     assert capsys.readouterr().out.strip() == "3.0"  # nosec B101
+
+
+def test_env_secret_key_fallback_identifier():
+    assert _env_secret_key("", "") == "GABRIEL_SECRET_IDENTIFIER"  # nosec B101
+
+
+@settings(max_examples=200, deadline=None)
+@given(st.integers(-(10**6), 10**6), st.integers(-(10**6), 10**6))
+def test_add_commutative(a, b):
+    assert add(a, b) == add(b, a)  # nosec B101
+
+
+@settings(max_examples=200, deadline=None)
+@given(st.integers(-(10**6), 10**6), st.integers(-(10**6), 10**6))
+def test_multiply_commutative(a, b):
+    assert multiply(a, b) == multiply(b, a)  # nosec B101
+
+
+@settings(max_examples=200, deadline=None)
+@given(st.integers(-(10**6), 10**6), st.integers(-(10**6), 10**6))
+def test_subtract_inverse_of_add(a, b):
+    assert subtract(add(a, b), b) == a  # nosec B101
+
+
+@settings(max_examples=200, deadline=None)
+@given(
+    st.integers(-(10**3), 10**3),
+    st.integers(-(10**3), 10**3).filter(lambda value: value != 0),
+)
+def test_divide_inverse_of_multiply(a, b):
+    result = divide(multiply(a, b), b)
+    assert result == pytest.approx(float(a))  # nosec B101
+
+
+@settings(max_examples=200, deadline=None)
+@given(
+    st.integers(-(10**3), 10**3),
+    st.integers(-(10**3), 10**3).filter(lambda value: value != 0),
+)
+def test_divmod_identity(a, b):
+    quotient = floordiv(a, b)
+    remainder = modulo(a, b)
+    assert quotient * b + remainder == a  # nosec B101
+    if b > 0:
+        assert 0 <= remainder < b  # nosec B101
+    else:
+        assert b < remainder <= 0  # nosec B101
+
+
+@settings(max_examples=200, deadline=None)
+@given(st.floats(min_value=-(10**3), max_value=10**3, allow_nan=False, allow_infinity=False))
+def test_sqrt_inverse_of_square(value):
+    squared = value * value
+    assert sqrt(squared) == pytest.approx(abs(value))  # nosec B101
+
+
+IDENTIFIER_ALPHABET = string.ascii_letters + string.digits + "-_.:@/ "
+SECRET_ALPHABET = string.ascii_letters + string.digits + string.punctuation + " "
+
+
+@settings(max_examples=200, deadline=None)
+@given(
+    st.text(IDENTIFIER_ALPHABET, min_size=1, max_size=32),
+    st.text(IDENTIFIER_ALPHABET, min_size=1, max_size=32),
+)
+def test_env_secret_key_is_normalized(service, username):
+    key = _env_secret_key(service, username)
+    assert key.startswith("GABRIEL_SECRET_")  # nosec B101
+    prefix = "GABRIEL_SECRET_"
+    suffix = key.removeprefix(prefix)
+    assert suffix  # nosec B101
+    assert suffix == suffix.upper()  # nosec B101
+    assert "__" not in suffix  # nosec B101
+    assert not suffix.startswith("_")  # nosec B101
+    assert not suffix.endswith("_")  # nosec B101
+    assert set(suffix) <= set(string.ascii_uppercase + string.digits + "_")  # nosec B101
+
+
+@settings(max_examples=100, deadline=None)
+@given(
+    st.text(IDENTIFIER_ALPHABET, min_size=1, max_size=16),
+    st.text(IDENTIFIER_ALPHABET, min_size=1, max_size=16),
+    st.text(SECRET_ALPHABET, min_size=1, max_size=64),
+)
+def test_secret_env_round_trip_property(service, username, secret):
+    assume("\x00" not in secret)
+    env_key = _env_secret_key(service, username)
+    patch = pytest.MonkeyPatch()
+    patch.delenv(env_key, raising=False)
+
+    real_import = builtins.__import__
+
+    def fake_import(name, *args, **kwargs):
+        if name == "keyring":
+            raise ModuleNotFoundError
+        return real_import(name, *args, **kwargs)
+
+    patch.setattr(builtins, "__import__", fake_import)
+
+    try:
+        store_secret(service, username, secret)
+        assert os.environ[env_key] == secret  # nosec B101
+        assert get_secret(service, username) == secret  # nosec B101
+        delete_secret(service, username)
+        assert env_key not in os.environ  # nosec B101
+    finally:
+        patch.undo()
