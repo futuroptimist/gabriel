@@ -1,4 +1,5 @@
 import builtins
+from decimal import Decimal
 
 import keyring
 import pytest
@@ -21,57 +22,62 @@ from gabriel.utils import (
 
 
 def test_add():
-    assert add(1, 2) == 3  # nosec B101
+    assert add(1, 2) == Decimal("3")  # nosec B101
 
 
 def test_add_negative_numbers():
-    assert add(-1, -2) == -3  # nosec B101
+    assert add(-1, -2) == Decimal("-3")  # nosec B101
 
 
 def test_add_floats():
-    assert add(1.5, 2.5) == 4.0  # nosec B101
+    assert add(1.5, 2.5) == Decimal("4.0")  # nosec B101
+
+
+def test_add_invalid_type():
+    with pytest.raises(TypeError):
+        add("1", 2)
 
 
 def test_subtract():
-    assert subtract(5, 3) == 2  # nosec B101
+    assert subtract(5, 3) == Decimal("2")  # nosec B101
 
 
 def test_subtract_negative_result():
-    assert subtract(3, 5) == -2  # nosec B101
+    assert subtract(3, 5) == Decimal("-2")  # nosec B101
 
 
 def test_subtract_floats():
-    assert subtract(5.5, 3.5) == 2.0  # nosec B101
+    assert subtract(5.5, 3.5) == Decimal("2.0")  # nosec B101
 
 
 def test_multiply():
-    assert multiply(2, 3) == 6  # nosec B101
+    assert multiply(2, 3) == Decimal("6")  # nosec B101
 
 
 def test_multiply_negative_numbers():
-    assert multiply(-2, -3) == 6  # nosec B101
+    assert multiply(-2, -3) == Decimal("6")  # nosec B101
 
 
 def test_multiply_with_negative_number():
-    assert multiply(-2, 3) == -6  # nosec B101
+    assert multiply(-2, 3) == Decimal("-6")  # nosec B101
 
 
 def test_multiply_floats():
-    assert multiply(2.5, 4.0) == 10.0  # nosec B101
+    assert multiply(2.5, 4.0) == Decimal("10.0")  # nosec B101
 
 
 def test_divide():
-    assert divide(6, 3) == 2  # nosec B101
+    assert divide(6, 3) == Decimal("2")  # nosec B101
 
 
 def test_divide_negative_numbers():
-    assert divide(-6, 3) == -2  # nosec B101
-    assert divide(6, -3) == -2  # nosec B101
-    assert divide(-6, -3) == 2  # nosec B101
+    assert divide(-6, 3) == Decimal("-2")  # nosec B101
+    assert divide(6, -3) == Decimal("-2")  # nosec B101
+    assert divide(-6, -3) == Decimal("2")  # nosec B101
 
 
 def test_divide_floats():
-    assert divide(7.5, 2.5) == 3.0  # nosec B101
+    assert divide(7.5, 2.5) == Decimal("3.0")  # nosec B101
 
 
 def test_divide_by_zero():
@@ -80,19 +86,36 @@ def test_divide_by_zero():
 
 
 def test_power():
-    assert power(2, 3) == 8  # nosec B101
+    assert power(2, 3) == Decimal("8")  # nosec B101
 
 
 def test_power_floats():
-    assert power(2.0, 3.0) == 8.0  # nosec B101
+    assert power(2.0, 3.0) == Decimal("8.0")  # nosec B101
+
+
+def test_power_fractional_exponent():
+    assert power(9, 0.5) == Decimal("3.0")  # nosec B101
+
+
+def test_power_invalid_complex_result():
+    with pytest.raises(ValueError):
+        power(-8, 0.5)
 
 
 def test_modulo():
-    assert modulo(5, 2) == 1  # nosec B101
+    assert modulo(5, 2) == Decimal("1")  # nosec B101
 
 
 def test_modulo_floats():
-    assert modulo(5.5, 2.0) == 1.5  # nosec B101
+    assert modulo(5.5, 2.0) == Decimal("1.5")  # nosec B101
+
+
+def test_modulo_negative_dividend():
+    assert modulo(-7, 2) == Decimal("1")  # nosec B101
+
+
+def test_modulo_negative_divisor():
+    assert modulo(7, -2) == Decimal("-1")  # nosec B101
 
 
 def test_modulo_by_zero():
@@ -101,17 +124,17 @@ def test_modulo_by_zero():
 
 
 def test_floordiv():
-    assert floordiv(7, 2) == 3  # nosec B101
+    assert floordiv(7, 2) == Decimal("3")  # nosec B101
 
 
 def test_floordiv_negative_numbers():
-    assert floordiv(-7, 2) == -4  # nosec B101
-    assert floordiv(7, -2) == -4  # nosec B101
-    assert floordiv(-7, -2) == 3  # nosec B101
+    assert floordiv(-7, 2) == Decimal("-4")  # nosec B101
+    assert floordiv(7, -2) == Decimal("-4")  # nosec B101
+    assert floordiv(-7, -2) == Decimal("3")  # nosec B101
 
 
 def test_floordiv_floats():
-    assert floordiv(7.5, 2.5) == 3.0  # nosec B101
+    assert floordiv(7.5, 2.5) == Decimal("3")  # nosec B101
 
 
 def test_floordiv_by_zero():
@@ -120,8 +143,8 @@ def test_floordiv_by_zero():
 
 
 def test_sqrt():
-    assert sqrt(9) == 3.0  # nosec B101
-    assert sqrt(2.25) == 1.5  # nosec B101
+    assert sqrt(9) == Decimal("3")  # nosec B101
+    assert sqrt(2.25) == Decimal("1.5")  # nosec B101
 
 
 def test_sqrt_negative():
@@ -173,9 +196,9 @@ def test_secret_env_fallback(monkeypatch):
 
 def test_cli_add(capsys):
     main(["add", "2", "3"])
-    assert capsys.readouterr().out.strip() == "5.0"  # nosec B101
+    assert capsys.readouterr().out.strip() == "5"  # nosec B101
 
 
 def test_cli_sqrt(capsys):
     main(["sqrt", "9"])
-    assert capsys.readouterr().out.strip() == "3.0"  # nosec B101
+    assert capsys.readouterr().out.strip() == "3"  # nosec B101

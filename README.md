@@ -61,23 +61,31 @@ make test  # run the test suite with coverage
 
 Example usage of arithmetic helpers:
 
-These helpers accept both integers and floats.
+These helpers accept both integers and floats and return `decimal.Decimal` results for
+improved precision.
 
 ```python
-from gabriel import add, multiply, divide, power, modulo, floordiv, sqrt
-print(add(2.5, 3.5))  # 6.0
+from decimal import Decimal
+
+from gabriel import add, divide, floordiv, modulo, multiply, power, sqrt
+
+result = add(2.5, 3.5)
+print(result)  # 6.0
+print(isinstance(result, Decimal))  # True
 print(divide(multiply(add(2, 3), 4), 2))  # 10.0
-print(power(2, 3))  # 8
+print(power(2, 0.5))  # 1.4142135623730951
 print(modulo(7, 3))  # 1
 print(floordiv(7, 2))  # 3
-print(sqrt(9))  # 3.0
+print(sqrt(9))  # 3
 ```
 
 Run the helpers from the command line:
 
 ```bash
 gabriel-calc add 2 3
-# 5.0
+# 5
+gabriel-calc divide 1 3
+# 0.3333333333333333333333333333
 ```
 
 ### Offline Usage

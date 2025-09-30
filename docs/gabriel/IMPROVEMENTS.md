@@ -67,7 +67,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`docker/Dockerfile`, `README.md`).
 - [x] Implement environment variable fallback when `keyring` is unavailable
       (`gabriel/utils.py`, `tests/test_utils.py`). *Aligns with flywheel best practices.*
-- [ ] Use `decimal.Decimal` in arithmetic helpers to improve precision
+- [x] Use `decimal.Decimal` in arithmetic helpers to improve precision
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Enable multi-architecture Docker builds for `amd64` and `arm64`
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
