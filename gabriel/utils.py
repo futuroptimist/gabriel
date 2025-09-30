@@ -58,6 +58,8 @@ def power(a: Numeric, b: Numeric) -> Decimal:
     base = _to_decimal(a)
     exponent = _to_decimal(b)
     if exponent == exponent.to_integral_value():
+        if base == 0 and exponent < 0:
+            raise ZeroDivisionError("0.0 cannot be raised to a negative power")
         return base**exponent
 
     float_result = float(base) ** float(exponent)
