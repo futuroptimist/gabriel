@@ -225,7 +225,7 @@ def test_cli_add(capsys):
 
 def test_cli_sqrt(capsys):
     main(["sqrt", "9"])
-    assert capsys.readouterr().out.strip() == "3.0"  # nosec B101
+    assert capsys.readouterr().out.strip() == "3"  # nosec B101
 
 
 def test_env_secret_key_fallback_identifier():
@@ -279,7 +279,8 @@ def test_divmod_identity(a, b):
 @given(st.floats(min_value=-(10**3), max_value=10**3, allow_nan=False, allow_infinity=False))
 def test_sqrt_inverse_of_square(value):
     squared = value * value
-    assert sqrt(squared) == pytest.approx(abs(value))  # nosec B101
+    result = sqrt(squared)
+    assert float(result) == pytest.approx(abs(value))  # nosec B101
 
 
 IDENTIFIER_ALPHABET = string.ascii_letters + string.digits + "-_.:@/ "
