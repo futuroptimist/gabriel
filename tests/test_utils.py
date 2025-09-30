@@ -256,10 +256,19 @@ def test_env_secret_key_is_normalized(service, username):
     suffix = key.removeprefix(prefix)
     assert suffix  # nosec B101
     assert suffix == suffix.upper()  # nosec B101
-    assert "__" not in suffix  # nosec B101
     assert not suffix.startswith("_")  # nosec B101
     assert not suffix.endswith("_")  # nosec B101
     assert set(suffix) <= set(string.ascii_uppercase + string.digits + "_")  # nosec B101
+
+
+def test_env_secret_key_preserves_underscore_uniqueness():
+    baseline = _env_secret_key("foo", "bar")
+    trailing_service = _env_secret_key("foo_", "bar")
+    trailing_both = _env_secret_key("foo__", "bar__")
+
+    assert baseline == "GABRIEL_SECRET_FOO_BAR"  # nosec B101
+    assert trailing_service == "GABRIEL_SECRET_FOO__BAR"  # nosec B101
+    assert trailing_both == "GABRIEL_SECRET_FOO___BAR"  # nosec B101
 
 
 @settings(max_examples=100, deadline=None)

@@ -88,10 +88,10 @@ def _env_secret_key(service: str, username: str) -> str:
 
     raw = f"{service}_{username}"
     sanitized = re.sub(r"\W+", "_", raw)
-    condensed = re.sub(r"_+", "_", sanitized).strip("_")
-    if not condensed:
-        condensed = "IDENTIFIER"
-    safe = condensed.upper()
+    trimmed = sanitized.strip("_")
+    if not trimmed:
+        trimmed = "IDENTIFIER"
+    safe = trimmed.upper()
     return f"GABRIEL_SECRET_{safe}"
 
 
