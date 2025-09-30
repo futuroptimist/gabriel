@@ -120,9 +120,15 @@ def sqrt(a: Numeric) -> Decimal:
 
 
 def _env_secret_key(service: str, username: str) -> str:
-    """Return the environment variable key for a given ``service`` and ``username``."""
+    """Return a normalized environment variable key for ``service`` and ``username``."""
 
-    safe = re.sub(r"\W+", "_", f"{service}_{username}").upper()
+    raw = f"{service}_{username}"
+    sanitized = re.sub(r"\W", "_", raw)
+    if sanitized.strip("_"):
+        sanitized = sanitized.lstrip("_")
+    else:
+        sanitized = "IDENTIFIER"
+    safe = sanitized.upper()
     return f"GABRIEL_SECRET_{safe}"
 
 

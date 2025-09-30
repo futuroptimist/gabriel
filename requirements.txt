@@ -8,3 +8,4 @@ mypy
 pip-audit
 pyspelling
 keyring
+hypothesis
