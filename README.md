@@ -95,6 +95,12 @@ For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
 For storing secrets in the system keyring, see
 [docs/gabriel/SECRET_STORAGE.md](docs/gabriel/SECRET_STORAGE.md).
 
+### Docker builds
+
+The repository ships with a `.dockerignore` file that trims the build context by excluding
+documentation, tests, and other developer-only artifacts. This keeps local Docker builds fast
+and reduces the chance of copying unintended files into the runtime image.
+
 ### Runbook & 3D Viewer
 
 This repo now mirrors flywheel's development helpers. `runbook.yml` lists

@@ -1,0 +1,42 @@
+# Exclude version control metadata
+.git
+.gitignore
+.gitattributes
+.github/
+
+# Exclude development and test artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+*.log
+*.coverage
+coverage*
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+.tox/
+.nox/
+.cache/
+
+# Exclude virtual environments and local tooling
+.venv/
+.env
+.envrc
+
+# Exclude documentation and examples not required for runtime image
+/docs/
+/tests/
+/viewer/
+/outages/
+/dict/
+
+# Ignore local editor and IDE settings
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Ignore miscellaneous files
+.DS_Store
+Thumbs.db
