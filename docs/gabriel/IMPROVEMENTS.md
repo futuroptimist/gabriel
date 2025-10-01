@@ -126,7 +126,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [x] Add `.editorconfig` for consistent editor formatting
       (`.editorconfig`). *Aligns with flywheel best practices.*
-- [ ] Create `.dockerignore` to reduce Docker build context
+- [x] Create `.dockerignore` to reduce Docker build context
       (`.dockerignore`, `docker/Dockerfile`). *Aligns with flywheel best practices.*
 - [ ] Split arithmetic and secret helpers into dedicated modules
       (`gabriel/utils.py`, `tests/test_utils.py`).
