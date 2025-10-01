@@ -13,7 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def test_setup_script_exists_and_is_executable() -> None:
     script = REPO_ROOT / "scripts" / "setup.sh"
-    assert script.exists(), "scripts/setup.sh should exist to satisfy runbook instructions"  # nosec B101
+    assert script.exists(), "scripts/setup.sh required by runbook"  # nosec B101
     mode = script.stat().st_mode
     assert mode & stat.S_IXUSR, "scripts/setup.sh must be executable"  # nosec B101
 
