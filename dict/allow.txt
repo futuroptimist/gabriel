@@ -233,3 +233,8 @@ Misbuilt
 deployable
 TODOs
 docstrings
+alice
+scrollback
+stdin
+stdout
+TTY

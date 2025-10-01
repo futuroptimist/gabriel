@@ -237,7 +237,7 @@ def test_cli_secret_store_get_delete(capsys):
 
     main(["secret", "get", "svc", "user"])
     get_output = capsys.readouterr().out.strip()
-    assert (
+    assert (  # nosec B101
         get_output
         == "Secret successfully retrieved. (Value not displayed for security reasons.)"
     )
