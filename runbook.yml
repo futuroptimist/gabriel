@@ -3,9 +3,9 @@ workflow:
   - stage: bootstrap
     tasks:
       - id: clone
-        description: "Use the GitHub template and run ./scripts/setup.sh"
-      - id: install
-        description: "Install pre-commit and hooks"
+        description: "Use the GitHub template to create a new repository"
+      - id: setup
+        description: "Run ./scripts/setup.sh to create the virtualenv and install hooks"
   - stage: development
     tasks:
       - id: lint
