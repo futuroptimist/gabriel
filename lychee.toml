@@ -1,0 +1,25 @@
+# Link checking configuration for lychee.
+# Ensures consistent behavior between local pre-commit runs and CI.
+no_progress = true
+verbose = "warn"
+cache = true
+max_cache_age = "1d"
+max_retries = 2
+retry_wait_time = 2
+max_redirects = 10
+max_concurrency = 16
+timeout = 20
+include_fragments = true
+
+# Ignore non-HTTP schemes that are expected in documentation.
+exclude = [
+    "^mailto:",
+    "^tel:",
+    "^geo:",
+    "^sms:",
+]
+
+# Skip generated or instruction templates that intentionally include placeholder links.
+exclude_path = [
+    "^docs/prompts/",
+]

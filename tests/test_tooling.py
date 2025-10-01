@@ -1,0 +1,33 @@
+"""Regression tests for repository tooling configuration."""
+
+from __future__ import annotations
+
+from importlib import import_module
+from pathlib import Path
+from typing import Any
+
+
+def _load_toml_module() -> Any:
+    try:
+        return import_module("tomllib")
+    except ModuleNotFoundError:  # pragma: no cover - only triggered on Python 3.10
+        return import_module("tomli")
+
+
+toml_loader = _load_toml_module()
+
+
+def test_lychee_configuration_exists_and_excludes_prompts() -> None:
+    """Ensure the markdown link checker configuration is present and scoped appropriately."""
+
+    config_path = Path("lychee.toml")
+    assert config_path.exists(), "Expected lychee.toml to exist"  # nosec B101
+
+    content = config_path.read_text(encoding="utf-8")
+    data = toml_loader.loads(content)
+
+    assert data.get("no_progress") is True  # nosec B101
+    assert "^docs/prompts/" in data.get(
+        "exclude_path", []
+    ), "docs prompts should be excluded"  # nosec B101
+    assert "^mailto:" in data.get("exclude", []), "mailto links should remain ignored"  # nosec B101

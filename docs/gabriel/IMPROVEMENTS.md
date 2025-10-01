@@ -58,7 +58,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Enforce minimum test coverage in CI using `--cov-fail-under`
       (`pyproject.toml`, `.github/workflows/coverage.yml`).
       *Aligns with flywheel best practices.*
-- [ ] Add markdown link checker to pre-commit and CI to prevent stale references
+- [x] Add markdown link checker to pre-commit and CI to prevent stale references
       (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
       *Aligns with flywheel best practices.*
 - [ ] Add ESLint to pre-commit for viewer JavaScript
