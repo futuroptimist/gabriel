@@ -279,7 +279,7 @@ def main(argv: list[str] | None = None) -> None:
             retrieved = get_secret(args.service, args.username)
             if retrieved is None:
                 raise SystemExit("No secret stored for the requested service/user.")
-            print(retrieved)
+            print("Secret successfully retrieved. (Value not displayed for security reasons.)")
             return
         if args.secret_command == SECRET_CMD_DELETE:
             delete_secret(args.service, args.username)
