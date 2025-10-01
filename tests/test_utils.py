@@ -1,6 +1,8 @@
 import builtins
+import io
 import os
 import string
+import sys
 from decimal import Decimal
 
 import keyring
@@ -8,7 +10,6 @@ import pytest
 from hypothesis import assume, given, settings
 from hypothesis import strategies as st
 from keyring.backend import KeyringBackend
-
 
 from gabriel.utils import (
     _env_secret_key,
@@ -226,6 +227,59 @@ def test_cli_add(capsys):
 def test_cli_sqrt(capsys):
     main(["sqrt", "9"])
     assert capsys.readouterr().out.strip() == "3"  # nosec B101
+
+
+def test_cli_secret_store_get_delete(capsys):
+    keyring.set_keyring(InMemoryKeyring())
+
+    main(["secret", "store", "svc", "user", "--secret", "hunter2"])
+    assert capsys.readouterr().out.strip() == "Secret stored."  # nosec B101
+
+    main(["secret", "get", "svc", "user"])
+    assert capsys.readouterr().out.strip() == "hunter2"  # nosec B101
+
+    main(["secret", "delete", "svc", "user"])
+    assert capsys.readouterr().out.strip() == "Secret deleted."  # nosec B101
+    assert get_secret("svc", "user") is None  # nosec B101
+
+
+def test_cli_secret_get_missing():
+    keyring.set_keyring(InMemoryKeyring())
+
+    with pytest.raises(SystemExit) as excinfo:
+        main(["secret", "get", "svc", "user"])
+
+    assert excinfo.value.code == "No secret stored for the requested service/user."  # nosec B101
+
+
+def test_cli_secret_store_reads_stdin(monkeypatch, capsys):
+    keyring.set_keyring(InMemoryKeyring())
+
+    class FakeInput(io.StringIO):
+        def isatty(self) -> bool:  # noqa: D401 - simple shim
+            return False
+
+    fake_stdin = FakeInput("vault-value\n")
+    monkeypatch.setattr(sys, "stdin", fake_stdin)
+
+    main(["secret", "store", "svc", "user"])
+    assert capsys.readouterr().out.strip() == "Secret stored."  # nosec B101
+    assert get_secret("svc", "user") == "vault-value"  # nosec B101
+
+
+def test_cli_secret_store_requires_input(monkeypatch):
+    keyring.set_keyring(InMemoryKeyring())
+
+    class FakeInput(io.StringIO):
+        def isatty(self) -> bool:  # noqa: D401 - simple shim
+            return False
+
+    monkeypatch.setattr(sys, "stdin", FakeInput(""))
+
+    with pytest.raises(SystemExit) as excinfo:
+        main(["secret", "store", "svc", "user"])
+
+    assert excinfo.value.code == "No secret data received from stdin."  # nosec B101
 
 
 def test_env_secret_key_fallback_identifier():
