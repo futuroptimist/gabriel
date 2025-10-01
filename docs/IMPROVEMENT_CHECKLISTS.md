@@ -61,9 +61,9 @@ See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 - [ ] Review third-party plugins for security issues before enabling them.
 
 ## Syncthing
-- [ ] Serve GUI over HTTPS via reverse proxy ([docs](https://docs.syncthing.net/users/https.html)).
+- [ ] Serve GUI over HTTPS via reverse proxy ([docs](https://docs.syncthing.net/users/reverseproxy.html)).
 - [ ] Disable global discovery and relays on trusted networks
-  ([docs](https://docs.syncthing.net/users/discovery.html)).
+  ([docs](https://docs.syncthing.net/users/stdiscosrv.html)).
 - [ ] Audit IDs and remove unknown connections ([repo](https://github.com/syncthing/syncthing)).
 
 ## VaultWarden

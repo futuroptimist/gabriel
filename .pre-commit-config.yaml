@@ -42,3 +42,11 @@ repos:
     hooks:
       - id: detect-secrets
         args: ['--baseline', '.secrets.baseline']
+  - repo: local
+    hooks:
+      - id: markdown-link-check
+        name: Markdown link checker
+        entry: python scripts/run_lychee.py
+        language: system
+        pass_filenames: false
+        files: ".*\\.(md|MD)$"
