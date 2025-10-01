@@ -7,7 +7,6 @@ import argparse
 import os
 import shutil
 import subprocess  # nosec B404
-import sys
 from pathlib import Path
 
 LYCHEE_VERSION = "0.15.1"
