@@ -236,7 +236,13 @@ def test_cli_secret_store_get_delete(capsys):
     assert capsys.readouterr().out.strip() == "Secret stored."  # nosec B101
 
     main(["secret", "get", "svc", "user"])
-    assert capsys.readouterr().out.strip() == "hunter2"  # nosec B101
+    get_output = capsys.readouterr().out.strip()
+    assert (
+        get_output
+        == "Secret successfully retrieved. (Value not displayed for security reasons.)"
+    )
+    assert "hunter2" not in get_output  # nosec B101
+    assert get_secret("svc", "user") == "hunter2"  # nosec B101
 
     main(["secret", "delete", "svc", "user"])
     assert capsys.readouterr().out.strip() == "Secret deleted."  # nosec B101

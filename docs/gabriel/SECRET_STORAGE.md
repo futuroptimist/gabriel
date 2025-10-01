@@ -45,8 +45,12 @@ secrets without writing custom scripts:
 ```bash
 gabriel secret store "gabriel" sample-user --secret "my-token"
 gabriel secret get "gabriel" sample-user
+# Secret successfully retrieved. (Value not displayed for security reasons.)
 gabriel secret delete "gabriel" sample-user
 ```
 
 When a secret value is not provided via `--secret`, the command accepts input
 from stdin (e.g. `printf` pipelines) or falls back to an interactive prompt.
+The retrieval subcommand deliberately omits the secret value from stdout so that
+logs and terminal scrollback do not expose it. Retrieve the secret in scripts
+with `gabriel.utils.get_secret` if you need to process the value directly.

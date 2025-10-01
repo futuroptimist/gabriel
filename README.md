@@ -93,11 +93,14 @@ Manage encrypted secrets via the same CLI:
 ```bash
 gabriel secret store my-service alice --secret "super-secret-value"
 gabriel secret get my-service alice
+# Secret successfully retrieved. (Value not displayed for security reasons.)
 gabriel secret delete my-service alice
 ```
 
 If you omit `--secret`, the command reads from standard input or securely prompts
-when attached to a TTY.
+when attached to a TTY. The retrieval command intentionally avoids printing the
+stored value so it cannot leak via logs; use ``python -c "from gabriel.utils import
+get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access.
 
 ### Offline Usage
 
