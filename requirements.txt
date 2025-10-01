@@ -9,3 +9,4 @@ pip-audit
 pyspelling
 keyring
 hypothesis
+tomli
