@@ -31,16 +31,21 @@ This modular structure keeps responsibilities clear and allows future extensions
 
 ## Getting Started
 
-Gabriel requires Python 3.10 or later. Clone the repository and install dependencies:
+Gabriel requires Python 3.10 or later. Clone the repository and run the bootstrap
+script to provision a virtual environment, install dependencies, and configure
+pre-commit hooks:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-uv pip install -r requirements.txt
-pre-commit install
+./scripts/setup.sh
 ```
 
-Run `pytest` with coverage enabled:
+Preview the actions without making changes via the `--dry-run` flag:
+
+```bash
+./scripts/setup.sh --dry-run
+```
+
+Activate the environment and run `pytest` with coverage enabled:
 
 ```bash
 python -m pytest --cov=gabriel --cov-report=term-missing

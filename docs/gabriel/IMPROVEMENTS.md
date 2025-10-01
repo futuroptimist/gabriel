@@ -49,7 +49,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Add Python version matrix in CI to test against 3.10 and 3.11
       (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
       *Aligns with flywheel best practices.*
-- [ ] Create setup script referenced in `runbook.yml` for developer onboarding
+- [x] Create setup script referenced in `runbook.yml` for developer onboarding
       (`runbook.yml`, `scripts/setup.sh`).
 - [ ] Scan for zero-width characters and hidden text via pre-commit hook
       (`.pre-commit-config.yaml`, `docs/gabriel/THREAT_MODEL.md`).

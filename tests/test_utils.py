@@ -9,7 +9,6 @@ from hypothesis import assume, given, settings
 from hypothesis import strategies as st
 from keyring.backend import KeyringBackend
 
-
 from gabriel.utils import (
     _env_secret_key,
     add,
