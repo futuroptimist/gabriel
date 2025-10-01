@@ -1,6 +1,8 @@
 import argparse
+import getpass
 import os
 import re
+import sys
 from decimal import ROUND_FLOOR, Decimal, InvalidOperation, localcontext
 
 """Utility helpers for arithmetic operations and secret management."""
@@ -188,15 +190,36 @@ def delete_secret(service: str, username: str) -> None:
         keyring.delete_password(service, username)
 
 
+def _read_secret_from_input(provided: str | None) -> str:
+    """Return a secret value from ``provided`` or interactively when ``None``."""
+
+    if provided is not None:
+        return provided
+
+    if not sys.stdin.isatty():
+        value = sys.stdin.read().rstrip("\n")
+        if value:
+            return value
+        raise SystemExit("No secret data received from stdin.")
+
+    return getpass.getpass("Secret: ")  # pragma: no cover - interactive prompt
+
+
+SECRET_CMD_STORE = "store"  # nosec B105 - CLI command name  # pragma: allowlist secret
+SECRET_CMD_GET = "get"  # nosec B105 - CLI command name  # pragma: allowlist secret
+SECRET_CMD_DELETE = "delete"  # nosec B105 - CLI command name  # pragma: allowlist secret
+
+
 def main(argv: list[str] | None = None) -> None:
-    """Run arithmetic helpers from the command line.
+    """Run arithmetic and secret management helpers from the command line.
 
     Parameters
     ----------
     argv:
         Optional list of arguments to parse instead of ``sys.argv``.
     """
-    parser = argparse.ArgumentParser(description="Gabriel arithmetic utilities")
+
+    parser = argparse.ArgumentParser(description="Gabriel utilities")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     def add_binary(name: str) -> None:
@@ -209,6 +232,26 @@ def main(argv: list[str] | None = None) -> None:
 
     sqrt_parser = subparsers.add_parser("sqrt")
     sqrt_parser.add_argument("a", type=Decimal)
+
+    secret_parser = subparsers.add_parser("secret", help="Manage stored secrets")
+    secret_subparsers = secret_parser.add_subparsers(dest="secret_command", required=True)
+
+    secret_store = secret_subparsers.add_parser(SECRET_CMD_STORE, help="Store a secret value")
+    secret_store.add_argument("service", help="Service identifier for the secret")
+    secret_store.add_argument("username", help="Username associated with the secret")
+    secret_store.add_argument(
+        "--secret",
+        dest="secret",
+        help="Secret value; reads from stdin or prompts when omitted",
+    )
+
+    secret_get = secret_subparsers.add_parser(SECRET_CMD_GET, help="Retrieve a stored secret")
+    secret_get.add_argument("service")
+    secret_get.add_argument("username")
+
+    secret_delete = secret_subparsers.add_parser(SECRET_CMD_DELETE, help="Delete a stored secret")
+    secret_delete.add_argument("service")
+    secret_delete.add_argument("username")
 
     args = parser.parse_args(argv)
 
@@ -223,11 +266,28 @@ def main(argv: list[str] | None = None) -> None:
     }
 
     if args.command == "sqrt":
-        result = sqrt(args.a)
-    else:
-        result = funcs[args.command](args.a, args.b)
+        print(sqrt(args.a))
+        return
 
-    print(result)
+    if args.command == "secret":
+        if args.secret_command == SECRET_CMD_STORE:
+            secret_value = _read_secret_from_input(args.secret)
+            store_secret(args.service, args.username, secret_value)
+            print("Secret stored.")
+            return
+        if args.secret_command == SECRET_CMD_GET:
+            retrieved = get_secret(args.service, args.username)
+            if retrieved is None:
+                raise SystemExit("No secret stored for the requested service/user.")
+            print("Secret successfully retrieved. (Value not displayed for security reasons.)")
+            return
+        if args.secret_command == SECRET_CMD_DELETE:
+            delete_secret(args.service, args.username)
+            print("Secret deleted.")
+            return
+        raise SystemExit("Unknown secret command.")  # pragma: no cover - argparse guards choices
+
+    print(funcs[args.command](args.a, args.b))
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry point
