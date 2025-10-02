@@ -1,6 +1,6 @@
 ---
 title: 'Implement Mentioned Feature Prompt'
-slug: 'codex-implement-feature'
+slug: 'codex-implement'
 ---
 
 # Implement Mentioned Feature Prompt

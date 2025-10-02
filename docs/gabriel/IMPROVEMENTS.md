@@ -27,7 +27,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Add CLI entry points for secret management (`pyproject.toml`, `gabriel/utils.py`).
 - [x] Implement `floordiv` helper with test coverage (`gabriel/utils.py`,
       `tests/test_utils.py`).
-- [ ] Integrate `ruff` linter into pre-commit and CI (`.pre-commit-config.yaml`,
+- [x] Integrate `ruff` linter into pre-commit and CI (`.pre-commit-config.yaml`,
       `.github/workflows/ci.yml`). *Aligns with flywheel best practices.*
 - [x] Add CodeQL workflow for static application security testing
       (`.github/workflows/codeql.yml`). *Aligns with flywheel best practices.*
