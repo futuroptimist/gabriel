@@ -5,7 +5,8 @@ from __future__ import annotations
 from decimal import Decimal
 
 import pytest
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from gabriel.arithmetic import (
     add,
@@ -29,7 +30,7 @@ def test_add_floats() -> None:
 
 def test_add_invalid_type() -> None:
     with pytest.raises(TypeError):
-        add("1", 2)
+        add("1", 2)  # type: ignore[arg-type]
 
 
 def test_subtract() -> None:

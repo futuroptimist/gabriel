@@ -8,13 +8,14 @@ import os
 import string
 import sys
 
-import gabriel.utils as utils_module
 import keyring
 import pytest
-from hypothesis import assume, given, settings, strategies as st
+from hypothesis import assume, given, settings
+from hypothesis import strategies as st
 from keyring.backend import KeyringBackend
 
-from gabriel.secrets import delete_secret, get_secret, store_secret, _env_secret_key
+import gabriel.utils as utils_module
+from gabriel.secrets import _env_secret_key, delete_secret, get_secret, store_secret
 from gabriel.utils import main
 
 
@@ -63,8 +64,7 @@ def test_cli_secret_store_get_delete(capsys: pytest.CaptureFixture[str]) -> None
     main(["secret", "get", "svc", "user"])
     get_output = capsys.readouterr().out.strip()
     assert (
-        get_output
-        == "Secret successfully retrieved. (Value not displayed for security reasons.)"
+        get_output == "Secret successfully retrieved. (Value not displayed for security reasons.)"
     )  # nosec B101
     assert "hunter2" not in get_output  # nosec B101
     assert get_secret("svc", "user") == "hunter2"  # nosec B101

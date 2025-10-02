@@ -39,3 +39,9 @@ This FAQ lists questions we have for the maintainers and community. Answers will
    - Treat code, documentation, and dependencies as untrusted; review automated changes and run security scans before executing them.
 
 Feel free to extend this list with additional questions or provide answers in follow-up pull requests.
+
+18. **Can I run Gabriel entirely inside Docker?**
+   - Yes. Build the image with `docker build -t gabriel .` and run commands such as
+     `docker run --rm -it gabriel gabriel-calc add 2 3`. Mount volumes or supply `--env-file`
+     when secrets or configuration should persist between runs. See the README's *Docker builds*
+     section for more recipes.
