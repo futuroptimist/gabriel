@@ -64,6 +64,13 @@ make lint  # run pre-commit checks
 make test  # run the test suite with coverage
 ```
 
+Ruff powers the lightweight linting layer used in both pre-commit hooks and CI. Run it directly
+when iterating on lint fixes:
+
+```bash
+ruff check .
+```
+
 Example usage of arithmetic helpers:
 
 These helpers accept both integers and floats and return `decimal.Decimal` results for
