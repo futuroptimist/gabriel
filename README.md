@@ -84,6 +84,10 @@ print(floordiv(7, 2))  # 3
 print(sqrt(9))  # 3
 ```
 
+The arithmetic helpers now live in `gabriel.arithmetic`, while secret management utilities
+reside in `gabriel.secrets`. Importing from `gabriel` continues to expose both families for
+backwards compatibility.
+
 Run the helpers from the command line (available as `gabriel` or `gabriel-calc`):
 
 ```bash
