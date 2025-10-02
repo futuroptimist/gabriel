@@ -128,7 +128,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.editorconfig`). *Aligns with flywheel best practices.*
 - [x] Create `.dockerignore` to reduce Docker build context
       (`.dockerignore`, `docker/Dockerfile`). *Aligns with flywheel best practices.*
-- [ ] Split arithmetic and secret helpers into dedicated modules
+- [x] Split arithmetic and secret helpers into dedicated modules
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Integrate `semgrep` static analysis into pre-commit and CI
       (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).

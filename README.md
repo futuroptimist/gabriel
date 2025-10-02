@@ -67,7 +67,8 @@ make test  # run the test suite with coverage
 Example usage of arithmetic helpers:
 
 These helpers accept both integers and floats and return `decimal.Decimal` results for
-improved precision.
+improved precision. The arithmetic helpers live in `gabriel.arithmetic` and are re-exported at
+package import time for backwards compatibility.
 
 ```python
 from decimal import Decimal
@@ -93,7 +94,8 @@ gabriel-calc divide 1 3
 # 0.3333333333333333333333333333
 ```
 
-Manage encrypted secrets via the same CLI:
+Manage encrypted secrets via the same CLI. Programmatic secret helpers are located in
+`gabriel.secrets` and continue to be exposed through `gabriel.utils` for existing callers:
 
 ```bash
 gabriel secret store my-service alice --secret "super-secret-value"

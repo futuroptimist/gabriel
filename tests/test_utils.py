@@ -11,21 +11,25 @@ from hypothesis import assume, given, settings
 from hypothesis import strategies as st
 from keyring.backend import KeyringBackend
 
-from gabriel.utils import (
-    _env_secret_key,
+from gabriel import add as package_add
+from gabriel.arithmetic import (
     add,
-    delete_secret,
     divide,
     floordiv,
-    get_secret,
-    main,
     modulo,
     multiply,
     power,
     sqrt,
-    store_secret,
     subtract,
 )
+from gabriel.secrets import _env_secret_key, delete_secret, get_secret, store_secret
+from gabriel.utils import add as utils_add
+from gabriel.utils import main
+
+
+def test_add_reexports_match_modules():
+    assert utils_add is add  # nosec B101
+    assert package_add is add  # nosec B101
 
 
 def test_add():
@@ -238,8 +242,7 @@ def test_cli_secret_store_get_delete(capsys):
     main(["secret", "get", "svc", "user"])
     get_output = capsys.readouterr().out.strip()
     assert (  # nosec B101
-        get_output
-        == "Secret successfully retrieved. (Value not displayed for security reasons.)"
+        get_output == "Secret successfully retrieved. (Value not displayed for security reasons.)"
     )
     assert "hunter2" not in get_output  # nosec B101
     assert get_secret("svc", "user") == "hunter2"  # nosec B101

@@ -1,18 +1,7 @@
 """Core utilities for the Gabriel project."""
 
-from .utils import (
-    add,
-    delete_secret,
-    divide,
-    floordiv,
-    get_secret,
-    modulo,
-    multiply,
-    power,
-    sqrt,
-    store_secret,
-    subtract,
-)
+from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
+from .secrets import delete_secret, get_secret, store_secret
 
 __all__ = [
     "add",
