@@ -138,7 +138,7 @@ supported by the Docker base image.
 
 #### Run Gabriel commands inside Docker
 
-Invoke CLI helpers directly via `docker run`. The default entrypoint exposes the Python
+Invoke CLI helpers directly via `docker run`. The default entry point exposes the Python
 interpreter, so provide the command you wish to execute.
 
 ```bash

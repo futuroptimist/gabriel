@@ -43,5 +43,5 @@ Feel free to extend this list with additional questions or provide answers in fo
 18. **Can I run Gabriel entirely inside Docker?**
    - Yes. Build the image with `docker build -t gabriel .` and run commands such as
      `docker run --rm -it gabriel gabriel-calc add 2 3`. Mount volumes or supply `--env-file`
-     when secrets or configuration should persist between runs. See the README's *Docker builds*
-     section for more recipes.
+     when secrets or configuration should persist between runs. See the README section
+     titled *Docker builds* for more recipes.
