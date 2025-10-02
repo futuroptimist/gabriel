@@ -83,7 +83,7 @@ def test_normalize_allow_value_unknown_name() -> None:
 
 
 def test_character_name_uses_unicodedata() -> None:
-    assert _character_name('A') == 'LATIN CAPITAL LETTER A'  # nosec B101
+    assert _character_name("A") == "LATIN CAPITAL LETTER A"  # nosec B101
 
 
 def test_iter_hidden_characters_handles_carriage_return() -> None:
@@ -116,4 +116,4 @@ def test_main_errors_on_invalid_allow(capsys: pytest.CaptureFixture[str]) -> Non
     assert "invalid literal" in captured.err  # nosec B101
 
 
-__all__ = []
+__all__: list[str] = []

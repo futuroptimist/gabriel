@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
-from pathlib import Path
 import sys
 import unicodedata
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Iterable, Iterator, Sequence
 
 _MONITORED_CHARACTERS: dict[str, str] = {
@@ -104,7 +104,9 @@ def iter_hidden_characters(
             column += 1
 
 
-def find_hidden_characters(text: str, *, allow: Iterable[str] | None = None) -> list[HiddenCharacter]:
+def find_hidden_characters(
+    text: str, *, allow: Iterable[str] | None = None
+) -> list[HiddenCharacter]:
     """Return a list of :class:`HiddenCharacter` items present in ``text``."""
 
     return list(iter_hidden_characters(text, allow=allow))
