@@ -50,3 +50,9 @@ repos:
         language: system
         pass_filenames: false
         files: ".*\\.(md|MD)$"
+      - id: hidden-text-scan
+        name: Hidden text scanner
+        entry: python -m gabriel.text
+        language: system
+        types: [text]
+        require_serial: true
