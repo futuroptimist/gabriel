@@ -94,7 +94,7 @@ def test_iter_hidden_characters_handles_carriage_return() -> None:
 
 def test_scan_path_handles_decode_errors(tmp_path: Path) -> None:
     file_path = tmp_path / "mixed.txt"
-    data = f"value{ZWSP}".encode("utf-8") + b"\xff"
+    data = f"value{ZWSP}".encode() + b"\xff"
     file_path.write_bytes(data)
     findings = scan_paths([file_path])[file_path]
     assert findings[0].character == ZWSP  # nosec B101

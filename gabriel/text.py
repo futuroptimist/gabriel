@@ -5,9 +5,9 @@ from __future__ import annotations
 import argparse
 import sys
 import unicodedata
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Iterator, Sequence
 
 _MONITORED_CHARACTERS: dict[str, str] = {
     "\u200b": "ZERO WIDTH SPACE",
