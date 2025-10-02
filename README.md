@@ -131,6 +131,39 @@ The repository ships with a `.dockerignore` file that trims the build context by
 documentation, tests, and other developer-only artifacts. This keeps local Docker builds fast
 and reduces the chance of copying unintended files into the runtime image.
 
+#### Build the image locally
+
+Use the root `Dockerfile` to produce an image tagged `gabriel`. The build only needs the
+repository checkout; dependencies are installed within the container.
+
+```bash
+docker build -t gabriel .
+```
+
+Pass `--build-arg PYTHON_VERSION=3.11` to experiment with alternate Python releases that remain
+supported by the Docker base image.
+
+#### Run Gabriel commands inside Docker
+
+Invoke CLI helpers directly via `docker run`. The default entry point exposes the Python
+interpreter, so provide the command you wish to execute.
+
+```bash
+docker run --rm -it gabriel gabriel-calc add 2 3
+docker run --rm -it gabriel gabriel secret store my-service alice --secret my-value
+```
+
+Mount a host directory when commands need to read or persist data:
+
+```bash
+docker run --rm -it -v "$(pwd)/secrets:/app/secrets" \
+  -e GABRIEL_SECRET_DIR=/app/secrets \
+  gabriel gabriel secret store vault bob
+```
+
+Running in detached mode (`-d`) allows long-lived tasks such as scheduled scans. Combine with
+`--env-file` to load configuration managed outside the container.
+
 ### Runbook & 3D Viewer
 
 This repo now mirrors flywheel's development helpers. `runbook.yml` lists
