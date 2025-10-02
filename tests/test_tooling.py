@@ -31,3 +31,18 @@ def test_lychee_configuration_exists_and_excludes_prompts() -> None:
         "exclude_path", []
     ), "docs prompts should be excluded"  # nosec B101
     assert "^mailto:" in data.get("exclude", []), "mailto links should remain ignored"  # nosec B101
+
+
+def test_pre_commit_configuration_runs_ruff() -> None:
+    """Verify ruff linting is enforced via pre-commit."""
+
+    config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
+    assert "https://github.com/astral-sh/ruff-pre-commit" in config  # nosec B101
+    assert "- id: ruff" in config  # nosec B101
+
+
+def test_ci_workflow_runs_ruff() -> None:
+    """Ensure the CI workflow executes ruff checks."""
+
+    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    assert "ruff check" in workflow  # nosec B101
