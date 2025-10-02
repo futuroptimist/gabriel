@@ -10,6 +10,7 @@ coverage.xml
 .pytest_cache/
 .hypothesis/
 .lycheecache/
+.lycheecache
 
 # Virtual environments
 .venv/

@@ -1,6 +1,6 @@
 ---
 title: 'Implement Mentioned Feature Prompt'
-slug: 'codex-implement-mentioned-feature'
+slug: 'codex-implement-feature'
 ---
 
 # Implement Mentioned Feature Prompt
@@ -55,7 +55,7 @@ Ensure `pre-commit run --all-files` and `pytest --cov=gabriel --cov-report=term-
 pass before committing.
 
 USER:
-1. Review `docs/prompts/codex/implement-mentioned-feature.md` for accuracy and clarity.
+1. Review `docs/prompts/codex/implement.md` for accuracy and clarity.
 2. Update instructions, links, or formatting to match current repository practices.
 3. Verify examples and command references remain valid.
 4. Update related prompt indexes (e.g., docs/prompts/codex/README.md) if the summary changes.
