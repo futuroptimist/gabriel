@@ -57,6 +57,12 @@ Spell check documentation:
 pyspelling -c .spellcheck.yaml
 ```
 
+Scan for hidden zero-width characters:
+
+```bash
+python -m gabriel.text README.md
+```
+
 Common tasks are available via the `Makefile`:
 
 ```bash
