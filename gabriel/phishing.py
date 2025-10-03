@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import ipaddress
 import re
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from difflib import SequenceMatcher
-from typing import Final, Iterable, Iterator
+from functools import lru_cache
+from typing import Final
 from urllib.parse import urlparse
+
+from publicsuffix2 import get_sld
 
 _SUSPICIOUS_TLDS: Final[frozenset[str]] = frozenset(
     {
@@ -54,6 +58,23 @@ def extract_urls(text: str) -> list[str]:
 
 def _iter_domain_labels(hostname: str) -> Iterator[str]:
     return (label for label in hostname.split(".") if label)
+
+
+@lru_cache(maxsize=4096)
+def _registrable_domain_for(hostname: str) -> str:
+    """Return the registrable domain for ``hostname`` using public suffix data."""
+
+    if not hostname:
+        return ""
+
+    registrable = get_sld(hostname)
+    if registrable and "." in registrable:
+        return registrable
+
+    labels = list(_iter_domain_labels(hostname))
+    if len(labels) >= 2:
+        return f"{labels[-2]}.{labels[-1]}"
+    return hostname
 
 
 def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[PhishingFinding]:
@@ -120,9 +141,7 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
                 )
             )
 
-        registrable_domain = hostname
-        if len(labels) >= 2:
-            registrable_domain = f"{labels[-2]}.{labels[-1]}"
+        registrable_domain = _registrable_domain_for(hostname)
 
         if known_domains:
             for known in known_domains:

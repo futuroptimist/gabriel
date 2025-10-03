@@ -6,6 +6,7 @@ import pytest
 
 from gabriel.phishing import (
     PhishingFinding,
+    _registrable_domain_for,
     analyze_text_for_phishing,
     analyze_url,
     extract_urls,
@@ -37,7 +38,7 @@ def _indicator_set(findings: list[PhishingFinding]) -> set[str]:
 
 
 def test_analyze_url_detects_multiple_indicators() -> None:
-    url = "http://user:pass@xn--phish-cta.com/login"
+    url = "http://user:pass@xn--phish-cta.com/login"  # pragma: allowlist secret
     findings = analyze_url(url, known_domains=["phish.com"])
     indicators = _indicator_set(findings)
     assert indicators >= {  # nosec B101
@@ -54,7 +55,9 @@ def test_analyze_url_flags_ip_hosts_and_suspicious_tlds() -> None:
     indicators = _indicator_set(findings)
     assert "insecure-scheme" in indicators  # nosec B101
     assert "suspicious-tld" in indicators  # nosec B101
-    assert "ip-address-host" not in indicators  # hostname contains dots but is not raw IP  # nosec B101
+    assert (
+        "ip-address-host" not in indicators
+    )  # hostname contains dots but is not raw IP  # nosec B101
 
 
 def test_analyze_url_flags_exact_ip_address() -> None:
@@ -73,9 +76,23 @@ def test_analyze_url_detects_lookalike_domains() -> None:
     assert finding.severity == "high"  # nosec B101
 
 
+def test_analyze_url_detects_lookalike_domains_with_multi_label_suffix() -> None:
+    url = "https://accounts.examp1e.co.uk"
+    findings = analyze_url(url, known_domains=["example.co.uk"])
+    indicators = _indicator_set(findings)
+    assert "lookalike-domain" in indicators  # nosec B101
+
+
 def test_analyze_url_ignores_legitimate_subdomain() -> None:
     url = "https://support.example.com"
     findings = analyze_url(url, known_domains=["", "example.com"])
+    indicators = _indicator_set(findings)
+    assert "lookalike-domain" not in indicators  # nosec B101
+
+
+def test_analyze_url_ignores_legitimate_multi_label_suffix_subdomain() -> None:
+    url = "https://support.example.co.uk"
+    findings = analyze_url(url, known_domains=["example.co.uk"])
     indicators = _indicator_set(findings)
     assert "lookalike-domain" not in indicators  # nosec B101
 
@@ -103,3 +120,11 @@ def test_analyze_url_handles_missing_hostname() -> None:
 
 def test_analyze_url_handles_single_label_hosts() -> None:
     assert analyze_url("https://localhost") == []  # nosec B101
+
+
+def test_registrable_domain_for_handles_empty_hostname() -> None:
+    assert _registrable_domain_for("") == ""  # nosec B101
+
+
+def test_registrable_domain_for_fallback_when_suffix_unknown() -> None:
+    assert _registrable_domain_for("internal.service.internal") == "service.internal"  # nosec B101
