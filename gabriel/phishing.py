@@ -73,8 +73,23 @@ def _registrable_domain_for(hostname: str) -> str:
 
     labels = list(_iter_domain_labels(hostname))
     if len(labels) >= 2:
-        return f"{labels[-2]}.{labels[-1]}"
-    return hostname
+        return ".".join(labels[-2:])
+    if labels:
+        return labels[0]
+    return ""
+
+
+def _split_registrable_domain(domain: str) -> tuple[str, str]:
+    """Split a registrable domain into its label and suffix components."""
+
+    if not domain:
+        return "", ""
+
+    if "." not in domain:
+        return domain, ""
+
+    label, _, suffix = domain.partition(".")
+    return label, suffix
 
 
 def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[PhishingFinding]:
@@ -142,6 +157,7 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
             )
 
         registrable_domain = _registrable_domain_for(hostname)
+        registrable_label, registrable_suffix = _split_registrable_domain(registrable_domain)
 
         if known_domains:
             for known in known_domains:
@@ -150,8 +166,29 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
                     continue
                 if hostname == clean_known or hostname.endswith(f".{clean_known}"):
                     continue
-                ratio = SequenceMatcher(None, registrable_domain, clean_known).ratio()
-                if ratio >= 0.78 and registrable_domain != clean_known:
+                known_registrable = _registrable_domain_for(clean_known)
+                if not known_registrable:
+                    continue
+                if registrable_domain == known_registrable:
+                    continue
+
+                known_label, known_suffix = _split_registrable_domain(known_registrable)
+                label_ratio = 0.0
+                if registrable_label and known_label:
+                    label_ratio = SequenceMatcher(None, registrable_label, known_label).ratio()
+
+                base_ratio = SequenceMatcher(None, registrable_domain, known_registrable).ratio()
+                shared_suffix = registrable_suffix and (registrable_suffix == known_suffix)
+                label_overlap = False
+                if shared_suffix and registrable_label and known_label:
+                    label_overlap = (
+                        registrable_label.startswith(known_label)
+                        or registrable_label.endswith(known_label)
+                        or known_label.startswith(registrable_label)
+                        or known_label.endswith(registrable_label)
+                    )
+
+                if base_ratio >= 0.78 or (shared_suffix and label_ratio >= 0.78) or label_overlap:
                     findings.append(
                         PhishingFinding(
                             url=url,

@@ -83,6 +83,13 @@ def test_analyze_url_detects_lookalike_domains_with_multi_label_suffix() -> None
     assert "lookalike-domain" in indicators  # nosec B101
 
 
+def test_analyze_url_detects_suffix_preserving_brand_injection() -> None:
+    url = "https://bank-secure.co.uk"
+    findings = analyze_url(url, known_domains=["bank.co.uk"])
+    indicators = _indicator_set(findings)
+    assert "lookalike-domain" in indicators  # nosec B101
+
+
 def test_analyze_url_ignores_legitimate_subdomain() -> None:
     url = "https://support.example.com"
     findings = analyze_url(url, known_domains=["", "example.com"])
