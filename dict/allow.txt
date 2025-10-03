@@ -238,3 +238,6 @@ scrollback
 stdin
 stdout
 TTY
+TLDs
+examp1e
+punycode

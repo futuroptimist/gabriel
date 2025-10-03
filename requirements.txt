@@ -4,6 +4,7 @@ coverage
 coverage-badge
 pytest-cov
 detect-secrets
+publicsuffix2
 mypy
 pip-audit
 pyspelling

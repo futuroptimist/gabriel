@@ -27,7 +27,7 @@ The project is organized into four tentative modules:
 3. **Notification** – optional alerts or recommendations sent to the user.
 4. **User Interface** – CLI or lightweight UI for interacting with Gabriel.
 
-This modular structure keeps responsibilities clear and allows future extensions like phishing detection or network monitoring.
+This modular structure keeps responsibilities clear and allows future extensions like phishing detection or network monitoring. The new phishing heuristics below provide an early look at that roadmap item.
 
 ## Getting Started
 
@@ -127,6 +127,25 @@ If you omit `--secret`, the command reads from standard input or securely prompt
 when attached to a TTY. The retrieval command intentionally avoids printing the
 stored value so it cannot leak via logs; use ``python -c "from gabriel.utils import
 get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access.
+
+### Detect suspicious links
+
+Gabriel now ships with lightweight phishing detection heuristics for pasted text or
+email bodies. Supply known brand domains to catch close lookalikes.
+
+```python
+from gabriel import analyze_text_for_phishing
+
+message = "Click https://accounts.examp1e.com to verify your details."
+findings = analyze_text_for_phishing(message, known_domains=["example.com"])
+for finding in findings:
+    print(f"{finding.indicator}: {finding.message} ({finding.severity})")
+```
+
+The helper inspects each HTTP(S) link for punycode, suspicious top-level domains,
+embedded credentials, plaintext HTTP, IP-based hosts, and lookalikes of the supplied
+domains. Combine it with Gabriel's secret helpers to build secure intake pipelines
+for inbound phishing reports.
 
 ### Offline Usage
 

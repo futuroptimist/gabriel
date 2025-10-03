@@ -45,3 +45,7 @@ Feel free to extend this list with additional questions or provide answers in fo
      `docker run --rm -it gabriel gabriel-calc add 2 3`. Mount volumes or supply `--env-file`
      when secrets or configuration should persist between runs. See the README section
      titled *Docker builds* for more recipes.
+19. **Does Gabriel include phishing detection yet?**
+   - A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for
+     punycode, suspicious TLDs, HTTP usage, and lookalike domains. Extend it with
+     additional rules as the roadmap advances.

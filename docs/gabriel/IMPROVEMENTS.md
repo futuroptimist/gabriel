@@ -29,6 +29,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
       `tests/test_utils.py`).
 - [x] Integrate `ruff` linter into pre-commit and CI (`.pre-commit-config.yaml`,
       `.github/workflows/ci.yml`). *Aligns with flywheel best practices.*
+- [x] Prototype phishing detection heuristics for suspicious links
+      (`gabriel/phishing.py`, `tests/test_phishing.py`).
 - [x] Add CodeQL workflow for static application security testing
       (`.github/workflows/codeql.yml`). *Aligns with flywheel best practices.*
 - [x] Create `SECURITY.md` with vulnerability disclosure guidelines
