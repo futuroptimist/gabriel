@@ -46,3 +46,18 @@ def test_ci_workflow_runs_ruff() -> None:
 
     workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
     assert "ruff check" in workflow  # nosec B101
+
+
+def test_workflows_cover_supported_python_versions() -> None:
+    """Ensure CI pipelines exercise every supported Python runtime."""
+
+    from gabriel import SUPPORTED_PYTHON_VERSIONS
+
+    workflow_ci = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    workflow_coverage = Path(".github/workflows/coverage.yml").read_text(encoding="utf-8")
+
+    for version in SUPPORTED_PYTHON_VERSIONS:
+        assert version in workflow_ci, f"CI workflow missing Python {version}"  # nosec B101
+        assert (
+            version in workflow_coverage
+        ), f"Coverage workflow missing Python {version}"  # nosec B101
