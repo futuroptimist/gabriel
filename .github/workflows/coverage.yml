@@ -7,6 +7,9 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
     steps:
       - uses: actions/checkout@v3
       - name: Install spellcheck dictionaries
@@ -14,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: ${{ matrix.python-version }}
       - name: Install uv
         uses: astral-sh/setup-uv@v1
       - name: Install dependencies
@@ -29,7 +32,10 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Commit coverage badge
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: >-
+          matrix.python-version == '3.10' &&
+          github.event_name == 'push' &&
+          github.ref == 'refs/heads/main'
         uses: EndBug/add-and-commit@v9
         with:
           add: coverage.svg

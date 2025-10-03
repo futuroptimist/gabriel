@@ -46,7 +46,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/release-drafter.yml`). *Aligns with flywheel best practices.*
 - [x] Add `isort` to pre-commit for consistent import ordering
       (`.pre-commit-config.yaml`, `pyproject.toml`).
-- [ ] Add Python version matrix in CI to test against 3.10 and 3.11
+- [x] Add Python version matrix in CI to test against 3.10 and 3.11
       (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
       *Aligns with flywheel best practices.*
 - [x] Create setup script referenced in `runbook.yml` for developer onboarding
