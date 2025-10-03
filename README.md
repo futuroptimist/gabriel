@@ -77,6 +77,9 @@ when iterating on lint fixes:
 ruff check .
 ```
 
+Docstring conventions are enforced via ``flake8`` with the ``flake8-docstrings`` plugin. Run
+``flake8`` locally or rely on pre-commit to surface style issues early in development.
+
 Example usage of arithmetic helpers:
 
 These helpers accept both integers and floats and return `decimal.Decimal` results for

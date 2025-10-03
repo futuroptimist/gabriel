@@ -77,8 +77,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.pre-commit-config.yaml`).
 - [x] Add `CODEOWNERS` for clear code ownership (`.github/CODEOWNERS`).
       *Aligns with flywheel best practices.*
-- [ ] Integrate `flake8-docstrings` into pre-commit for docstring style checks
-      (`.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+- [x] Integrate `flake8-docstrings` into pre-commit for docstring style checks
+      (`.pre-commit-config.yaml`, `.flake8`). *Aligns with flywheel best practices.*
 - [ ] Test on Linux, macOS, and Windows in CI
       (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
 - [ ] Add markdown linting to pre-commit for doc style consistency

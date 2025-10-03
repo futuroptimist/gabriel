@@ -41,6 +41,22 @@ def test_pre_commit_configuration_runs_ruff() -> None:
     assert "- id: ruff" in config  # nosec B101
 
 
+def test_pre_commit_configuration_checks_docstrings() -> None:
+    """Ensure flake8 enforces docstring style guidance."""
+
+    config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
+    assert "- id: flake8" in config  # nosec B101
+    assert "flake8-docstrings" in config  # nosec B101
+
+
+def test_flake8_configuration_enables_docstring_rules() -> None:
+    """Confirm flake8 is configured to surface docstring violations."""
+
+    config = Path(".flake8").read_text(encoding="utf-8")
+    assert "extend-select = D" in config  # nosec B101
+    assert "tests/*.py: D100,D101,D102,D103,D104,D107" in config  # nosec B101
+
+
 def test_ci_workflow_runs_ruff() -> None:
     """Ensure the CI workflow executes ruff checks."""
 
