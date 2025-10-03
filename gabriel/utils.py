@@ -21,6 +21,8 @@ def main(argv: list[str] | None = None) -> None:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     def add_binary(name: str) -> None:
+        """Register a binary arithmetic command named ``name``."""
+
         sp = subparsers.add_parser(name)
         sp.add_argument("a", type=Decimal)
         sp.add_argument("b", type=Decimal)

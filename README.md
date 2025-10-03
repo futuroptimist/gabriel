@@ -31,9 +31,10 @@ This modular structure keeps responsibilities clear and allows future extensions
 
 ## Getting Started
 
-Gabriel requires Python 3.10 or later. Clone the repository and run the bootstrap
-script to provision a virtual environment, install dependencies, and configure
-pre-commit hooks:
+Gabriel requires Python 3.10 or later. Continuous integration pipelines exercise
+both Python 3.10 and 3.11 to keep compatibility tight. Clone the repository and
+run the bootstrap script to provision a virtual environment, install
+dependencies, and configure pre-commit hooks:
 
 ```bash
 ./scripts/setup.sh
@@ -76,6 +77,9 @@ when iterating on lint fixes:
 ```bash
 ruff check .
 ```
+
+Docstring conventions are enforced via ``flake8`` with the ``flake8-docstrings`` plugin. Run
+``flake8`` locally or rely on pre-commit to surface style issues early in development.
 
 Example usage of arithmetic helpers:
 

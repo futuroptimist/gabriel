@@ -11,6 +11,8 @@ from .phishing import (
 )
 from .secrets import delete_secret, get_secret, store_secret
 
+SUPPORTED_PYTHON_VERSIONS = ("3.10", "3.11")
+
 __all__ = [
     "add",
     "subtract",
@@ -27,4 +29,5 @@ __all__ = [
     "analyze_url",
     "analyze_text_for_phishing",
     "PhishingFinding",
+    "SUPPORTED_PYTHON_VERSIONS",
 ]

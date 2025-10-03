@@ -14,6 +14,8 @@ CONFIG_PATH = Path("lychee.toml")
 
 
 def _ensure_cargo_bin_on_path() -> None:
+    """Ensure Cargo's binary directory is available on ``PATH`` when present."""
+
     cargo_bin = Path.home() / ".cargo" / "bin"
     if not cargo_bin.exists():
         return
@@ -24,6 +26,8 @@ def _ensure_cargo_bin_on_path() -> None:
 
 
 def _ensure_lychee_installed() -> None:
+    """Install the ``lychee`` CLI when it is missing from the system."""
+
     _ensure_cargo_bin_on_path()
     if shutil.which("lychee"):
         return
@@ -49,12 +53,16 @@ def _ensure_lychee_installed() -> None:
 
 
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
+    """Parse command-line arguments for link checking."""
+
     parser = argparse.ArgumentParser(description="Run lychee with repository defaults")
     parser.add_argument("paths", nargs="*", help="Files or directories to scan")
     return parser.parse_args(argv)
 
 
 def _collect_targets(raw: list[str]) -> list[str]:
+    """Return canonical paths to scan, falling back to project defaults."""
+
     if raw:
         targets: list[str] = []
         for item in raw:
@@ -70,6 +78,8 @@ def _collect_targets(raw: list[str]) -> list[str]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Execute lychee with repository defaults and return the exit status."""
+
     args = _parse_args(argv)
     targets = _collect_targets(args.paths)
     if not targets:
