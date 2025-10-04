@@ -7,6 +7,7 @@ import pytest
 from gabriel.phishing import (
     PhishingFinding,
     _registrable_domain_for,
+    _split_registrable_domain,
     analyze_text_for_phishing,
     analyze_url,
     extract_urls,
@@ -135,3 +136,28 @@ def test_registrable_domain_for_handles_empty_hostname() -> None:
 
 def test_registrable_domain_for_fallback_when_suffix_unknown() -> None:
     assert _registrable_domain_for("internal.service.internal") == "service.internal"  # nosec B101
+
+
+def test_registrable_domain_for_handles_trailing_dot_and_empty_labels() -> None:
+    assert _registrable_domain_for("example.com.") == "example.com"  # nosec B101
+    assert _registrable_domain_for(".") == ""  # nosec B101
+
+
+def test_split_registrable_domain_handles_edge_cases() -> None:
+    assert _split_registrable_domain("") == ("", "")  # nosec B101
+    assert _split_registrable_domain("localhost") == ("localhost", "")  # nosec B101
+
+
+def test_analyze_url_skips_known_domains_without_registrable_label() -> None:
+    findings = analyze_url("https://example.org", known_domains=["."])
+    assert "lookalike-domain" not in _indicator_set(findings)  # nosec B101
+
+
+def test_analyze_url_skips_known_domain_with_trailing_dot() -> None:
+    findings = analyze_url("https://support.example.com", known_domains=["example.com."])
+    assert "lookalike-domain" not in _indicator_set(findings)  # nosec B101
+
+
+def test_analyze_url_handles_hostname_with_only_dots() -> None:
+    findings = analyze_url("https://./", known_domains=["example.com"])
+    assert "lookalike-domain" not in _indicator_set(findings)  # nosec B101
