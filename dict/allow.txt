@@ -239,5 +239,6 @@ stdin
 stdout
 TTY
 TLDs
+examp
 examp1e
 punycode
