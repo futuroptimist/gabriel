@@ -52,6 +52,9 @@ Activate the environment and run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+Pytest is configured to fail the run if coverage dips below 100%, keeping the suite honest as
+the codebase grows.
+
 Spell check documentation:
 
 ```bash
