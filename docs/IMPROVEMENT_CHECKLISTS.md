@@ -71,3 +71,6 @@ See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 - [ ] Configure environment variables for strong encryption keys.
 - [ ] Enable automatic database backups and verify restore procedures.
 - [ ] Restrict admin interface access to trusted networks or VPN.
+
+Gabriel now offers `gabriel.selfhosted.audit_vaultwarden` to evaluate these controls and surface
+remediation steps for misconfigurations.

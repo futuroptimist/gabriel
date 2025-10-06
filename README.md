@@ -150,6 +150,33 @@ embedded credentials, plaintext HTTP, IP-based hosts, and lookalikes of the supp
 domains. Combine it with Gabriel's secret helpers to build secure intake pipelines
 for inbound phishing reports.
 
+### Audit VaultWarden deployments
+
+Phase 1 of the roadmap calls for tailored advice for self-hosted services such as
+VaultWarden. Use `gabriel.selfhosted.audit_vaultwarden` to surface misconfigurations
+based on the [VaultWarden improvement checklist](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden).
+
+```python
+from gabriel import VaultWardenConfig, audit_vaultwarden
+
+config = VaultWardenConfig(
+    https_enabled=True,
+    certificate_trusted=False,  # using a self-signed cert in this example
+    encryption_key="CorrectHorseBatteryStaple123!CorrectHorseBatteryStaple",
+    backup_enabled=True,
+    backup_frequency_hours=24,
+    last_restore_verification_days=45,
+    admin_interface_enabled=True,
+    admin_allowed_networks=("192.168.10.0/24",),
+)
+
+for finding in audit_vaultwarden(config):
+    print(f"{finding.severity.upper()} — {finding.message}")
+    print(f"Fix: {finding.remediation}\n")
+```
+
+The helper only reports actionable findings so hardened deployments return an empty list.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).

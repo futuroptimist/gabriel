@@ -49,3 +49,7 @@ Feel free to extend this list with additional questions or provide answers in fo
    - A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for
      punycode, suspicious TLDs, HTTP usage, and lookalike domains. Extend it with
      additional rules as the roadmap advances.
+20. **Can Gabriel audit my VaultWarden deployment?**
+   - Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a
+     `VaultWardenConfig` snapshot to identify gaps from the checklist in
+     [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
