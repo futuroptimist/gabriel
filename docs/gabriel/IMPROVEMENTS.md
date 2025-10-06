@@ -57,7 +57,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.pre-commit-config.yaml`, `docs/gabriel/THREAT_MODEL.md`, `gabriel/text.py`).
       *Aligns with flywheel best practices.*
 - [ ] Add Jest unit tests for the WebGL viewer (`viewer/viewer.js`).
-- [ ] Enforce minimum test coverage in CI using `--cov-fail-under`
+- [x] Enforce minimum test coverage in CI using `--cov-fail-under`
       (`pyproject.toml`, `.github/workflows/coverage.yml`).
       *Aligns with flywheel best practices.*
 - [x] Add markdown link checker to pre-commit and CI to prevent stale references
