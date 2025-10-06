@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import re
 from collections import Counter
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass, field
 from difflib import SequenceMatcher
 from pathlib import Path
-import re
-from typing import Iterable, Iterator, Sequence
 
 _NOTE_PATTERNS = ("*.md", "*.txt", "*.rst")
 
@@ -54,9 +54,11 @@ class NoteDocument:
         path:
             The file to read.
         encoding:
-            Preferred text encoding. Invalid sequences are replaced to avoid raising ``UnicodeError``.
+            Preferred text encoding. Invalid sequences are replaced so ``UnicodeError`` is not
+            raised.
         max_bytes:
-            Limit read size in bytes to prevent unexpectedly huge documents from exhausting memory.
+            Limit read size in bytes to prevent unexpectedly huge documents from exhausting
+            memory.
         """
 
         with path.open("rb") as buffer:
@@ -74,6 +76,8 @@ class NoteMatch:
     document: NoteDocument = field(compare=False)
 
     def __post_init__(self) -> None:
+        """Normalize the ``score`` to ``float`` for consistent ordering."""
+
         # Ensure scores can be compared reliably even when ``float`` rounding kicks in.
         self.score = float(self.score)
 
@@ -82,6 +86,8 @@ class NoteIndex:
     """Lightweight inverted index for local security notes."""
 
     def __init__(self, documents: Iterable[NoteDocument]):
+        """Build an index from ``documents`` and pre-compute their token counters."""
+
         self._documents: list[NoteDocument] = []
         self._token_counters: list[Counter[str]] = []
         for document in documents:
@@ -111,7 +117,7 @@ class NoteIndex:
         query_tokens = Counter(_tokenize(normalized_query))
         results: list[NoteMatch] = []
 
-        for document, token_counter in zip(self._documents, self._token_counters):
+        for document, token_counter in zip(self._documents, self._token_counters, strict=False):
             token_overlap = sum(
                 min(token_counter[token], query_tokens[token]) for token in query_tokens
             )
@@ -194,11 +200,9 @@ def index_security_notes(
     encoding: str = "utf-8",
     max_bytes: int = 262_144,
 ) -> NoteIndex:
-    """Convenience wrapper returning a :class:`NoteIndex` for ``root``."""
+    """Return a :class:`NoteIndex` built from ``root``."""
 
-    return NoteIndex.from_directory(
-        root, patterns=patterns, encoding=encoding, max_bytes=max_bytes
-    )
+    return NoteIndex.from_directory(root, patterns=patterns, encoding=encoding, max_bytes=max_bytes)
 
 
 __all__ = [

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 import pytest
 
@@ -23,15 +23,39 @@ def test_index_from_directory_and_search(tmp_path: Path) -> None:
 
     _write(
         vaultwarden,
-        """VaultWarden Hardening\n\nRequire two-factor authentication for every account.\nSet the DOMAIN value to your public URL.\nRotate the admin token frequently.\n""",
+        "\n".join(
+            [
+                "VaultWarden Hardening",
+                "",
+                "Require two-factor authentication for every account.",
+                "Set the DOMAIN value to your public URL.",
+                "Rotate the admin token frequently.",
+                "",
+            ]
+        ),
     )
     _write(
         photoprism,
-        """PhotoPrism Notes\n\nDisable anonymous uploads.\nPrefer S3-compatible storage with versioning.\n""",
+        "\n".join(
+            [
+                "PhotoPrism Notes",
+                "",
+                "Disable anonymous uploads.",
+                "Prefer S3-compatible storage with versioning.",
+                "",
+            ]
+        ),
     )
     _write(
         misc,
-        """Backups\n\nKeep encrypted snapshots of both services and test restores monthly.\n""",
+        "\n".join(
+            [
+                "Backups",
+                "",
+                "Keep encrypted snapshots of both services and test restores monthly.",
+                "",
+            ]
+        ),
     )
 
     index = NoteIndex.from_directory(notes_dir)
