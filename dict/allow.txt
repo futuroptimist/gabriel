@@ -146,6 +146,7 @@ vuln
 Codecov
 keyring
 str
+substring
 plaintext
 cpp
 GGUF
@@ -157,6 +158,7 @@ Syncthing
 WebGL
 pyspelling
 docstring
+reStructuredText
 calc
 jobbot
 jobbot3000
