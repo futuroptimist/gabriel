@@ -147,6 +147,23 @@ embedded credentials, plaintext HTTP, IP-based hosts, and lookalikes of the supp
 domains. Combine it with Gabriel's secret helpers to build secure intake pipelines
 for inbound phishing reports.
 
+### Organize security notes
+
+Use Gabriel's lightweight note index to keep hardening checklists and investigation logs
+searchable on disk.
+
+```python
+from gabriel import index_security_notes
+
+index = index_security_notes("~/security-notes")
+matches = index.search("vaultwarden domain")
+for match in matches:
+    print(f"{match.document.title}: {match.document.path}")
+```
+
+The search results are ranked by overlapping keywords, substring matches, and fuzzy title
+similarity so that the most relevant playbooks surface quickly.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).

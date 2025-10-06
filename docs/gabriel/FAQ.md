@@ -49,3 +49,7 @@ Feel free to extend this list with additional questions or provide answers in fo
    - A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for
      punycode, suspicious TLDs, HTTP usage, and lookalike domains. Extend it with
      additional rules as the roadmap advances.
+20. **Can Gabriel help me organize hardening notes?**
+   - Yes. The `gabriel.notes` module builds a searchable index from Markdown, text,
+     or reStructuredText files on disk so you can quickly surface relevant
+     checklists and investigation logs.

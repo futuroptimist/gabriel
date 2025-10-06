@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
+from .notes import NoteDocument, NoteIndex, NoteMatch, index_security_notes
 from .phishing import (
     PhishingFinding,
     analyze_text_for_phishing,
@@ -29,5 +30,9 @@ __all__ = [
     "analyze_url",
     "analyze_text_for_phishing",
     "PhishingFinding",
+    "NoteDocument",
+    "NoteIndex",
+    "NoteMatch",
+    "index_security_notes",
     "SUPPORTED_PYTHON_VERSIONS",
 ]
