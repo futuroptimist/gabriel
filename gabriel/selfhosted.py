@@ -66,10 +66,14 @@ def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
         findings.append(
             CheckResult(
                 slug="vaultwarden-encryption-key",
-                message="Environment variable `VAULTWARDEN_ADMIN_TOKEN` or master key is weak or unset.",
+                message=(
+                    "Environment variable `VAULTWARDEN_ADMIN_TOKEN` or master key is weak or "
+                    "unset."
+                ),
                 severity="high",
                 remediation=(
-                    "Provision a random token of at least 32 characters mixing cases, numbers, and symbols."
+                    "Provision a random token of at least 32 characters mixing cases, numbers, "
+                    "and symbols."
                 ),
             )
         )

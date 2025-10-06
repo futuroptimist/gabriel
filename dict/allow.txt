@@ -242,3 +242,5 @@ TLDs
 examp
 examp1e
 punycode
+CorrectHorseBatteryStaple
+VaultWardenConfig
