@@ -1,0 +1,65 @@
+name-template: "v$NEXT_PATCH_VERSION"
+tag-template: "v$NEXT_PATCH_VERSION"
+version-template: "$MAJOR.$MINOR.$PATCH"
+change-template: "- $TITLE (#$NUMBER)"
+change-title-escapes: []
+no-changes-template: "- No user-facing changes in this release."
+categories:
+  - title: "🚀 Features"
+    labels:
+      - feature
+      - enhancement
+  - title: "🐛 Fixes"
+    labels:
+      - bug
+      - fix
+      - regression
+  - title: "🧰 Maintenance"
+    labels:
+      - chore
+      - dependencies
+      - tooling
+      - build
+  - title: "📝 Documentation"
+    labels:
+      - docs
+      - documentation
+  - title: "🔒 Security"
+    labels:
+      - security
+      - vulnerability
+exclude-labels:
+  - skip-changelog
+autolabeler:
+  - label: docs
+    title:
+      - "doc"
+      - "docs"
+    files:
+      - "docs/**"
+      - "README.md"
+  - label: security
+    title:
+      - "security"
+      - "vulnerability"
+    body:
+      - "security"
+      - "vulnerability"
+  - label: dependencies
+    files:
+      - "requirements*.txt"
+      - "pyproject.toml"
+      - "package.json"
+  - label: feature
+    title:
+      - "feature"
+      - "enhancement"
+      - "add"
+  - label: fix
+    title:
+      - "fix"
+      - "bug"
+      - "regression"
+replacers:
+  - search: "\n{2,}"
+    replace: "\n\n"

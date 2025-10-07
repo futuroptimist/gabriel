@@ -44,8 +44,9 @@ This document lists potential enhancements uncovered during a self-audit of the 
       `.github/ISSUE_TEMPLATE/feature_request.yml`).
 - [ ] Expand Dependabot to monitor GitHub Actions updates (`.github/dependabot.yml`).
       *Aligns with flywheel best practices.*
-- [ ] Add Release Drafter configuration for automated changelog
-      (`.github/release-drafter.yml`). *Aligns with flywheel best practices.*
+- [x] Add Release Drafter configuration for automated changelog
+      (`.github/release-drafter.yml`, `.github/workflows/release-drafter.yml`).
+      *Aligns with flywheel best practices.*
 - [x] Add `isort` to pre-commit for consistent import ordering
       (`.pre-commit-config.yaml`, `pyproject.toml`).
 - [x] Add Python version matrix in CI to test against 3.10 and 3.11

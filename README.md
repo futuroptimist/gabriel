@@ -312,6 +312,15 @@ pre-commit hooks also run `detect-secrets`, `pip-audit`, and the `lychee` Markdo
 catch secrets, vulnerable dependencies, and stale references.
 Dependabot monitors Python dependencies weekly.
 
+## Release management
+
+Release notes are drafted automatically via the
+[`release-drafter` action](.github/workflows/release-drafter.yml) using the
+configuration in [.github/release-drafter.yml](.github/release-drafter.yml).
+Merges to `main` update the draft and categorize entries by labels such as
+`feature`, `fix`, `docs`, and `security`. Tag a release from GitHub's UI to
+publish the curated notes without additional manual formatting.
+
 For vulnerability disclosure guidelines, see [SECURITY.md](SECURITY.md).
 
 ## FAQ
