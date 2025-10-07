@@ -120,7 +120,11 @@ def test_analyze_url_detects_deceptive_subdomain_injection() -> None:
     assert "deceptive-subdomain" in indicators  # nosec B101
     [finding] = [f for f in findings if f.indicator == "deceptive-subdomain"]
     assert finding.severity == "high"  # nosec B101
-    assert "example.com" in finding.message  # nosec B101
+    expected_message = (
+        "Hostname embeds trusted domain "
+        f"{_normalize_known_domain('example.com')} within a different parent domain"
+    )
+    assert finding.message == expected_message  # nosec B101
 
 
 def test_analyze_url_detects_deceptive_subdomain_mid_host() -> None:
