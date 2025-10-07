@@ -51,6 +51,15 @@ repos:
         args: ['--baseline', '.secrets.baseline']
   - repo: local
     hooks:
+      - id: markdown-lint
+        name: Markdown lint
+        entry: pymarkdown
+        language: python
+        args: ["--config", ".pymarkdown.json", "scan"]
+        types: [markdown]
+        files: "^(README\\.md|docs/(IMPROVEMENT_CHECKLISTS|gabriel/IMPROVEMENTS)\\.md)$"
+        additional_dependencies:
+          - pymarkdownlnt==0.9.32
       - id: markdown-link-check
         name: Markdown link checker
         entry: python scripts/run_lychee.py

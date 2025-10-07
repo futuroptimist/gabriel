@@ -36,3 +36,14 @@ jobs:
         with:
           name: lychee-report
           path: lychee/out.md
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v1
+      - name: Install Markdown lint dependencies
+        run: uv pip install --system pymarkdownlnt
+      - name: Lint Markdown files
+        run: |
+          pymarkdown --config .pymarkdown.json scan README.md \
+            docs/IMPROVEMENT_CHECKLISTS.md docs/gabriel/IMPROVEMENTS.md

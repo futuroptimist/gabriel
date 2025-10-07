@@ -1,6 +1,11 @@
 # Gabriel
 
-Gabriel is an open source "guardian angel" LLM aimed at helping individuals securely navigate the digital world. The project intends to provide actionable security advice, maintain personal knowledge about the user's environment (with their consent), and eventually offer local AI-assisted monitoring. Our guiding principle is to keep user data private and handle AI inference locally. When possible we rely on [token.place](https://github.com/futuroptimist/token.place) for encrypted inference, though a fully offline path using components like `llama-cpp-python` is also supported.
+Gabriel is an open source "guardian angel" LLM aimed at helping individuals securely navigate the
+digital world. The project intends to provide actionable security advice, maintain personal
+knowledge about the user's environment (with their consent), and eventually offer local AI-assisted
+monitoring. Our guiding principle is to keep user data private and handle AI inference locally. When
+possible we rely on [token.place](https://github.com/futuroptimist/token.place) for encrypted
+inference, though a fully offline path using components like `llama-cpp-python` is also supported.
 
 [![Lint & Format](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/ci.yml?label=lint%20%26%20format)](https://github.com/futuroptimist/gabriel/actions/workflows/ci.yml)
 [![Tests](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/coverage.yml?label=tests)](https://github.com/futuroptimist/gabriel/actions/workflows/coverage.yml)
@@ -13,28 +18,31 @@ Gabriel is an open source "guardian angel" LLM aimed at helping individuals secu
 
 - Offer community-first, dignity-focused security guidance.
 - Integrate with token.place or fully local inference to avoid cloud exfiltration.
-- Encourage collaboration with [token.place](https://github.com/futuroptimist/token.place) and [sigma](https://github.com/futuroptimist/sigma) as complementary projects.
+- Encourage collaboration with [token.place](https://github.com/futuroptimist/token.place) and
+  [sigma](https://github.com/futuroptimist/sigma) as complementary projects.
 - Provide a gentle on-ramp toward eventual real-world monitoring capabilities.
 
-For a philosophical look at these goals through the lens of the "Sword of Damocles" parable, see [SWORD_OF_DAMOCLES.md](docs/gabriel/SWORD_OF_DAMOCLES.md).
+For a philosophical look at these goals through the lens of the "Sword of Damocles" parable, see
+[SWORD_OF_DAMOCLES.md](docs/gabriel/SWORD_OF_DAMOCLES.md).
 
 ## Architecture Overview
 
 The project is organized into four tentative modules:
 
 1. **Ingestion** – scripts or agents that collect user-consented data.
-2. **Analysis** – LLM-based logic for assessing security posture.
-3. **Notification** – optional alerts or recommendations sent to the user.
-4. **User Interface** – CLI or lightweight UI for interacting with Gabriel.
+1. **Analysis** – LLM-based logic for assessing security posture.
+1. **Notification** – optional alerts or recommendations sent to the user.
+1. **User Interface** – CLI or lightweight UI for interacting with Gabriel.
 
-This modular structure keeps responsibilities clear and allows future extensions like phishing detection or network monitoring. The new phishing heuristics below provide an early look at that roadmap item.
+This modular structure keeps responsibilities clear and allows future extensions like phishing
+detection or network monitoring. The new phishing heuristics below provide an early look at that
+roadmap item.
 
 ## Getting Started
 
-Gabriel requires Python 3.10 or later. Continuous integration pipelines exercise
-both Python 3.10 and 3.11 to keep compatibility tight. Clone the repository and
-run the bootstrap script to provision a virtual environment, install
-dependencies, and configure pre-commit hooks:
+Gabriel requires Python 3.10 or later. Continuous integration pipelines exercise both Python 3.10
+and 3.11 to keep compatibility tight. Clone the repository and run the bootstrap script to provision
+a virtual environment, install dependencies, and configure pre-commit hooks:
 
 ```bash
 ./scripts/setup.sh
@@ -52,13 +60,19 @@ Activate the environment and run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
-Pytest is configured to fail the run if coverage dips below 100%, keeping the suite honest as
-the codebase grows.
+Pytest is configured to fail the run if coverage dips below 100%, keeping the suite honest as the
+codebase grows.
 
 Spell check documentation:
 
 ```bash
 pyspelling -c .spellcheck.yaml
+```
+
+Lint Markdown formatting (line width, heading spacing, duplicate headings):
+
+```bash
+pymarkdown --config .pymarkdown.json scan README.md docs
 ```
 
 Scan for hidden zero-width characters:
@@ -74,20 +88,20 @@ make lint  # run pre-commit checks
 make test  # run the test suite with coverage
 ```
 
-Ruff powers the lightweight linting layer used in both pre-commit hooks and CI. Run it directly
-when iterating on lint fixes:
+Ruff powers the lightweight linting layer used in both pre-commit hooks and CI. Run it directly when
+iterating on lint fixes:
 
 ```bash
 ruff check .
 ```
 
-Docstring conventions are enforced via ``flake8`` with the ``flake8-docstrings`` plugin. Run
-``flake8`` locally or rely on pre-commit to surface style issues early in development.
+Docstring conventions are enforced via `flake8` with the `flake8-docstrings` plugin. Run `flake8`
+locally or rely on pre-commit to surface style issues early in development.
 
 Example usage of arithmetic helpers:
 
-These helpers accept both integers and floats and return `decimal.Decimal` results for
-improved precision.
+These helpers accept both integers and floats and return `decimal.Decimal` results for improved
+precision.
 
 ```python
 from decimal import Decimal
@@ -104,9 +118,9 @@ print(floordiv(7, 2))  # 3
 print(sqrt(9))  # 3
 ```
 
-The arithmetic helpers now live in `gabriel.arithmetic`, while secret management utilities
-reside in `gabriel.secrets`. Importing from `gabriel` continues to expose both families for
-backwards compatibility.
+The arithmetic helpers now live in `gabriel.arithmetic`, while secret management utilities reside in
+`gabriel.secrets`. Importing from `gabriel` continues to expose both families for backwards
+compatibility.
 
 Run the helpers from the command line (available as `gabriel` or `gabriel-calc`):
 
@@ -126,15 +140,16 @@ gabriel secret get my-service alice
 gabriel secret delete my-service alice
 ```
 
-If you omit `--secret`, the command reads from standard input or securely prompts
-when attached to a TTY. The retrieval command intentionally avoids printing the
-stored value so it cannot leak via logs; use ``python -c "from gabriel.utils import
-get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access.
+If you omit `--secret`, the command reads from standard input or securely prompts when attached to a
+TTY. The retrieval command intentionally avoids printing the stored value so it cannot leak via
+logs; use
+`python -c "from gabriel.utils import get_secret; print(get_secret('my-service', 'alice'))"` for
+programmatic access.
 
 ### Detect suspicious links
 
-Gabriel now ships with lightweight phishing detection heuristics for pasted text or
-email bodies. Supply known brand domains to catch close lookalikes.
+Gabriel now ships with lightweight phishing detection heuristics for pasted text or email bodies.
+Supply known brand domains to catch close lookalikes.
 
 ```python
 from gabriel import analyze_text_for_phishing
@@ -145,16 +160,15 @@ for finding in findings:
     print(f"{finding.indicator}: {finding.message} ({finding.severity})")
 ```
 
-The helper inspects each HTTP(S) link for punycode, suspicious top-level domains,
-embedded credentials, plaintext HTTP, IP-based hosts, and lookalikes of the supplied
-domains. Combine it with Gabriel's secret helpers to build secure intake pipelines
-for inbound phishing reports.
+The helper inspects each HTTP(S) link for punycode, suspicious top-level domains, embedded
+credentials, plaintext HTTP, IP-based hosts, and lookalikes of the supplied domains. Combine it with
+Gabriel's secret helpers to build secure intake pipelines for inbound phishing reports.
 
 ### Audit VaultWarden deployments
 
-Phase 1 of the roadmap calls for tailored advice for self-hosted services such as
-VaultWarden. Use `gabriel.selfhosted.audit_vaultwarden` to surface misconfigurations
-based on the [VaultWarden improvement checklist](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden).
+Phase 1 of the roadmap calls for tailored advice for self-hosted services such as VaultWarden. Use
+`gabriel.selfhosted.audit_vaultwarden` to surface misconfigurations based on the
+[VaultWarden improvement checklist](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden).
 
 ```python
 from gabriel import VaultWardenConfig, audit_vaultwarden
@@ -187,13 +201,13 @@ For storing secrets in the system keyring, see
 ### Docker builds
 
 The repository ships with a `.dockerignore` file that trims the build context by excluding
-documentation, tests, and other developer-only artifacts. This keeps local Docker builds fast
-and reduces the chance of copying unintended files into the runtime image.
+documentation, tests, and other developer-only artifacts. This keeps local Docker builds fast and
+reduces the chance of copying unintended files into the runtime image.
 
 #### Build the image locally
 
-Use the root `Dockerfile` to produce an image tagged `gabriel`. The build only needs the
-repository checkout; dependencies are installed within the container.
+Use the root `Dockerfile` to produce an image tagged `gabriel`. The build only needs the repository
+checkout; dependencies are installed within the container.
 
 ```bash
 docker build -t gabriel .
@@ -225,95 +239,94 @@ Running in detached mode (`-d`) allows long-lived tasks such as scheduled scans.
 
 ### Runbook & 3D Viewer
 
-This repo now mirrors flywheel's development helpers. `runbook.yml` lists
-typical tasks and `viewer/` hosts a basic `model-viewer` scene. The viewer bundles a
-local copy of the `@google/model-viewer` library to avoid third-party requests,
-and animations start only after pressing **Start Animation**. Launch
-`make preview` to open the viewer locally.
+This repo now mirrors flywheel's development helpers. `runbook.yml` lists typical tasks and
+`viewer/` hosts a basic `model-viewer` scene. The viewer bundles a local copy of the
+`@google/model-viewer` library to avoid third-party requests, and animations start only after
+pressing **Start Animation**. Launch `make preview` to open the viewer locally.
 
 ## Tracked Repositories
 
-The table below summarizes all repositories where we currently maintain
-improvement tasks or security audits.
-Last roster sync: 2025-09-29 05:02 UTC (per Futuroptimist).
-improvement tasks or security audits. Following these links will jump to the
-relevant documentation.
+The table below summarizes all repositories where we currently maintain improvement tasks or
+security audits. Last roster sync: 2025-09-29 05:02 UTC (per Futuroptimist). improvement tasks or
+security audits. Following these links will jump to the relevant documentation.
 
-| Repository | Improvement Docs | Threat Model |
-|------------|------------------|--------------|
-| Gabriel (this repo) | [IMPROVEMENTS.md][gabriel-improve] | [THREAT_MODEL.md][gabriel-threat] |
-| futuroptimist | [IMPROVEMENTS.md][futuroptimist-improve] | [THREAT_MODEL.md][futuroptimist-threat] |
-| token.place | [IMPROVEMENTS.md][token-place-improve] | N/A |
-| DSPACE | [IMPROVEMENTS.md][dspace-improve] | [THREAT_MODEL.md][dspace-threat] |
-| flywheel | [IMPROVEMENTS.md][flywheel-improve] | [THREAT_MODEL.md][flywheel-threat] |
-| f2clipboard | [IMPROVEMENTS.md][f2clipboard-improve] | [THREAT_MODEL.md][f2clipboard-threat] |
-| axel | [IMPROVEMENTS.md][axel-improve] | [THREAT_MODEL.md][axel-threat] |
-| sigma | [IMPROVEMENTS.md][sigma-improve] | [THREAT_MODEL.md][sigma-threat] |
-| gitshelves | [IMPROVEMENTS.md][gitshelves-improve] | [THREAT_MODEL.md][gitshelves-threat] |
-| wove | [IMPROVEMENTS.md][wove-improve] | [THREAT_MODEL.md][wove-threat] |
-| sugarkube | [IMPROVEMENTS.md][sugarkube-improve] | [THREAT_MODEL.md][sugarkube-threat] |
-| pr-reaper | [IMPROVEMENTS.md][pr-reaper-improve] | [THREAT_MODEL.md][pr-reaper-threat] |
-| jobbot3000 | [IMPROVEMENTS.md][jobbot-improve] | [THREAT_MODEL.md][jobbot-threat] |
-| danielsmith.io | [IMPROVEMENTS.md][danielsmith-io-improve] | [THREAT_MODEL.md][danielsmith-io-threat] |
-| Nextcloud | [IMPROVEMENTS.md][nextcloud-improve] | N/A |
-| PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism][photoprism-improve] | N/A |
-| VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden][vaultwarden-improve] | N/A |
-
-[gabriel-improve]: docs/gabriel/IMPROVEMENTS.md
-[gabriel-threat]: docs/gabriel/THREAT_MODEL.md
-[futuroptimist-improve]: docs/related/futuroptimist/IMPROVEMENTS.md
-[futuroptimist-threat]: docs/related/futuroptimist/THREAT_MODEL.md
-[token-place-improve]: docs/related/token_place/IMPROVEMENTS.md
-[dspace-improve]: docs/related/dspace/IMPROVEMENTS.md
-[dspace-threat]: docs/related/dspace/THREAT_MODEL.md
-[flywheel-improve]: docs/related/flywheel/IMPROVEMENTS.md
-[flywheel-threat]: docs/related/flywheel/THREAT_MODEL.md
-[f2clipboard-improve]: docs/related/f2clipboard/IMPROVEMENTS.md
-[f2clipboard-threat]: docs/related/f2clipboard/THREAT_MODEL.md
-[axel-improve]: docs/related/axel/IMPROVEMENTS.md
-[axel-threat]: docs/related/axel/THREAT_MODEL.md
-[sigma-improve]: docs/related/sigma/IMPROVEMENTS.md
-[sigma-threat]: docs/related/sigma/THREAT_MODEL.md
-[gitshelves-improve]: docs/related/gitshelves/IMPROVEMENTS.md
-[gitshelves-threat]: docs/related/gitshelves/THREAT_MODEL.md
-[wove-improve]: docs/related/wove/IMPROVEMENTS.md
-[wove-threat]: docs/related/wove/THREAT_MODEL.md
-[sugarkube-improve]: docs/related/sugarkube/IMPROVEMENTS.md
-[sugarkube-threat]: docs/related/sugarkube/THREAT_MODEL.md
-[pr-reaper-improve]: docs/related/pr-reaper/IMPROVEMENTS.md
-[pr-reaper-threat]: docs/related/pr-reaper/THREAT_MODEL.md
-[jobbot-improve]: docs/related/jobbot3000/IMPROVEMENTS.md
-[jobbot-threat]: docs/related/jobbot3000/THREAT_MODEL.md
-[danielsmith-io-improve]: docs/related/danielsmith_io/IMPROVEMENTS.md
-[danielsmith-io-threat]: docs/related/danielsmith_io/THREAT_MODEL.md
-[nextcloud-improve]: docs/related/nextcloud/IMPROVEMENTS.md
-[photoprism-improve]: docs/IMPROVEMENT_CHECKLISTS.md#photoprism
-[vaultwarden-improve]: docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden
+| Repository | Improvement Docs | Threat Model | |------------|------------------|--------------| |
+Gabriel (this repo) | [IMPROVEMENTS.md][gabriel-improve] | [THREAT_MODEL.md][gabriel-threat] | |
+futuroptimist | [IMPROVEMENTS.md][futuroptimist-improve] | [THREAT_MODEL.md][futuroptimist-threat] |
+| token.place | [IMPROVEMENTS.md][token-place-improve] | N/A | | DSPACE |
+[IMPROVEMENTS.md][dspace-improve] | [THREAT_MODEL.md][dspace-threat] | | flywheel |
+[IMPROVEMENTS.md][flywheel-improve] | [THREAT_MODEL.md][flywheel-threat] | | f2clipboard |
+[IMPROVEMENTS.md][f2clipboard-improve] | [THREAT_MODEL.md][f2clipboard-threat] | | axel |
+[IMPROVEMENTS.md][axel-improve] | [THREAT_MODEL.md][axel-threat] | | sigma |
+[IMPROVEMENTS.md][sigma-improve] | [THREAT_MODEL.md][sigma-threat] | | gitshelves |
+[IMPROVEMENTS.md][gitshelves-improve] | [THREAT_MODEL.md][gitshelves-threat] | | wove |
+[IMPROVEMENTS.md][wove-improve] | [THREAT_MODEL.md][wove-threat] | | sugarkube |
+[IMPROVEMENTS.md][sugarkube-improve] | [THREAT_MODEL.md][sugarkube-threat] | | pr-reaper |
+[IMPROVEMENTS.md][pr-reaper-improve] | [THREAT_MODEL.md][pr-reaper-threat] | | jobbot3000 |
+[IMPROVEMENTS.md][jobbot-improve] | [THREAT_MODEL.md][jobbot-threat] | | danielsmith.io |
+[IMPROVEMENTS.md][danielsmith-io-improve] | [THREAT_MODEL.md][danielsmith-io-threat] | | Nextcloud |
+[IMPROVEMENTS.md][nextcloud-improve] | N/A | | PhotoPrism |
+[IMPROVEMENT_CHECKLISTS.md#photoprism][photoprism-improve] | N/A | | VaultWarden |
+[IMPROVEMENT_CHECKLISTS.md#vaultwarden][vaultwarden-improve] | N/A |
 
 ## Roadmap
 
-See [docs/gabriel/ROADMAP.md](docs/gabriel/ROADMAP.md) for a more detailed roadmap. Early milestones include:
+See [docs/gabriel/ROADMAP.md](docs/gabriel/ROADMAP.md) for a more detailed roadmap. Early milestones
+include:
 
 1. Establishing repository guidelines and a base documentation structure.
-2. Collecting security best practices for self-hosted services.
-3. Prototyping local LLM inference through token.place.
+1. Collecting security best practices for self-hosted services.
+1. Prototyping local LLM inference through token.place.
 
 ## Contributing
 
-We use `AGENTS.md` to outline repository-specific instructions for automated agents. Additional contributor guidelines live in [CONTRIBUTING.md](CONTRIBUTING.md). Please read them before opening pull requests.
+We use `AGENTS.md` to outline repository-specific instructions for automated agents. Additional
+contributor guidelines live in [CONTRIBUTING.md](CONTRIBUTING.md). Please read them before opening
+pull requests.
 
 ## CI & Security
 
-The repository includes GitHub Actions workflows for linting, testing, and documentation.
-`flake8` and `bandit` catch style issues and common security mistakes, while coverage results are
-uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is committed to
-[coverage.svg](coverage.svg) after tests run.
-pre-commit hooks also run `detect-secrets`, `pip-audit`, and the `lychee` Markdown link checker to
-catch secrets, vulnerable dependencies, and stale references.
-Dependabot monitors Python dependencies weekly.
+The repository includes GitHub Actions workflows for linting, testing, and documentation. `flake8`
+and `bandit` catch style issues and common security mistakes, while coverage results are uploaded to
+[Codecov](https://codecov.io/) and the latest coverage badge is committed to
+[coverage.svg](coverage.svg) after tests run. pre-commit hooks also run `detect-secrets`,
+`pip-audit`, and the `lychee` Markdown link checker to catch secrets, vulnerable dependencies, and
+stale references. Dependabot monitors Python dependencies weekly.
 
 For vulnerability disclosure guidelines, see [SECURITY.md](SECURITY.md).
 
 ## FAQ
 
-We maintain an evolving list of questions for clarification in [docs/gabriel/FAQ.md](docs/gabriel/FAQ.md). Feel free to add your own or answer existing ones.
+We maintain an evolving list of questions for clarification in
+[docs/gabriel/FAQ.md](docs/gabriel/FAQ.md). Feel free to add your own or answer existing ones.
+
+[axel-improve]: docs/related/axel/IMPROVEMENTS.md
+[axel-threat]: docs/related/axel/THREAT_MODEL.md
+[danielsmith-io-improve]: docs/related/danielsmith_io/IMPROVEMENTS.md
+[danielsmith-io-threat]: docs/related/danielsmith_io/THREAT_MODEL.md
+[dspace-improve]: docs/related/dspace/IMPROVEMENTS.md
+[dspace-threat]: docs/related/dspace/THREAT_MODEL.md
+[f2clipboard-improve]: docs/related/f2clipboard/IMPROVEMENTS.md
+[f2clipboard-threat]: docs/related/f2clipboard/THREAT_MODEL.md
+[flywheel-improve]: docs/related/flywheel/IMPROVEMENTS.md
+[flywheel-threat]: docs/related/flywheel/THREAT_MODEL.md
+[futuroptimist-improve]: docs/related/futuroptimist/IMPROVEMENTS.md
+[futuroptimist-threat]: docs/related/futuroptimist/THREAT_MODEL.md
+[gabriel-improve]: docs/gabriel/IMPROVEMENTS.md
+[gabriel-threat]: docs/gabriel/THREAT_MODEL.md
+[gitshelves-improve]: docs/related/gitshelves/IMPROVEMENTS.md
+[gitshelves-threat]: docs/related/gitshelves/THREAT_MODEL.md
+[jobbot-improve]: docs/related/jobbot3000/IMPROVEMENTS.md
+[jobbot-threat]: docs/related/jobbot3000/THREAT_MODEL.md
+[nextcloud-improve]: docs/related/nextcloud/IMPROVEMENTS.md
+[photoprism-improve]: docs/IMPROVEMENT_CHECKLISTS.md#photoprism
+[pr-reaper-improve]: docs/related/pr-reaper/IMPROVEMENTS.md
+[pr-reaper-threat]: docs/related/pr-reaper/THREAT_MODEL.md
+[sigma-improve]: docs/related/sigma/IMPROVEMENTS.md
+[sigma-threat]: docs/related/sigma/THREAT_MODEL.md
+[sugarkube-improve]: docs/related/sugarkube/IMPROVEMENTS.md
+[sugarkube-threat]: docs/related/sugarkube/THREAT_MODEL.md
+[token-place-improve]: docs/related/token_place/IMPROVEMENTS.md
+[vaultwarden-improve]: docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden
+[wove-improve]: docs/related/wove/IMPROVEMENTS.md
+[wove-threat]: docs/related/wove/THREAT_MODEL.md
