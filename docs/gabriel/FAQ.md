@@ -53,3 +53,7 @@ Feel free to extend this list with additional questions or provide answers in fo
    - Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a
      `VaultWardenConfig` snapshot to identify gaps from the checklist in
      [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
+21. **How about Syncthing hardening?**
+   - `gabriel.selfhosted.audit_syncthing` evaluates HTTPS, discovery, relay, and
+     trusted device settings using the
+     [Syncthing improvements checklist](../IMPROVEMENT_CHECKLISTS.md#syncthing).

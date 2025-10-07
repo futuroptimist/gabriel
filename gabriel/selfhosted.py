@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Literal
 
@@ -32,6 +32,17 @@ class VaultWardenConfig:
     last_restore_verification_days: int | None
     admin_interface_enabled: bool = True
     admin_allowed_networks: Sequence[str] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class SyncthingConfig:
+    """Configuration snapshot for a Syncthing deployment."""
+
+    gui_https_enabled: bool
+    global_discovery_enabled: bool
+    relay_enabled: bool
+    configured_device_ids: Sequence[str]
+    trusted_device_ids: Sequence[str] = ()
 
 
 def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
@@ -123,6 +134,79 @@ def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
     return findings
 
 
+def audit_syncthing(config: SyncthingConfig) -> list[CheckResult]:
+    """Return security findings for a Syncthing installation."""
+
+    findings: list[CheckResult] = []
+
+    if not config.gui_https_enabled:
+        findings.append(
+            CheckResult(
+                slug="syncthing-https",
+                message=(
+                    "Syncthing GUI should be served over HTTPS " "via a trusted reverse proxy."
+                ),
+                severity="high",
+                remediation=(
+                    "Terminate Syncthing's GUI behind HTTPS or enable TLS with a trusted "
+                    "certificate."
+                ),
+            )
+        )
+
+    if config.global_discovery_enabled:
+        findings.append(
+            CheckResult(
+                slug="syncthing-discovery",
+                message=(
+                    "Global discovery is enabled and allows untrusted peers "
+                    "to discover the node."
+                ),
+                severity="medium",
+                remediation=(
+                    "Disable global discovery for trusted networks via the GUI or configuration "
+                    "file."
+                ),
+            )
+        )
+
+    if config.relay_enabled:
+        findings.append(
+            CheckResult(
+                slug="syncthing-relay",
+                message=("Relay connections expose traffic to untrusted relays."),
+                severity="medium",
+                remediation="Disable relay usage unless remote connectivity is required.",
+            )
+        )
+
+    trusted_map = _normalize_device_ids(config.trusted_device_ids)
+    configured_map = _normalize_device_ids(config.configured_device_ids)
+
+    if trusted_map:
+        unknown_devices = [
+            configured_map[device] for device in configured_map if device not in trusted_map
+        ]
+        if unknown_devices:
+            joined = ", ".join(sorted(unknown_devices))
+            findings.append(
+                CheckResult(
+                    slug="syncthing-unknown-device",
+                    message=(
+                        "Configured device list includes IDs not present in the trusted allowlist: "
+                        f"{joined}."
+                    ),
+                    severity="high",
+                    remediation=(
+                        "Review Syncthing peers and remove unknown device IDs from the "
+                        "configuration."
+                    ),
+                )
+            )
+
+    return findings
+
+
 def _is_strong_secret(secret: str | None) -> bool:
     if not secret:
         return False
@@ -150,9 +234,21 @@ def _is_network_list_open(networks: Iterable[str]) -> bool:
     return not normalized
 
 
+def _normalize_device_ids(device_ids: Sequence[str]) -> Mapping[str, str]:
+    mapping: dict[str, str] = {}
+    for device_id in device_ids:
+        normalized = "".join(device_id.split()).upper()
+        if not normalized:
+            continue
+        mapping[normalized] = device_id.strip()
+    return mapping
+
+
 __all__ = [
     "CheckResult",
     "Severity",
     "VaultWardenConfig",
+    "SyncthingConfig",
     "audit_vaultwarden",
+    "audit_syncthing",
 ]

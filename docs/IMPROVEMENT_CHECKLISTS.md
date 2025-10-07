@@ -66,6 +66,9 @@ See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
   ([docs](https://docs.syncthing.net/users/stdiscosrv.html)).
 - [ ] Audit IDs and remove unknown connections ([repo](https://github.com/syncthing/syncthing)).
 
+Gabriel now offers `gabriel.selfhosted.audit_syncthing` to surface findings for these controls and
+flag device IDs that fall outside a trusted allowlist.
+
 ## VaultWarden
 - [ ] Serve the interface over HTTPS with a trusted certificate.
 - [ ] Configure environment variables for strong encryption keys.

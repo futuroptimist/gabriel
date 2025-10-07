@@ -61,6 +61,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Enforce minimum test coverage in CI using `--cov-fail-under`
       (`pyproject.toml`, `.github/workflows/coverage.yml`).
       *Aligns with flywheel best practices.*
+- [x] Add Syncthing audit helper mirroring the Syncthing hardening checklist
+      (`gabriel/selfhosted.py`, `tests/test_selfhosted.py`).
 - [x] Add markdown link checker to pre-commit and CI to prevent stale references
       (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
       *Aligns with flywheel best practices.*

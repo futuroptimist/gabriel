@@ -177,6 +177,34 @@ for finding in audit_vaultwarden(config):
 
 The helper only reports actionable findings so hardened deployments return an empty list.
 
+### Audit Syncthing deployments
+
+Gabriel also evaluates Syncthing installations against the [Syncthing checklist](docs/IMPROVEMENT_CHECKLISTS.md#syncthing).
+
+```python
+from gabriel import SyncthingConfig, audit_syncthing
+
+config = SyncthingConfig(
+    gui_https_enabled=True,
+    global_discovery_enabled=False,
+    relay_enabled=False,
+    configured_device_ids=(
+        "AAAAA-BBBBB-CCCCC-DDDDD-EEEEE-FFFFF-GGGGG-HHHHH",
+        "IIIIJ-JJJJJ-KKKKK-LLLLL-MMMMM-NNNNN-OOOOO-PPPPP",
+    ),
+    trusted_device_ids=(
+        "AAAAA-BBBBB-CCCCC-DDDDD-EEEEE-FFFFF-GGGGG-HHHHH",
+        "IIIIJ-JJJJJ-KKKKK-LLLLL-MMMMM-NNNNN-OOOOO-PPPPP",
+    ),
+)
+
+for finding in audit_syncthing(config):
+    print(f"{finding.severity.upper()} — {finding.message}")
+```
+
+Findings cover missing HTTPS termination, exposure through global discovery or relays, and
+unexpected device IDs that are not part of a trusted allowlist.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
