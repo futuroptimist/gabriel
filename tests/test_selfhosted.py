@@ -6,7 +6,13 @@ from collections.abc import Iterable
 
 import pytest
 
-from gabriel.selfhosted import CheckResult, VaultWardenConfig, audit_vaultwarden
+from gabriel.selfhosted import (
+    CheckResult,
+    PhotoPrismConfig,
+    VaultWardenConfig,
+    audit_photoprism,
+    audit_vaultwarden,
+)
 
 
 def _finding_slugs(findings: Iterable[CheckResult]) -> set[str]:
@@ -197,5 +203,83 @@ def test_audit_vaultwarden_passes_hardened_config(key: str) -> None:
     )
 
     findings = audit_vaultwarden(config)
+
+    assert findings == []  # nosec B101
+
+
+def test_audit_photoprism_flags_https_and_admin_controls() -> None:
+    config = PhotoPrismConfig(
+        https_enabled=False,
+        admin_password=("weakpass"),  # pragma: allowlist secret  # nosec B106
+        library_outside_container=False,
+        library_permissions_strict=False,
+        backups_enabled=True,
+        backup_frequency_hours=24,
+        backup_location_hardened=True,
+        unreviewed_plugins=(),
+    )
+
+    findings = audit_photoprism(config)
+
+    slugs = _finding_slugs(findings)
+    assert "photoprism-https" in slugs  # nosec B101 - pytest assertion
+    assert "photoprism-admin-password" in slugs  # nosec B101
+    assert "photoprism-library-location" in slugs  # nosec B101
+    assert "photoprism-library-permissions" in slugs  # nosec B101
+
+
+def test_audit_photoprism_flags_backup_gaps_and_plugin_review() -> None:
+    config = PhotoPrismConfig(
+        https_enabled=True,
+        admin_password=("Password1"),  # pragma: allowlist secret  # nosec B106
+        library_outside_container=True,
+        library_permissions_strict=True,
+        backups_enabled=True,
+        backup_frequency_hours=72,
+        backup_location_hardened=False,
+        unreviewed_plugins=("third-party-theme",),
+    )
+
+    findings = audit_photoprism(config)
+
+    slugs = _finding_slugs(findings)
+    assert "photoprism-admin-password" in slugs  # nosec B101
+    assert "photoprism-backups" in slugs  # nosec B101
+    assert "photoprism-backup-location" in slugs  # nosec B101
+    assert "photoprism-plugins" in slugs  # nosec B101
+
+
+def test_audit_photoprism_detects_missing_password_and_backups_disabled() -> None:
+    config = PhotoPrismConfig(
+        https_enabled=True,
+        admin_password=None,
+        library_outside_container=True,
+        library_permissions_strict=True,
+        backups_enabled=False,
+        backup_frequency_hours=None,
+        backup_location_hardened=True,
+        unreviewed_plugins=(),
+    )
+
+    findings = audit_photoprism(config)
+
+    slugs = _finding_slugs(findings)
+    assert "photoprism-admin-password" in slugs  # nosec B101
+    assert "photoprism-backups" in slugs  # nosec B101
+
+
+def test_audit_photoprism_passes_hardened_config() -> None:
+    config = PhotoPrismConfig(
+        https_enabled=True,
+        admin_password=("Adm1nPassw0rd!"),  # pragma: allowlist secret  # nosec B106
+        library_outside_container=True,
+        library_permissions_strict=True,
+        backups_enabled=True,
+        backup_frequency_hours=12,
+        backup_location_hardened=True,
+        unreviewed_plugins=(),
+    )
+
+    findings = audit_photoprism(config)
 
     assert findings == []  # nosec B101

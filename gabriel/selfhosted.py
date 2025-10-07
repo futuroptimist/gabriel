@@ -34,6 +34,20 @@ class VaultWardenConfig:
     admin_allowed_networks: Sequence[str] = ()
 
 
+@dataclass(frozen=True, slots=True)
+class PhotoPrismConfig:
+    """Configuration snapshot for a PhotoPrism deployment."""
+
+    https_enabled: bool
+    admin_password: str | None
+    library_outside_container: bool
+    library_permissions_strict: bool
+    backups_enabled: bool
+    backup_frequency_hours: int | None
+    backup_location_hardened: bool
+    unreviewed_plugins: Sequence[str] = ()
+
+
 def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
     """Return security findings for a VaultWarden installation."""
 
@@ -123,6 +137,113 @@ def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
     return findings
 
 
+def audit_photoprism(config: PhotoPrismConfig) -> list[CheckResult]:
+    """Return security findings for a PhotoPrism installation."""
+
+    findings: list[CheckResult] = []
+
+    if not config.https_enabled:
+        findings.append(
+            CheckResult(
+                slug="photoprism-https",
+                message="PhotoPrism should be served over HTTPS with a trusted certificate.",
+                severity="high",
+                remediation="Terminate TLS at a reverse proxy or enable built-in TLS support.",
+            )
+        )
+
+    if not _is_strong_password(config.admin_password):
+        findings.append(
+            CheckResult(
+                slug="photoprism-admin-password",
+                message="Administrator password appears weak or unset.",
+                severity="high",
+                remediation=(
+                    "Rotate to a unique passphrase with 12+ characters mixing cases, numbers, "
+                    "and symbols."
+                ),
+            )
+        )
+
+    if not config.library_outside_container:
+        findings.append(
+            CheckResult(
+                slug="photoprism-library-location",
+                message="Library data resides inside the application container.",
+                severity="high",
+                remediation=(
+                    "Mount a persistent volume outside the container so rebuilds do not erase "
+                    "originals."
+                ),
+            )
+        )
+
+    if not config.library_permissions_strict:
+        findings.append(
+            CheckResult(
+                slug="photoprism-library-permissions",
+                message="Library permissions allow broad read/write access.",
+                severity="medium",
+                remediation="Restrict filesystem permissions to the PhotoPrism service account.",
+            )
+        )
+
+    if not config.backups_enabled:
+        findings.append(
+            CheckResult(
+                slug="photoprism-backups",
+                message="Scheduled backups are disabled.",
+                severity="high",
+                remediation=(
+                    "Automate exports of originals and database snapshots to hardened storage."
+                ),
+            )
+        )
+    else:
+        if config.backup_frequency_hours is None or config.backup_frequency_hours > 24:
+            findings.append(
+                CheckResult(
+                    slug="photoprism-backups",
+                    message="Backups run infrequently. Aim for at least daily snapshots.",
+                    severity="medium",
+                    remediation=(
+                        "Schedule backups every 24 hours or more often for active libraries."
+                    ),
+                )
+            )
+        if not config.backup_location_hardened:
+            findings.append(
+                CheckResult(
+                    slug="photoprism-backup-location",
+                    message="Backup destination is not encrypted or access-controlled.",
+                    severity="high",
+                    remediation=(
+                        "Store backups on encrypted storage with access limited to administrative "
+                        "accounts."
+                    ),
+                )
+            )
+
+    unreviewed = [plugin.strip() for plugin in config.unreviewed_plugins if plugin.strip()]
+    if unreviewed:
+        findings.append(
+            CheckResult(
+                slug="photoprism-plugins",
+                message=(
+                    "Third-party plugins lack a security review: "
+                    f"{', '.join(sorted(unreviewed))}"
+                ),
+                severity="medium",
+                remediation=(
+                    "Audit extensions for maintenance status and supply chain risks before "
+                    "enabling them."
+                ),
+            )
+        )
+
+    return findings
+
+
 def _is_strong_secret(secret: str | None) -> bool:
     if not secret:
         return False
@@ -135,6 +256,20 @@ def _is_strong_secret(secret: str | None) -> bool:
         re.search(r"[^A-Za-z0-9]", secret),
     ]
     return all(classes)
+
+
+def _is_strong_password(password: str | None) -> bool:
+    if not password:
+        return False
+    if len(password) < 12:
+        return False
+    classes = [
+        re.search(r"[a-z]", password),
+        re.search(r"[A-Z]", password),
+        re.search(r"[0-9]", password),
+        re.search(r"[^A-Za-z0-9]", password),
+    ]
+    return sum(bool(cls) for cls in classes) >= 3
 
 
 def _is_network_list_open(networks: Iterable[str]) -> bool:
@@ -153,6 +288,8 @@ def _is_network_list_open(networks: Iterable[str]) -> bool:
 __all__ = [
     "CheckResult",
     "Severity",
+    "PhotoPrismConfig",
     "VaultWardenConfig",
+    "audit_photoprism",
     "audit_vaultwarden",
 ]

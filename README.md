@@ -150,16 +150,22 @@ embedded credentials, plaintext HTTP, IP-based hosts, and lookalikes of the supp
 domains. Combine it with Gabriel's secret helpers to build secure intake pipelines
 for inbound phishing reports.
 
-### Audit VaultWarden deployments
+### Audit self-hosted deployments
 
 Phase 1 of the roadmap calls for tailored advice for self-hosted services such as
-VaultWarden. Use `gabriel.selfhosted.audit_vaultwarden` to surface misconfigurations
-based on the [VaultWarden improvement checklist](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden).
+VaultWarden and PhotoPrism. Use the helpers in `gabriel.selfhosted` to surface
+misconfigurations based on the checklists in
+[`docs/IMPROVEMENT_CHECKLISTS.md`](docs/IMPROVEMENT_CHECKLISTS.md).
 
 ```python
-from gabriel import VaultWardenConfig, audit_vaultwarden
+from gabriel import (
+    PhotoPrismConfig,
+    VaultWardenConfig,
+    audit_photoprism,
+    audit_vaultwarden,
+)
 
-config = VaultWardenConfig(
+vaultwarden_config = VaultWardenConfig(
     https_enabled=True,
     certificate_trusted=False,  # using a self-signed cert in this example
     encryption_key="CorrectHorseBatteryStaple123!CorrectHorseBatteryStaple",
@@ -170,12 +176,34 @@ config = VaultWardenConfig(
     admin_allowed_networks=("192.168.10.0/24",),
 )
 
-for finding in audit_vaultwarden(config):
+for finding in audit_vaultwarden(vaultwarden_config):
     print(f"{finding.severity.upper()} — {finding.message}")
     print(f"Fix: {finding.remediation}\n")
+
+photoprism_config = PhotoPrismConfig(
+    https_enabled=True,
+    admin_password=(
+        "Adm1nPassw0rd!"
+    ),  # pragma: allowlist secret
+    library_outside_container=True,
+    library_permissions_strict=True,
+    backups_enabled=True,
+    backup_frequency_hours=24,
+    backup_location_hardened=True,
+    unreviewed_plugins=(),
+)
+
+photoprism_findings = audit_photoprism(photoprism_config)
+
+if photoprism_findings:
+    print("PhotoPrism hardening needed:")
+    for finding in photoprism_findings:
+        print(f"- {finding.indicator}: {finding.message}")
+else:
+    print("PhotoPrism checks passed ✅")
 ```
 
-The helper only reports actionable findings so hardened deployments return an empty list.
+Each helper only reports actionable findings so hardened deployments return an empty list.
 
 ### Offline Usage
 

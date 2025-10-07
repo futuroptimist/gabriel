@@ -53,3 +53,7 @@ Feel free to extend this list with additional questions or provide answers in fo
    - Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a
      `VaultWardenConfig` snapshot to identify gaps from the checklist in
      [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
+21. **What about PhotoPrism hardening?**
+   - Use `gabriel.selfhosted.audit_photoprism` with a
+     `PhotoPrismConfig` snapshot to ensure HTTPS, storage, backup, and
+     plugin hygiene match the [PhotoPrism checklist](../IMPROVEMENT_CHECKLISTS.md#photoprism).

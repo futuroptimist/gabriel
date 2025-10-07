@@ -60,6 +60,9 @@ See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 - [ ] Set up scheduled backups to a secure location.
 - [ ] Review third-party plugins for security issues before enabling them.
 
+Gabriel now offers `gabriel.selfhosted.audit_photoprism` to evaluate these controls and
+highlight remediation guidance for risky settings.
+
 ## Syncthing
 - [ ] Serve GUI over HTTPS via reverse proxy ([docs](https://docs.syncthing.net/users/reverseproxy.html)).
 - [ ] Disable global discovery and relays on trusted networks
