@@ -107,6 +107,7 @@ IRL
 repurpose
 rescan
 config
+commitish
 cov
 PRs
 changelogs

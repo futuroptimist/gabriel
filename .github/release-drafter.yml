@@ -1,9 +1,9 @@
 name-template: v$NEXT_PATCH_VERSION
 tag-template: v$NEXT_PATCH_VERSION
-tag-prefix: ''
-change-template: '- $TITLE (#$NUMBER)'
-change-title-escapes: '<_`*'
-no-changes-template: '- No user-facing changes in this release.'
+tag-prefix: ""
+change-template: "- $TITLE (#$NUMBER)"
+change-title-escapes: "<_`*"
+no-changes-template: "- No user-facing changes in this release."
 version-template: $MAJOR.$MINOR.$PATCH
 version-resolver:
   major:
@@ -14,26 +14,26 @@ version-resolver:
     labels: []
   default: patch
 categories:
-  - title: '🚀 Features'
+  - title: "🚀 Features"
     labels:
       - feature
       - enhancement
-  - title: '🐛 Fixes'
+  - title: "🐛 Fixes"
     labels:
       - bug
       - fix
       - regression
-  - title: '🧰 Maintenance'
+  - title: "🧰 Maintenance"
     labels:
       - chore
       - dependencies
       - tooling
       - build
-  - title: '📝 Documentation'
+  - title: "📝 Documentation"
     labels:
       - docs
       - documentation
-  - title: '🔒 Security'
+  - title: "🔒 Security"
     labels:
       - security
       - vulnerability
@@ -42,7 +42,7 @@ exclude-labels:
 include-labels: []
 include-paths: []
 exclude-contributors: []
-no-contributors-template: No contributors
+no-contributors-template: "No contributors"
 replacers:
   - search: '\n{2,}'
     replace: '\n\n'
@@ -79,15 +79,15 @@ autolabeler:
 sort-by: merged_at
 sort-direction: descending
 prerelease: false
-prerelease-identifier: ''
+prerelease-identifier: ""
 include-pre-releases: false
-latest: 'true'
+latest: true
 filter-by-commitish: false
-commitish: ''
+commitish: ""
 pull-request-limit: 5
-category-template: '## $TITLE'
-header: ''
-footer: ''
+category-template: "## $TITLE"
+header: ""
+footer: ""
 template: |
   ## What's Changed
 
