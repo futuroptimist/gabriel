@@ -87,3 +87,27 @@ def test_workflows_cover_supported_python_versions() -> None:
         assert (
             version in workflow_coverage
         ), f"Coverage workflow missing Python {version}"  # nosec B101
+
+
+def test_release_drafter_configuration_and_workflow_exist() -> None:
+    """Validate Release Drafter config and workflow are present and wired together."""
+
+    config_path = Path(".github/release-drafter.yml")
+    assert config_path.exists(), "Expected .github/release-drafter.yml to exist"  # nosec B101
+
+    config = config_path.read_text(encoding="utf-8")
+    for marker in (
+        "name-template:",
+        "categories:",
+        "autolabeler:",
+        "exclude-labels:",
+    ):
+        assert marker in config, f"Release Drafter config missing {marker}"  # nosec B101
+
+    workflow_path = Path(".github/workflows/release-drafter.yml")
+    assert workflow_path.exists(), "Expected Release Drafter workflow to exist"  # nosec B101
+
+    workflow = workflow_path.read_text(encoding="utf-8")
+    assert "release-drafter/release-drafter@" in workflow  # nosec B101
+    assert "config-name: release-drafter.yml" in workflow  # nosec B101
+    assert "branches:\n      - main" in workflow  # nosec B101
