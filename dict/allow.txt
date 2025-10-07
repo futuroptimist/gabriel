@@ -118,6 +118,7 @@ Misconfigured
 Mitigations
 PII
 PhotoPrism
+PhotoPrismConfig
 UI
 VPN
 VaultWarden
@@ -139,6 +140,10 @@ misconfigured
 mitigations
 overreliance
 photoprism
+pragma
+allowlist
+unreviewed
+nPassw
 unencrypted
 untrusted
 vaultwarden
