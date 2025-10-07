@@ -48,6 +48,18 @@ def test_normalize_known_domain_strips_whitespace_and_dots() -> None:
     assert _normalize_known_domain(" Example.COM. ") == "example.com"  # nosec B101
 
 
+def test_normalize_known_domain_rejects_malformed_hostname() -> None:
+    assert _normalize_known_domain(" example.com<script>") == ""  # nosec B101
+
+
+def test_normalize_known_domain_extracts_hostname_from_url() -> None:
+    assert _normalize_known_domain("https://Example.com/login") == "example.com"  # nosec B101
+
+
+def test_normalize_known_domain_handles_missing_hostname() -> None:
+    assert _normalize_known_domain("//@") == ""  # nosec B101
+
+
 def test_analyze_url_detects_multiple_indicators() -> None:
     url = "http://user:pass@xn--phish-cta.com/login"  # pragma: allowlist secret
     findings = analyze_url(url, known_domains=["phish.com"])

@@ -39,6 +39,10 @@ _URL_PATTERN: Final[re.Pattern[str]] = re.compile(
     flags=re.IGNORECASE,
 )
 
+_KNOWN_DOMAIN_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)(?:\.(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?))*"
+)
+
 
 @dataclass(frozen=True, slots=True)
 class PhishingFinding:
@@ -95,7 +99,20 @@ def _split_registrable_domain(domain: str) -> tuple[str, str]:
 def _normalize_known_domain(domain: str) -> str:
     """Return a normalised representation of a known legitimate domain."""
 
-    return domain.lower().strip().rstrip(".")
+    cleaned = domain.lower().strip().rstrip(".")
+    if not cleaned:
+        return ""
+
+    parsed = urlparse(cleaned if "://" in cleaned else f"//{cleaned}")
+    hostname = (parsed.hostname or "").rstrip(".")
+    if not hostname:
+        return ""
+
+    match = _KNOWN_DOMAIN_PATTERN.fullmatch(hostname)
+    if not match:
+        return ""
+
+    return match.group(0)
 
 
 def _contains_deceptive_subdomain(hostname: str, known_domain: str) -> bool:
