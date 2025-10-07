@@ -42,7 +42,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Provide GitHub issue templates for bugs and features
       (`.github/ISSUE_TEMPLATE/bug_report.yml`,
       `.github/ISSUE_TEMPLATE/feature_request.yml`).
-- [ ] Expand Dependabot to monitor GitHub Actions updates (`.github/dependabot.yml`).
+- [x] Expand Dependabot to monitor GitHub Actions updates (`.github/dependabot.yml`).
       *Aligns with flywheel best practices.*
 - [x] Add Release Drafter configuration for automated changelog
       (`.github/release-drafter.yml`, `.github/workflows/release-drafter.yml`).

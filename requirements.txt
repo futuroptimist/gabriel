@@ -11,3 +11,4 @@ pyspelling
 keyring
 hypothesis
 tomli
+PyYAML
