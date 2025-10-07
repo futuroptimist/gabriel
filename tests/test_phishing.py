@@ -6,6 +6,8 @@ import pytest
 
 from gabriel.phishing import (
     PhishingFinding,
+    _contains_deceptive_subdomain,
+    _normalize_known_domain,
     _registrable_domain_for,
     _split_registrable_domain,
     analyze_text_for_phishing,
@@ -36,6 +38,14 @@ def test_extract_urls(text: str, expected: list[str]) -> None:
 
 def _indicator_set(findings: list[PhishingFinding]) -> set[str]:
     return {finding.indicator for finding in findings}
+
+
+def test_contains_deceptive_subdomain_empty_known_returns_false() -> None:
+    assert not _contains_deceptive_subdomain("example.com", "")  # nosec B101
+
+
+def test_normalize_known_domain_strips_whitespace_and_dots() -> None:
+    assert _normalize_known_domain(" Example.COM. ") == "example.com"  # nosec B101
 
 
 def test_analyze_url_detects_multiple_indicators() -> None:
@@ -89,6 +99,30 @@ def test_analyze_url_detects_suffix_preserving_brand_injection() -> None:
     findings = analyze_url(url, known_domains=["bank.co.uk"])
     indicators = _indicator_set(findings)
     assert "lookalike-domain" in indicators  # nosec B101
+
+
+def test_analyze_url_detects_deceptive_subdomain_injection() -> None:
+    url = "https://example.com.security-check.net/login"
+    findings = analyze_url(url, known_domains=["example.com"])
+    indicators = _indicator_set(findings)
+    assert "deceptive-subdomain" in indicators  # nosec B101
+    [finding] = [f for f in findings if f.indicator == "deceptive-subdomain"]
+    assert finding.severity == "high"  # nosec B101
+    assert "example.com" in finding.message  # nosec B101
+
+
+def test_analyze_url_detects_deceptive_subdomain_mid_host() -> None:
+    url = "https://login.example.com.evil.net"
+    findings = analyze_url(url, known_domains=["example.com"])
+    indicators = _indicator_set(findings)
+    assert "deceptive-subdomain" in indicators  # nosec B101
+
+
+def test_analyze_url_detects_deceptive_subdomain_after_noise() -> None:
+    url = "https://secureexample.com.example.com.bad.net"
+    findings = analyze_url(url, known_domains=["example.com"])
+    indicators = _indicator_set(findings)
+    assert "deceptive-subdomain" in indicators  # nosec B101
 
 
 def test_analyze_url_ignores_legitimate_subdomain() -> None:
@@ -161,3 +195,23 @@ def test_analyze_url_skips_known_domain_with_trailing_dot() -> None:
 def test_analyze_url_handles_hostname_with_only_dots() -> None:
     findings = analyze_url("https://./", known_domains=["example.com"])
     assert "lookalike-domain" not in _indicator_set(findings)  # nosec B101
+
+
+def test_analyze_url_handles_hostname_with_trailing_dot() -> None:
+    findings = analyze_url("https://example.com./", known_domains=["example.com"])
+    indicators = _indicator_set(findings)
+    assert "deceptive-subdomain" not in indicators  # nosec B101
+    assert "lookalike-domain" not in indicators  # nosec B101
+
+
+def test_analyze_url_deceptive_subdomain_requires_label_boundary() -> None:
+    findings = analyze_url("https://secureexample.com", known_domains=["example.com"])
+    indicators = _indicator_set(findings)
+    assert "deceptive-subdomain" not in indicators  # nosec B101
+
+
+def test_analyze_url_deceptive_subdomain_normalises_known_domain() -> None:
+    url = "https://example.com.attacker.org"
+    findings = analyze_url(url, known_domains=[" Example.COM. "])
+    indicators = _indicator_set(findings)
+    assert "deceptive-subdomain" in indicators  # nosec B101

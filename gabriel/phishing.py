@@ -92,6 +92,30 @@ def _split_registrable_domain(domain: str) -> tuple[str, str]:
     return label, suffix
 
 
+def _normalize_known_domain(domain: str) -> str:
+    """Return a normalised representation of a known legitimate domain."""
+
+    return domain.lower().strip().rstrip(".")
+
+
+def _contains_deceptive_subdomain(hostname: str, known_domain: str) -> bool:
+    """Return ``True`` when ``hostname`` embeds ``known_domain`` before another suffix."""
+
+    if not known_domain:
+        return False
+
+    if hostname.rstrip(".") == known_domain:
+        return False
+
+    token = f"{known_domain}."
+    start = hostname.find(token)
+    while start != -1:
+        if start == 0 or hostname[start - 1] == ".":
+            return True
+        start = hostname.find(token, start + 1)
+    return False
+
+
 def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[PhishingFinding]:
     """Analyse ``url`` and return heuristic phishing findings."""
 
@@ -161,14 +185,24 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
 
         if known_domains:
             for known in known_domains:
-                clean_known = known.lower().strip()
+                clean_known = _normalize_known_domain(known)
                 if not clean_known:
                     continue
                 if hostname == clean_known or hostname.endswith(f".{clean_known}"):
                     continue
+                if _contains_deceptive_subdomain(hostname, clean_known):
+                    findings.append(
+                        PhishingFinding(
+                            url=url,
+                            indicator="deceptive-subdomain",
+                            message=(
+                                "Hostname embeds trusted domain "
+                                f"{clean_known} within a different parent domain"
+                            ),
+                            severity="high",
+                        )
+                    )
                 known_registrable = _registrable_domain_for(clean_known)
-                if not known_registrable:
-                    continue
                 if registrable_domain == known_registrable:
                     continue
 

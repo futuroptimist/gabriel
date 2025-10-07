@@ -47,8 +47,8 @@ Feel free to extend this list with additional questions or provide answers in fo
      titled *Docker builds* for more recipes.
 19. **Does Gabriel include phishing detection yet?**
    - A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for
-     punycode, suspicious TLDs, HTTP usage, and lookalike domains. Extend it with
-     additional rules as the roadmap advances.
+     punycode, suspicious TLDs, HTTP usage, deceptive subdomains, and lookalike
+     domains. Extend it with additional rules as the roadmap advances.
 20. **Can Gabriel audit my VaultWarden deployment?**
    - Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a
      `VaultWardenConfig` snapshot to identify gaps from the checklist in
