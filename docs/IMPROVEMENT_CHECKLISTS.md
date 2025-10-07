@@ -54,6 +54,9 @@ See [related/jobbot3000/IMPROVEMENTS.md](related/jobbot3000/IMPROVEMENTS.md).
 ## Nextcloud
 See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 
+Gabriel now offers `gabriel.selfhosted.audit_nextcloud` to evaluate these controls and surface
+remediation steps for administrators.
+
 ## PhotoPrism
 - [ ] Enable HTTPS by default and use strong admin credentials.
 - [ ] Store images outside of the application container with strict permissions.

@@ -177,6 +177,36 @@ for finding in audit_vaultwarden(config):
 
 The helper only reports actionable findings so hardened deployments return an empty list.
 
+### Audit Nextcloud deployments
+
+Gabriel can also review Nextcloud hardening controls derived from the
+[Nextcloud checklist](docs/IMPROVEMENT_CHECKLISTS.md#nextcloud).
+`gabriel.selfhosted.audit_nextcloud` highlights weak spots in authentication,
+backups, updates, and admin exposure.
+
+```python
+from gabriel import NextcloudConfig, audit_nextcloud
+
+config = NextcloudConfig(
+    https_enabled=True,
+    certificate_trusted=True,
+    mfa_enforced=False,  # MFA not enforced yet
+    backups_enabled=True,
+    backup_frequency_hours=24,
+    last_restore_verification_days=45,
+    last_update_days=60,
+    app_updates_automatic=False,
+    admin_allowed_networks=("0.0.0.0/0",),
+    log_monitoring_enabled=False,
+)
+
+for finding in audit_nextcloud(config):
+    print(f"{finding.severity.upper()} — {finding.message}")
+    print(f"Fix: {finding.remediation}\n")
+```
+
+Hardened environments return an empty list so teams can verify when mitigation work is complete.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).

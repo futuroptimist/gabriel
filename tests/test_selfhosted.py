@@ -6,7 +6,13 @@ from collections.abc import Iterable
 
 import pytest
 
-from gabriel.selfhosted import CheckResult, VaultWardenConfig, audit_vaultwarden
+from gabriel.selfhosted import (
+    CheckResult,
+    NextcloudConfig,
+    VaultWardenConfig,
+    audit_nextcloud,
+    audit_vaultwarden,
+)
 
 
 def _finding_slugs(findings: Iterable[CheckResult]) -> set[str]:
@@ -199,3 +205,215 @@ def test_audit_vaultwarden_passes_hardened_config(key: str) -> None:
     findings = audit_vaultwarden(config)
 
     assert findings == []  # nosec B101
+
+
+def test_audit_nextcloud_flags_missing_https() -> None:
+    config = NextcloudConfig(
+        https_enabled=False,
+        certificate_trusted=False,
+        mfa_enforced=True,
+        backups_enabled=True,
+        backup_frequency_hours=12,
+        last_restore_verification_days=7,
+        last_update_days=10,
+        app_updates_automatic=True,
+        admin_allowed_networks=("192.168.10.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-https" in slugs  # nosec B101
+
+
+def test_audit_nextcloud_detects_missing_mfa() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=False,
+        backups_enabled=True,
+        backup_frequency_hours=12,
+        last_restore_verification_days=7,
+        last_update_days=10,
+        app_updates_automatic=True,
+        admin_allowed_networks=("192.168.10.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-mfa" in slugs  # nosec B101
+
+
+def test_audit_nextcloud_warns_on_backup_and_restore_gaps() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=True,
+        backups_enabled=True,
+        backup_frequency_hours=48,
+        last_restore_verification_days=90,
+        last_update_days=5,
+        app_updates_automatic=True,
+        admin_allowed_networks=("192.168.10.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-backups" in slugs  # nosec B101
+    assert "nextcloud-restore-test" in slugs  # nosec B101
+
+
+def test_audit_nextcloud_warns_when_backups_disabled() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=True,
+        backups_enabled=False,
+        backup_frequency_hours=None,
+        last_restore_verification_days=None,
+        last_update_days=5,
+        app_updates_automatic=True,
+        admin_allowed_networks=("192.168.10.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-backups" in slugs  # nosec B101
+
+
+def test_audit_nextcloud_warns_when_backup_frequency_unknown() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=True,
+        backups_enabled=True,
+        backup_frequency_hours=None,
+        last_restore_verification_days=7,
+        last_update_days=5,
+        app_updates_automatic=True,
+        admin_allowed_networks=("192.168.10.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-backups" in slugs  # nosec B101
+
+
+def test_audit_nextcloud_warns_on_stale_updates_and_app_reviews() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=True,
+        backups_enabled=True,
+        backup_frequency_hours=12,
+        last_restore_verification_days=7,
+        last_update_days=45,
+        app_updates_automatic=False,
+        admin_allowed_networks=("192.168.10.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-updates" in slugs  # nosec B101
+    assert any(
+        "not been updated" in finding.message.lower()
+        for finding in findings
+        if finding.slug == "nextcloud-updates"
+    )  # nosec B101
+
+
+def test_audit_nextcloud_warns_on_open_admin_network_and_logging() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=True,
+        backups_enabled=True,
+        backup_frequency_hours=12,
+        last_restore_verification_days=7,
+        last_update_days=10,
+        app_updates_automatic=True,
+        admin_allowed_networks=("0.0.0.0/0",),
+        log_monitoring_enabled=False,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-admin-network" in slugs  # nosec B101
+    assert "nextcloud-log-monitoring" in slugs  # nosec B101
+
+
+def test_audit_nextcloud_passes_hardened_config() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=True,
+        backups_enabled=True,
+        backup_frequency_hours=12,
+        last_restore_verification_days=7,
+        last_update_days=7,
+        app_updates_automatic=True,
+        admin_allowed_networks=("192.168.10.0/24", "10.0.0.0/16"),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    assert findings == []  # nosec B101
+
+
+def test_audit_nextcloud_warns_on_untrusted_certificate() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=False,
+        mfa_enforced=True,
+        backups_enabled=True,
+        backup_frequency_hours=12,
+        last_restore_verification_days=7,
+        last_update_days=7,
+        app_updates_automatic=True,
+        admin_allowed_networks=("192.168.10.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-https" in slugs  # nosec B101
+    assert any(finding.severity == "medium" for finding in findings)  # nosec B101
+
+
+def test_audit_nextcloud_warns_when_updates_recent_but_automation_disabled() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=True,
+        backups_enabled=True,
+        backup_frequency_hours=12,
+        last_restore_verification_days=7,
+        last_update_days=5,
+        app_updates_automatic=False,
+        admin_allowed_networks=("192.168.10.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-updates" in slugs  # nosec B101
+    assert any(
+        finding.severity == "low" and "automatic" in finding.message.lower()
+        for finding in findings
+        if finding.slug == "nextcloud-updates"
+    )  # nosec B101

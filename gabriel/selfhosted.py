@@ -123,6 +123,143 @@ def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
     return findings
 
 
+@dataclass(frozen=True, slots=True)
+class NextcloudConfig:
+    """Configuration snapshot for a Nextcloud deployment."""
+
+    https_enabled: bool
+    certificate_trusted: bool
+    mfa_enforced: bool
+    backups_enabled: bool
+    backup_frequency_hours: int | None
+    last_restore_verification_days: int | None
+    last_update_days: int | None
+    app_updates_automatic: bool
+    admin_allowed_networks: Sequence[str]
+    log_monitoring_enabled: bool
+
+
+def audit_nextcloud(config: NextcloudConfig) -> list[CheckResult]:
+    """Return security findings for a Nextcloud installation."""
+
+    findings: list[CheckResult] = []
+
+    if not config.https_enabled:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-https",
+                message="Nextcloud should be served over HTTPS with a trusted certificate.",
+                severity="high",
+                remediation=(
+                    "Terminate TLS with a trusted certificate via a reverse proxy or built-in SSL."
+                ),
+            )
+        )
+    elif not config.certificate_trusted:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-https",
+                message="HTTPS is enabled but the certificate is not trusted by clients.",
+                severity="medium",
+                remediation="Install a certificate from a trusted CA or well-known internal PKI.",
+            )
+        )
+
+    if not config.mfa_enforced:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-mfa",
+                message="Multi-factor authentication is not enforced for all accounts.",
+                severity="high",
+                remediation=(
+                    "Enable mandatory MFA via the security settings "
+                    "and require app passwords for clients."
+                ),
+            )
+        )
+
+    if not config.backups_enabled:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-backups",
+                message="Automated backups are disabled.",
+                severity="high",
+                remediation=(
+                    "Schedule recurring filesystem and database backups " "to off-site storage."
+                ),
+            )
+        )
+    else:
+        if config.backup_frequency_hours is None or config.backup_frequency_hours > 24:
+            findings.append(
+                CheckResult(
+                    slug="nextcloud-backups",
+                    message="Backups run infrequently. Aim for at least daily snapshots.",
+                    severity="medium",
+                    remediation="Adjust the backup schedule to run every 24 hours or more often.",
+                )
+            )
+        if (
+            config.last_restore_verification_days is None
+            or config.last_restore_verification_days > 30
+        ):
+            findings.append(
+                CheckResult(
+                    slug="nextcloud-restore-test",
+                    message="Restore procedures have not been tested in the last 30 days.",
+                    severity="medium",
+                    remediation="Perform routine restore drills to verify backup integrity.",
+                )
+            )
+
+    if config.last_update_days is None or config.last_update_days > 30:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-updates",
+                message="Nextcloud or its apps have not been updated in over 30 days.",
+                severity="medium",
+                remediation=(
+                    "Plan a maintenance window to apply the latest core " "and app updates."
+                ),
+            )
+        )
+    elif not config.app_updates_automatic:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-updates",
+                message="Automatic app updates are disabled, increasing drift risk.",
+                severity="low",
+                remediation=(
+                    "Enable automatic app updates or schedule frequent " "manual reviews."
+                ),
+            )
+        )
+
+    if _is_network_list_open(config.admin_allowed_networks):
+        findings.append(
+            CheckResult(
+                slug="nextcloud-admin-network",
+                message="Admin interface is reachable from untrusted networks.",
+                severity="high",
+                remediation="Restrict access to VPN ranges or internal subnets only.",
+            )
+        )
+
+    if not config.log_monitoring_enabled:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-log-monitoring",
+                message="Logs are not actively monitored for suspicious activity.",
+                severity="medium",
+                remediation=(
+                    "Enable log shipping or alerting to monitor " "authentication and sync events."
+                ),
+            )
+        )
+
+    return findings
+
+
 def _is_strong_secret(secret: str | None) -> bool:
     if not secret:
         return False
@@ -154,5 +291,7 @@ __all__ = [
     "CheckResult",
     "Severity",
     "VaultWardenConfig",
+    "NextcloudConfig",
     "audit_vaultwarden",
+    "audit_nextcloud",
 ]
