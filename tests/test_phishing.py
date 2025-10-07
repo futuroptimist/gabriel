@@ -122,7 +122,7 @@ def test_analyze_url_detects_deceptive_subdomain_injection() -> None:
     assert finding.severity == "high"  # nosec B101
     expected_message = (
         "Hostname embeds trusted domain "
-        f"{_normalize_known_domain('example.com')} within a different parent domain"
+        f"{_normalize_known_domain('example.com')!r} within a different parent domain"
     )
     assert finding.message == expected_message  # nosec B101
 

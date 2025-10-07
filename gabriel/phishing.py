@@ -214,7 +214,7 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
                             indicator="deceptive-subdomain",
                             message=(
                                 "Hostname embeds trusted domain "
-                                f"{clean_known} within a different parent domain"
+                                f"{clean_known!r} within a different parent domain"
                             ),
                             severity="high",
                         )
