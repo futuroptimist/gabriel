@@ -1,0 +1,98 @@
+name-template: v$NEXT_PATCH_VERSION
+tag-template: v$NEXT_PATCH_VERSION
+tag-prefix: ''
+change-template: '- $TITLE (#$NUMBER)'
+change-title-escapes: '<_`*'
+no-changes-template: '- No user-facing changes in this release.'
+version-template: $MAJOR.$MINOR.$PATCH
+version-resolver:
+  major:
+    labels: []
+  minor:
+    labels: []
+  patch:
+    labels: []
+  default: patch
+categories:
+  - title: '🚀 Features'
+    labels:
+      - feature
+      - enhancement
+  - title: '🐛 Fixes'
+    labels:
+      - bug
+      - fix
+      - regression
+  - title: '🧰 Maintenance'
+    labels:
+      - chore
+      - dependencies
+      - tooling
+      - build
+  - title: '📝 Documentation'
+    labels:
+      - docs
+      - documentation
+  - title: '🔒 Security'
+    labels:
+      - security
+      - vulnerability
+exclude-labels:
+  - skip-changelog
+include-labels: []
+include-paths: []
+exclude-contributors: []
+no-contributors-template: No contributors
+replacers:
+  - search: '\n{2,}'
+    replace: '\n\n'
+autolabeler:
+  - label: docs
+    title:
+      - doc
+      - docs
+    files:
+      - docs/**
+      - README.md
+  - label: security
+    title:
+      - security
+      - vulnerability
+    body:
+      - security
+      - vulnerability
+  - label: dependencies
+    files:
+      - requirements*.txt
+      - pyproject.toml
+      - package.json
+  - label: feature
+    title:
+      - feature
+      - enhancement
+      - add
+  - label: fix
+    title:
+      - fix
+      - bug
+      - regression
+sort-by: merged_at
+sort-direction: descending
+prerelease: false
+prerelease-identifier: ''
+include-pre-releases: false
+latest: 'true'
+filter-by-commitish: false
+commitish: ''
+pull-request-limit: 5
+category-template: '## $TITLE'
+header: ''
+footer: ''
+template: |
+  ## What's Changed
+
+  $CHANGES
+
+  ## Contributors
+
+  $CONTRIBUTORS
