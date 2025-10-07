@@ -42,7 +42,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v1
       - name: Install Markdown lint dependencies
-        run: sudo uv pip install --system pymarkdownlnt==0.9.32
+        run: |
+          UV_BIN="$(which uv)"
+          sudo "$UV_BIN" pip install --system pymarkdownlnt==0.9.32
       - name: Lint Markdown files
         run: |
           pymarkdown --config .pymarkdown.json scan README.md \
