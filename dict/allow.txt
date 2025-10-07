@@ -150,7 +150,9 @@ plaintext
 cpp
 GGUF
 Nextcloud
+NextcloudConfig
 nextcloud
+mfa
 svg
 sqrt
 Syncthing
