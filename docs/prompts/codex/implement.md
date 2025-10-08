@@ -41,6 +41,63 @@ include the diff in a fenced block.
 - Add docstrings when implementing complex logic or new modules.
 - Update docs/gabriel/FAQ.md when introducing new recurring questions.
 
+## Future direction: Continuous monitoring co-pilot
+
+Gabriel's documented improvements are nearing saturation for foundational utilities. The next
+step is to prototype a privacy-preserving monitoring loop that keeps residents informed about
+critical changes in their environment.
+
+### Vision
+
+- Stream local telemetry (system logs, self-hosted app health, network metadata) into an
+  event pipeline that strips personal content but preserves security signals.
+- Let an on-device LLM summarize anomalies, predict risk levels, and draft user-friendly
+  remediation steps.
+- Deliver guidance through the existing CLI, a lightweight desktop notifier, or optional
+  integrations with sibling projects such as sigma (voice) and flywheel (automation).
+
+### Principles
+
+1. **Consent-first ingestion** – Provide explicit configuration for each data source with
+   clear retention controls.
+2. **Local-first inference** – Default to on-device LLM execution; fall back to token.place
+   only when users opt in and secrets are wrapped in hardware-backed keys.
+3. **Explainable findings** – Pair every alert with the raw evidence and a reproducible
+   reasoning chain for auditability.
+4. **Safety valves** – Include pause/disable controls plus scheduled self-checks to ensure the
+   monitor never runs unattended after upgrades.
+
+### Roadmap
+
+1. **Foundational telemetry adapters**
+   - Build Python modules under `gabriel.monitoring` for syslog tailing, Docker health checks,
+     and VaultWarden status scraping.
+   - Add property-based tests that simulate noisy streams to verify parsers are resilient.
+   - Extend `docs/gabriel/FAQ.md` with guidance on safe telemetry opt-in.
+
+2. **LLM summarization engine**
+   - Introduce a scoring interface that consumes normalized events and returns severity plus
+     narrative summaries.
+   - Provide fallback heuristics for offline mode alongside tests covering edge-case
+     detections (e.g., flapping services, brute-force attempts).
+   - Document prompt templates and defensive prompt-engineering measures in `docs/gabriel`.
+
+3. **User experience layer**
+   - Expand the CLI with `gabriel monitor` subcommands for status, pause, resume, and log
+     review.
+   - Offer optional desktop notifications using cross-platform libraries gated behind feature
+     flags.
+   - Capture end-to-end workflows in integration tests and update runbooks for on-call usage.
+
+4. **Safety and governance**
+   - Implement continuous verification using hash-based attestation of monitoring binaries.
+   - Publish threat modeling updates and residual risk assessments in `docs/gabriel/THREAT_MODEL.md`.
+   - Schedule recurring follow-up tasks via the Implement prompt to iterate on detection
+     rules, storage retention, and user feedback loops.
+
+Each milestone should spawn targeted Implement prompt runs, ensuring incremental delivery while
+maintaining documentation and test coverage parity.
+
 ## Upgrade Prompt
 
 Type: evergreen

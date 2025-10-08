@@ -6,6 +6,7 @@ requires-python = ">=3.10"
 [project.scripts]
 gabriel = "gabriel.utils:main"
 gabriel-calc = "gabriel.utils:main"
+gabriel-viewer = "gabriel.viewer:main"
 
 [tool.isort]
 profile = "black"

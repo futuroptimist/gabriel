@@ -53,3 +53,8 @@ Feel free to extend this list with additional questions or provide answers in fo
    - Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a
      `VaultWardenConfig` snapshot to identify gaps from the checklist in
      [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
+21. **How do I preview 3D threat models locally?**
+   - Run `gabriel-viewer` to launch the bundled WebGL viewer. The command prints
+     the local URL (default `http://127.0.0.1:8000/index.html`) and opens your
+     default browser unless `--no-browser` is supplied. See
+     [VIEWER.md](VIEWER.md) for customization tips.

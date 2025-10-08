@@ -11,6 +11,7 @@ from .phishing import (
 )
 from .secrets import delete_secret, get_secret, store_secret
 from .selfhosted import CheckResult, Severity, VaultWardenConfig, audit_vaultwarden
+from .viewer import serve_viewer
 
 SUPPORTED_PYTHON_VERSIONS = ("3.10", "3.11")
 
@@ -34,5 +35,6 @@ __all__ = [
     "CheckResult",
     "Severity",
     "audit_vaultwarden",
+    "serve_viewer",
     "SUPPORTED_PYTHON_VERSIONS",
 ]

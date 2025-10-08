@@ -131,6 +131,22 @@ when attached to a TTY. The retrieval command intentionally avoids printing the
 stored value so it cannot leak via logs; use ``python -c "from gabriel.utils import
 get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access.
 
+### Explore 3D threat models in the WebGL viewer
+
+Gabriel ships a small WebGL viewer under `viewer/` for rendering interactive security
+diagrams. Launch a local server with the dedicated CLI entry point:
+
+```bash
+gabriel-viewer
+# Serving viewer at http://127.0.0.1:8000/index.html
+```
+
+Use <kbd>Ctrl</kbd>+<kbd>C</kbd> in the terminal to stop the server. Pass
+`--no-browser` to skip automatically opening the default browser or
+`--host 0.0.0.0` to share the viewer on your LAN. The viewer assets live in
+`viewer/`; copy additional `.glb` or `.gltf` files there and update
+`viewer/index.html` to load them.
+
 ### Detect suspicious links
 
 Gabriel now ships with lightweight phishing detection heuristics for pasted text or
