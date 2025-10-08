@@ -143,6 +143,12 @@ runbooks          = "runbooks"
 templated         = "templated"
 triage            = "triage"
 webhook           = "webhook"
+LLaMA             = "LLaMA"
+shorteners        = "shorteners"
+detections        = "detections"
+labelled          = "labelled"
+summarise         = "summarise"
+summarises        = "summarises"
 
 [files]
 # Existing exclusions plus new ones for generated assets

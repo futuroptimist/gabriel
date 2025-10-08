@@ -7,6 +7,7 @@ DoS
 ESLint
 JS
 LLM
+LLaMA
 NEWREPO
 OpenAI
 PRD
@@ -181,6 +182,8 @@ NPC
 Gameplay
 Automations
 summarization
+summarise
+summarises
 affordances
 danielsmith
 fallbacks
@@ -190,6 +193,7 @@ Netlify
 sanitization
 shader
 shaders
+shorteners
 TLS
 toolchain
 UX
@@ -198,6 +202,7 @@ Vite
 Vitest
 Watchlist
 checksums
+detections
 anonymised
 artefacts
 cron
@@ -210,6 +215,7 @@ runbooks
 templated
 triage
 webhook
+labelled
 lockfile
 lockfiles
 FastAPI
