@@ -131,6 +131,18 @@ PRs               = "PRs"
 changelogs        = "changelogs"
 STLs              = "STLs"
 sugarkube         = "sugarkube"
+anonymised        = "anonymised"
+artefacts         = "artefacts"
+cron              = "cron"
+daemon            = "daemon"
+ingestion         = "ingestion"
+minimise          = "minimise"
+normalise         = "normalise"
+remediations      = "remediations"
+runbooks          = "runbooks"
+templated         = "templated"
+triage            = "triage"
+webhook           = "webhook"
 
 [files]
 # Existing exclusions plus new ones for generated assets

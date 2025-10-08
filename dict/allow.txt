@@ -198,6 +198,18 @@ Vite
 Vitest
 Watchlist
 checksums
+anonymised
+artefacts
+cron
+daemon
+ingestion
+minimise
+normalise
+remediations
+runbooks
+templated
+triage
+webhook
 lockfile
 lockfiles
 FastAPI
@@ -211,7 +223,6 @@ floorplan
 PPE
 KiCad
 Cloudflare
-runbooks
 OTA
 automations
 hillclimb
