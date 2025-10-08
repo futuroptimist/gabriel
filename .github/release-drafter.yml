@@ -2,7 +2,10 @@ name-template: "v$NEXT_PATCH_VERSION"
 tag-template: "v$NEXT_PATCH_VERSION"
 version-template: "$MAJOR.$MINOR.$PATCH"
 change-template: "- $TITLE (#$NUMBER)"
-change-title-escapes: []
+change-title-escapes: '\<*_&'
+template: |
+  ## What’s Changed
+  $CHANGES
 no-changes-template: "- No user-facing changes in this release."
 categories:
   - title: "🚀 Features"
