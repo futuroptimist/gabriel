@@ -68,6 +68,29 @@ def test_analyze_url_flags_exact_ip_address() -> None:
     assert {"insecure-scheme", "ip-address-host"} <= indicators  # nosec B101
 
 
+def test_analyze_url_flags_shortened_links() -> None:
+    url = "https://bit.ly/secure-update"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "shortened-url" in indicators  # nosec B101
+    [finding] = [f for f in findings if f.indicator == "shortened-url"]
+    assert finding.severity == "medium"  # nosec B101
+
+
+def test_analyze_url_flags_non_standard_ports() -> None:
+    url = "https://example.com:8443/login"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "non-standard-port" in indicators  # nosec B101
+
+
+def test_analyze_url_flags_invalid_port_values() -> None:
+    url = "https://example.com:abc/reset"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "invalid-port" in indicators  # nosec B101
+
+
 def test_analyze_url_detects_lookalike_domains() -> None:
     url = "https://accounts.examp1e.com"
     findings = analyze_url(url, known_domains=["example.com"])

@@ -34,6 +34,23 @@ _SUSPICIOUS_TLDS: Final[frozenset[str]] = frozenset(
     }
 )
 
+_SUSPICIOUS_SHORTENERS: Final[frozenset[str]] = frozenset(
+    {
+        "bit.ly",
+        "tinyurl.com",
+        "t.co",
+        "goo.gl",
+        "ow.ly",
+        "buff.ly",
+        "rb.gy",
+        "is.gd",
+        "lnkd.in",
+        "rebrand.ly",
+        "cutt.ly",
+        "s.id",
+    }
+)
+
 _URL_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"https?://[\w\-._~:/?#\[\]@!$&'()*+,;=%]+",
     flags=re.IGNORECASE,
@@ -120,6 +137,34 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
         )
 
     if hostname:
+        try:
+            port = parsed.port
+        except ValueError:
+            port = None
+            findings.append(
+                PhishingFinding(
+                    url=url,
+                    indicator="invalid-port",
+                    message=(
+                        "URL specifies an invalid port; attackers sometimes obfuscate hostnames"
+                    ),
+                    severity="medium",
+                )
+            )
+        else:
+            if port and port not in {80, 443}:
+                findings.append(
+                    PhishingFinding(
+                        url=url,
+                        indicator="non-standard-port",
+                        message=(
+                            f"URL uses uncommon port {port}; verify the destination before "
+                            "proceeding"
+                        ),
+                        severity="medium",
+                    )
+                )
+
         if "xn--" in hostname:
             findings.append(
                 PhishingFinding(
@@ -158,6 +203,19 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
 
         registrable_domain = _registrable_domain_for(hostname)
         registrable_label, registrable_suffix = _split_registrable_domain(registrable_domain)
+
+        if registrable_domain in _SUSPICIOUS_SHORTENERS:
+            findings.append(
+                PhishingFinding(
+                    url=url,
+                    indicator="shortened-url",
+                    message=(
+                        "URL uses a link shortener which can mask the true destination; expand it "
+                        "before clicking"
+                    ),
+                    severity="medium",
+                )
+            )
 
         if known_domains:
             for known in known_domains:
