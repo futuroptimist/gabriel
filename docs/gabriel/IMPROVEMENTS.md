@@ -57,7 +57,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Scan for zero-width characters and hidden text via pre-commit hook
       (`.pre-commit-config.yaml`, `docs/gabriel/THREAT_MODEL.md`, `gabriel/text.py`).
       *Aligns with flywheel best practices.*
-- [ ] Add Jest unit tests for the WebGL viewer (`viewer/viewer.js`).
+- [ ] Add Jest unit tests for the WebGL viewer (`gabriel/viewer_assets/viewer.js`).
 - [x] Enforce minimum test coverage in CI using `--cov-fail-under`
       (`pyproject.toml`, `.github/workflows/coverage.yml`).
       *Aligns with flywheel best practices.*
@@ -65,7 +65,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
       *Aligns with flywheel best practices.*
 - [ ] Add ESLint to pre-commit for viewer JavaScript
-      (`viewer/viewer.js`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+      (`gabriel/viewer_assets/viewer.js`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [x] Document Docker build and run instructions for local development
       (`docker/Dockerfile`, `README.md`).
 - [x] Implement environment variable fallback when `keyring` is unavailable
@@ -97,7 +97,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Scan Docker images for vulnerabilities during builds
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
 - [ ] Format viewer assets with Prettier via pre-commit
-      (`viewer/viewer.js`, `.pre-commit-config.yaml`).
+      (`gabriel/viewer_assets/viewer.js`, `.pre-commit-config.yaml`).
 - [ ] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
       *Aligns with flywheel best practices.*
 - [ ] Generate API docs with Sphinx and publish under `docs/`
@@ -122,7 +122,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/dependabot.yml`, `docker/Dockerfile`).
       *Aligns with flywheel best practices.*
 - [x] Document usage and setup steps for the WebGL viewer
-      (`viewer/viewer.js`, `README.md`).
+      (`gabriel/viewer_assets/viewer.js`, `README.md`).
       *Aligns with flywheel best practices.*
 - [ ] Integrate `commitlint` to enforce Conventional Commits
       (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).

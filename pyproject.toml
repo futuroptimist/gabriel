@@ -3,10 +3,21 @@ name = "gabriel"
 version = "0.0.0"
 requires-python = ">=3.10"
 
+[build-system]
+requires = ["setuptools>=67", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project.scripts]
 gabriel = "gabriel.utils:main"
 gabriel-calc = "gabriel.utils:main"
 gabriel-viewer = "gabriel.viewer:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gabriel*"]
+
+[tool.setuptools.package-data]
+gabriel = ["viewer_assets/*"]
 
 [tool.isort]
 profile = "black"

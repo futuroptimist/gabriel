@@ -133,7 +133,7 @@ get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access.
 
 ### Explore 3D threat models in the WebGL viewer
 
-Gabriel ships a small WebGL viewer under `viewer/` for rendering interactive security
+Gabriel ships a small WebGL viewer under `gabriel/viewer_assets/` for rendering interactive security
 diagrams. Launch a local server with the dedicated CLI entry point:
 
 ```bash
@@ -144,8 +144,8 @@ gabriel-viewer
 Use <kbd>Ctrl</kbd>+<kbd>C</kbd> in the terminal to stop the server. Pass
 `--no-browser` to skip automatically opening the default browser or
 `--host 0.0.0.0` to share the viewer on your LAN. The viewer assets live in
-`viewer/`; copy additional `.glb` or `.gltf` files there and update
-`viewer/index.html` to load them.
+`gabriel/viewer_assets/`; copy additional `.glb` or `.gltf` files there and update
+`gabriel/viewer_assets/index.html` to load them.
 
 ### Detect suspicious links
 

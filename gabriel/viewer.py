@@ -7,11 +7,11 @@ import functools
 import threading
 import warnings
 import webbrowser
+from collections.abc import Iterator
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Iterator
 
-VIEWER_DIRECTORY = Path(__file__).resolve().parents[1] / "viewer"
+VIEWER_DIRECTORY = Path(__file__).resolve().parent / "viewer_assets"
 
 
 def _ensure_viewer_directory() -> None:

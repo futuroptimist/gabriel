@@ -14,7 +14,12 @@ from gabriel.viewer import VIEWER_DIRECTORY, serve_viewer
 
 
 def _viewer_url(server: ThreadingHTTPServer) -> str:
-    host, port = server.server_address
+    raw_host, port = server.server_address
+    if isinstance(raw_host, bytes | bytearray):
+        decoded_host = raw_host.decode("utf-8", "ignore")
+    else:
+        decoded_host = str(raw_host)
+    host = decoded_host or ""
     if not host or host == "0.0.0.0":  # nosec B104 - normalize wildcard host for tests
         host = "127.0.0.1"
     return f"http://{host}:{port}/index.html"
@@ -27,7 +32,7 @@ def test_serve_viewer_serves_index_page() -> None:
         with urllib.request.urlopen(url) as response:  # nosec B310 - local HTTP fetch
             body = response.read().decode("utf-8")
     assert "model-viewer" in body  # nosec B101
-    assert VIEWER_DIRECTORY.name == "viewer"  # nosec B101
+    assert VIEWER_DIRECTORY.name == "viewer_assets"  # nosec B101
 
 
 def test_serve_viewer_opens_browser_from_lan_host() -> None:
@@ -53,8 +58,6 @@ def test_serve_viewer_warns_when_browser_launch_fails() -> None:
 def test_ensure_viewer_directory_missing() -> None:
     fake_path = mock.Mock()
     fake_path.exists.return_value = False
-    fake_path.__str__ = mock.Mock(return_value="missing-path")
-    fake_path.__fspath__ = mock.Mock(return_value="missing-path")
     with mock.patch.object(viewer, "VIEWER_DIRECTORY", fake_path):
         with pytest.raises(FileNotFoundError):
             viewer._ensure_viewer_directory()
@@ -89,7 +92,9 @@ def test_main_formats_non_tuple_address(capsys: pytest.CaptureFixture[str]) -> N
 
     with mock.patch.object(viewer, "serve_viewer", fake_server):
         with mock.patch.object(viewer.threading, "Event", return_value=FakeEvent()):
-            viewer.main(["--no-browser", "--host", "127.0.0.1", "--port", "7777", "--index", "viewer.html"])
+            viewer.main(
+                ["--no-browser", "--host", "127.0.0.1", "--port", "7777", "--index", "viewer.html"]
+            )
 
     captured = capsys.readouterr()
     assert "http://pipe:7777/viewer.html" in captured.out  # nosec B101

@@ -1,7 +1,7 @@
 # WebGL Viewer Guide
 
 Gabriel includes a lightweight WebGL viewer for exploring 3D threat models and architectural
-concepts. The assets live under `viewer/` and are served as static files.
+concepts. The assets live under `gabriel/viewer_assets/` and are served as static files.
 
 ## Quick start
 
@@ -25,23 +25,23 @@ The command automatically opens your default browser unless you pass `--no-brows
 
 ## Customize models
 
-1. Place additional `.glb` or `.gltf` files in the `viewer/` directory.
-2. Update `viewer/index.html` to reference your new assets. The default template loads
+1. Place additional `.glb` or `.gltf` files in the `gabriel/viewer_assets/` directory.
+2. Update `gabriel/viewer_assets/index.html` to reference your new assets. The default template loads
    `model.glb`, but you can swap in any other file that `model-viewer` supports.
 3. Restart `gabriel-viewer` to serve the updated scene.
 
-For finer control, edit `viewer/viewer.js` to adjust interaction controls, lighting,
+For finer control, edit `gabriel/viewer_assets/viewer.js` to adjust interaction controls, lighting,
 and metadata legends. Changes are picked up on browser refresh.
 
 ## Troubleshooting
 
 - **Port already in use** – Supply a different `--port` value (e.g., `gabriel-viewer --port 8081`).
 - **Blank page** – Check the browser developer console for 404 errors. Ensure custom assets are in
-  `viewer/` and referenced correctly from `index.html`.
+  `gabriel/viewer_assets/` and referenced correctly from `index.html`.
 - **No models listed** – Verify your `.glb` files include node names. The legend defaults to
   `part-<index>` when names are missing.
 
 ## Related documentation
 
 - [Prompt catalog](../prompts/codex/README.md)
-- [Threat model viewer assets](../../viewer/)
+- [Threat model viewer assets](../../gabriel/viewer_assets/)
