@@ -2,13 +2,14 @@
 
 The **jobbot3000** project automates job searches, resume generation, and interview prep.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Node CLI ingests postings, runs LLM prompts, and outputs deliverables.
-- **Key changes since 2025-09-24:** Resume bundle enforcement and expanded docs/workflows increased
-  the scope of automation but did not introduce new external services.
-- **Risks to monitor:** Handling of personal data (resumes, transcripts), token scopes for scraping
-  APIs, and CLI storage paths.
+- **Operational context:** Node CLI with Playwright/LLM helpers filters job boards, paginates results,
+  and produces deliverables.
+- **Key changes since 2025-09-29:** Track filters/pagination (PR #757) expanded API usage and added
+  new GitHub workflows plus Dependabot config tweaks.
+- **Risks to monitor:** Filtering logic may store personal search queries; ensure logs sanitize job
+  descriptions and tokens as new workflows execute.
 
 ## Threats
 

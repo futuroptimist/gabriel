@@ -3,16 +3,16 @@
 This document summarizes follow-ups for the
 [futuroptimist/danielsmith.io](https://github.com/futuroptimist/danielsmith.io) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ in the Futuroptimist roster.
-- **Stack:** Vite + Three.js site with TypeScript, Playwright/Vitest tests, and npm-managed
-  workflows.
-- **Conventions:** Prompt docs live under `docs/prompts/codex/`, scripts generate floorplan diagrams,
-  and CI captures launch screenshots.
-- **Security delta:** Latest commit refreshed the launch screenshot workflow and kept automation in
-  place; no new backend components were added.
-- **Watchlist:** Monitor Playwright artifacts for PII and ensure resume assets stay current.
+- **Status:** ✅ Roster reconfirmed after PR #111 landed on 2025-10-07.
+- **Stack:** Vite + Three.js scene rendered with TypeScript, Vitest/Playwright tests, and npm scripts.
+- **Conventions:** Prompt docs remain under `docs/prompts/codex/`; HUD focus announcements now live in
+  `src/lib/a11y.ts`; CI retains screenshot capture flows.
+- **Security delta:** Added live-region HUD cues require inspecting DOM updates to avoid leaking hidden
+  debug text or exposing focus loops.
+- **Watchlist:** Ensure accessibility helpers strip developer-only logging before deployment and review
+  Playwright recordings for inadvertent PII.
 
 ## Improvement Themes
 

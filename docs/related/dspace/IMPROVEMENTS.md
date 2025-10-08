@@ -3,17 +3,19 @@
 This document tracks enhancement ideas for the
 [democratizedspace/dspace](https://github.com/democratizedspace/dspace/tree/v3) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ per the Futuroptimist roster (v3 branch).
-- **Stack:** pnpm-managed monorepo with a Svelte/TypeScript frontend, Python tooling, and Ansible
-  automation for quest publishing.
-- **Conventions:** Uses `outages/` to log CI incidents, `scripts/` benchmarks to guard quest data,
-  and Vitest/Jest/Vitest-style suites alongside Python tests.
-- **Security delta:** PR #1906 landed large batches of new quest assets and outage entries while
-  extending regression tests for quest validation and metrics; no infrastructure changes.
-- **Watchlist:** Keep an eye on the asset bloat and ensure CDN or storage buckets enforce size
-  limits; confirm new quests receive the expected telemetry sanitisation.
+- **Status:** ✅ Roster confirmed on 2025-10-08 with the v3 branch shipping the achievements
+  milestone (PR #1937).
+- **Stack:** pnpm-managed workspace mixing Astro docs, Svelte quest UIs, and Node/TypeScript
+  utilities, plus supporting Playwright/Jest suites and Netlify deploy tooling.
+- **Conventions:** Accessibility docs stay under `docs/`, quest JSON under
+  `frontend/src/pages/quests/`, and automated tests cover quest validation, achievements, and
+  import/export flows.
+- **Security delta:** Achievements release adds new quest metadata, Docker packaging, and CI jobs; a
+  refreshed badge pipeline keeps Codecov, docs, and lint workflows active.
+- **Watchlist:** Monitor bundle size growth from added art assets and keep pnpm overrides current so
+  `canvas`/`@swc/core` native builds do not lag on security patches.
 
 ## Improvement Themes
 

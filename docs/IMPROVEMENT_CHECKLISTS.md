@@ -39,6 +39,9 @@ See [related/sugarkube/IMPROVEMENTS.md](related/sugarkube/IMPROVEMENTS.md).
 ## pr-reaper
 See [related/pr-reaper/IMPROVEMENTS.md](related/pr-reaper/IMPROVEMENTS.md).
 
+## danielsmith.io
+See [related/danielsmith_io/IMPROVEMENTS.md](related/danielsmith_io/IMPROVEMENTS.md).
+
 ## jobbot3000
 See [related/jobbot3000/IMPROVEMENTS.md](related/jobbot3000/IMPROVEMENTS.md).
 

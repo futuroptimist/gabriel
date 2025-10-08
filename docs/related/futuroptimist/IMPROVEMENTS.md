@@ -3,17 +3,17 @@
 This document aggregates enhancement ideas for the
 [futuroptimist/futuroptimist](https://github.com/futuroptimist/futuroptimist) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ (refreshed hourly via the README roster sync committed on 2025-09-29).
-- **Stack:** Python 3.12+ utilities managed with `uv`, Markdown docs, and GitHub Actions
-  workflows for linting, tests, docs, and coverage.
-- **Conventions:** Keeps automation prompts under `docs/prompts/codex/`, records incidents in
-  `outages/`, and mirrors flywheel-style runbooks.
-- **Security delta:** README now advertises the automated roster check; no new code paths were
-  introduced, but the monitoring workflow increases visibility into stale repos.
-- **Watchlist:** Continue auditing workflow secrets and the expanding `scripts/` helpers that
-  publish content bundles.
+- **Status:** ✅ Roster automation ran 2025-10-08 via update-repo-status workflow.
+- **Stack:** Python utilities managed with `uv`, Markdown docs, GitHub Actions for lint/tests/docs, and
+  the new `update-repo-status.yml` scheduler.
+- **Conventions:** Prompts under `docs/prompts/codex/`, incidents in `outages/`, with 01/02/03 workflow
+  naming mirroring flywheel.
+- **Security delta:** New CI suites (lint/tests/docs) plus status updater workflow landed in PR
+  `docs: update repo statuses`, increasing reliance on PAT/OIDC config.
+- **Watchlist:** Keep workflow tokens scoped minimally and ensure the status updater handles rate-limit
+  failures gracefully.
 
 ## Checklist
 

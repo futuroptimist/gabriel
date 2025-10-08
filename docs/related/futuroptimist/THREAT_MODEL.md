@@ -3,15 +3,14 @@
 The `futuroptimist` repository orchestrates reproducible pipelines, datasets, and release assets
 for the broader Futuroptimist ecosystem.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Coordinates scripts, runbooks, and outage reports that keep the YouTube
-  production pipeline healthy while feeding dependent projects such as `flywheel`, `token.place`,
-  and `gabriel`.
-- **Key changes since 2025-09-24:** README gains an hourly roster refresh workflow to highlight
-  stale dependencies; no privileged services were added.
-- **Risks to monitor:** Workflow secrets used by publishing scripts, storage of media artifacts,
-  and access tokens shared with downstream automation.
+- **Operational context:** Continues coordinating pipelines, roster checks, and outages while powering
+  dependent repos.
+- **Key changes since 2025-09-29:** New 01/02/03 CI workflows plus `update-repo-status.yml` automate
+  lint/tests/docs and roster syncing (PR `docs: update repo statuses`).
+- **Risks to monitor:** Additional workflows increase token usage—ensure PAT/OIDC secrets stay scoped
+  and status polling handles API failures without leaking stack traces.
 
 ## Security Assumptions
 

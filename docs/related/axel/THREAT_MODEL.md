@@ -3,14 +3,14 @@
 The **axel** repository organizes collections of repositories and runs a local Discord bot for
 capturing messages. This document outlines assumed threats and mitigations when using axel.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Axel continuously reads repository metadata and Discord check-ins to keep
-  a quest backlog fresh, aided by hillclimb automations.
-- **Key changes since 2025-09-24:** Prompt docs moved into `docs/prompts/codex/` and hillclimb
-  scripts were refreshed, but runtime security boundaries remain unchanged.
-- **Risks to monitor:** Local configuration files containing repository URLs or Discord tokens and
-  automation scripts that may accidentally push secrets.
+- **Operational context:** Axel polls repositories, compiles quest decks, and posts Discord updates
+  using hillclimb automations stored under `.axel/`.
+- **Key changes since 2025-09-29:** Discord summary bullets (PR #159) add Markdown rendering to bot
+  messages, slightly increasing parsing complexity.
+- **Risks to monitor:** Ensure Markdown escaping prevents link spoofing or mention spam, and continue
+  sanitizing local message logs to avoid token exposure.
 
 ## Security Assumptions
 

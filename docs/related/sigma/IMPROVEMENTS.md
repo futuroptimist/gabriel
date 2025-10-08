@@ -3,16 +3,17 @@
 This document summarizes enhancements for the
 [futuroptimist/sigma](https://github.com/futuroptimist/sigma) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ on the Futuroptimist roster.
-- **Stack:** Python utilities, OpenSCAD CAD models, and Makefile automation complemented by
-  TypeScript prompt docs.
-- **Conventions:** Prompt documents now live under `docs/prompts/codex/`, with SCAD builds handled by
-  `scripts/build_stl.sh` and tests covering clamp math and utility functions.
-- **Security delta:** PR #95 reorganized prompt docs and added hardware documentation; no new
-  firmware or OTA channels were introduced.
-- **Watchlist:** Continue validating the STL outputs and ensuring `llms.py` remains offline friendly.
+- **Status:** ✅ Roster refreshed after PR #131 landed on 2025-10-07.
+- **Stack:** Python utilities controlling ESP32 firmware flows, OpenSCAD models, tests, and prompts
+  housed in `docs/prompts/codex/`.
+- **Conventions:** GitHub Actions lint/test workflows split into `01-` and `02-` pipelines; nested LLM
+  segment parsing now normalized in source tests.
+- **Security delta:** PR #131 improved parsing of nested LLM text segments and hardened GitHub
+  workflows—verify logs for token leaks during new parsing paths.
+- **Watchlist:** Monitor firmware build artifacts for size creep and ensure nested-segment handling
+  cannot be coerced into executing markup sent from untrusted Bluetooth clients.
 
 ## Improvement Themes
 

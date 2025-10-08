@@ -3,16 +3,17 @@
 This document records enhancements for the
 [futuroptimist/jobbot3000](https://github.com/futuroptimist/jobbot3000) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ on the Futuroptimist roster.
-- **Stack:** Node.js CLI with rich documentation, ESLint configs, and jest-style test suites.
-- **Conventions:** Prompt docs live under `docs/prompts/codex/`, scripts orchestrate chore prompts,
-  and resume pipelines ensure deliverables bundle PDFs.
-- **Security delta:** PR #717 ensured resume bundles always include `resume.pdf`, updated docs, and
-  added workflows for CI and CodeQL, expanding automation reliance on PATs.
-- **Watchlist:** Monitor the growing `bin/jobbot.js` CLI for dependency injection risks and keep
-  deliverable exporters sanitizing personal data.
+- **Status:** ✅ Roster reconfirmed after PR #757 merged on 2025-10-07.
+- **Stack:** Node.js CLI + Playwright flows, YAML resume templates, and GitHub Actions for lint/tests
+  alongside Dependabot automation.
+- **Conventions:** Prompt docs in `docs/prompts/codex/`; track filters/pagination now documented; CI
+  pinned under `01-`/`02-` naming.
+- **Security delta:** Track filters and pagination increase API query surface—ensure rate-limit guards
+  and redaction of job postings in logs.
+- **Watchlist:** Keep filters from storing sensitive search queries long-term and audit Dependabot
+  config for noise suppression that might hide security patches.
 
 ## Improvement Themes
 

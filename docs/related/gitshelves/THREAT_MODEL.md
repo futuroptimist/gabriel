@@ -2,14 +2,14 @@
 
 The **gitshelves** project turns GitHub contribution history into printable blocks.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Fetches GitHub contribution data, renders SCAD/STL assets, and ships an
-  optional viewer for previewing models.
-- **Key changes since 2025-09-24:** Prompt docs now sit under `docs/prompts/codex/`; CLI and tests
-  were refreshed without altering API scopes.
-- **Risks to monitor:** GitHub API usage with personal access tokens and the integrity of generated
-  STL files.
+- **Operational context:** Continues to fetch GitHub contribution data, render SCAD/STL blocks, and
+  ship a static viewer.
+- **Key changes since 2025-09-29:** Baseplate selector feature (PR #144) broadened CLI inputs and
+  refreshed GitHub Actions workflows.
+- **Risks to monitor:** Validate new template arguments to avoid command injection and monitor workflow
+  secrets used during STL render jobs.
 
 ## Threats
 

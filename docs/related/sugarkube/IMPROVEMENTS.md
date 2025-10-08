@@ -3,18 +3,17 @@
 This document highlights improvement ideas for the
 [futuroptimist/sugarkube](https://github.com/futuroptimist/sugarkube) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ per the Futuroptimist roster.
-- **Stack:** Python automation, shell scripts, KiCad assets, docs with Markdown and HTML, and
-  extensive pytest/BATS suites.
-- **Conventions:** Prompt docs live under `docs/prompts/codex/`, outages catalog incidents, and
-  `scripts/` host provisioning helpers for Raspberry Pi clusters.
-- **Security delta:** PR #1148 shipped the `start_here` CLI helper, new CI workflows (pi-image,
-  spellcheck, SCAD to STL), and detailed docs for pi image building—expanding attack surface if
-  secrets leak during automation.
-- **Watchlist:** Keep scanning the new `docs/images/qr/` assets for embedded secrets and verify that
-  telemetry scripts respect opt-in defaults.
+- **Status:** ✅ Roster confirmed on 2025-10-08 with PR #1192.
+- **Stack:** Python automation, shell provisioning scripts, KiCad assets, Markdown docs, pytest/BATS
+  suites, and CLI entry points.
+- **Conventions:** Prompt docs under `docs/prompts/codex/`, README clarified for `python -m` usage,
+  and tests now guard documentation instructions.
+- **Security delta:** README guidance update plus doc-tests ensure CLI invocation stays accurate;
+  coverage settings and workflows reorganized to highlight doc validation.
+- **Watchlist:** Continue monitoring Raspberry Pi image scripts for credential usage and ensure new
+  doc tests do not accidentally expose environment variables.
 
 ## Improvement Themes
 

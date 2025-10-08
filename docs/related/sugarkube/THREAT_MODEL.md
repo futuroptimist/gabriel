@@ -3,13 +3,14 @@
 The **sugarkube** project delivers an off-grid Raspberry Pi cluster platform with scripted
 provisioning and rich documentation.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Builds pi images, manages k3s clusters, and documents solar hardware.
-- **Key changes since 2025-09-24:** Major documentation and script expansion introduced new CI
-  workflows, QR code assets, and onboarding helpers.
-- **Risks to monitor:** Credential handling in pi image builders, telemetry publishing scripts, and
-  the growing number of workflow secrets.
+- **Operational context:** Continues to orchestrate Raspberry Pi k3s clusters with Python automation
+  and extensive documentation.
+- **Key changes since 2025-09-29:** README and doc-test refresh (PR #1192) tied doc guidance to
+  executable tests and reworked coverage thresholds.
+- **Risks to monitor:** Doc tests rely on local commands—ensure they avoid leaking environment
+  variables or credentials during CI runs.
 
 ## Threats
 

@@ -16,6 +16,35 @@ Gabriel is an open source "guardian angel" LLM aimed at helping individuals secu
 - Encourage collaboration with [token.place](https://github.com/futuroptimist/token.place) and [sigma](https://github.com/futuroptimist/sigma) as complementary projects.
 - Provide a gentle on-ramp toward eventual real-world monitoring capabilities.
 
+## Futuroptimist Related Projects (snapshot 2025-10-08)
+
+- [token.place](https://github.com/futuroptimist/token.place) — secure peer-to-peer generative AI
+  network with signed relays, moderation toggles, and desktop clients.
+- [democratizedspace/dspace](https://github.com/democratizedspace/dspace/tree/v3) — retro-futurist
+  idle sim where Astro + Svelte quests teach real-world hobbies.
+- [futuroptimist/flywheel](https://github.com/futuroptimist/flywheel) — template repo bundling lint,
+  tests, docs, and RepoCrawler automation for solo builders.
+- [futuroptimist/gabriel](https://github.com/futuroptimist/gabriel) — privacy-first guardian angel
+  LLM (this repository).
+- [futuroptimist/f2clipboard](https://github.com/futuroptimist/f2clipboard) — CLI that digests Codex
+  tasks and GitHub logs into clipboard summaries.
+- [futuroptimist/axel](https://github.com/futuroptimist/axel) — quest tracker that analyzes repos and
+  publishes Discord updates.
+- [futuroptimist/sigma](https://github.com/futuroptimist/sigma) — open ESP32 AI pin with local LLM and
+  speech pipelines.
+- [futuroptimist/gitshelves](https://github.com/futuroptimist/gitshelves) — converts GitHub history
+  into stackable Gridfinity blocks.
+- [futuroptimist/wove](https://github.com/futuroptimist/wove) — open toolkit for knitting/crochet with
+  evolving robotic loom research.
+- [futuroptimist/sugarkube](https://github.com/futuroptimist/sugarkube) — solar-powered Raspberry Pi
+  cluster platform for off-grid k3s workloads.
+- [futuroptimist/pr-reaper](https://github.com/futuroptimist/pr-reaper) — workflow that closes stale
+  pull requests in bulk with dry-run safeguards.
+- [futuroptimist/danielsmith.io](https://github.com/futuroptimist/danielsmith.io) — Vite + Three.js
+  orthographic portfolio with accessibility-focused HUD.
+- [futuroptimist/jobbot3000](https://github.com/futuroptimist/jobbot3000) — job search copilot built on
+  the flywheel template with resume automation.
+
 For a philosophical look at these goals through the lens of the "Sword of Damocles" parable, see [SWORD_OF_DAMOCLES.md](docs/gabriel/SWORD_OF_DAMOCLES.md).
 
 ## Architecture Overview

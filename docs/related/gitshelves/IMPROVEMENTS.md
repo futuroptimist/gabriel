@@ -3,16 +3,17 @@
 This document highlights possible enhancements for
 [futuroptimist/gitshelves](https://github.com/futuroptimist/gitshelves).
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ in the Futuroptimist roster.
-- **Stack:** Python CLI with OpenSCAD/SCAD templates, pytest suites, and npm-based viewer assets.
-- **Conventions:** Prompt docs relocated to `docs/prompts/codex/`, viewer HTML lives under `docs/`,
-  and `gitshelves/scad.py` renders STL output.
-- **Security delta:** Prompt doc move plus refreshed CLI/tests (PR #109) expanded automation but did
-  not modify STL generation logic.
-- **Watchlist:** Ensure `dict/allow.txt` stays aligned with new SCAD terminology and keep SCAD
-  renders in CI to detect tampering.
+- **Status:** ✅ Roster entry reconfirmed via PR #144 on 2025-10-07.
+- **Stack:** Python CLI + OpenSCAD templates, STL viewer assets, pytest, and GitHub Actions for lint
+  and tests.
+- **Conventions:** Prompt docs stay in `docs/prompts/codex/`; baseplate templates now selectable from
+  CLI/SCAD flows; workflows split by `01-`/`02-` naming convention.
+- **Security delta:** New baseplate selector surfaces additional template inputs—validate user-supplied
+  names and guard new CLI flags.
+- **Watchlist:** Keep STL preview pipeline in CI to flag tampered templates and ensure CLI sanitizes
+  template names before hitting OpenSCAD.
 
 ## Improvement Themes
 

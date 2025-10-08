@@ -4,17 +4,22 @@ This document summarizes potential enhancements for the `token.place` project ba
 of its architecture and threat model. The goal is to strengthen relay and server node security while
 preserving the privacy-first design.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ on the Futuroptimist related projects roster (refreshed 2025-09-29 05:02 UTC).
-- **Stack:** FastAPI- and asyncio-driven Python services, Electron desktop client, and TypeScript
-  utilities orchestrated via Makefile scripts and GitHub Actions.
-- **Conventions:** Prompts now live under `docs/prompts/codex/`, outages under `outages/`, and
-  tests wrap both crypto compatibility and full relay flows.
-- **Security delta:** Prompt docs were renamed for clarity; no runtime changes landed, but the
-  documentation move helps agents avoid stale automation scripts.
-- **Watchlist:** Continue monitoring crypto dependencies (`cryptography`, `pyNaCl`, `tweetnacl`
-  bindings) and the optional desktop updater path.
+- **Status:** ✅ Roster entry refreshed 2025-10-08 after the "Restore zero-auth relay behavior"
+  release train (PR #424) landed.
+- **Stack:** FastAPI + Python 3.12 services, signed relay binaries, a TypeScript/Electron desktop
+  client, and Playwright-backed test suites, all glued together by Makefile tooling and GitHub
+  Actions.
+- **Conventions:** Prompts live in `docs/prompts/codex/`, config artifacts moved into
+  `config/` (including signing keys and k8s charts), and tests span crypto helpers, API v1/v2, and
+  visual regression baselines.
+- **Security delta:** Zero-auth relay access returned with explicit signing checks, rate limiting,
+  and moderation toggles; CI now layers CodeQL, secret scanning, and desktop build jobs to guard the
+  broadened footprint.
+- **Watchlist:** Keep an eye on the new content moderation hooks, crypto dependencies
+  (`cryptography`, `pynacl`, `tweetnacl`), and Electron auto-update paths introduced alongside the
+  desktop bundler.
 
 ## Recommended Improvements
 

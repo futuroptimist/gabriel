@@ -2,14 +2,13 @@
 
 The **pr-reaper** tool automates closing stale pull requests in bulk.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Runs as a CLI or GitHub Action that iterates through repositories using a
-  personal access token.
-- **Key changes since 2025-09-24:** New workflows and docs formalized automation; functionality
-  remains focused on GitHub API interactions.
-- **Risks to monitor:** Token scopes for closing PRs, rate-limit handling, and ensuring dry-run mode
-  stays default.
+- **Operational context:** CLI/GitHub Action sweeps stale PRs using PATs with repo scopes.
+- **Key changes since 2025-09-29:** Workflow overhaul (PR #34) introduced dedicated close-my-open-prs
+  automation and CI hygiene files.
+- **Risks to monitor:** New workflow adds concurrency—confirm dry-run toggles and branch filters stay
+  conservative to prevent accidental closures.
 
 ## Threats
 

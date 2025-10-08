@@ -3,14 +3,14 @@
 The **wove** project offers an open toolkit for learning textile crafts and evolving toward robotic
 looms.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Hosts CAD files, STL exports, and documentation describing the knitting
-  machine builds.
-- **Key changes since 2025-09-24:** Large documentation and STL drop fleshed out assembly steps;
-  automation now includes lint/tests/docs pipelines.
-- **Risks to monitor:** Safety guidance for mechanical builds and the potential inclusion of unsafe
-  wiring instructions.
+- **Operational context:** Provides CAD/STL assets and a new crochet translation CLI for textile
+  experimentation.
+- **Key changes since 2025-09-29:** Translation CLI (PR #126) adds parsing of user-supplied patterns
+  and new tests in CI.
+- **Risks to monitor:** Parsing untrusted crochet patterns could cause denial-of-service or confusing
+  instructions; ensure docs continue to emphasize mechanical safety when deploying outputs.
 
 ## Threats
 

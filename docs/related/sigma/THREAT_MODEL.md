@@ -2,13 +2,14 @@
 
 The **sigma** project builds a local-first ESP32 AI pin with voice interaction.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** CAD designs and Python control scripts guide the open hardware build.
-- **Key changes since 2025-09-24:** Prompt docs relocated and hardware documentation expanded; core
-  firmware paths remain offline.
-- **Risks to monitor:** Hardware supply chain (printed parts vs. purchased electronics) and
-  documentation that might encourage unsafe power configurations.
+- **Operational context:** Sigma continues to ship CAD models, Python firmware utilities, and prompt
+  guides for the ESP32 wearable.
+- **Key changes since 2025-09-29:** Nested LLM segment parsing landed (PR #131) and GitHub workflows
+  were split for lint/tests, touching CI permissions.
+- **Risks to monitor:** Parsing changes ingest more user content—validate escaping for spoken prompts
+  and confirm workflow secrets stay scoped as pipelines multiply.
 
 ## Threats
 

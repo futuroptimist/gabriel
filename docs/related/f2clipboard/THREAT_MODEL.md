@@ -2,14 +2,14 @@
 
 The **f2clipboard** project turns Codex task pages and GitHub logs into clipboard-ready summaries.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** CLI and GitHub Action parse HTML/JSON, store cached data locally, and may
-  contact Jira via optional plugins.
-- **Key changes since 2025-09-24:** New modules (`secret.py`, plugin loaders) formalize token
-  handling; prompt docs migrated to the Codex directory to guide automation.
-- **Risks to monitor:** Local cache paths holding secrets, plugin authentication scopes, and GitHub
-  Action runs operating with repository tokens.
+- **Operational context:** Python CLI/GitHub Action continues to parse Codex pages and logs while
+  caching results locally and syncing optional Slack/Jira integrations.
+- **Key changes since 2025-09-29:** Automation for applying LLM-generated merge patches (PR #158)
+  now interacts with Git data and GitHub tokens.
+- **Risks to monitor:** Merge patch automation broadens the risk of executing untrusted diffs, and
+  caches still need periodic scrubbing to avoid credential persistence.
 
 ## Threats
 

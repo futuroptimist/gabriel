@@ -2,13 +2,14 @@
 
 The **danielsmith.io** project serves a Three.js-powered interactive portfolio site.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Static Vite build with Playwright-driven screenshot automation and
-  TypeScript source.
-- **Key changes since 2025-09-24:** Screenshot workflow refreshed launch imagery; no new APIs or
-  services were integrated.
-- **Risks to monitor:** Handling of resume data, screenshot storage, and any analytics integrations.
+- **Operational context:** Static Vite/Three.js build with accessibility-focused HUD cues and
+  screenshot automation.
+- **Key changes since 2025-09-29:** Live-region focus announcements (PR #111) augment DOM updates and
+  require careful sanitization.
+- **Risks to monitor:** Ensure aria-live regions do not expose debug strings and continue auditing
+  screenshot artifacts for sensitive content.
 
 ## Threats
 

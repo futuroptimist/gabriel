@@ -3,15 +3,17 @@
 This document tracks opportunities for the
 [futuroptimist/wove](https://github.com/futuroptimist/wove) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ via the Futuroptimist roster.
-- **Stack:** Python utilities, OpenSCAD models, Sphinx docs, and pytest.
-- **Conventions:** Prompt docs live under `docs/prompts-codex*.md`, hardware CAD assets pair with STL
-  exports, and CI covers lint/tests/docs.
-- **Security delta:** PR #105 added full repository overview docs, codified workflows, and new STL
-  assets. No networked services were introduced, but contributors should vet large STL additions.
-- **Watchlist:** Monitor `dict/allow.txt` growth and ensure the viewer pipeline remains reproducible.
+- **Status:** ✅ Confirmed on 2025-10-08 after the crochet translation CLI landed (PR #126).
+- **Stack:** Python utilities, crochet pattern translation CLI, STL/CAD assets, Sphinx docs, and
+  pytest coverage.
+- **Conventions:** Prompt docs remain under `docs/prompts/codex/`; new CLI surfaces live in
+  `wove/cli.py` with tests covering translation mappings; CI orchestrated via `01-`/`02-` workflows.
+- **Security delta:** CLI introduces pattern parsing of untrusted input—ensure regexes and lookups
+  handle malformed patterns safely.
+- **Watchlist:** Keep translation dictionaries sanitized and review new CLI dependencies for license
+  compatibility.
 
 ## Improvement Themes
 

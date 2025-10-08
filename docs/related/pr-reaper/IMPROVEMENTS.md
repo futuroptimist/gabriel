@@ -3,16 +3,17 @@
 This document tracks recommendations for the
 [futuroptimist/pr-reaper](https://github.com/futuroptimist/pr-reaper) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ on the Futuroptimist roster.
-- **Stack:** Node.js CLI (pnpm/npm) with GitHub Action automation and lightweight TypeScript-free
-  scripts.
-- **Conventions:** Prompts relocated to `docs/prompts/codex/`, workflows manage PR cleanup and CI,
-  and `scripts/scan-secrets.py` is bundled for local validation.
-- **Security delta:** PR #20 added status badges, a `close-my-open-prs` workflow, and standard repo
-  scaffolding; new workflows introduce GitHub token usage that must remain scoped.
-- **Watchlist:** Audit workflow permissions and ensure automation uses dry-run mode by default.
+- **Status:** ✅ Roster reconfirmed after PR #34 merged on 2025-10-06.
+- **Stack:** Node.js CLI plus GitHub Actions (`ci.yml`, `close-my-open-prs.yml`) orchestrated with pnpm
+  and Shell scripts.
+- **Conventions:** Prompt docs under `docs/prompts/codex/`; repo now includes editorconfig, PR
+  template, and expanded workflow automation.
+- **Security delta:** PR #34 fixed workflow syntax and shipped an explicit bulk-closure workflow—review
+  concurrency safeguards and dry-run toggles.
+- **Watchlist:** Confirm GitHub Actions tokens operate with least privilege and the new workflow
+  surfaces environment variables carefully in logs.
 
 ## Improvement Themes
 

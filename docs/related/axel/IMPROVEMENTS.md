@@ -3,16 +3,17 @@
 This document aggregates recommended enhancements for the
 [axel](https://github.com/futuroptimist/axel) repository as discussed in previous analyses.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ (per the Futuroptimist roster).
-- **Stack:** Python 3.11 app with Discord bot helpers, OpenSCAD hardware models, and Makefile tasks.
-- **Conventions:** Prompt docs consolidated under `docs/prompts/codex/`, hillclimb automations live
-  in `.axel/`, and tests cover repo management plus Discord bot stubs.
-- **Security delta:** PR #131 relocated prompt docs and refreshed hillclimb scaffolding, reinforcing
-  the habit of keeping automation scripts under version control.
-- **Watchlist:** Continue auditing local `repos.txt` usage and ensure hillclimb scripts never commit
-  tokens.
+- **Status:** ✅ Confirmed on 2025-10-08 as PR #159 shipped Discord summary formatting tweaks.
+- **Stack:** Python 3.11 automation, Discord bot integrations, OpenSCAD artifacts, and hillclimb
+  cards under `.axel/`.
+- **Conventions:** Prompts remain in `docs/prompts/codex/`; bullet summaries now render in Discord
+  updates; tests exercise CLI repo scans.
+- **Security delta:** Discord summary change introduces new Markdown parsing of remote output—verify
+  escaping to avoid injection.
+- **Watchlist:** Audit hillclimb cards that fetch remote metadata and confirm Discord webhooks mask
+  tokens when bullet-mode is enabled.
 
 ## Checklist
 

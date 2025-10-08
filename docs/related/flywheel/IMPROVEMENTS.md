@@ -3,17 +3,17 @@
 This document captures recommended enhancements for the
 [futuroptimist/flywheel](https://github.com/futuroptimist/flywheel) template.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Status:** ✅ via the Futuroptimist roster refresh.
-- **Stack:** Python packaging (`pyproject.toml`), Node/Playwright tooling, OpenSCAD assets, and a
-  docs-site built with Astro/React, all managed via npm and Makefile helpers.
-- **Conventions:** Maintains prompt libraries in `docs/prompts/codex/`, runs nightly repo scans,
-  and publishes STL/GLB assets for the viewer.
-- **Security delta:** Automated status workflow updated README to match the new roster sync; no
-  runtime code changes beyond documentation.
-- **Watchlist:** Ensure the repo-status automation keeps secrets minimal and continue reviewing
-  generated STL artifacts before publishing.
+- **Status:** ✅ Roster entry reconfirmed after the 2025-10-07 RepoCrawler hardening release.
+- **Stack:** Python packaging (`pyproject.toml`), CLI tooling in `src/`, React/Astro docs, Playwright
+  smoke tests, and OpenSCAD assets orchestrated via npm and Makefile helpers.
+- **Conventions:** RepoCrawler-generated reports continue to live under `docs/`, prompts under
+  `docs/prompts/codex/`, and nightly cron jobs refresh repo health metrics.
+- **Security delta:** PR #626 now treats RepoCrawler CI status API errors as failures, preventing
+  greenlighting repos when GitHub returns 5xx responses.
+- **Watchlist:** Review GitHub token scopes used by RepoCrawler and the new failure path to ensure
+  repeated API outages do not rate-limit or halt downstream reports.
 
 ## Improvement Themes
 

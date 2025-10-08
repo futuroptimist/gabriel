@@ -2,14 +2,14 @@
 
 The **flywheel** template helps repos bootstrap linting, testing, docs, and CAD workflows.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-08)
 
-- **Operational context:** Provides a baseline CI/CD stack (lint, tests, docs, security scan) and
-  status reporting for downstream projects.
-- **Key changes since 2025-09-24:** Repository roster docs were refreshed; automation, templates,
-  and CAD assets remain the same.
-- **Risks to monitor:** Secrets in GitHub Actions, large binary artifacts in STL exports, and the
-  nightly scanning scripts that enumerate dependent repos.
+- **Operational context:** Continues to serve as the bootstrap template for lint/test/docs pipelines
+  and RepoCrawler-driven portfolio reports.
+- **Key changes since 2025-09-29:** PR #626 now flags RepoCrawler API errors as failures, raising
+  visibility into stalled CI on downstream repositories.
+- **Risks to monitor:** Increased error sensitivity could throttle the status dashboard if GitHub
+  outages persist, and RepoCrawler still relies on PAT scopes that need regular review.
 
 ## Threats
 
