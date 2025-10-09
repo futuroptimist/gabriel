@@ -244,3 +244,4 @@ examp1e
 punycode
 CorrectHorseBatteryStaple
 VaultWardenConfig
+shorteners

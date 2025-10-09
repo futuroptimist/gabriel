@@ -91,6 +91,15 @@ def test_analyze_url_detects_suffix_preserving_brand_injection() -> None:
     assert "lookalike-domain" in indicators  # nosec B101
 
 
+def test_analyze_url_flags_known_shorteners() -> None:
+    url = "https://bit.ly/reset-password"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "url-shortener" in indicators  # nosec B101
+    [finding] = [f for f in findings if f.indicator == "url-shortener"]
+    assert finding.severity == "medium"  # nosec B101
+
+
 def test_analyze_url_ignores_legitimate_subdomain() -> None:
     url = "https://support.example.com"
     findings = analyze_url(url, known_domains=["", "example.com"])
