@@ -146,9 +146,9 @@ for finding in findings:
 ```
 
 The helper inspects each HTTP(S) link for punycode, suspicious top-level domains,
-embedded credentials, plaintext HTTP, IP-based hosts, and lookalikes of the supplied
-domains. Combine it with Gabriel's secret helpers to build secure intake pipelines
-for inbound phishing reports.
+embedded credentials, plaintext HTTP, IP-based hosts, lookalikes of the supplied
+domains, and known URL shorteners that mask the final destination. Combine it with
+Gabriel's secret helpers to build secure intake pipelines for inbound phishing reports.
 
 ### Audit VaultWarden deployments
 
@@ -332,8 +332,9 @@ The repository includes GitHub Actions workflows for linting, testing, and docum
 `flake8` and `bandit` catch style issues and common security mistakes, while coverage results are
 uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is committed to
 [coverage.svg](coverage.svg) after tests run.
-pre-commit hooks also run `detect-secrets`, `pip-audit`, and the `lychee` Markdown link checker to
-catch secrets, vulnerable dependencies, and stale references.
+pre-commit hooks also run `detect-secrets`, `pip-audit`, the `lychee` Markdown link checker, and
+`pymarkdown` to catch secrets, vulnerable dependencies, stale references, and style regressions in
+Markdown content.
 Dependabot monitors Python dependencies weekly.
 
 ## Release management

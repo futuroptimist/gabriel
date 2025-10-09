@@ -108,7 +108,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [ ] Cache dependencies in GitHub Actions to speed up CI
       (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`).
-- [ ] Add Markdown linting to pre-commit and CI (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
+- [x] Add Markdown linting to pre-commit and CI (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
 - [ ] Integrate `trufflehog` secret scanning into pre-commit and CI
       (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
       *Aligns with flywheel best practices.*

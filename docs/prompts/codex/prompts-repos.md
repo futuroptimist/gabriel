@@ -1,13 +1,13 @@
-<!-- spellchecker: disable -->
 # Related Repository Scan Prompts
 
+<!-- spellchecker: disable -->
 One-click evergreen prompts for scanning Futuroptimist's related projects.
 Each prompt clones the referenced repository, maps the codebase, finds vulnerabilities, and
 writes docs under `docs/security/` inside that repo.
 
 ## [futuroptimist/futuroptimist](https://github.com/futuroptimist/futuroptimist)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -21,7 +21,7 @@ Tasks:
 
 ## [futuroptimist/token.place](https://github.com/futuroptimist/token.place)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -35,7 +35,7 @@ Tasks:
 
 ## [democratizedspace/dspace](https://github.com/democratizedspace/dspace/tree/v3)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -49,7 +49,7 @@ Tasks:
 
 ## [futuroptimist/flywheel](https://github.com/futuroptimist/flywheel)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -63,7 +63,7 @@ Tasks:
 
 ## [futuroptimist/gabriel](https://github.com/futuroptimist/gabriel)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -77,7 +77,7 @@ Tasks:
 
 ## [futuroptimist/f2clipboard](https://github.com/futuroptimist/f2clipboard)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -91,7 +91,7 @@ Tasks:
 
 ## [futuroptimist/axel](https://github.com/futuroptimist/axel)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -105,7 +105,7 @@ Tasks:
 
 ## [futuroptimist/sigma](https://github.com/futuroptimist/sigma)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -119,7 +119,7 @@ Tasks:
 
 ## [futuroptimist/gitshelves](https://github.com/futuroptimist/gitshelves)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -133,7 +133,7 @@ Tasks:
 
 ## [futuroptimist/wove](https://github.com/futuroptimist/wove)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -147,7 +147,7 @@ Tasks:
 
 ## [futuroptimist/sugarkube](https://github.com/futuroptimist/sugarkube)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -161,7 +161,7 @@ Tasks:
 
 ## [futuroptimist/pr-reaper](https://github.com/futuroptimist/pr-reaper)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -175,7 +175,7 @@ Tasks:
 
 ## [futuroptimist/jobbot3000](https://github.com/futuroptimist/jobbot3000)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -189,7 +189,7 @@ Tasks:
 
 ## [futuroptimist/danielsmith.io](https://github.com/futuroptimist/danielsmith.io)
 
-```
+```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
@@ -201,4 +201,4 @@ Tasks:
 - Commit the new docs.
 ```
 
-_Updated manually: 2025-09-29_
+Updated manually: 2025-09-29

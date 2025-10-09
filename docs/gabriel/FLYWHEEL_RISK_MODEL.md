@@ -28,25 +28,25 @@ This document outlines potential risks and mitigations when applying the **flywh
 
 ## Mitigation Strategies
 
-1. **Strict Review Gates**
+1. Strict review gates
    - Require human review for any agent-generated pull requests.
    - Use automated linting and security scans (`flake8`, `bandit`) as a baseline.
-2. **Data Minimization & Opt-In Collection**
+2. Data minimization & opt-in collection
    - Limit what telemetry or logs agents can access.
    - Seek explicit user consent and document retention policies.
-3. **Transparent Logging and Change Tracking**
+3. Transparent logging and change tracking
    - Keep audit logs of automated actions and summarize them in a changelog.
    - Reference risk assessments when major features ship.
-4. **Local-First and Modular Design**
+4. Local-first and modular design
    - Favor offline or encrypted inference and allow users to enable only the components they trust.
    - Provide safe configuration templates and examples of encrypted storage.
-5. **Dependency Audits and Signed Releases**
+5. Dependency audits and signed releases
    - Track dependencies in `requirements.txt` and run periodic vulnerability scans.
    - Sign releases and maintain clear update channels so users can verify integrity.
-6. **Community Review and Cleanup**
+6. Community review and cleanup
    - Encourage peer review of new modules and periodic code cleanup to limit complexity.
    - Document hardware requirements and fallback modes for low-resource environments.
-7. **Scoped Access for Cross-Repo Tools**
+7. Scoped access for cross-repo tools
    - Use read-only tokens when running `flywheel crawl` or similar utilities.
    - Sanitize or omit private repository details before storing reports.
 

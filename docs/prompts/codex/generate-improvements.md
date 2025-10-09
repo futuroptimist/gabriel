@@ -6,7 +6,7 @@ one_click: true
 
 # Generate Improvement Checklist Items
 
-```
+```text
 SYSTEM:
 You are an automated contributor for the Gabriel repository.
 

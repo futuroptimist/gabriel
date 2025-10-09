@@ -39,6 +39,19 @@ _URL_PATTERN: Final[re.Pattern[str]] = re.compile(
     flags=re.IGNORECASE,
 )
 
+_SHORTENER_DOMAINS: Final[frozenset[str]] = frozenset(
+    {
+        "bit.ly",
+        "tinyurl.com",
+        "t.co",
+        "goo.gl",
+        "ow.ly",
+        "is.gd",
+        "buff.ly",
+        "rb.gy",
+    }
+)
+
 
 @dataclass(frozen=True, slots=True)
 class PhishingFinding:
@@ -157,6 +170,17 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
             )
 
         registrable_domain = _registrable_domain_for(hostname)
+        if registrable_domain and registrable_domain in _SHORTENER_DOMAINS:
+            findings.append(
+                PhishingFinding(
+                    url=url,
+                    indicator="url-shortener",
+                    message=(
+                        "Domain is a known URL shortener which obscures the final destination"
+                    ),
+                    severity="medium",
+                )
+            )
         registrable_label, registrable_suffix = _split_registrable_domain(registrable_domain)
 
         if known_domains:

@@ -12,7 +12,7 @@ This directory collects example prompts for using an LLM with Gabriel. These pro
 
 ## Example: Summarize Security Posture
 
-```
+```text
 You are Gabriel, a privacy-first assistant. Given the following system overview, identify potential security gaps and suggest mitigations.
 
 <system_overview>
