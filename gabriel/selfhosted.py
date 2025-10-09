@@ -123,6 +123,80 @@ def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
     return findings
 
 
+@dataclass(frozen=True, slots=True)
+class SyncthingConfig:
+    """Configuration snapshot for a Syncthing deployment."""
+
+    https_enabled: bool
+    global_discovery_enabled: bool
+    relays_enabled: bool
+    connected_device_ids: Sequence[str]
+    trusted_device_ids: Sequence[str]
+
+
+def audit_syncthing(config: SyncthingConfig) -> list[CheckResult]:
+    """Return security findings for a Syncthing installation."""
+
+    findings: list[CheckResult] = []
+
+    if not config.https_enabled:
+        findings.append(
+            CheckResult(
+                slug="syncthing-https",
+                message="Serve the Syncthing GUI over HTTPS behind a trusted reverse proxy.",
+                severity="high",
+                remediation="Terminate TLS before the GUI or enable Syncthing's built-in HTTPS.",
+            )
+        )
+
+    if config.global_discovery_enabled:
+        findings.append(
+            CheckResult(
+                slug="syncthing-global-discovery",
+                message="Global discovery is enabled; disable it on trusted local networks.",
+                severity="medium",
+                remediation="Set global discovery to false so peers announce only locally.",
+            )
+        )
+
+    if config.relays_enabled:
+        findings.append(
+            CheckResult(
+                slug="syncthing-relays",
+                message="Relay servers are enabled; disable relays when peers share trusted links.",
+                severity="medium",
+                remediation="Disable relays to avoid routing traffic through third parties.",
+            )
+        )
+
+    normalized_connected = _normalize_device_ids(config.connected_device_ids)
+    normalized_trusted = _normalize_device_ids(config.trusted_device_ids)
+
+    if normalized_connected and not normalized_trusted:
+        findings.append(
+            CheckResult(
+                slug="syncthing-trust-list",
+                message="Connected devices exist but no trusted device allow-list is defined.",
+                severity="medium",
+                remediation="Keep an allow-list of expected device IDs and remove unknown peers.",
+            )
+        )
+    else:
+        unknown_devices = sorted(normalized_connected - normalized_trusted)
+        if unknown_devices:
+            device_list = ", ".join(unknown_devices)
+            findings.append(
+                CheckResult(
+                    slug="syncthing-unknown-devices",
+                    message=f"Syncthing is connected to unexpected device IDs: {device_list}.",
+                    severity="high",
+                    remediation="Remove unrecognised devices and rotate new IDs if necessary.",
+                )
+            )
+
+    return findings
+
+
 def _is_strong_secret(secret: str | None) -> bool:
     if not secret:
         return False
@@ -150,9 +224,20 @@ def _is_network_list_open(networks: Iterable[str]) -> bool:
     return not normalized
 
 
+def _normalize_device_ids(device_ids: Sequence[str]) -> set[str]:
+    normalized: set[str] = set()
+    for device_id in device_ids:
+        candidate = device_id.strip()
+        if candidate:
+            normalized.add(candidate.upper())
+    return normalized
+
+
 __all__ = [
     "CheckResult",
     "Severity",
     "VaultWardenConfig",
     "audit_vaultwarden",
+    "SyncthingConfig",
+    "audit_syncthing",
 ]

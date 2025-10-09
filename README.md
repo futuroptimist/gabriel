@@ -177,6 +177,30 @@ for finding in audit_vaultwarden(config):
 
 The helper only reports actionable findings so hardened deployments return an empty list.
 
+### Audit Syncthing deployments
+
+Syncthing operators can use `gabriel.selfhosted.audit_syncthing` to identify risky defaults such
+as plaintext dashboards, public discovery, or unknown device IDs.
+
+```python
+from gabriel import SyncthingConfig, audit_syncthing
+
+config = SyncthingConfig(
+    https_enabled=False,
+    global_discovery_enabled=True,
+    relays_enabled=True,
+    connected_device_ids=("ABC123", "DEF456"),
+    trusted_device_ids=("ABC123",),
+)
+
+for finding in audit_syncthing(config):
+    print(f"{finding.severity.upper()} — {finding.message}")
+    print(f"Fix: {finding.remediation}\n")
+```
+
+Hardened clusters with HTTPS in front of the GUI, local-only discovery, and trusted device allow
+lists will return an empty list, mirroring VaultWarden's behaviour.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
