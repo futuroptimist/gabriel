@@ -10,7 +10,14 @@ from .phishing import (
     extract_urls,
 )
 from .secrets import delete_secret, get_secret, store_secret
-from .selfhosted import CheckResult, Severity, VaultWardenConfig, audit_vaultwarden
+from .selfhosted import (
+    CheckResult,
+    Severity,
+    SyncthingConfig,
+    VaultWardenConfig,
+    audit_syncthing,
+    audit_vaultwarden,
+)
 
 SUPPORTED_PYTHON_VERSIONS = ("3.10", "3.11")
 
@@ -31,8 +38,10 @@ __all__ = [
     "analyze_text_for_phishing",
     "PhishingFinding",
     "VaultWardenConfig",
+    "SyncthingConfig",
     "CheckResult",
     "Severity",
     "audit_vaultwarden",
+    "audit_syncthing",
     "SUPPORTED_PYTHON_VERSIONS",
 ]

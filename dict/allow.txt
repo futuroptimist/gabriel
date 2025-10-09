@@ -245,3 +245,7 @@ punycode
 CorrectHorseBatteryStaple
 VaultWardenConfig
 shorteners
+Syncthing
+syncthing
+SyncthingConfig
+audit_syncthing

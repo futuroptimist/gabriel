@@ -6,7 +6,13 @@ from collections.abc import Iterable
 
 import pytest
 
-from gabriel.selfhosted import CheckResult, VaultWardenConfig, audit_vaultwarden
+from gabriel.selfhosted import (
+    CheckResult,
+    SyncthingConfig,
+    VaultWardenConfig,
+    audit_syncthing,
+    audit_vaultwarden,
+)
 
 
 def _finding_slugs(findings: Iterable[CheckResult]) -> set[str]:
@@ -197,5 +203,81 @@ def test_audit_vaultwarden_passes_hardened_config(key: str) -> None:
     )
 
     findings = audit_vaultwarden(config)
+
+    assert findings == []  # nosec B101
+
+
+def test_audit_syncthing_flags_missing_https() -> None:
+    config = SyncthingConfig(
+        https_enabled=False,
+        global_discovery_enabled=False,
+        relays_enabled=False,
+        connected_device_ids=("ABC123",),
+        trusted_device_ids=("ABC123",),
+    )
+
+    findings = audit_syncthing(config)
+
+    slugs = _finding_slugs(findings)
+    assert "syncthing-https" in slugs  # nosec B101
+    assert any("HTTPS" in finding.message for finding in findings)  # nosec B101
+
+
+def test_audit_syncthing_detects_network_services_enabled() -> None:
+    config = SyncthingConfig(
+        https_enabled=True,
+        global_discovery_enabled=True,
+        relays_enabled=True,
+        connected_device_ids=("ABC123",),
+        trusted_device_ids=("ABC123",),
+    )
+
+    findings = audit_syncthing(config)
+
+    slugs = _finding_slugs(findings)
+    assert {"syncthing-global-discovery", "syncthing-relays"}.issubset(slugs)  # nosec B101
+
+
+def test_audit_syncthing_detects_unknown_devices() -> None:
+    config = SyncthingConfig(
+        https_enabled=True,
+        global_discovery_enabled=False,
+        relays_enabled=False,
+        connected_device_ids=("abc123", "def456"),
+        trusted_device_ids=("ABC123",),
+    )
+
+    findings = audit_syncthing(config)
+
+    slugs = _finding_slugs(findings)
+    assert "syncthing-unknown-devices" in slugs  # nosec B101
+    assert any("DEF456" in finding.message for finding in findings)  # nosec B101
+
+
+def test_audit_syncthing_warns_when_trust_list_missing() -> None:
+    config = SyncthingConfig(
+        https_enabled=True,
+        global_discovery_enabled=False,
+        relays_enabled=False,
+        connected_device_ids=("abc123",),
+        trusted_device_ids=(),
+    )
+
+    findings = audit_syncthing(config)
+
+    slugs = _finding_slugs(findings)
+    assert "syncthing-trust-list" in slugs  # nosec B101
+
+
+def test_audit_syncthing_passes_hardened_config() -> None:
+    config = SyncthingConfig(
+        https_enabled=True,
+        global_discovery_enabled=False,
+        relays_enabled=False,
+        connected_device_ids=("abc123", "   "),
+        trusted_device_ids=("ABC123",),
+    )
+
+    findings = audit_syncthing(config)
 
     assert findings == []  # nosec B101
