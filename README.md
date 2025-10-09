@@ -74,6 +74,9 @@ make lint  # run pre-commit checks
 make test  # run the test suite with coverage
 ```
 
+Continuous integration also runs `pre-commit run --all-files` to mirror local hook behavior
+and catch formatting or security regressions before merge.
+
 Ruff powers the lightweight linting layer used in both pre-commit hooks and CI. Run it directly
 when iterating on lint fixes:
 
