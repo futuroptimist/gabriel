@@ -199,7 +199,7 @@ for finding in audit_syncthing(config):
 ```
 
 Hardened clusters with HTTPS in front of the GUI, local-only discovery, and trusted device allow
-lists will return an empty list, mirroring VaultWarden's behaviour.
+lists will return an empty list, mirroring VaultWarden behavior.
 
 ### Offline Usage
 
