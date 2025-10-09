@@ -253,7 +253,8 @@ This repo now mirrors flywheel's development helpers. `runbook.yml` lists
 typical tasks and `viewer/` hosts a basic `model-viewer` scene. The viewer bundles a
 local copy of the `@google/model-viewer` library to avoid third-party requests,
 and animations start only after pressing **Start Animation**. Launch
-`make preview` to open the viewer locally.
+`make preview` to open the viewer locally. Viewer scripts are linted with ESLint via
+pre-commit; run `npx eslint viewer/viewer.js` when iterating on WebGL logic.
 
 ## Tracked Repositories
 
