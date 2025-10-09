@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from importlib import import_module
 from pathlib import Path
 from typing import Any
@@ -57,6 +58,26 @@ def test_pre_commit_configuration_checks_docstrings() -> None:
     config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
     assert "- id: flake8" in config  # nosec B101
     assert "flake8-docstrings" in config  # nosec B101
+
+
+def test_pre_commit_configuration_runs_eslint_for_viewer() -> None:
+    """Ensure viewer JavaScript is linted via pre-commit."""
+
+    config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
+    assert "https://github.com/pre-commit/mirrors-eslint" in config  # nosec B101
+    assert "ESLint viewer JavaScript" in config  # nosec B101
+    assert "viewer/(?!model-viewer" in config  # nosec B101
+
+
+def test_eslint_configuration_targets_browser_scripts() -> None:
+    """Verify the ESLint configuration supports modern browser code."""
+
+    config_path = Path(".eslintrc.json")
+    assert config_path.exists(), "Expected .eslintrc.json to exist"  # nosec B101
+
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    assert config["env"]["browser"] is True  # nosec B101
+    assert "eslint:recommended" in config["extends"]  # nosec B101
 
 
 def test_flake8_configuration_enables_docstring_rules() -> None:

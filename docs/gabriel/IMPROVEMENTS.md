@@ -64,8 +64,9 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Add markdown link checker to pre-commit and CI to prevent stale references
       (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
       *Aligns with flywheel best practices.*
-- [ ] Add ESLint to pre-commit for viewer JavaScript
-      (`viewer/viewer.js`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
+- [x] Add ESLint to pre-commit for viewer JavaScript
+      (`viewer/viewer.js`, `.pre-commit-config.yaml`, `.eslintrc.json`).
+      *Aligns with flywheel best practices.*
 - [x] Document Docker build and run instructions for local development
       (`docker/Dockerfile`, `README.md`).
 - [x] Implement environment variable fallback when `keyring` is unavailable
