@@ -190,7 +190,7 @@ def audit_syncthing(config: SyncthingConfig) -> list[CheckResult]:
                     slug="syncthing-unknown-devices",
                     message=f"Syncthing is connected to unexpected device IDs: {device_list}.",
                     severity="high",
-                    remediation="Remove unrecognised devices and rotate new IDs if necessary.",
+                    remediation="Remove unrecognized devices and rotate new IDs if necessary.",
                 )
             )
 
