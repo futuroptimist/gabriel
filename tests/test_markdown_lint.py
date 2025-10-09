@@ -22,8 +22,6 @@ def test_pymarkdown_scan() -> None:
         "-r",
         str(repo_root),
     ]
-    result = subprocess.run(  # nosec B603
-        cmd, capture_output=True, text=True, check=False
-    )
+    result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # nosec B603
     if result.returncode != 0:
         raise AssertionError(result.stdout + result.stderr)
