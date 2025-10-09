@@ -36,3 +36,14 @@ jobs:
         with:
           name: lychee-report
           path: lychee/out.md
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install PyMarkdown
+        run: pip install pymarkdownlnt==0.9.16
+      - name: Lint Markdown files
+        run: pymarkdown --config .pymarkdown.json scan -r .

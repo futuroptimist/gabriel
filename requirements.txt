@@ -11,3 +11,4 @@ pyspelling
 keyring
 hypothesis
 tomli
+pymarkdownlnt==0.9.16

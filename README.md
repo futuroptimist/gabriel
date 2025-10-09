@@ -308,8 +308,9 @@ The repository includes GitHub Actions workflows for linting, testing, and docum
 `flake8` and `bandit` catch style issues and common security mistakes, while coverage results are
 uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is committed to
 [coverage.svg](coverage.svg) after tests run.
-pre-commit hooks also run `detect-secrets`, `pip-audit`, and the `lychee` Markdown link checker to
-catch secrets, vulnerable dependencies, and stale references.
+pre-commit hooks also run `detect-secrets`, `pip-audit`, the `lychee` Markdown link checker, and
+`pymarkdown` to catch secrets, vulnerable dependencies, stale references, and style regressions in
+Markdown content.
 Dependabot monitors Python dependencies weekly.
 
 ## Release management

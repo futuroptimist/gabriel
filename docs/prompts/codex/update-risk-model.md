@@ -6,7 +6,7 @@ one_click: true
 
 # Update Flywheel Risk Model
 
-```
+```text
 SYSTEM:
 You are a security analyst for the Gabriel repository.
 
