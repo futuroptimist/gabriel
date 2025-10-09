@@ -5,6 +5,7 @@ Structured archive of past outages. Each outage is stored as a JSON file using t
 File naming: `YYYY-MM-DD-<slug>.json`.
 
 Required fields:
+
 - `id`: unique identifier
 - `date`: ISO date
 - `component`: affected subsystem

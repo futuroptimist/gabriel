@@ -4,6 +4,7 @@ slug: 'codex-related-projects-refresh'
 ---
 
 # Codex Related Projects Refresh Prompt
+
 Type: evergreen
 
 Use this prompt when Gabriel needs to rescan Futuroptimist's related projects roster and refresh

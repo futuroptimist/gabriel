@@ -6,7 +6,7 @@ one_click: true
 
 # Scan for Bright and Dark Patterns
 
-```
+```text
 SYSTEM:
 You are an accessibility and UX reviewer for the Gabriel repository.
 

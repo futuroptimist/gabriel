@@ -44,6 +44,13 @@ repos:
     hooks:
       - id: pip-audit
         args: ["--requirement", "requirements.txt"]
+  - repo: https://github.com/jackdewinter/pymarkdown
+    rev: v0.9.16
+    hooks:
+      - id: pymarkdown
+        name: PyMarkdown lint
+        args: ["--config", ".pymarkdown.json", "scan"]
+        types: [markdown]
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:

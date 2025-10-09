@@ -36,7 +36,7 @@ Copy **one** of the prompts below into Codex when you want the agent to perform 
 
 ### 1 Track a new related repository
 
-```
+```text
 SYSTEM: You are an automated contributor for the **futuroptimist/gabriel** repository.
 
 GOAL
@@ -63,7 +63,7 @@ Return **only** the patch required.
 
 ### 2 Expand service improvement checklists
 
-```
+```text
 SYSTEM: You are an automated contributor for the **futuroptimist/gabriel** repository.
 
 GOAL
