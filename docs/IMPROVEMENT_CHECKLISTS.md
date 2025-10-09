@@ -69,6 +69,9 @@ See [related/jobbot3000/IMPROVEMENTS.md](related/jobbot3000/IMPROVEMENTS.md).
 
 See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 
+Gabriel now offers `gabriel.selfhosted.audit_nextcloud` to evaluate these controls and surface
+remediation guidance alongside VaultWarden and Syncthing helpers.
+
 ## PhotoPrism
 
 - [ ] Enable HTTPS by default and use strong admin credentials.

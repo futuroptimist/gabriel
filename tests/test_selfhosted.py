@@ -8,8 +8,10 @@ import pytest
 
 from gabriel.selfhosted import (
     CheckResult,
+    NextcloudConfig,
     SyncthingConfig,
     VaultWardenConfig,
+    audit_nextcloud,
     audit_syncthing,
     audit_vaultwarden,
 )
@@ -279,5 +281,68 @@ def test_audit_syncthing_passes_hardened_config() -> None:
     )
 
     findings = audit_syncthing(config)
+
+    assert findings == []  # nosec B101
+
+
+def test_audit_nextcloud_flags_multiple_findings() -> None:
+    config = NextcloudConfig(
+        https_enabled=False,
+        certificate_trusted=False,
+        mfa_enforced=False,
+        updates_current=False,
+        backups_enabled=False,
+        last_backup_verification_days=None,
+        admin_allowed_networks=("0.0.0.0/0",),
+        log_monitoring_enabled=False,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert {
+        "nextcloud-https",
+        "nextcloud-mfa",
+        "nextcloud-updates",
+        "nextcloud-backups",
+        "nextcloud-admin-network",
+        "nextcloud-log-monitoring",
+    }.issubset(
+        slugs
+    )  # nosec B101
+
+
+def test_audit_nextcloud_warns_on_stale_backups_and_cert() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=False,
+        mfa_enforced=True,
+        updates_current=True,
+        backups_enabled=True,
+        last_backup_verification_days=90,
+        admin_allowed_networks=("192.168.1.0/24",),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
+
+    slugs = _finding_slugs(findings)
+    assert "nextcloud-https" in slugs  # nosec B101
+    assert "nextcloud-restore-test" in slugs  # nosec B101
+
+
+def test_audit_nextcloud_passes_hardened_config() -> None:
+    config = NextcloudConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        mfa_enforced=True,
+        updates_current=True,
+        backups_enabled=True,
+        last_backup_verification_days=7,
+        admin_allowed_networks=("10.0.0.0/24", "fd00::/8"),
+        log_monitoring_enabled=True,
+    )
+
+    findings = audit_nextcloud(config)
 
     assert findings == []  # nosec B101

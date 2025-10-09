@@ -197,6 +197,113 @@ def audit_syncthing(config: SyncthingConfig) -> list[CheckResult]:
     return findings
 
 
+@dataclass(frozen=True, slots=True)
+class NextcloudConfig:
+    """Configuration snapshot for a self-hosted Nextcloud deployment."""
+
+    https_enabled: bool
+    certificate_trusted: bool
+    mfa_enforced: bool
+    updates_current: bool
+    backups_enabled: bool
+    last_backup_verification_days: int | None
+    admin_allowed_networks: Sequence[str] = ()
+    log_monitoring_enabled: bool = False
+
+
+def audit_nextcloud(config: NextcloudConfig) -> list[CheckResult]:
+    """Return security findings for a Nextcloud installation."""
+
+    findings: list[CheckResult] = []
+
+    if not config.https_enabled:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-https",
+                message="Nextcloud should be served over HTTPS with a trusted certificate.",
+                severity="high",
+                remediation="Configure HTTPS via a reverse proxy or the built-in TLS stack.",
+            )
+        )
+    elif not config.certificate_trusted:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-https",
+                message="HTTPS is enabled but the certificate is not trusted by clients.",
+                severity="medium",
+                remediation="Install a certificate from a trusted CA or internal PKI.",
+            )
+        )
+
+    if not config.mfa_enforced:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-mfa",
+                message="Require multi-factor authentication for all administrative users.",
+                severity="high",
+                remediation="Enable Nextcloud's MFA enforcement in the security settings.",
+            )
+        )
+
+    if not config.updates_current:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-updates",
+                message="Core or app updates are pending on the Nextcloud instance.",
+                severity="medium",
+                remediation=(
+                    "Apply the latest Nextcloud and app updates before exposing the " "service."
+                ),
+            )
+        )
+
+    if not config.backups_enabled:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-backups",
+                message="Automated backups are disabled for Nextcloud.",
+                severity="high",
+                remediation="Schedule recurring backups and store them on hardened storage.",
+            )
+        )
+    else:
+        restore_check_overdue = (
+            config.last_backup_verification_days is None
+            or config.last_backup_verification_days > 30
+        )
+        if restore_check_overdue:
+            findings.append(
+                CheckResult(
+                    slug="nextcloud-restore-test",
+                    message="Backup restore procedures have not been tested within 30 days.",
+                    severity="medium",
+                    remediation="Test restoring from backups monthly to verify integrity.",
+                )
+            )
+
+    if _is_network_list_open(config.admin_allowed_networks):
+        findings.append(
+            CheckResult(
+                slug="nextcloud-admin-network",
+                message="Admin interface is reachable from untrusted networks.",
+                severity="high",
+                remediation="Restrict administrative access to VPN ranges or internal subnets.",
+            )
+        )
+
+    if not config.log_monitoring_enabled:
+        findings.append(
+            CheckResult(
+                slug="nextcloud-log-monitoring",
+                message="Security log monitoring is disabled or not configured.",
+                severity="medium",
+                remediation="Enable log monitoring and alerting for suspicious Nextcloud activity.",
+            )
+        )
+
+    return findings
+
+
 def _is_strong_secret(secret: str | None) -> bool:
     if not secret:
         return False
@@ -240,4 +347,6 @@ __all__ = [
     "audit_vaultwarden",
     "SyncthingConfig",
     "audit_syncthing",
+    "NextcloudConfig",
+    "audit_nextcloud",
 ]

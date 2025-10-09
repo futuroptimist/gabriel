@@ -201,6 +201,34 @@ for finding in audit_syncthing(config):
 Hardened clusters with HTTPS in front of the GUI, local-only discovery, and trusted device allow
 lists will return an empty list, mirroring VaultWarden behavior.
 
+### Audit Nextcloud deployments
+
+Nextcloud administrators can call `gabriel.selfhosted.audit_nextcloud` to evaluate
+hardening tasks such as enforcing HTTPS, MFA, and backup verification as outlined in the
+[Nextcloud improvement checklist](docs/related/nextcloud/IMPROVEMENTS.md).
+
+```python
+from gabriel import NextcloudConfig, audit_nextcloud
+
+config = NextcloudConfig(
+    https_enabled=True,
+    certificate_trusted=True,
+    mfa_enforced=True,
+    updates_current=False,  # pending security updates
+    backups_enabled=True,
+    last_backup_verification_days=45,
+    admin_allowed_networks=("10.10.0.0/16",),
+    log_monitoring_enabled=False,
+)
+
+for finding in audit_nextcloud(config):
+    print(f"{finding.severity.upper()} — {finding.message}")
+    print(f"Fix: {finding.remediation}\n")
+```
+
+Hardened deployments with trusted certificates, timely updates, enforced MFA, tested backups,
+restricted admin networks, and log monitoring return an empty list.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
