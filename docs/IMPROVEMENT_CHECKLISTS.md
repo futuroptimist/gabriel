@@ -79,6 +79,9 @@ remediation guidance alongside VaultWarden and Syncthing helpers.
 - [ ] Set up scheduled backups to a secure location.
 - [ ] Review third-party plugins for security issues before enabling them.
 
+Gabriel now offers `gabriel.selfhosted.audit_photoprism` to evaluate these safeguards alongside
+other self-hosted service checks.
+
 ## Syncthing
 
 - [ ] Serve GUI over HTTPS via reverse proxy ([docs](https://docs.syncthing.net/users/reverseproxy.html)).

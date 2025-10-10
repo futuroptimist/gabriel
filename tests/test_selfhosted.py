@@ -9,9 +9,11 @@ import pytest
 from gabriel.selfhosted import (
     CheckResult,
     NextcloudConfig,
+    PhotoPrismConfig,
     SyncthingConfig,
     VaultWardenConfig,
     audit_nextcloud,
+    audit_photoprism,
     audit_syncthing,
     audit_vaultwarden,
 )
@@ -344,5 +346,96 @@ def test_audit_nextcloud_passes_hardened_config() -> None:
     )
 
     findings = audit_nextcloud(config)
+
+    assert findings == []  # nosec B101
+
+
+def test_audit_photoprism_flags_core_findings() -> None:
+    config = PhotoPrismConfig(
+        https_enabled=False,
+        certificate_trusted=False,
+        admin_password="short",  # nosec B106 # pragma: allowlist secret
+        library_outside_container=False,
+        storage_permissions_hardened=False,
+        backups_enabled=False,
+        backup_frequency_days=None,
+        backups_offsite=False,
+        third_party_plugins_enabled=True,
+        plugins_reviewed=False,
+    )
+
+    findings = audit_photoprism(config)
+
+    slugs = _finding_slugs(findings)
+    assert slugs == {
+        "photoprism-https",
+        "photoprism-admin-credentials",
+        "photoprism-library-storage",
+        "photoprism-library-permissions",
+        "photoprism-backups",
+        "photoprism-plugins-review",
+    }  # nosec B101
+
+
+def test_audit_photoprism_warns_on_untrusted_certificate() -> None:
+    config = PhotoPrismConfig(
+        https_enabled=True,
+        certificate_trusted=False,
+        admin_password="Aa1!" + "x" * 30,  # nosec B106 # pragma: allowlist secret
+        library_outside_container=True,
+        storage_permissions_hardened=True,
+        backups_enabled=True,
+        backup_frequency_days=1,
+        backups_offsite=True,
+        third_party_plugins_enabled=False,
+        plugins_reviewed=True,
+    )
+
+    findings = audit_photoprism(config)
+
+    slugs = _finding_slugs(findings)
+    assert slugs == {"photoprism-https"}  # nosec B101
+
+
+def test_audit_photoprism_warns_on_backup_hygiene() -> None:
+    config = PhotoPrismConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        admin_password="Aa1!" + "x" * 30,  # nosec B106 # pragma: allowlist secret
+        library_outside_container=True,
+        storage_permissions_hardened=True,
+        backups_enabled=True,
+        backup_frequency_days=7,
+        backups_offsite=False,
+        third_party_plugins_enabled=False,
+        plugins_reviewed=True,
+    )
+
+    findings = audit_photoprism(config)
+
+    slugs = _finding_slugs(findings)
+    assert slugs == {
+        "photoprism-backup-frequency",
+        "photoprism-backup-location",
+    }  # nosec B101
+
+
+def test_audit_photoprism_passes_hardened_config() -> None:
+    config = PhotoPrismConfig(
+        https_enabled=True,
+        certificate_trusted=True,
+        admin_password=(
+            "Aa1!" "securephotoprismsecretvalue123"
+        ),  # nosec B106 # pragma: allowlist secret
+        library_outside_container=True,
+        storage_permissions_hardened=True,
+        backups_enabled=True,
+        backup_frequency_days=1,
+        backups_offsite=True,
+        third_party_plugins_enabled=True,
+        plugins_reviewed=True,
+    )
+
+    findings = audit_photoprism(config)
 
     assert findings == []  # nosec B101

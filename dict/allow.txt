@@ -119,6 +119,7 @@ Misconfigured
 Mitigations
 PII
 PhotoPrism
+PhotoPrismConfig
 UI
 VPN
 VaultWarden
@@ -135,6 +136,8 @@ gitshelves
 integrations
 pytest
 keychains
+allowlist
+pragma
 misconfiguration
 misconfigured
 mitigations
