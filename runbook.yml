@@ -12,6 +12,8 @@ workflow:
         description: "Run pre-commit run --all-files"
       - id: test
         description: "Run pytest"
+      - id: preview
+        description: "Serve the WebGL viewer locally with gabriel viewer"
   - stage: release
     tasks:
       - id: merge

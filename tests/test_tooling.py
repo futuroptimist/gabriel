@@ -7,6 +7,8 @@ from importlib import import_module
 from pathlib import Path
 from typing import Any
 
+import pytest
+
 
 def _load_toml_module() -> Any:
     try:
@@ -139,3 +141,20 @@ def test_release_drafter_configuration_and_workflow_exist() -> None:
     assert "release-drafter/release-drafter@" in workflow  # nosec B101
     assert "config-name: release-drafter.yml" in workflow  # nosec B101
     assert "branches:\n      - main" in workflow  # nosec B101
+
+
+def test_cli_viewer_invokes_helper(monkeypatch: pytest.MonkeyPatch) -> None:
+    from gabriel import utils as utils_module
+
+    recorded: dict[str, Any] = {}
+
+    def fake_serve(host: str, port: int, open_browser: bool) -> None:
+        recorded["args"] = (host, port, open_browser)
+
+    monkeypatch.setattr(utils_module, "serve_viewer", fake_serve)
+
+    utils_module.main(
+        ["viewer", "--host", "0.0.0.0", "--port", "9999", "--no-browser"]  # nosec B104
+    )
+
+    assert recorded["args"] == ("0.0.0.0", 9999, False)  # nosec B101 B104

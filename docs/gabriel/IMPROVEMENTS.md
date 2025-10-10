@@ -122,8 +122,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Expand Dependabot to monitor Docker base image updates
       (`.github/dependabot.yml`, `docker/Dockerfile`).
       *Aligns with flywheel best practices.*
-- [ ] Document usage and setup steps for the WebGL viewer
-      (`viewer/viewer.js`, `README.md`).
+- [x] Document usage and setup steps for the WebGL viewer
+      (`README.md`, `docs/gabriel/VIEWER.md`, `Makefile`).
       *Aligns with flywheel best practices.*
 - [ ] Integrate `commitlint` to enforce Conventional Commits
       (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).

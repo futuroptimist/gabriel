@@ -8,6 +8,7 @@ from decimal import Decimal
 from . import secrets as secrets_module
 from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
 from .secrets import delete_secret, get_secret, read_secret_from_input, store_secret
+from .viewer import DEFAULT_HOST, DEFAULT_PORT, serve_viewer
 
 SECRET_CMD_STORE = "store"  # nosec B105 - CLI command name  # pragma: allowlist secret
 SECRET_CMD_GET = "get"  # nosec B105 - CLI command name  # pragma: allowlist secret
@@ -53,6 +54,24 @@ def main(argv: list[str] | None = None) -> None:
     secret_delete.add_argument("service")
     secret_delete.add_argument("username")
 
+    viewer_parser = subparsers.add_parser("viewer", help="Serve the WebGL viewer")
+    viewer_parser.add_argument(
+        "--host",
+        default=DEFAULT_HOST,
+        help=f"Host interface to bind (default: {DEFAULT_HOST})",
+    )
+    viewer_parser.add_argument(
+        "--port",
+        type=int,
+        default=DEFAULT_PORT,
+        help=f"Port to bind the server (default: {DEFAULT_PORT})",
+    )
+    viewer_parser.add_argument(
+        "--no-browser",
+        action="store_true",
+        help="Do not open the default web browser when serving the viewer",
+    )
+
     args = parser.parse_args(argv)
 
     funcs = {
@@ -86,6 +105,10 @@ def main(argv: list[str] | None = None) -> None:
             print("Secret deleted.")
             return
         raise SystemExit("Unknown secret command.")  # pragma: no cover - argparse guards choices
+
+    if args.command == "viewer":
+        serve_viewer(host=args.host, port=args.port, open_browser=not args.no_browser)
+        return
 
     print(funcs[args.command](args.a, args.b))
 

@@ -283,9 +283,18 @@ Running in detached mode (`-d`) allows long-lived tasks such as scheduled scans.
 This repo now mirrors flywheel's development helpers. `runbook.yml` lists
 typical tasks and `viewer/` hosts a basic `model-viewer` scene. The viewer bundles a
 local copy of the `@google/model-viewer` library to avoid third-party requests,
-and animations start only after pressing **Start Animation**. Launch
-`make preview` to open the viewer locally. Viewer scripts are linted with ESLint via
-pre-commit; run `npx eslint viewer/viewer.js` when iterating on WebGL logic.
+and animations start only after pressing **Start Animation**. Use the bundled CLI to
+serve the assets locally:
+
+```bash
+gabriel viewer --port 9000
+```
+
+Passing `--no-browser` skips automatically launching the system browser. See
+[`docs/gabriel/VIEWER.md`](docs/gabriel/VIEWER.md) for additional automation tips.
+The `make preview` target runs the same helper with default settings. Viewer scripts
+are linted with ESLint via pre-commit; run `npx eslint viewer/viewer.js` when iterating
+on WebGL logic.
 
 ## Tracked Repositories
 
