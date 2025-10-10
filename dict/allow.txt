@@ -85,7 +85,8 @@ venv
 brightgreen
 SHA
 YOURTOKEN
-
+CDNs
+url
 htmlcontent
 floordiv
 isinstance

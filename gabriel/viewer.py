@@ -9,9 +9,9 @@ import http.server
 import threading
 import time
 import webbrowser
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterator
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
