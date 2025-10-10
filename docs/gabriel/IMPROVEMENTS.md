@@ -105,8 +105,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`gabriel/utils.py`, `docs/`). *Aligns with flywheel best practices.*
 - [ ] Scan Docker images for vulnerabilities in CI using `trivy`
       (`docker/Dockerfile`, `.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
-- [ ] Define project metadata in `pyproject.toml` for packaging and distribution (`pyproject.toml`).
-      *Aligns with flywheel best practices.*
+- [x] Define project metadata in `pyproject.toml` for packaging and distribution (`pyproject.toml`,
+      `gabriel/__about__.py`). *Aligns with flywheel best practices.*
 - [ ] Cache dependencies in GitHub Actions to speed up CI
       (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`).
 - [x] Add Markdown linting to pre-commit and CI (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).

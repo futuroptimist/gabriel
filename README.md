@@ -134,6 +134,18 @@ when attached to a TTY. The retrieval command intentionally avoids printing the
 stored value so it cannot leak via logs; use ``python -c "from gabriel.utils import
 get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access.
 
+### Package metadata
+
+Gabriel exposes standard package metadata so downstream tooling can introspect
+versioning and project details without parsing `pyproject.toml` directly:
+
+```python
+import gabriel
+
+print(gabriel.__version__)
+print(gabriel.__summary__)
+```
+
 ### Detect suspicious links
 
 Gabriel now ships with lightweight phishing detection heuristics for pasted text or
