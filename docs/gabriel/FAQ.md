@@ -81,3 +81,9 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 20. **Can Gabriel audit my VaultWarden deployment?**
 
     Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a `VaultWardenConfig` snapshot to identify gaps from the checklist in [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
+
+21. **How do I preview the bundled WebGL viewer?**
+
+    Run `gabriel viewer` to launch a threaded HTTP server that opens your browser locally. Add
+    `--no-browser` for headless systems or `--host 0.0.0.0` to share the preview on your LAN. See
+    [VIEWER.md](VIEWER.md) for more automation-friendly patterns.

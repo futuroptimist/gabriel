@@ -1,8 +1,7 @@
 .PHONY: preview lint test
 
 preview:
-	python -m http.server 8000 &
-	python -m webbrowser http://localhost:8000/viewer/
+	python -m gabriel.viewer
 
 lint:
 	pre-commit run --all-files

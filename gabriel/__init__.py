@@ -28,6 +28,13 @@ from .selfhosted import (
     audit_syncthing,
     audit_vaultwarden,
 )
+from .viewer import (
+    DEFAULT_HOST,
+    DEFAULT_PORT,
+    ViewerServer,
+    serve_viewer,
+    start_viewer_server,
+)
 
 SUPPORTED_PYTHON_VERSIONS = ("3.10", "3.11")
 
@@ -62,4 +69,9 @@ __all__ = [
     "audit_syncthing",
     "audit_nextcloud",
     "SUPPORTED_PYTHON_VERSIONS",
+    "serve_viewer",
+    "start_viewer_server",
+    "ViewerServer",
+    "DEFAULT_HOST",
+    "DEFAULT_PORT",
 ]
