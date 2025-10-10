@@ -20,7 +20,10 @@ jobs:
         uses: astral-sh/setup-uv@v1
       - name: Install dependencies
         run: |
-          uv pip install --system bandit flake8 ruff
+          uv pip install --system -r requirements.txt
+          uv pip install --system bandit flake8 ruff pre-commit
+      - name: Run pre-commit
+        run: pre-commit run --all-files --show-diff-on-failure
       - name: Run Ruff
         run: ruff check --output-format=github .
       - name: Run Flake8

@@ -75,7 +75,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [ ] Enable multi-architecture Docker builds for `amd64` and `arm64`
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
-- [ ] Run `pre-commit` hooks in CI to ensure local and CI checks match
+- [x] Run `pre-commit` hooks in CI to ensure local and CI checks match
       (`.github/workflows/ci.yml`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*
 - [x] Remove duplicate `pip-audit` entries to streamline pre-commit config
       (`.pre-commit-config.yaml`).

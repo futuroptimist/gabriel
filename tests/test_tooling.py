@@ -95,6 +95,13 @@ def test_ci_workflow_runs_ruff() -> None:
     assert "ruff check" in workflow  # nosec B101
 
 
+def test_ci_workflow_runs_pre_commit() -> None:
+    """Ensure CI executes the pre-commit hooks for parity with local runs."""
+
+    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    assert "pre-commit run --all-files" in workflow  # nosec B101
+
+
 def test_workflows_cover_supported_python_versions() -> None:
     """Ensure CI pipelines exercise every supported Python runtime."""
 
