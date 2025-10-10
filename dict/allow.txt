@@ -151,6 +151,10 @@ cpp
 GGUF
 Nextcloud
 nextcloud
+MFA
+mfa
+NextcloudConfig
+audit_nextcloud
 svg
 sqrt
 Syncthing

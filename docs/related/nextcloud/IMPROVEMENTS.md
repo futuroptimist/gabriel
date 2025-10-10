@@ -10,3 +10,6 @@ This document outlines basic security steps for self-hosted Nextcloud.
 - [ ] Keep Nextcloud and its apps updated promptly.
 - [ ] Restrict admin interface access to trusted networks.
 - [ ] Monitor logs for suspicious activity.
+
+Gabriel now offers `gabriel.selfhosted.audit_nextcloud` to check these controls and provide
+remediation guidance for common hardening gaps.

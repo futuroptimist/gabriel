@@ -12,9 +12,11 @@ from .phishing import (
 from .secrets import delete_secret, get_secret, store_secret
 from .selfhosted import (
     CheckResult,
+    NextcloudConfig,
     Severity,
     SyncthingConfig,
     VaultWardenConfig,
+    audit_nextcloud,
     audit_syncthing,
     audit_vaultwarden,
 )
@@ -39,9 +41,11 @@ __all__ = [
     "PhishingFinding",
     "VaultWardenConfig",
     "SyncthingConfig",
+    "NextcloudConfig",
     "CheckResult",
     "Severity",
     "audit_vaultwarden",
     "audit_syncthing",
+    "audit_nextcloud",
     "SUPPORTED_PYTHON_VERSIONS",
 ]
