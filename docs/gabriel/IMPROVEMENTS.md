@@ -134,6 +134,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.dockerignore`, `docker/Dockerfile`). *Aligns with flywheel best practices.*
 - [x] Split arithmetic and secret helpers into dedicated modules
       (`gabriel/utils.py`, `tests/test_utils.py`).
+- [x] Add PhotoPrism audit helper covering HTTPS, storage, backups, and plugins
+      (`gabriel/selfhosted.py`, `tests/test_selfhosted.py`).
 - [ ] Integrate `semgrep` static analysis into pre-commit and CI
       (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
       *Aligns with flywheel best practices.*

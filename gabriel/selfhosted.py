@@ -211,6 +211,22 @@ class NextcloudConfig:
     log_monitoring_enabled: bool = False
 
 
+@dataclass(frozen=True, slots=True)
+class PhotoPrismConfig:
+    """Configuration snapshot for a PhotoPrism deployment."""
+
+    https_enabled: bool
+    certificate_trusted: bool
+    admin_password: str | None
+    library_outside_container: bool
+    storage_permissions_hardened: bool
+    backups_enabled: bool
+    backup_frequency_days: int | None
+    backups_offsite: bool
+    third_party_plugins_enabled: bool
+    plugins_reviewed: bool
+
+
 def audit_nextcloud(config: NextcloudConfig) -> list[CheckResult]:
     """Return security findings for a Nextcloud installation."""
 
@@ -304,6 +320,110 @@ def audit_nextcloud(config: NextcloudConfig) -> list[CheckResult]:
     return findings
 
 
+def audit_photoprism(config: PhotoPrismConfig) -> list[CheckResult]:
+    """Return security findings for a PhotoPrism installation."""
+
+    findings: list[CheckResult] = []
+
+    if not config.https_enabled:
+        findings.append(
+            CheckResult(
+                slug="photoprism-https",
+                message="PhotoPrism should be served over HTTPS with a trusted certificate.",
+                severity="high",
+                remediation="Terminate TLS before PhotoPrism or enable HTTPS in the container.",
+            )
+        )
+    elif not config.certificate_trusted:
+        findings.append(
+            CheckResult(
+                slug="photoprism-https",
+                message="HTTPS is enabled but the certificate is not trusted by clients.",
+                severity="medium",
+                remediation="Install a certificate from a trusted CA or well-known internal PKI.",
+            )
+        )
+
+    if not _is_strong_secret(config.admin_password):
+        findings.append(
+            CheckResult(
+                slug="photoprism-admin-credentials",
+                message="Admin credentials are weak or unset.",
+                severity="high",
+                remediation="Rotate the admin password to a random 32+ character secret.",
+            )
+        )
+
+    if not config.library_outside_container:
+        findings.append(
+            CheckResult(
+                slug="photoprism-library-storage",
+                message="Originals library is stored inside the application container.",
+                severity="medium",
+                remediation=(
+                    "Mount external storage for originals to preserve data during " "rebuilds."
+                ),
+            )
+        )
+
+    if not config.storage_permissions_hardened:
+        findings.append(
+            CheckResult(
+                slug="photoprism-library-permissions",
+                message="Library storage permissions are too permissive.",
+                severity="medium",
+                remediation=(
+                    "Restrict filesystem permissions so only PhotoPrism can read " "originals."
+                ),
+            )
+        )
+
+    if not config.backups_enabled:
+        findings.append(
+            CheckResult(
+                slug="photoprism-backups",
+                message="Automated backups are disabled for PhotoPrism.",
+                severity="high",
+                remediation=(
+                    "Schedule recurring database and originals backups to secure " "storage."
+                ),
+            )
+        )
+    else:
+        if config.backup_frequency_days is None or config.backup_frequency_days > 1:
+            findings.append(
+                CheckResult(
+                    slug="photoprism-backup-frequency",
+                    message="Backups run infrequently. Aim for at least daily snapshots.",
+                    severity="medium",
+                    remediation=("Run PhotoPrism backups every 24 hours or more often."),
+                )
+            )
+        if not config.backups_offsite:
+            findings.append(
+                CheckResult(
+                    slug="photoprism-backup-location",
+                    message="Backups are stored on the same host as PhotoPrism.",
+                    severity="medium",
+                    remediation=("Replicate backups to off-host or cloud storage with encryption."),
+                )
+            )
+
+    if config.third_party_plugins_enabled and not config.plugins_reviewed:
+        findings.append(
+            CheckResult(
+                slug="photoprism-plugins-review",
+                message="Third-party plugins are enabled without security review.",
+                severity="medium",
+                remediation=(
+                    "Audit each plugin for maintenance and security before enabling " "it."
+                ),
+            )
+        )
+
+    return findings
+
+
 def _is_strong_secret(secret: str | None) -> bool:
     if not secret:
         return False
@@ -349,4 +469,6 @@ __all__ = [
     "audit_syncthing",
     "NextcloudConfig",
     "audit_nextcloud",
+    "PhotoPrismConfig",
+    "audit_photoprism",
 ]

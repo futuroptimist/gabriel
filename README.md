@@ -232,6 +232,38 @@ for finding in audit_nextcloud(config):
 Hardened deployments with trusted certificates, timely updates, enforced MFA, tested backups,
 restricted admin networks, and log monitoring return an empty list.
 
+### Audit PhotoPrism deployments
+
+PhotoPrism curates personal photo libraries, so losing data or exposing galleries publicly can
+be painful. `gabriel.selfhosted.audit_photoprism` evaluates HTTPS coverage, admin credential
+strength, backup posture, and plugin hygiene based on the
+[PhotoPrism checklist](docs/IMPROVEMENT_CHECKLISTS.md#photoprism).
+
+```python
+from gabriel import PhotoPrismConfig, audit_photoprism
+
+config = PhotoPrismConfig(
+    https_enabled=True,
+    certificate_trusted=False,
+    admin_password="short",  # needs rotation  # pragma: allowlist secret
+    library_outside_container=False,
+    storage_permissions_hardened=False,
+    backups_enabled=True,
+    backup_frequency_days=7,
+    backups_offsite=False,
+    third_party_plugins_enabled=True,
+    plugins_reviewed=False,
+)
+
+for finding in audit_photoprism(config):
+    print(f"{finding.severity.upper()} — {finding.message}")
+    print(f"Fix: {finding.remediation}\n")
+```
+
+When PhotoPrism runs behind trusted TLS, stores originals outside the container with tight
+permissions, replicates backups off-host, and reviews each plugin, the helper returns an empty
+list just like the other auditors.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).

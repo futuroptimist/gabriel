@@ -13,10 +13,12 @@ from .secrets import delete_secret, get_secret, store_secret
 from .selfhosted import (
     CheckResult,
     NextcloudConfig,
+    PhotoPrismConfig,
     Severity,
     SyncthingConfig,
     VaultWardenConfig,
     audit_nextcloud,
+    audit_photoprism,
     audit_syncthing,
     audit_vaultwarden,
 )
@@ -42,10 +44,12 @@ __all__ = [
     "VaultWardenConfig",
     "SyncthingConfig",
     "NextcloudConfig",
+    "PhotoPrismConfig",
     "CheckResult",
     "Severity",
     "audit_vaultwarden",
     "audit_syncthing",
     "audit_nextcloud",
+    "audit_photoprism",
     "SUPPORTED_PYTHON_VERSIONS",
 ]
