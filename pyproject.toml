@@ -22,7 +22,7 @@ select = ["E", "F", "B", "I", "UP"]
 ignore = ["E203", "E501"]
 
 [tool.pytest.ini_options]
-addopts = "--cov=gabriel --cov-report=xml --cov-report=term --cov-fail-under=100"
+addopts = "-p no:cacheprovider --cov=gabriel --cov-report=xml --cov-report=term --cov-fail-under=100"
 testpaths = ["tests"]
 
 [tool.coverage.run]

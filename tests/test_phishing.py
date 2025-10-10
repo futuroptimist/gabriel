@@ -100,6 +100,48 @@ def test_analyze_url_flags_known_shorteners() -> None:
     assert finding.severity == "medium"  # nosec B101
 
 
+def test_analyze_url_flags_nonstandard_port_usage() -> None:
+    url = "https://example.com:8443/login"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "nonstandard-port" in indicators  # nosec B101
+    [finding] = [f for f in findings if f.indicator == "nonstandard-port"]
+    assert finding.severity == "medium"  # nosec B101
+
+
+def test_analyze_url_detects_external_redirect_parameters() -> None:
+    url = "https://example.com/login?redirect=https://malicious.co/verify"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "external-redirect" in indicators  # nosec B101
+    [finding] = [f for f in findings if f.indicator == "external-redirect"]
+    assert "malicious.co" in finding.message  # nosec B101
+
+
+def test_analyze_url_ignores_internal_redirect_parameters() -> None:
+    url = "https://example.com/login?redirect=https://example.com/dashboard"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "external-redirect" not in indicators  # nosec B101
+
+
+def test_analyze_url_ignores_redirect_edge_cases() -> None:
+    url = (
+        "https://example.com/login?redirect=&"
+        "go=/internal"
+        "&jump=https://"
+        "&next=https://example.com:443/welcome"
+        "&again=https://malicious.co"
+        "&again=https://malicious.co/profile"
+    )
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert indicators == {"external-redirect"}  # nosec B101
+    matching = [f for f in findings if f.indicator == "external-redirect"]
+    assert len(matching) == 1  # nosec B101
+    assert matching[0].message.endswith("malicious.co")  # nosec B101
+
+
 def test_analyze_url_ignores_legitimate_subdomain() -> None:
     url = "https://support.example.com"
     findings = analyze_url(url, known_domains=["", "example.com"])

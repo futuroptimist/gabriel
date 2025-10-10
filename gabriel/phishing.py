@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from difflib import SequenceMatcher
 from functools import lru_cache
 from typing import Final
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlparse
 
 from publicsuffix2 import get_sld
 
@@ -51,6 +51,8 @@ _SHORTENER_DOMAINS: Final[frozenset[str]] = frozenset(
         "rb.gy",
     }
 )
+
+_STANDARD_PORTS: Final[frozenset[int]] = frozenset({80, 443})
 
 
 @dataclass(frozen=True, slots=True)
@@ -118,6 +120,17 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
                 url=url,
                 indicator="insecure-scheme",
                 message="Link uses HTTP instead of HTTPS",
+                severity="medium",
+            )
+        )
+
+    port = parsed.port
+    if port is not None and port not in _STANDARD_PORTS:
+        findings.append(
+            PhishingFinding(
+                url=url,
+                indicator="nonstandard-port",
+                message=f"Link targets uncommon network port {port}",
                 severity="medium",
             )
         )
@@ -225,6 +238,39 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
                         )
                     )
                     break
+
+    if parsed.query:
+        redirect_hosts: set[str] = set()
+        for _, value in parse_qsl(parsed.query, keep_blank_values=True):
+            candidate = value.strip()
+            if not candidate:
+                continue
+            redirect = urlparse(candidate)
+            redirect_host = (redirect.hostname or "").lower()
+            if redirect.scheme not in {"http", "https"}:
+                continue
+            if not redirect_host:
+                continue
+            if hostname and (
+                redirect_host == hostname
+                or redirect_host.endswith(f".{hostname}")
+                or hostname.endswith(f".{redirect_host}")
+            ):
+                continue
+            if redirect_host in redirect_hosts:
+                continue
+            redirect_hosts.add(redirect_host)
+            findings.append(
+                PhishingFinding(
+                    url=url,
+                    indicator="external-redirect",
+                    message=(
+                        "Link includes redirect parameter targeting external host "
+                        f"{redirect_host}"
+                    ),
+                    severity="medium",
+                )
+            )
 
     return findings
 
