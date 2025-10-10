@@ -109,6 +109,15 @@ def test_analyze_url_flags_nonstandard_port_usage() -> None:
     assert finding.severity == "medium"  # nosec B101
 
 
+def test_analyze_url_handles_invalid_port() -> None:
+    url = "https://example.com:abc/login"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert indicators == {"invalid-port"}  # nosec B101
+    [finding] = findings
+    assert finding.severity == "medium"  # nosec B101
+
+
 def test_analyze_url_detects_external_redirect_parameters() -> None:
     url = "https://example.com/login?redirect=https://malicious.co/verify"
     findings = analyze_url(url)

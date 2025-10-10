@@ -124,7 +124,18 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
             )
         )
 
-    port = parsed.port
+    try:
+        port = parsed.port
+    except ValueError:
+        findings.append(
+            PhishingFinding(
+                url=url,
+                indicator="invalid-port",
+                message="Link specifies an invalid network port",
+                severity="medium",
+            )
+        )
+        port = None
     if port is not None and port not in _STANDARD_PORTS:
         findings.append(
             PhishingFinding(
