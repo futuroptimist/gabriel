@@ -13,6 +13,9 @@ def test_pymarkdown_scan() -> None:
     if shutil.which("pymarkdown") is None:
         pytest.skip("pymarkdown binary is required for markdown lint tests")
     repo_root = Path(__file__).resolve().parents[1]
+    cache_dir = repo_root / ".pytest_cache"
+    if cache_dir.exists():
+        shutil.rmtree(cache_dir)
     config = repo_root / ".pymarkdown.json"
     cmd = [
         "pymarkdown",
