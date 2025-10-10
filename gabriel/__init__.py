@@ -2,6 +2,14 @@
 
 from __future__ import annotations
 
+from .__about__ import (
+    __author__,
+    __keywords__,
+    __license__,
+    __summary__,
+    __uri__,
+    __version__,
+)
 from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
 from .phishing import (
     PhishingFinding,
@@ -24,6 +32,12 @@ from .selfhosted import (
 SUPPORTED_PYTHON_VERSIONS = ("3.10", "3.11")
 
 __all__ = [
+    "__version__",
+    "__summary__",
+    "__uri__",
+    "__author__",
+    "__license__",
+    "__keywords__",
     "add",
     "subtract",
     "multiply",

@@ -1,7 +1,31 @@
 [project]
 name = "gabriel"
-version = "0.0.0"
+version = "0.1.0"
+description = """Local-first security companion offering arithmetic helpers, phishing heuristics, and hardening guidance for self-hosted services."""
+readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.10"
+authors = [
+    { name = "Futuroptimist" },
+]
+keywords = ["security", "phishing", "self-hosted", "cli", "privacy"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Security",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/futuroptimist/gabriel"
+Documentation = "https://github.com/futuroptimist/gabriel#readme"
+Source = "https://github.com/futuroptimist/gabriel"
+Issues = "https://github.com/futuroptimist/gabriel/issues"
 
 [project.scripts]
 gabriel = "gabriel.utils:main"
