@@ -1,7 +1,7 @@
 .PHONY: preview lint test
 
 preview:
-python -m gabriel.viewer
+	python -m gabriel.viewer
 
 lint:
 	pre-commit run --all-files
