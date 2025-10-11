@@ -73,6 +73,11 @@ repos:
         language: system
         pass_filenames: false
         files: ".*\\.(md|MD)$"
+      - id: prompt-injection-lint
+        name: Prompt injection linter
+        entry: python -m gabriel.prompt_lint
+        language: system
+        files: "^(docs/|prompts/).+\\.md$"
       - id: hidden-text-scan
         name: Hidden text scanner
         entry: python -m gabriel.text

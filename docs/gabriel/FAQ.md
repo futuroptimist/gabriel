@@ -68,7 +68,9 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
 17. **How does Gabriel mitigate prompt-injection or hidden instruction attacks?**
 
-    Treat code, documentation, and dependencies as untrusted; review automated changes and run security scans before executing them.
+    Treat code, documentation, and dependencies as untrusted; review automated
+    changes, run security scans, and ensure the `gabriel.prompt_lint`
+    pre-commit hook passes before executing them.
 
 18. **Can I run Gabriel entirely inside Docker?**
 

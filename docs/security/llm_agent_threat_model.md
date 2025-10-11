@@ -62,7 +62,8 @@ agentic coding workflows, regardless of deployment environment.
 - Maintain **immutable system prompts** stored in signed config files.
 - Adopt **retrieval isolation**: per-repo embeddings stored in ephemeral indices with TTLs.
 - Run **content provenance checks** (e.g., checksum verified docs) before ingestion.
-- Apply **prompt-injection linting** to PRs and docs referencing agent workflows.
+- Apply **prompt-injection linting** to PRs and docs referencing agent workflows
+  via the `gabriel.prompt_lint` pre-commit hook.
 
 ### Mitigation: Permission & Token Boundaries
 
@@ -92,7 +93,8 @@ agentic coding workflows, regardless of deployment environment.
 - Enable **secret scanning** (GitHub Advanced Security, Trufflehog) and fail builds on hits.
 - Run **dependency audits** (`pip-audit`, `npm audit`) and security linters (CodeQL, Semgrep).
 - Require **signed Plan.md** files in PRs documenting intent, linked to execution logs.
-- Add **prompt-injection linter** jobs that flag suspicious Markdown or instructions.
+- [x] Add **prompt-injection linter** jobs that flag suspicious Markdown or instructions
+      using `python -m gabriel.prompt_lint`.
 - Configure **branch protection** enforcing reviews, status checks, and signed commits.
 
 ### Mitigation: Cross-Repo Reuse
@@ -143,7 +145,7 @@ validators:
 
 - [ ] `.github/workflows/security.yml` runs CodeQL, Semgrep, dependency scans weekly.
 - [ ] `Plan.md` signed with cosign; workflow verifies signature before merge.
-- [ ] Prompt-injection linter executes on `docs/**` and `prompts/**` changes.
+- [x] Prompt-injection linter executes on `docs/**` and `prompts/**` changes.
 - [ ] Branch protection requires two approvals for security-sensitive directories.
 
 ## Monitoring & Response
