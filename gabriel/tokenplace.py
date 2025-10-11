@@ -50,7 +50,6 @@ class TokenPlaceClient:
         metadata: dict[str, Any] | None = None,
     ) -> TokenPlaceCompletion:
         """Send ``prompt`` to token.place and return the resulting completion."""
-
         payload: dict[str, Any] = {"prompt": prompt}
         if model is not None:
             payload["model"] = model
@@ -82,7 +81,6 @@ class TokenPlaceClient:
 
     def check_health(self) -> bool:
         """Return ``True`` if the relay reports an OK status."""
-
         response = self._request("GET", "v1/health")
         if not isinstance(response, dict):
             return False

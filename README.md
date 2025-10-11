@@ -84,8 +84,9 @@ when iterating on lint fixes:
 ruff check .
 ```
 
-Docstring conventions are enforced via ``flake8`` with the ``flake8-docstrings`` plugin. Run
-``flake8`` locally or rely on pre-commit to surface style issues early in development.
+Docstring conventions are enforced via ``flake8`` with the ``flake8-docstrings`` plugin and
+validated separately with ``pydocstyle``. Run ``flake8`` or ``pydocstyle`` locally (both are wired
+into pre-commit) to surface style issues early in development.
 
 Example usage of arithmetic helpers:
 

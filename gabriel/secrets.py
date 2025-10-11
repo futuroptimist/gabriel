@@ -13,7 +13,6 @@ SECRET_ENV_PREFIX: Final[str] = "GABRIEL_SECRET_"
 
 def _env_secret_key(service: str, username: str) -> str:
     """Return a normalized environment variable key for ``service`` and ``username``."""
-
     raw = f"{service}_{username}"
     sanitized = re.sub(r"\W", "_", raw)
     if sanitized.strip("_"):
@@ -26,7 +25,6 @@ def _env_secret_key(service: str, username: str) -> str:
 
 def store_secret(service: str, username: str, secret: str) -> None:
     """Store ``secret`` using ``keyring`` or environment variables."""
-
     try:
         import keyring
     except ImportError:  # pragma: no cover - exercised via tests
@@ -37,7 +35,6 @@ def store_secret(service: str, username: str, secret: str) -> None:
 
 def get_secret(service: str, username: str) -> str | None:
     """Retrieve a stored secret if available."""
-
     try:
         import keyring
     except ImportError:  # pragma: no cover - exercised via tests
@@ -48,7 +45,6 @@ def get_secret(service: str, username: str) -> str | None:
 
 def delete_secret(service: str, username: str) -> None:
     """Delete a stored secret if present."""
-
     try:
         import keyring
     except ImportError:  # pragma: no cover - exercised via tests
@@ -59,7 +55,6 @@ def delete_secret(service: str, username: str) -> None:
 
 def read_secret_from_input(provided: str | None) -> str:
     """Return a secret value from ``provided`` or interactively when ``None``."""
-
     if provided is not None:
         return provided
 

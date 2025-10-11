@@ -36,7 +36,6 @@ class VaultWardenConfig:
 
 def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
     """Return security findings for a VaultWarden installation."""
-
     findings: list[CheckResult] = []
 
     if not config.https_enabled:
@@ -136,7 +135,6 @@ class SyncthingConfig:
 
 def audit_syncthing(config: SyncthingConfig) -> list[CheckResult]:
     """Return security findings for a Syncthing installation."""
-
     findings: list[CheckResult] = []
 
     if not config.https_enabled:
@@ -229,7 +227,6 @@ class PhotoPrismConfig:
 
 def audit_nextcloud(config: NextcloudConfig) -> list[CheckResult]:
     """Return security findings for a Nextcloud installation."""
-
     findings: list[CheckResult] = []
 
     if not config.https_enabled:
@@ -322,7 +319,6 @@ def audit_nextcloud(config: NextcloudConfig) -> list[CheckResult]:
 
 def audit_photoprism(config: PhotoPrismConfig) -> list[CheckResult]:
     """Return security findings for a PhotoPrism installation."""
-
     findings: list[CheckResult] = []
 
     if not config.https_enabled:

@@ -49,6 +49,10 @@ ignore = ["E203", "E501"]
 addopts = "-p no:cacheprovider --cov=gabriel --cov-report=xml --cov-report=term --cov-fail-under=100"
 testpaths = ["tests"]
 
+[tool.pydocstyle]
+convention = "pep257"
+add-ignore = ["D202"]
+
 [tool.coverage.run]
 source = ["gabriel"]
 branch = true
