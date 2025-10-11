@@ -1,4 +1,4 @@
-"""Heuristics for spotting potentially malicious hyperlinks."""
+"""Heuristics for spotting phishing indicators in URLs and text."""
 
 from __future__ import annotations
 

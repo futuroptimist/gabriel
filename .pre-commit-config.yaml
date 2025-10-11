@@ -38,6 +38,13 @@ repos:
       - id: flake8
         additional_dependencies:
           - flake8-docstrings==1.7.0
+  - repo: https://github.com/PyCQA/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        name: pydocstyle (gabriel package)
+        files: "^gabriel/.*\\.py$"
+        args: ["--config=pyproject.toml"]
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.5.1
     hooks:

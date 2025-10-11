@@ -62,6 +62,14 @@ def test_pre_commit_configuration_checks_docstrings() -> None:
     assert "flake8-docstrings" in config  # nosec B101
 
 
+def test_pre_commit_configuration_runs_pydocstyle() -> None:
+    """Ensure pydocstyle enforces docstring presence on package modules."""
+
+    config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
+    assert "https://github.com/PyCQA/pydocstyle" in config  # nosec B101
+    assert "pydocstyle (gabriel package)" in config  # nosec B101
+
+
 def test_pre_commit_configuration_runs_eslint_for_viewer() -> None:
     """Ensure viewer JavaScript is linted via pre-commit."""
 
