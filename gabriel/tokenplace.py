@@ -34,6 +34,7 @@ class TokenPlaceClient:
     _base_url: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        """Validate and normalize the configured base URL."""
         parsed = urlparse(self.base_url)
         if not parsed.scheme or not parsed.netloc:
             raise ValueError("base_url must include scheme and host, e.g. https://relay.local")
@@ -103,7 +104,9 @@ class TokenPlaceClient:
             with urllib.request.urlopen(request, timeout=self.timeout) as response:  # nosec B310
                 status = getattr(response, "status", response.getcode())
                 body = response.read()
-        except urllib.error.HTTPError as exc:  # pragma: no cover - error path exercised via URLError
+        except (
+            urllib.error.HTTPError
+        ) as exc:  # pragma: no cover - error path exercised via URLError
             detail = exc.read().decode("utf-8", "replace").strip()
             message = f"token.place responded with HTTP {exc.code}: {detail}"
             raise TokenPlaceError(message) from exc
@@ -113,9 +116,7 @@ class TokenPlaceClient:
 
         if status >= 400:
             body_preview = body.decode("utf-8", "replace").strip()
-            raise TokenPlaceError(
-                f"token.place responded with HTTP {status}: {body_preview}"
-            )
+            raise TokenPlaceError(f"token.place responded with HTTP {status}: {body_preview}")
 
         if not body:
             return {}

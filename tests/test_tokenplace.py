@@ -10,8 +10,12 @@ from gabriel.tokenplace import TokenPlaceClient, TokenPlaceError
 
 
 class DummyResponse:
+    """Simple stand-in for :class:`urllib.response.addinfourl`."""
+
     def __init__(self, payload: Any, *, status: int = 200) -> None:
-        if isinstance(payload, (bytes, bytearray)):
+        """Serialize ``payload`` to bytes and remember the response status."""
+
+        if isinstance(payload, bytes | bytearray):
             self._body = bytes(payload)
         elif isinstance(payload, str):
             self._body = payload.encode("utf-8")
@@ -25,10 +29,12 @@ class DummyResponse:
     def getcode(self) -> int:
         return self.status
 
-    def __enter__(self) -> "DummyResponse":
+    def __enter__(self) -> DummyResponse:
+        """Return ``self`` so the object can be used as a context manager."""
         return self
 
     def __exit__(self, exc_type, exc, tb) -> None:
+        """Accept context manager arguments without suppressing exceptions."""
         return None
 
 
