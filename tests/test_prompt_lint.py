@@ -37,6 +37,7 @@ def test_lint_text_flags_remote_images() -> None:
     [
         "![](<https://example.com/payload.png>)",
         "![](< https://example.com/payload.png >)",
+        "![](<https://example.com/payload(1).png>)",
     ],
 )
 def test_lint_text_flags_angle_bracket_remote_images(text: str) -> None:
