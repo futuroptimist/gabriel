@@ -78,11 +78,28 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
     A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for punycode, suspicious TLDs, HTTP usage, lookalike domains, known URL shorteners, unusual ports, and redirect parameters that jump to other domains. Extend it with additional rules as the roadmap advances.
 
-20. **Can Gabriel audit my VaultWarden deployment?**
+20. **How do I call token.place for encrypted inference?**
+
+    Import `TokenPlaceClient` and point it at your relay. The helper signs requests with your API
+    token, provides a `check_health()` probe, and normalises responses into a simple
+    `TokenPlaceCompletion` dataclass. Example:
+
+    ```python
+    from gabriel import TokenPlaceClient
+
+    client = TokenPlaceClient("https://relay.local", api_key="tp_test_123")
+    completion = client.infer("Summarise pending CVEs", model="llama3-70b")
+    print(completion.text)
+    ```
+
+    The client keeps traffic on the configured relay URL so you can pair encrypted inference with
+    Gabriel's offline-first design.
+
+21. **Can Gabriel audit my VaultWarden deployment?**
 
     Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a `VaultWardenConfig` snapshot to identify gaps from the checklist in [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
 
-21. **How do I preview the bundled WebGL viewer?**
+22. **How do I preview the bundled WebGL viewer?**
 
     Run `gabriel viewer` to launch a threaded HTTP server that opens your browser locally. Add
     `--no-browser` for headless systems or `--host 0.0.0.0` to share the preview on your LAN. See

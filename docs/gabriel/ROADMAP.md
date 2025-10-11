@@ -13,7 +13,7 @@ This document outlines tentative phases for Gabriel. Dates are aspirational and 
 - Collect user-consented configuration data.
 - Suggest improvements for self-hosted services such as PhotoPrism and VaultWarden.
   (VaultWarden checks ship in `gabriel.selfhosted`.)
-- Integrate token.place for local LLM inference.
+- Integrate token.place for local LLM inference. (`TokenPlaceClient` now wraps relay requests.)
 
 ## Phase 2: Personal Knowledge Manager
 

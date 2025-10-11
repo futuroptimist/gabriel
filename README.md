@@ -277,6 +277,29 @@ When PhotoPrism runs behind trusted TLS, stores originals outside the container 
 permissions, replicates backups off-host, and reviews each plugin, the helper returns an empty
 list just like the other auditors.
 
+### Request encrypted inference through token.place
+
+Phase 1 also calls for encrypted local inference. `TokenPlaceClient` provides a thin wrapper around
+the token.place relay API so you can relay prompts without wiring up HTTP plumbing manually.
+
+```python
+from gabriel import TokenPlaceClient
+
+client = TokenPlaceClient("https://relay.local", api_key="tp_test_123")
+
+completion = client.infer(
+    "Summarize the latest firewall alerts.",
+    model="llama3-70b",  # optional override when multiple models are exposed
+    metadata={"source": "gabriel-demo"},
+)
+
+print(completion.text)
+```
+
+`check_health()` performs a lightweight `GET /v1/health` probe so you can verify connectivity
+before submitting a prompt. The helper never sends telemetry beyond the configured relay URL,
+keeping Gabriel's privacy posture intact.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
