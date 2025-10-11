@@ -99,7 +99,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
 - [ ] Format viewer assets with Prettier via pre-commit
       (`viewer/viewer.js`, `.pre-commit-config.yaml`).
-- [ ] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
+- [x] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
       *Aligns with flywheel best practices.*
 - [ ] Generate API docs with Sphinx and publish under `docs/`
       (`gabriel/utils.py`, `docs/`). *Aligns with flywheel best practices.*
