@@ -81,14 +81,14 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 20. **How do I call token.place for encrypted inference?**
 
     Import `TokenPlaceClient` and point it at your relay. The helper signs requests with your API
-    token, provides a `check_health()` probe, and normalises responses into a simple
+    token, provides a `check_health()` probe, and normalizes responses into a simple
     `TokenPlaceCompletion` dataclass. Example:
 
     ```python
     from gabriel import TokenPlaceClient
 
     client = TokenPlaceClient("https://relay.local", api_key="tp_test_123")
-    completion = client.infer("Summarise pending CVEs", model="llama3-70b")
+    completion = client.infer("Summarize pending CVEs", model="llama3-70b")
     print(completion.text)
     ```
 
