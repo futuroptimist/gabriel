@@ -5,9 +5,10 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Iterator, Literal, Sequence
+from typing import Literal
 
 Severity = Literal["warning", "error"]
 
@@ -55,26 +56,37 @@ _DEFAULT_RULES: tuple[PromptLintRule, ...] = (
     PromptLintRule(
         name="ignore-previous-instructions",
         pattern=re.compile(
-            r"(?i)\b(?:ignore|forget)\b[\s\S]{0,40}\b(?:previous|prior|above)\b[\s\S]{0,40}\b(?:instructions?|messages?|prompts?)\b"
+            r"(?i)\b(?:ignore|forget)\b[\s\S]{0,40}"
+            r"\b(?:previous|prior|above)\b[\s\S]{0,40}"
+            r"\b(?:instructions?|messages?|prompts?)\b"
         ),
         message="Text instructs the reader to ignore previous guidance, a common injection tactic.",
     ),
     PromptLintRule(
         name="disable-guardrails",
         pattern=re.compile(
-            r"(?i)\b(?:disable|bypass|remove)\b[\s\S]{0,40}\b(?:safety|guardrail|security)\b[\s\S]{0,40}\b(?:checks|systems|controls|filters)\b"
+            r"(?i)\b(?:disable|bypass|remove)\b[\s\S]{0,40}"
+            r"\b(?:safety|guardrail|security)\b[\s\S]{0,40}"
+            r"\b(?:checks|systems|controls|filters)\b"
         ),
         message="Detected language attempting to disable safety guardrails.",
     ),
     PromptLintRule(
         name="system-prompt-overrides",
-        pattern=re.compile(r"(?i)\byou\b[\s\S]{0,40}\bare\b[\s\S]{0,40}\bno\b[\s\S]{0,40}\blonger\b[\s\S]{0,40}\bbound\b"),
+        pattern=re.compile(
+            r"(?i)\byou\b[\s\S]{0,40}\bare\b[\s\S]{0,40}\bno\b[\s\S]{0,40}"
+            r"\blonger\b[\s\S]{0,40}\bbound\b"
+        ),
         message="Phrase attempts to override system prompt constraints.",
     ),
     PromptLintRule(
         name="remote-markdown-images",
         pattern=re.compile(
-            r"!\[[^\]]*\]\(\s*(?:<\s*(?:https?|data):[^>]+>\s*|(?:https?|data):[^)]+)\s*\)",
+            r"!\[[^\]]*\]\("
+            r"\s*"
+            r"(?:<\s*(?:https?|data):[^>]+?\s*>\s*|(?:https?|data):[^)]+?)"
+            r"\s*"
+            r"\)",
             re.IGNORECASE,
         ),
         message="Remote or data URI Markdown images can smuggle hostile instructions.",
@@ -196,9 +208,11 @@ def format_findings(findings: dict[Path, list[PromptLintFinding]]) -> str:
     lines: list[str] = []
     for path in sorted(findings):
         for finding in findings[path]:
-            lines.append(
-                f"{path}:{finding.line}:{finding.column}: {finding.rule_name} ({finding.severity}) — {finding.message}"
+            message = (
+                f"{path}:{finding.line}:{finding.column}: "
+                f"{finding.rule_name} ({finding.severity}) — {finding.message}"
             )
+            lines.append(message)
     return "\n".join(lines)
 
 
