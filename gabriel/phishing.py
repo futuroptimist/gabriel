@@ -244,43 +244,75 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
                 clean_known = known.lower().strip()
                 if not clean_known:
                     continue
+
+                normalized_known = clean_known.rstrip(".") or clean_known
+
                 if hostname == clean_known or hostname.endswith(f".{clean_known}"):
                     continue
-                known_registrable = _registrable_domain_for(clean_known)
-                if not known_registrable:
+                if normalized_known != clean_known and (
+                    hostname == normalized_known or hostname.endswith(f".{normalized_known}")
+                ):
                     continue
-                if registrable_domain == known_registrable:
+                if normalized_known and hostname == f"{normalized_known}.":
                     continue
 
-                known_label, known_suffix = _split_registrable_domain(known_registrable)
-                label_ratio = 0.0
-                if registrable_label and known_label:
-                    label_ratio = SequenceMatcher(None, registrable_label, known_label).ratio()
-
-                base_ratio = SequenceMatcher(None, registrable_domain, known_registrable).ratio()
-                shared_suffix = registrable_suffix and (registrable_suffix == known_suffix)
-                label_overlap = False
-                if shared_suffix and registrable_label and known_label:
-                    label_overlap = (
-                        registrable_label.startswith(known_label)
-                        or registrable_label.endswith(known_label)
-                        or known_label.startswith(registrable_label)
-                        or known_label.endswith(registrable_label)
-                    )
-
-                if base_ratio >= 0.78 or (shared_suffix and label_ratio >= 0.78) or label_overlap:
+                if (
+                    normalized_known
+                    and f"{normalized_known}." in hostname
+                    and not hostname.endswith(f".{normalized_known}")
+                    and hostname != f"{normalized_known}."
+                ):
                     findings.append(
                         PhishingFinding(
                             url=url,
-                            indicator="lookalike-domain",
+                            indicator="embedded-known-domain",
                             message=(
-                                "Domain closely resembles known brand "
-                                f"{clean_known}; verify the link before continuing"
+                                "Domain nests trusted brand "
+                                f"{normalized_known} under registrable domain "
+                                f"{registrable_domain or hostname}"
                             ),
                             severity="high",
                         )
                     )
                     break
+
+                known_registrable = _registrable_domain_for(clean_known)
+                if known_registrable and registrable_domain != known_registrable:
+                    known_label, known_suffix = _split_registrable_domain(known_registrable)
+                    label_ratio = 0.0
+                    if registrable_label and known_label:
+                        label_ratio = SequenceMatcher(None, registrable_label, known_label).ratio()
+
+                    base_ratio = SequenceMatcher(
+                        None, registrable_domain, known_registrable
+                    ).ratio()
+                    shared_suffix = registrable_suffix and (registrable_suffix == known_suffix)
+                    label_overlap = False
+                    if shared_suffix and registrable_label and known_label:
+                        label_overlap = (
+                            registrable_label.startswith(known_label)
+                            or registrable_label.endswith(known_label)
+                            or known_label.startswith(registrable_label)
+                            or known_label.endswith(registrable_label)
+                        )
+
+                    if (
+                        base_ratio >= 0.78
+                        or (shared_suffix and label_ratio >= 0.78)
+                        or label_overlap
+                    ):
+                        findings.append(
+                            PhishingFinding(
+                                url=url,
+                                indicator="lookalike-domain",
+                                message=(
+                                    "Domain closely resembles known brand "
+                                    f"{clean_known}; verify the link before continuing"
+                                ),
+                                severity="high",
+                            )
+                        )
+                        break
 
     suspicious_downloads_seen: set[tuple[str, str]] = set()
 

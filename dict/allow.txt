@@ -203,6 +203,7 @@ gamepad
 misconfigurations
 Netlify
 sanitization
+registrable
 shader
 shaders
 TLS
