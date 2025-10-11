@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from difflib import SequenceMatcher
 from functools import lru_cache
 from typing import Final
-from urllib.parse import parse_qsl, urlparse
+from urllib.parse import parse_qsl, unquote, urlparse
 
 from publicsuffix2 import get_sld
 
@@ -53,6 +53,37 @@ _SHORTENER_DOMAINS: Final[frozenset[str]] = frozenset(
 )
 
 _STANDARD_PORTS: Final[frozenset[int]] = frozenset({80, 443})
+
+_SUSPICIOUS_DOWNLOAD_SEVERITY: Final[dict[str, str]] = {
+    "exe": "high",
+    "scr": "high",
+    "bat": "high",
+    "cmd": "high",
+    "com": "high",
+    "msi": "high",
+    "msix": "high",
+    "msixbundle": "high",
+    "ps1": "high",
+    "psm1": "high",
+    "vbs": "high",
+    "js": "high",
+    "jse": "high",
+    "jar": "high",
+    "apk": "high",
+    "hta": "high",
+    "dll": "high",
+    "pif": "high",
+    "gadget": "high",
+    "zip": "medium",
+    "rar": "medium",
+    "7z": "medium",
+    "gz": "medium",
+    "bz2": "medium",
+    "xz": "medium",
+    "tgz": "medium",
+    "tar": "medium",
+    "iso": "medium",
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -112,6 +143,7 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
 
     parsed = urlparse(url)
     hostname = (parsed.hostname or "").lower()
+    query_params = parse_qsl(parsed.query, keep_blank_values=True)
     findings: list[PhishingFinding] = []
 
     if parsed.scheme == "http":
@@ -282,9 +314,64 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
                         )
                         break
 
+    suspicious_downloads_seen: set[tuple[str, str]] = set()
+
+    def _consider_download_candidate(raw: str, location: str) -> None:
+        decoded = unquote(raw)
+        sanitized = decoded.strip()
+        if not sanitized:
+            return
+        sanitized = sanitized.splitlines()[0]
+        candidate = sanitized.rsplit("/", 1)[-1]
+        candidate = candidate.strip().strip("\"'()[]{}<>")
+        candidate = candidate.rstrip(".,;")
+        if not candidate or "." not in candidate:
+            return
+        parts = [segment for segment in candidate.split(".") if segment]
+        if len(parts) < 2:
+            return
+        extension = parts[-1].lower()
+        severity = _SUSPICIOUS_DOWNLOAD_SEVERITY.get(extension)
+        if severity is None:
+            return
+        normalized = candidate.lower()
+        key = (normalized, extension)
+        if key in suspicious_downloads_seen:
+            return
+        suspicious_downloads_seen.add(key)
+        double_extension = len(parts) >= 3
+        if double_extension:
+            message = (
+                f"Link references double-extension download '{candidate}' ending with .{extension}"
+            )
+        else:
+            message = f"Link references downloadable file '{candidate}' ending with .{extension}"
+        if location == "query":
+            message += " via query parameter"
+        elif location == "fragment":
+            message += " via fragment"
+        findings.append(
+            PhishingFinding(
+                url=url,
+                indicator="suspicious-download",
+                message=message,
+                severity=severity,
+            )
+        )
+
+    if parsed.path:
+        for segment in (part for part in parsed.path.split("/") if part):
+            _consider_download_candidate(segment, "path")
+
+    for _, value in query_params:
+        _consider_download_candidate(value, "query")
+
+    if parsed.fragment:
+        _consider_download_candidate(parsed.fragment, "fragment")
+
     if parsed.query:
         redirect_hosts: set[str] = set()
-        for _, value in parse_qsl(parsed.query, keep_blank_values=True):
+        for _, value in query_params:
             candidate = value.strip()
             if not candidate:
                 continue
