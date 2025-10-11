@@ -3,11 +3,18 @@
 from __future__ import annotations
 
 import json
+import logging
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
 from typing import Any
 from urllib.parse import urljoin, urlparse
+
+from gabriel.security.policies import EgressControlPolicy, EgressPolicyViolation
+
+logger = logging.getLogger(__name__)
+
+_EGRESS_POLICY = EgressControlPolicy.from_env()
 
 
 class TokenPlaceError(RuntimeError):
@@ -89,6 +96,7 @@ class TokenPlaceClient:
 
     def _request(self, method: str, path: str, payload: dict[str, Any] | None = None) -> Any:
         url = urljoin(self._base_url, path)
+        _EGRESS_POLICY.validate_request(url)
         data: bytes | None = None
         headers = {"Accept": "application/json"}
         if payload is not None:

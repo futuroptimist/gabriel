@@ -1,0 +1,11 @@
+{
+  "domains": [
+    "localhost",
+    "relay.local",
+    "token.place",
+    "example.com"
+  ],
+  "ips": [
+    "127.0.0.1"
+  ]
+}
