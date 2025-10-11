@@ -164,7 +164,28 @@ The helper inspects each HTTP(S) link for punycode, suspicious top-level domains
 embedded credentials, plaintext HTTP, IP-based hosts, lookalikes of the supplied
 domains, known URL shorteners that mask the final destination, unusual port usage,
 suspicious executable or archive downloads, redirect parameters that jump to
-external hosts, and domains that nest trusted brands inside attacker-controlled registrable domains. Combine it with Gabriel's secret helpers to build secure intake pipelines for inbound phishing reports.
+external hosts, and domains that nest trusted brands inside attacker-controlled
+registrable domains. Combine it with Gabriel's secret helpers to build secure intake
+pipelines for inbound phishing reports.
+
+### Organize security notes into a knowledge store
+
+Phase 2 of the roadmap introduces a personal knowledge manager that keeps security
+notes searchable and local. Use the new `gabriel.knowledge` helpers to index Markdown
+files or structured snippets and run lightweight keyword searches:
+
+```python
+from pathlib import Path
+
+from gabriel import KnowledgeStore
+
+store = KnowledgeStore.from_paths(Path("security-notes").glob("*.md"))
+for result in store.search("vaultwarden admin token", required_tags=["passwords"]):
+    print(result.note.title, "→", result.snippet)
+```
+
+Each result includes the originating note, matched terms, and a contextual snippet so
+you can jump directly to the relevant remediation guidance when triaging incidents.
 
 ### Audit VaultWarden deployments
 

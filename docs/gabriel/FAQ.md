@@ -74,7 +74,14 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
     Yes. Build the image with `docker build -t gabriel .` and run commands such as `docker run --rm -it gabriel gabriel-calc add 2 3`. Mount volumes or supply `--env-file` when secrets or configuration should persist between runs. See the README section titled *Docker builds* for more recipes.
 
-19. **Does Gabriel include phishing detection yet?**
+19. **How can I organize recurring security notes?**
+
+    Gabriel's roadmap now includes a lightweight knowledge store for Markdown notes.
+    Use `gabriel.knowledge.KnowledgeStore` to index local files and search by keyword
+    or tag without sending data to external services. The helper extracts titles,
+    tags, and contextual snippets so you can jump straight to remediation guidance.
+
+20. **Does Gabriel include phishing detection yet?**
 
     A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for
     punycode, suspicious TLDs, HTTP usage, lookalike domains, known URL shorteners,
@@ -82,7 +89,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     risky executable or archive extensions. Extend it with additional rules as the
     roadmap advances.
 
-20. **How do I call token.place for encrypted inference?**
+21. **How do I call token.place for encrypted inference?**
 
     Import `TokenPlaceClient` and point it at your relay. The helper signs requests with your API
     token, provides a `check_health()` probe, and normalizes responses into a simple
@@ -99,11 +106,11 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     The client keeps traffic on the configured relay URL so you can pair encrypted inference with
     Gabriel's offline-first design.
 
-21. **Can Gabriel audit my VaultWarden deployment?**
+22. **Can Gabriel audit my VaultWarden deployment?**
 
     Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a `VaultWardenConfig` snapshot to identify gaps from the checklist in [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
 
-22. **How do I preview the bundled WebGL viewer?**
+23. **How do I preview the bundled WebGL viewer?**
 
     Run `gabriel viewer` to launch a threaded HTTP server that opens your browser locally. Add
     `--no-browser` for headless systems or `--host 0.0.0.0` to share the preview on your LAN. See

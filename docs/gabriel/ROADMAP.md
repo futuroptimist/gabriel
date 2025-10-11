@@ -18,6 +18,7 @@ This document outlines tentative phases for Gabriel. Dates are aspirational and 
 ## Phase 2: Personal Knowledge Manager
 
 - Organize user notes and security data into a searchable store.
+  (`gabriel.knowledge.KnowledgeStore` now indexes Markdown notes locally.)
 - Provide advanced LLM-driven recommendations.
 - Explore synergy with [sigma](https://github.com/futuroptimist/sigma) as a push-to-talk interface for local LLM interactions.
 
