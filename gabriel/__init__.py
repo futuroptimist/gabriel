@@ -30,6 +30,7 @@ from .selfhosted import (
     audit_syncthing,
     audit_vaultwarden,
 )
+from .tokenplace import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
 from .viewer import (
     DEFAULT_HOST,
     DEFAULT_PORT,
@@ -72,6 +73,9 @@ __all__ = [
     "audit_syncthing",
     "audit_nextcloud",
     "audit_photoprism",
+    "TokenPlaceClient",
+    "TokenPlaceCompletion",
+    "TokenPlaceError",
     "SUPPORTED_PYTHON_VERSIONS",
     "serve_viewer",
     "start_viewer_server",
