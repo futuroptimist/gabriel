@@ -76,7 +76,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
 19. **Does Gabriel include phishing detection yet?**
 
-    A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for punycode, suspicious TLDs, HTTP usage, lookalike domains, known URL shorteners, unusual ports, and redirect parameters that jump to other domains. Extend it with additional rules as the roadmap advances.
+    A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for punycode, suspicious TLDs, HTTP usage, lookalike domains, known URL shorteners, unusual ports, redirect parameters that jump to other domains, and hosts that embed trusted brands inside attacker-owned registrable domains. Extend it with additional rules as the roadmap advances.
 
 20. **Can Gabriel audit my VaultWarden deployment?**
 

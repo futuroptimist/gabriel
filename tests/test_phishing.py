@@ -84,6 +84,16 @@ def test_analyze_url_detects_lookalike_domains_with_multi_label_suffix() -> None
     assert "lookalike-domain" in indicators  # nosec B101
 
 
+def test_analyze_url_detects_embedded_known_domain() -> None:
+    url = "https://example.com.attacker.org/reset"
+    findings = analyze_url(url, known_domains=["example.com"])
+    indicators = _indicator_set(findings)
+    assert "embedded-known-domain" in indicators  # nosec B101
+    [finding] = [f for f in findings if f.indicator == "embedded-known-domain"]
+    assert "example.com" in finding.message  # nosec B101
+    assert "attacker.org" in finding.message  # nosec B101
+
+
 def test_analyze_url_detects_suffix_preserving_brand_injection() -> None:
     url = "https://bank-secure.co.uk"
     findings = analyze_url(url, known_domains=["bank.co.uk"])
@@ -156,6 +166,14 @@ def test_analyze_url_ignores_legitimate_subdomain() -> None:
     findings = analyze_url(url, known_domains=["", "example.com"])
     indicators = _indicator_set(findings)
     assert "lookalike-domain" not in indicators  # nosec B101
+    assert "embedded-known-domain" not in indicators  # nosec B101
+
+
+def test_analyze_url_skips_known_domain_exact_match() -> None:
+    findings = analyze_url("https://support.example.com", known_domains=["example.com"])
+    indicators = _indicator_set(findings)
+    assert "lookalike-domain" not in indicators  # nosec B101
+    assert "embedded-known-domain" not in indicators  # nosec B101
 
 
 def test_analyze_url_ignores_legitimate_multi_label_suffix_subdomain() -> None:
@@ -215,9 +233,18 @@ def test_analyze_url_skips_known_domains_without_registrable_label() -> None:
 
 def test_analyze_url_skips_known_domain_with_trailing_dot() -> None:
     findings = analyze_url("https://support.example.com", known_domains=["example.com."])
-    assert "lookalike-domain" not in _indicator_set(findings)  # nosec B101
+    indicators = _indicator_set(findings)
+    assert "lookalike-domain" not in indicators  # nosec B101
+    assert "embedded-known-domain" not in indicators  # nosec B101
 
 
 def test_analyze_url_handles_hostname_with_only_dots() -> None:
     findings = analyze_url("https://./", known_domains=["example.com"])
     assert "lookalike-domain" not in _indicator_set(findings)  # nosec B101
+
+
+def test_analyze_url_allows_trailing_dot_hostname() -> None:
+    findings = analyze_url("https://example.com./login", known_domains=["example.com"])
+    indicators = _indicator_set(findings)
+    assert "embedded-known-domain" not in indicators  # nosec B101
+    assert "lookalike-domain" not in indicators  # nosec B101

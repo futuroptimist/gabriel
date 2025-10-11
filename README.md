@@ -163,7 +163,8 @@ for finding in findings:
 The helper inspects each HTTP(S) link for punycode, suspicious top-level domains,
 embedded credentials, plaintext HTTP, IP-based hosts, lookalikes of the supplied
 domains, known URL shorteners that mask the final destination, unusual port usage,
-and redirect parameters that jump to external hosts. Combine it with Gabriel's secret
+redirect parameters that jump to external hosts, and domains that nest trusted brands
+inside attacker-controlled registrable domains. Combine it with Gabriel's secret
 helpers to build secure intake pipelines for inbound phishing reports.
 
 ### Audit VaultWarden deployments
