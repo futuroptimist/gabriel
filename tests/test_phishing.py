@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+
 import pytest
 
 from gabriel.phishing import (
@@ -90,10 +92,14 @@ def test_analyze_url_detects_embedded_known_domain() -> None:
     indicators = _indicator_set(findings)
     assert "embedded-known-domain" in indicators  # nosec B101
     [finding] = [f for f in findings if f.indicator == "embedded-known-domain"]
-    assert (
-        finding.message
-        == "Domain nests trusted brand example.com under registrable domain attacker.org"
-    )  # nosec B101
+    pattern = re.compile(
+        r"Domain nests trusted brand (?P<known>[A-Za-z0-9.-]+)"
+        r" under registrable domain (?P<registrable>[A-Za-z0-9.-]+)"
+    )
+    match = pattern.fullmatch(finding.message)
+    assert match, f"unexpected embedded-known-domain message: {finding.message!r}"  # nosec B101
+    assert match.group("known") == "example.com"  # nosec B101
+    assert match.group("registrable") == "attacker.org"  # nosec B101
 
 
 def test_analyze_url_detects_suffix_preserving_brand_injection() -> None:
