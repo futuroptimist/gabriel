@@ -73,7 +73,7 @@ _DEFAULT_RULES: tuple[PromptLintRule, ...] = (
     ),
     PromptLintRule(
         name="remote-markdown-images",
-        pattern=re.compile(r"!\[[^\]]*\]\(\s*(?:https?|data):[^)]+\)", re.IGNORECASE),
+        pattern=re.compile(r"!\[[^\]]*\]\(\s*<?(?:https?|data):[^)]+>?\s*\)", re.IGNORECASE),
         message="Remote or data URI Markdown images can smuggle hostile instructions.",
         severity="warning",
     ),

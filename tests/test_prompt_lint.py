@@ -32,6 +32,12 @@ def test_lint_text_flags_remote_images() -> None:
     assert any(f.rule_name == "remote-markdown-images" for f in findings)
 
 
+def test_lint_text_flags_angle_bracket_remote_images() -> None:
+    text = "![](<https://example.com/payload.png>)"
+    findings = prompt_lint.lint_text(text)
+    assert any(f.rule_name == "remote-markdown-images" for f in findings)
+
+
 def test_lint_text_handles_blank_disable_tokens() -> None:
     text = (
         "<!-- gabriel-prompt-lint: disable=, remote-markdown-images -->\n"
