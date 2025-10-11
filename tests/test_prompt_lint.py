@@ -32,8 +32,14 @@ def test_lint_text_flags_remote_images() -> None:
     assert any(f.rule_name == "remote-markdown-images" for f in findings)
 
 
-def test_lint_text_flags_angle_bracket_remote_images() -> None:
-    text = "![](<https://example.com/payload.png>)"
+@pytest.mark.parametrize(
+    "text",
+    [
+        "![](<https://example.com/payload.png>)",
+        "![](< https://example.com/payload.png >)",
+    ],
+)
+def test_lint_text_flags_angle_bracket_remote_images(text: str) -> None:
     findings = prompt_lint.lint_text(text)
     assert any(f.rule_name == "remote-markdown-images" for f in findings)
 
