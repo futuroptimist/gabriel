@@ -28,7 +28,6 @@ __all__ = [
 
 def get_viewer_directory() -> Path:
     """Return the directory containing the static viewer assets."""
-
     return Path(__file__).resolve().parents[1] / "viewer"
 
 
@@ -44,14 +43,12 @@ class ViewerServer:
 
     def url(self, path: str = "/") -> str:
         """Return an absolute URL pointing at the hosted viewer."""
-
         normalized = path.lstrip("/")
         suffix = f"/{normalized}" if normalized else "/"
         return f"http://{self.host}:{self.port}{suffix}"
 
     def stop(self) -> None:
         """Shut down the underlying HTTP server if it is still running."""
-
         if self._stopped:
             return
         self._stopped = True
@@ -63,7 +60,6 @@ class ViewerServer:
 @contextlib.contextmanager
 def start_viewer_server(host: str = DEFAULT_HOST, port: int = 0) -> Iterator[ViewerServer]:
     """Start a threaded HTTP server that serves the viewer assets."""
-
     directory = str(get_viewer_directory())
     handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=directory)
 
@@ -90,7 +86,6 @@ def serve_viewer(
     shutdown_event: threading.Event | None = None,
 ) -> None:
     """Serve the WebGL viewer until interrupted."""
-
     with start_viewer_server(host=host, port=port) as server:
         url = server.url()
         if ready_event is not None:
@@ -110,7 +105,6 @@ def serve_viewer(
 
 def _main() -> None:
     """Entry point for ``python -m gabriel.viewer``."""
-
     parser = argparse.ArgumentParser(description="Serve the Gabriel WebGL viewer")
     parser.add_argument(
         "--host",

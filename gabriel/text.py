@@ -43,13 +43,11 @@ class HiddenCharacter:
     @property
     def codepoint(self) -> str:
         """Return the Unicode codepoint for the character."""
-
         return f"U+{ord(self.character):04X}"
 
 
 def _character_name(character: str) -> str:
     """Return a human-readable name for ``character``."""
-
     if character in _MONITORED_CHARACTERS:
         return _MONITORED_CHARACTERS[character]
     try:
@@ -60,7 +58,6 @@ def _character_name(character: str) -> str:
 
 def normalize_allow_value(value: str) -> str:
     """Convert ``value`` into a literal character for allow-list comparisons."""
-
     stripped = value.strip()
     if not stripped:
         raise ValueError("Allow-list values cannot be empty")
@@ -78,7 +75,6 @@ def iter_hidden_characters(
     text: str, *, allow: Iterable[str] | None = None
 ) -> Iterator[HiddenCharacter]:
     """Yield :class:`HiddenCharacter` items found in ``text``."""
-
     allow_set = {normalize_allow_value(value) for value in (allow or ())}
 
     line = 1
@@ -108,13 +104,11 @@ def find_hidden_characters(
     text: str, *, allow: Iterable[str] | None = None
 ) -> list[HiddenCharacter]:
     """Return a list of :class:`HiddenCharacter` items present in ``text``."""
-
     return list(iter_hidden_characters(text, allow=allow))
 
 
 def scan_path(path: Path, *, allow: Iterable[str] | None = None) -> list[HiddenCharacter]:
     """Scan a single file ``path`` for hidden characters."""
-
     try:
         text = path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
@@ -137,7 +131,6 @@ def scan_paths(
     paths: Iterable[Path], *, allow: Iterable[str] | None = None
 ) -> dict[Path, list[HiddenCharacter]]:
     """Scan ``paths`` and return findings grouped by file path."""
-
     grouped: dict[Path, list[HiddenCharacter]] = {}
     for raw_path in paths:
         path = Path(raw_path)
@@ -151,7 +144,6 @@ def scan_paths(
 
 def format_findings(findings: dict[Path, list[HiddenCharacter]]) -> str:
     """Create a human-readable report for ``findings``."""
-
     lines: list[str] = []
     for path in sorted(findings):
         for finding in findings[path]:
@@ -163,7 +155,6 @@ def format_findings(findings: dict[Path, list[HiddenCharacter]]) -> str:
 
 def main(argv: Sequence[str] | None = None) -> int:
     """Entry point for ``python -m gabriel.text``."""
-
     parser = argparse.ArgumentParser(description="Detect hidden zero-width characters")
     parser.add_argument("paths", nargs="*", help="Files to scan for hidden characters")
     parser.add_argument(

@@ -98,7 +98,6 @@ class PhishingFinding:
 
 def extract_urls(text: str) -> list[str]:
     """Return HTTP(S) URLs discovered in ``text`` in appearance order."""
-
     return [match.group(0) for match in _URL_PATTERN.finditer(text)]
 
 
@@ -109,7 +108,6 @@ def _iter_domain_labels(hostname: str) -> Iterator[str]:
 @lru_cache(maxsize=4096)
 def _registrable_domain_for(hostname: str) -> str:
     """Return the registrable domain for ``hostname`` using public suffix data."""
-
     if not hostname:
         return ""
 
@@ -127,7 +125,6 @@ def _registrable_domain_for(hostname: str) -> str:
 
 def _split_registrable_domain(domain: str) -> tuple[str, str]:
     """Split a registrable domain into its label and suffix components."""
-
     if not domain:
         return "", ""
 
@@ -140,7 +137,6 @@ def _split_registrable_domain(domain: str) -> tuple[str, str]:
 
 def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[PhishingFinding]:
     """Analyse ``url`` and return heuristic phishing findings."""
-
     parsed = urlparse(url)
     hostname = (parsed.hostname or "").lower()
     query_params = parse_qsl(parsed.query, keep_blank_values=True)
@@ -409,7 +405,6 @@ def analyze_text_for_phishing(
     text: str, *, known_domains: Iterable[str] | None = None
 ) -> list[PhishingFinding]:
     """Analyse ``text`` and return phishing findings for embedded URLs."""
-
     findings: list[PhishingFinding] = []
     for url in extract_urls(text):
         findings.extend(analyze_url(url, known_domains=known_domains))

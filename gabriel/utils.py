@@ -17,13 +17,11 @@ SECRET_CMD_DELETE = "delete"  # nosec B105 - CLI command name  # pragma: allowli
 
 def main(argv: list[str] | None = None) -> None:
     """Run arithmetic and secret management helpers from the command line."""
-
     parser = argparse.ArgumentParser(description="Gabriel utilities")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     def add_binary(name: str) -> None:
         """Register a binary arithmetic command named ``name``."""
-
         sp = subparsers.add_parser(name)
         sp.add_argument("a", type=Decimal)
         sp.add_argument("b", type=Decimal)
