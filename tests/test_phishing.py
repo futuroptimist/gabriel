@@ -151,6 +151,54 @@ def test_analyze_url_ignores_redirect_edge_cases() -> None:
     assert matching[0].message.endswith("malicious.co")  # nosec B101
 
 
+def test_analyze_url_flags_executable_download_targets() -> None:
+    url = "https://example.com/files/Invoice.pdf.exe"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "suspicious-download" in indicators  # nosec B101
+    [finding] = [f for f in findings if f.indicator == "suspicious-download"]
+    assert finding.severity == "high"  # nosec B101
+    assert "Invoice.pdf.exe" in finding.message  # nosec B101
+
+
+def test_analyze_url_flags_archive_downloads_in_query_parameters() -> None:
+    url = "https://example.com/download?file=backup%20(1).zip"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "suspicious-download" in indicators  # nosec B101
+    matching = [f for f in findings if f.indicator == "suspicious-download"]
+    assert matching[0].severity == "medium"  # nosec B101
+    assert "backup (1).zip" in matching[0].message  # nosec B101
+
+
+def test_analyze_url_ignores_extension_only_tokens() -> None:
+    url = "https://example.com/download?file=.exe"
+    findings = analyze_url(url)
+    indicators = _indicator_set(findings)
+    assert "suspicious-download" not in indicators  # nosec B101
+
+
+def test_analyze_url_deduplicates_repeated_download_targets() -> None:
+    url = (
+        "https://example.com/download?primary=invoice.exe"
+        "&secondary=invoice.exe"
+        "&fallback=invoice.EXE"
+    )
+    findings = analyze_url(url)
+    matches = [f for f in findings if f.indicator == "suspicious-download"]
+    assert len(matches) == 1  # nosec B101
+    assert matches[0].severity == "high"  # nosec B101
+
+
+def test_analyze_url_flags_fragment_download_reference() -> None:
+    url = "https://example.com/#payload.7z"
+    findings = analyze_url(url)
+    matching = [f for f in findings if f.indicator == "suspicious-download"]
+    assert len(matching) == 1  # nosec B101
+    assert matching[0].severity == "medium"  # nosec B101
+    assert "via fragment" in matching[0].message  # nosec B101
+
+
 def test_analyze_url_ignores_legitimate_subdomain() -> None:
     url = "https://support.example.com"
     findings = analyze_url(url, known_domains=["", "example.com"])
