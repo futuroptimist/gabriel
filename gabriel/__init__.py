@@ -11,6 +11,7 @@ from .__about__ import (
     __version__,
 )
 from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
+from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
 from .phishing import (
     PhishingFinding,
     analyze_text_for_phishing,
@@ -59,6 +60,10 @@ __all__ = [
     "store_secret",
     "get_secret",
     "delete_secret",
+    "load_notes_from_paths",
+    "KnowledgeStore",
+    "Note",
+    "SearchResult",
     "extract_urls",
     "analyze_url",
     "analyze_text_for_phishing",

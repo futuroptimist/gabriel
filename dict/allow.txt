@@ -222,9 +222,11 @@ asyncio
 crypto
 Jira
 PATs
+pathlib
 keyrings
 floorplan
 PPE
+KnowledgeStore
 KiCad
 Cloudflare
 runbooks
@@ -283,6 +285,7 @@ TTLs
 TTL
 filesystems
 IPC
+triaging
 Trufflehog
 Semgrep
 linters
