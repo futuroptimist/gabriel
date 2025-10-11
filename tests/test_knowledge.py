@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from gabriel import KnowledgeStore, Note, load_notes_from_paths
 import gabriel.knowledge as knowledge_module
+from gabriel import KnowledgeStore, Note, load_notes_from_paths
 
 
 def _write(tmp_path: Path, name: str, content: str) -> Path:

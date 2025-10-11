@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Iterator, Sequence
 
 _WORD_PATTERN = re.compile(r"[A-Za-z0-9]+")
 
@@ -50,6 +50,8 @@ class KnowledgeStore:
     """In-memory index for quick keyword searches across notes."""
 
     def __init__(self, notes: Sequence[Note]):
+        """Build a store from ``notes`` and create a token lookup index."""
+
         self._notes: tuple[Note, ...] = tuple(notes)
         self._index: dict[str, set[int]] = {}
         for index, note in enumerate(self._notes):
@@ -58,7 +60,7 @@ class KnowledgeStore:
                 bucket.add(index)
 
     @classmethod
-    def from_paths(cls, paths: Iterable[Path | str]) -> "KnowledgeStore":
+    def from_paths(cls, paths: Iterable[Path | str]) -> KnowledgeStore:
         """Create a knowledge store from iterable ``paths``."""
 
         notes = list(load_notes_from_paths(paths))
@@ -101,9 +103,13 @@ class KnowledgeStore:
                 continue
             terms = tuple(sorted(matched_terms.get(note_index, set())))
             snippet = _build_snippet(note, terms)
-            results.append(SearchResult(note=note, score=score, matched_terms=terms, snippet=snippet))
+            results.append(
+                SearchResult(note=note, score=score, matched_terms=terms, snippet=snippet)
+            )
 
-        results.sort(key=lambda result: (-result.score, result.note.title.lower(), result.note.identifier))
+        results.sort(
+            key=lambda result: (-result.score, result.note.title.lower(), result.note.identifier)
+        )
         if limit is not None:
             return results[: max(limit, 0)]
         return results
@@ -150,7 +156,8 @@ def _split_front_matter(text: str) -> tuple[dict[str, str], str]:
             return {}, text
         raw = "\n".join(collected)
         metadata = _parse_simple_front_matter(raw)
-        body = "\n".join(lines[i + 1 :]).lstrip("\n")
+        start = i + 1
+        body = "\n".join(lines[start:]).lstrip("\n")
         return metadata, body
     return {}, text
 
