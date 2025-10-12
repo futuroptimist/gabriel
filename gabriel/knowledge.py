@@ -22,14 +22,12 @@ class Note:
 
     def iter_tokens(self) -> Iterator[str]:
         """Yield normalized tokens derived from the title, tags, and content."""
-
         for source in (self.title, " ".join(self.tags), self.content):
             for match in _WORD_PATTERN.finditer(source):
                 yield match.group(0).lower()
 
     def matches_tags(self, tags: Sequence[str]) -> bool:
         """Return ``True`` when all ``tags`` are present on the note."""
-
         if not tags:
             return True
         normalized = {tag.lower() for tag in self.tags}
@@ -51,7 +49,6 @@ class KnowledgeStore:
 
     def __init__(self, notes: Sequence[Note]):
         """Build a store from ``notes`` and create a token lookup index."""
-
         self._notes: tuple[Note, ...] = tuple(notes)
         self._index: dict[str, set[int]] = {}
         for index, note in enumerate(self._notes):
@@ -62,14 +59,12 @@ class KnowledgeStore:
     @classmethod
     def from_paths(cls, paths: Iterable[Path | str]) -> KnowledgeStore:
         """Create a knowledge store from iterable ``paths``."""
-
         notes = list(load_notes_from_paths(paths))
         return cls(notes)
 
     @property
     def notes(self) -> tuple[Note, ...]:
         """Return all notes tracked by the store."""
-
         return self._notes
 
     def search(
@@ -80,7 +75,6 @@ class KnowledgeStore:
         limit: int | None = None,
     ) -> list[SearchResult]:
         """Return ranked search results for ``query``."""
-
         tokens = _tokenize(query)
         if not tokens:
             raise ValueError("query must include at least one searchable term")
@@ -117,7 +111,6 @@ class KnowledgeStore:
 
 def load_notes_from_paths(paths: Iterable[Path | str]) -> Iterator[Note]:
     """Yield :class:`Note` objects derived from ``paths``."""
-
     for raw_path in paths:
         path = Path(raw_path)
         if not path.exists() or path.is_dir():

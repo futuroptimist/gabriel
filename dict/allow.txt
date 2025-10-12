@@ -198,6 +198,16 @@ Automations
 summarization
 affordances
 danielsmith
+Base64
+DLP
+OAuth
+RBAC
+ROT13
+SBOM
+TTL
+Exfiltration
+Runbooks
+Untrusted
 fallbacks
 gamepad
 misconfigurations
@@ -271,6 +281,10 @@ NIST
 OWASP
 RMF
 agentic
+oauth
+pii
+redteam
+yaml
 auditable
 embeddings
 OAuth
