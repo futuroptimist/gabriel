@@ -99,7 +99,8 @@ class EgressControlPolicy:
 
         if not self.safe_mode:
             logger.debug(
-                "SAFE_MODE disabled; skipping allowlist validation",
+                "SAFE_MODE disabled; skipping allowlist validation for %s",
+                target_url,
                 extra={"policy": "EgressControl", "reason": "safe_mode_disabled"},
             )
             return

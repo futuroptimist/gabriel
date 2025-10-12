@@ -89,6 +89,14 @@ def test_safe_mode_disabled_allows_unlisted_host(tmp_path: Path) -> None:
     policy.validate_request("https://unlisted.example")
 
 
+def test_safe_mode_disabled_ignores_allowlist_entries(tmp_path: Path) -> None:
+    allowlist_path = tmp_path / "allowlist.json"
+    _write_allowlist(allowlist_path, domains=["trusted.example"])
+    policy = EgressControlPolicy(allowlist_path=allowlist_path, safe_mode=False)
+
+    policy.validate_request("https://unlisted.example")
+
+
 def test_from_env_uses_environment_configuration(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
