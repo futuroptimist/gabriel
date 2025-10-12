@@ -45,6 +45,8 @@ repos:
         name: pydocstyle (gabriel package)
         files: "^gabriel/.*\\.py$"
         args: ["--config=pyproject.toml"]
+        additional_dependencies:
+          - tomli>=2.0.1
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.5.1
     hooks:
@@ -54,7 +56,9 @@ repos:
     rev: 1.7.7
     hooks:
       - id: bandit
-        args: [-r, .]
+        args: [-c, pyproject.toml, -r, gabriel, scripts]
+        additional_dependencies:
+          - bandit[toml]
   - repo: https://github.com/pypa/pip-audit
     rev: v2.9.0
     hooks:

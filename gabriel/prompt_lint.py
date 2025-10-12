@@ -36,19 +36,16 @@ class PromptLintFinding:
     @property
     def rule_name(self) -> str:
         """Return the machine-friendly rule identifier."""
-
         return self.rule.name
 
     @property
     def severity(self) -> Severity:
         """Expose the severity of the triggering rule."""
-
         return self.rule.severity
 
     @property
     def message(self) -> str:
         """Return the human-readable lint message."""
-
         return self.rule.message
 
 
@@ -145,7 +142,6 @@ def lint_text(
     path: Path | None = None,
 ) -> list[PromptLintFinding]:
     """Return lint findings for ``text`` using the configured ``rules``."""
-
     active_rules = tuple(rules or _DEFAULT_RULES)
     disabled_from_text = _find_disabled_rules(text)
     disabled_from_cli = {rule.lower() for rule in (disabled_rules or [])}
@@ -180,7 +176,6 @@ def lint_path(
     disabled_rules: Iterable[str] | None = None,
 ) -> list[PromptLintFinding]:
     """Load ``path`` and return prompt-injection lint findings."""
-
     try:
         text = path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
@@ -196,7 +191,6 @@ def lint_paths(
     disabled_rules: Iterable[str] | None = None,
 ) -> dict[Path, list[PromptLintFinding]]:
     """Return prompt-injection findings grouped by file path."""
-
     grouped: dict[Path, list[PromptLintFinding]] = {}
     for raw_path in paths:
         path = Path(raw_path)
@@ -210,7 +204,6 @@ def lint_paths(
 
 def format_findings(findings: dict[Path, list[PromptLintFinding]]) -> str:
     """Return a human-readable summary for ``findings``."""
-
     lines: list[str] = []
     for path in sorted(findings):
         for finding in findings[path]:
@@ -224,14 +217,12 @@ def format_findings(findings: dict[Path, list[PromptLintFinding]]) -> str:
 
 def iter_paths_from_cli(paths: Sequence[str]) -> Iterator[Path]:
     """Yield :class:`Path` objects for CLI arguments."""
-
     for raw in paths:
         yield Path(raw)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     """Entry point for ``python -m gabriel.prompt_lint``."""
-
     parser = argparse.ArgumentParser(description="Lint Markdown for prompt-injection red flags")
     parser.add_argument("paths", nargs="*", help="Markdown files to scan")
     parser.add_argument(
