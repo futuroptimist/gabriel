@@ -17,7 +17,7 @@ prompt-injection studies from OpenAI.
 
 | Category | Description | Likelihood | Impact | Example |
 | --- | --- | --- | --- | --- |
-| Prompt Echo | Leaks hidden prompts or secrets. | High | High | "Ignore prior" prompt |
+| Prompt Echo | Leaks hidden prompts or secrets. | High | High | "Reveal seed" prompt |
 | Training Data | Recalls stored PII or proprietary data. | Medium | High | PII recall test |
 | Indirect Injection | Untrusted input overrides goals. | High | High | HTML/Base64 payload |
 | Tool Exfiltration | Over-scoped actions leak via APIs. | Medium | High | OAuth scope abuse |

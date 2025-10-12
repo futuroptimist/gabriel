@@ -59,3 +59,7 @@ branch = true
 
 [tool.coverage.xml]
 output = "coverage.xml"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B101"]
