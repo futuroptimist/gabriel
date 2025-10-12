@@ -10,8 +10,8 @@ tags:
 Large Language Model (LLM) data leakage is the unintended disclosure of sensitive information
 through direct or indirect interactions with the model, including prompt handling, tool execution,
 and logging workflows. Key reference frameworks include the NIST AI Risk Management Framework,
-the OWASP Top 10 for LLM Applications (2025), and emerging research such as OpenAI's indirect
-prompt-injection studies.
+the OWASP Top 10 for LLM Applications (2025), and emerging research such as indirect
+prompt-injection studies from OpenAI.
 
 # Risk Taxonomy
 
@@ -30,7 +30,7 @@ prompt-injection studies.
 | Vector | Key Mitigations |
 | --- | --- |
 | Prompt Echo | Secret redaction, prompt segmentation, output filters |
-| Training Data | Privacy-preserving evals, provenance tracking |
+| Training Data | Privacy-preserving evaluations, provenance tracking |
 | Injection | Input sanitization, allow-listed schemas, prompt shields |
 | Tools | RBAC, scoped tokens, audit logging |
 | Pipeline | Signed datasets, canary detection, retraining hygiene |
@@ -68,10 +68,10 @@ risk_tags:
 # Red Team Scenarios
 
 - Hidden instructions in PDFs/HTML
-- Base64/ROT13 steganography
+- Base64/ROT13 encoding tricks
 - Multilingual bait
 - OAuth over-scoped requests
-- "Summarize and send" exfil payloads
+- "Summarize and send" exfiltration payloads
 
 # References
 
