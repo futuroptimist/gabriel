@@ -98,6 +98,10 @@ class EgressControlPolicy:
             raise EgressPolicyViolation("Only HTTP/S egress is permitted")
 
         if not self.safe_mode:
+            logger.debug(
+                "SAFE_MODE disabled; skipping allowlist validation",
+                extra={"policy": "EgressControl", "reason": "safe_mode_disabled"},
+            )
             return
 
         if not self.allowed_domains and not self.allowed_ips:
