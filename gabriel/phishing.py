@@ -391,8 +391,7 @@ def analyze_url(url: str, known_domains: Iterable[str] | None = None) -> list[Ph
                     url=url,
                     indicator="external-redirect",
                     message=(
-                        "Link includes redirect parameter targeting external host "
-                        f"{redirect_host}"
+                        f"Link includes redirect parameter targeting external host {redirect_host}"
                     ),
                     severity="medium",
                 )

@@ -66,8 +66,7 @@ def audit_vaultwarden(config: VaultWardenConfig) -> list[CheckResult]:
             CheckResult(
                 slug="vaultwarden-encryption-key",
                 message=(
-                    "Environment variable `VAULTWARDEN_ADMIN_TOKEN` or master key is weak or "
-                    "unset."
+                    "Environment variable `VAULTWARDEN_ADMIN_TOKEN` or master key is weak or unset."
                 ),
                 severity="high",
                 remediation=(
@@ -265,7 +264,7 @@ def audit_nextcloud(config: NextcloudConfig) -> list[CheckResult]:
                 message="Core or app updates are pending on the Nextcloud instance.",
                 severity="medium",
                 remediation=(
-                    "Apply the latest Nextcloud and app updates before exposing the " "service."
+                    "Apply the latest Nextcloud and app updates before exposing the service."
                 ),
             )
         )
@@ -357,7 +356,7 @@ def audit_photoprism(config: PhotoPrismConfig) -> list[CheckResult]:
                 message="Originals library is stored inside the application container.",
                 severity="medium",
                 remediation=(
-                    "Mount external storage for originals to preserve data during " "rebuilds."
+                    "Mount external storage for originals to preserve data during rebuilds."
                 ),
             )
         )
@@ -369,7 +368,7 @@ def audit_photoprism(config: PhotoPrismConfig) -> list[CheckResult]:
                 message="Library storage permissions are too permissive.",
                 severity="medium",
                 remediation=(
-                    "Restrict filesystem permissions so only PhotoPrism can read " "originals."
+                    "Restrict filesystem permissions so only PhotoPrism can read originals."
                 ),
             )
         )
@@ -381,7 +380,7 @@ def audit_photoprism(config: PhotoPrismConfig) -> list[CheckResult]:
                 message="Automated backups are disabled for PhotoPrism.",
                 severity="high",
                 remediation=(
-                    "Schedule recurring database and originals backups to secure " "storage."
+                    "Schedule recurring database and originals backups to secure storage."
                 ),
             )
         )
@@ -411,9 +410,7 @@ def audit_photoprism(config: PhotoPrismConfig) -> list[CheckResult]:
                 slug="photoprism-plugins-review",
                 message="Third-party plugins are enabled without security review.",
                 severity="medium",
-                remediation=(
-                    "Audit each plugin for maintenance and security before enabling " "it."
-                ),
+                remediation=("Audit each plugin for maintenance and security before enabling it."),
             )
         )
 
