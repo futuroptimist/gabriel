@@ -6,9 +6,9 @@ import ipaddress
 import json
 import logging
 import os
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterable
 from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ class EgressControlPolicy:
         self.reload()
 
     @classmethod
-    def from_env(cls) -> "EgressControlPolicy":
+    def from_env(cls) -> EgressControlPolicy:
         """Return a policy initialised from environment configuration."""
 
         allowlist_env = os.getenv("EGRESS_ALLOWLIST_PATH")

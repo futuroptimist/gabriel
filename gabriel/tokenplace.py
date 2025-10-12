@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
-from gabriel.security.policies import EgressControlPolicy, EgressPolicyViolation
+from gabriel.security.policies import EgressControlPolicy
 
 logger = logging.getLogger(__name__)
 
