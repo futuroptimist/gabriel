@@ -96,7 +96,10 @@ class EgressControlPolicy:
         if parsed.scheme not in {"http", "https"}:
             raise EgressPolicyViolation("Only HTTP/S egress is permitted")
 
-        if not self.allowed_domains and not self.allowed_ips and self.safe_mode:
+        if not self.safe_mode:
+            return
+
+        if not self.allowed_domains and not self.allowed_ips:
             self._log_block(target_url, reason="No allowlist entries configured")
             raise EgressPolicyViolation("SAFE_MODE prevents outbound requests without an allowlist")
 
