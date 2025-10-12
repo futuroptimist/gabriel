@@ -7,6 +7,7 @@ import logging
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
@@ -14,7 +15,18 @@ from gabriel.security.policies import EgressControlPolicy
 
 logger = logging.getLogger(__name__)
 
-_EGRESS_POLICY = EgressControlPolicy.from_env()
+
+@lru_cache(maxsize=1)
+def _load_egress_policy() -> EgressControlPolicy:
+    """Return the cached egress policy, initialising it on first use."""
+
+    return EgressControlPolicy.from_env()
+
+
+def _reset_egress_policy_cache() -> None:
+    """Clear the cached egress policy (intended for tests)."""
+
+    _load_egress_policy.cache_clear()
 
 
 class TokenPlaceError(RuntimeError):
@@ -96,7 +108,7 @@ class TokenPlaceClient:
 
     def _request(self, method: str, path: str, payload: dict[str, Any] | None = None) -> Any:
         url = urljoin(self._base_url, path)
-        _EGRESS_POLICY.validate_request(url)
+        _load_egress_policy().validate_request(url)
         data: bytes | None = None
         headers = {"Accept": "application/json"}
         if payload is not None:

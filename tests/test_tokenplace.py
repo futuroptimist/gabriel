@@ -166,3 +166,48 @@ def test_request_rejects_invalid_json(monkeypatch: pytest.MonkeyPatch) -> None:
     client = TokenPlaceClient("https://relay.local")
     with pytest.raises(TokenPlaceError):
         client.check_health()
+
+
+def test_egress_policy_loaded_on_first_request(monkeypatch: pytest.MonkeyPatch) -> None:
+    from gabriel import tokenplace
+
+    tokenplace._reset_egress_policy_cache()
+    try:
+        calls: list[str] = []
+
+        class DummyPolicy:
+            def validate_request(self, target: str) -> None:
+                calls.append(target)
+
+        instantiations: list[DummyPolicy] = []
+
+        def fake_from_env(
+            cls: type[tokenplace.EgressControlPolicy],
+        ) -> DummyPolicy:
+            policy = DummyPolicy()
+            instantiations.append(policy)
+            return policy
+
+        monkeypatch.setattr(
+            tokenplace.EgressControlPolicy,
+            "from_env",
+            classmethod(fake_from_env),
+        )
+
+        response = DummyResponse({"status": "OK"})
+        _capture_request(monkeypatch, response)
+
+        client = TokenPlaceClient("https://relay.local")
+
+        assert not instantiations  # nosec B101 - no policy constructed at import or init
+        assert not calls  # nosec B101 - ensure policy unused before first request
+
+        assert client.check_health() is True  # nosec B101
+        assert len(calls) == 1  # nosec B101
+        assert len(instantiations) == 1  # nosec B101 - policy created on demand
+
+        assert client.check_health() is True  # nosec B101
+        assert len(calls) == 2  # nosec B101 - same cached policy reused
+        assert len(instantiations) == 1  # nosec B101 - cached policy reused
+    finally:
+        tokenplace._reset_egress_policy_cache()
