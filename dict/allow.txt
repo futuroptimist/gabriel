@@ -198,6 +198,13 @@ Automations
 summarization
 affordances
 danielsmith
+Base64
+DLP
+OAuth
+RBAC
+ROT13
+SBOM
+TTL
 fallbacks
 gamepad
 misconfigurations

@@ -18,12 +18,12 @@ prompt-injection studies.
 | Category | Description | Likelihood | Impact | Example |
 | --- | --- | --- | --- | --- |
 | Prompt Echo | Leaks hidden prompts or secrets. | High | High | "Ignore prior" prompt |
-| Training Data | Recalls stored PII or proprietary data. | Med | High | PII recall test |
+| Training Data | Recalls stored PII or proprietary data. | Medium | High | PII recall test |
 | Indirect Injection | Untrusted input overrides goals. | High | High | HTML/Base64 payload |
-| Tool Exfiltration | Over-scoped actions leak via APIs. | Med | High | OAuth scope abuse |
-| Pipeline Poisoning | Malicious data taints RAG/training. | Med | High | "Canary string" trigger |
+| Tool Exfiltration | Over-scoped actions leak via APIs. | Medium | High | OAuth scope abuse |
+| Pipeline Poisoning | Malicious data taints RAG/training. | Medium | High | "Canary string" trigger |
 | Logging & Analytics | Telemetry keeps raw secrets. | High | High | Raw prompt storage |
-| Human Factors | People tricked into sharing secrets. | Med-High | High | Fake escalation request |
+| Human Factors | People tricked into sharing secrets. | Medium to High | High | Fake escalation request |
 
 # Mitigation Matrix
 
@@ -62,15 +62,15 @@ risk_tags:
 2. Prompt shield & injection classifier
 3. Tool least-privilege with confirmations
 4. Secure logging (scrub + short TTL)
-5. Red-team pack with multilingual & encoded injections
+5. Red team pack with multilingual & encoded injections
 6. Supply-chain verification (hash-pin, SBOM)
 
-# Red-Team Scenarios
+# Red Team Scenarios
 
 - Hidden instructions in PDFs/HTML
 - Base64/ROT13 steganography
 - Multilingual bait
-- OAuth over-scope requests
+- OAuth over-scoped requests
 - "Summarize and send" exfil payloads
 
 # References
