@@ -1,2 +1,4 @@
 [bandit]
+targets = gabriel, scripts
 exclude = tests
+skips = B101
