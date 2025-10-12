@@ -306,3 +306,12 @@ linters
 SLSA
 webhooks
 validator
+Allowlisting
+GenAI
+Hyperforce
+IPs
+KongHQ
+allowlisted
+allowlists
+exfiltrate
+hostnames

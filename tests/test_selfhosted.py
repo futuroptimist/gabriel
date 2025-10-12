@@ -425,7 +425,7 @@ def test_audit_photoprism_passes_hardened_config() -> None:
         https_enabled=True,
         certificate_trusted=True,
         admin_password=(
-            "Aa1!" "securephotoprismsecretvalue123"
+            "Aa1!securephotoprismsecretvalue123"
         ),  # nosec B106 # pragma: allowlist secret
         library_outside_container=True,
         storage_permissions_hardened=True,

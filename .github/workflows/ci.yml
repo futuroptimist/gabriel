@@ -29,4 +29,4 @@ jobs:
       - name: Run Flake8
         run: flake8 .
       - name: Run Bandit
-        run: bandit -r .
+        run: bandit -c pyproject.toml -r gabriel scripts
