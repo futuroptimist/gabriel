@@ -46,7 +46,7 @@ repos:
         files: "^gabriel/.*\\.py$"
         args: ["--config=pyproject.toml"]
         additional_dependencies:
-          - tomli
+          - tomli>=2.0.1
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.5.1
     hooks:
@@ -58,7 +58,7 @@ repos:
       - id: bandit
         args: [-c, pyproject.toml, -r, gabriel, scripts]
         additional_dependencies:
-          - toml
+          - bandit[toml]
   - repo: https://github.com/pypa/pip-audit
     rev: v2.9.0
     hooks:
