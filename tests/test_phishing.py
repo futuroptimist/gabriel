@@ -93,9 +93,9 @@ def test_analyze_url_detects_embedded_known_domain() -> None:
     expected_message = (
         "Domain nests trusted brand example.com under registrable domain attacker.org"
     )
-    assert finding.message == expected_message, (
-        f"unexpected embedded-known-domain message: {finding.message!r}"
-    )  # nosec B101
+    assert (
+        finding.message == expected_message
+    ), f"unexpected embedded-known-domain message: {finding.message!r}"  # nosec B101
 
 
 def test_analyze_url_detects_suffix_preserving_brand_injection() -> None:

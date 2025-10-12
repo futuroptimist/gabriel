@@ -66,7 +66,9 @@ def test_pyproject_contains_required_metadata() -> None:
     assert project["license"]["file"] == "LICENSE"  # nosec B101 - pytest assertion
     assert project["authors"], "authors list should not be empty"  # nosec B101 - pytest assertion
     assert project["keywords"], "keywords list should not be empty"  # nosec B101 - pytest assertion
-    assert project["classifiers"], "classifiers list should not be empty"  # nosec B101 - pytest assertion
+    assert project[
+        "classifiers"
+    ], "classifiers list should not be empty"  # nosec B101 - pytest assertion
     urls = project.get("urls", {})
     assert "Homepage" in urls  # nosec B101 - pytest assertion
     assert "Source" in urls  # nosec B101 - pytest assertion

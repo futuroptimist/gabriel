@@ -309,7 +309,9 @@ def test_audit_nextcloud_flags_multiple_findings() -> None:
         "nextcloud-backups",
         "nextcloud-admin-network",
         "nextcloud-log-monitoring",
-    }.issubset(slugs)  # nosec B101
+    }.issubset(
+        slugs
+    )  # nosec B101
 
 
 def test_audit_nextcloud_warns_on_stale_backups_and_cert() -> None:
@@ -422,7 +424,9 @@ def test_audit_photoprism_passes_hardened_config() -> None:
     config = PhotoPrismConfig(
         https_enabled=True,
         certificate_trusted=True,
-        admin_password=("Aa1!securephotoprismsecretvalue123"),  # nosec B106 # pragma: allowlist secret
+        admin_password=(
+            "Aa1!securephotoprismsecretvalue123"
+        ),  # nosec B106 # pragma: allowlist secret
         library_outside_container=True,
         storage_permissions_hardened=True,
         backups_enabled=True,

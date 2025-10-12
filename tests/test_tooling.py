@@ -30,7 +30,9 @@ def test_lychee_configuration_exists_and_excludes_prompts() -> None:
     data = toml_loader.loads(content)
 
     assert data.get("no_progress") is True  # nosec B101
-    assert "^docs/prompts/" in data.get("exclude_path", []), "docs prompts should be excluded"  # nosec B101
+    assert "^docs/prompts/" in data.get(
+        "exclude_path", []
+    ), "docs prompts should be excluded"  # nosec B101
     assert "^mailto:" in data.get("exclude", []), "mailto links should remain ignored"  # nosec B101
 
 
@@ -120,7 +122,9 @@ def test_workflows_cover_supported_python_versions() -> None:
 
     for version in SUPPORTED_PYTHON_VERSIONS:
         assert version in workflow_ci, f"CI workflow missing Python {version}"  # nosec B101
-        assert version in workflow_coverage, f"Coverage workflow missing Python {version}"  # nosec B101
+        assert (
+            version in workflow_coverage
+        ), f"Coverage workflow missing Python {version}"  # nosec B101
 
 
 def test_release_drafter_configuration_and_workflow_exist() -> None:
