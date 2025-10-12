@@ -39,6 +39,7 @@ class EgressControlPolicy:
     allowed_ips: set[str] = field(init=False, default_factory=set)
 
     def __post_init__(self) -> None:
+        """Populate allowlist caches immediately after initialisation."""
         self.reload()
 
     @classmethod
