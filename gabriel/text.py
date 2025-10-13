@@ -185,9 +185,10 @@ def sanitize_prompt(text: str) -> str:
     without_zero_width = text.translate(_ZERO_WIDTH_TRANSLATION)
     without_images = _strip_markdown_images(without_zero_width)
     stripped_html = _strip_html(without_images)
-    sanitized = re.sub(r"\s+", " ", stripped_html.replace("\n", " \n "))
-    sanitized = re.sub(r"(?: \n ){2,}", " \n ", sanitized)
-    sanitized = sanitized.replace(" \n ", "\n").strip()
+    sanitized = re.sub(r"[ \t]+", " ", stripped_html)
+    sanitized = re.sub(r" *\n *", "\n", sanitized)
+    sanitized = re.sub(r"\n{3,}", "\n\n", sanitized)
+    sanitized = sanitized.strip()
     return sanitized
 
 

@@ -175,6 +175,12 @@ def test_sanitize_prompt_discards_script_payloads() -> None:
     assert sanitized == "Visible"  # nosec B101
 
 
+def test_sanitize_prompt_preserves_line_breaks() -> None:
+    text = "step 1\nstep 2\n\nstep 3"
+    sanitized = sanitize_prompt(text)
+    assert sanitized == text  # nosec B101
+
+
 def test_html_text_extractor_suppresses_entities_inside_blocks() -> None:
     parser = _HTMLTextExtractor()
     parser.handle_starttag("script", [])
