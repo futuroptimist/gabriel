@@ -75,7 +75,9 @@ make test  # run the test suite with coverage
 ```
 
 Continuous integration also runs `pre-commit run --all-files` to mirror local hook behavior
-and catch formatting or security regressions before merge.
+and catch formatting or security regressions before merge. Dependency installation is
+cached across the CI matrix so lint, test, and docs pipelines reuse previously resolved
+packages, significantly reducing run time on repeat builds.
 
 Ruff powers the lightweight linting layer used in both pre-commit hooks and CI. Run it directly
 when iterating on lint fixes:
