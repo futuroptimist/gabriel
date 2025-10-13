@@ -169,6 +169,23 @@ external hosts, and domains that nest trusted brands inside attacker-controlled
 registrable domains. Combine it with Gabriel's secret helpers to build secure intake
 pipelines for inbound phishing reports.
 
+### Sanitize prompts before execution
+
+Use `gabriel.text.sanitize_prompt` to strip risky markup from prompts gathered from
+untrusted sources. The helper removes HTML tags (including script/style blocks),
+Markdown image embeddings, and zero-width characters before passing text to language
+models. This blocks common prompt-injection tricks that smuggle hostile payloads in
+alt text or invisible characters.
+
+```python
+from gabriel import sanitize_prompt
+
+raw = """<p>Summarize the notes below.</p>![leak](https://evil.test/spy.png)"""
+safe = sanitize_prompt(raw)
+print(safe)
+# Summarize the notes below.
+```
+
 ### Organize security notes into a knowledge store
 
 Phase 2 of the roadmap introduces a personal knowledge manager that keeps security

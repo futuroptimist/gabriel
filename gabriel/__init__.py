@@ -31,6 +31,7 @@ from .selfhosted import (
     audit_syncthing,
     audit_vaultwarden,
 )
+from .text import sanitize_prompt
 from .tokenplace import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
 from .viewer import (
     DEFAULT_HOST,
@@ -81,6 +82,7 @@ __all__ = [
     "TokenPlaceClient",
     "TokenPlaceCompletion",
     "TokenPlaceError",
+    "sanitize_prompt",
     "SUPPORTED_PYTHON_VERSIONS",
     "serve_viewer",
     "start_viewer_server",
