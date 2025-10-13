@@ -1,4 +1,4 @@
-# Related Repository Scan Prompts
+# Scan Related Repositories
 
 <!-- spellchecker: disable -->
 One-click evergreen prompts for scanning Futuroptimist's related projects.
