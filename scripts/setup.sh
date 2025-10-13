@@ -88,4 +88,10 @@ run_cmd "$VENV_PYTHON" -m pip install -r "$REPO_ROOT/requirements.txt"
 run_cmd "$VENV_PYTHON" -m pip install pre-commit
 run_cmd "$VENV_PYTHON" -m pre-commit install
 
+if command -v npm >/dev/null 2>&1; then
+  run_cmd npm install --prefix "$REPO_ROOT"
+else
+  log "Skipping npm install because npm is not available; commitlint hooks will not run."
+fi
+
 log "Bootstrap complete. Activate the environment with: source $VENV_PATH/bin/activate"

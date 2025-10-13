@@ -95,3 +95,9 @@ repos:
         language: system
         types: [text]
         require_serial: true
+      - id: commitlint
+        name: Commit message lint
+        entry: scripts/run_commitlint.sh
+        language: system
+        pass_filenames: false
+        stages: [commit-msg]

@@ -1,0 +1,13 @@
+{
+  "name": "gabriel",
+  "private": true,
+  "description": "Development tooling for the Gabriel project.",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "18.6.1",
+    "@commitlint/config-conventional": "18.6.1"
+  },
+  "scripts": {
+    "commitlint": "commitlint --from $(git merge-base HEAD origin/main) --to HEAD"
+  }
+}

@@ -55,6 +55,13 @@ python -m pytest --cov=gabriel --cov-report=term-missing
 Pytest is configured to fail the run if coverage dips below 100%, keeping the suite honest as
 the codebase grows.
 
+### Commit message conventions
+
+Gabriel enforces the [Conventional Commits](https://www.conventionalcommits.org/) specification
+via `commitlint`. Run `npm install` (or `./scripts/setup.sh`) after cloning to install the hook
+dependencies and write messages such as `feat: add phishing heuristics`. CI re-validates the
+commit history with `npx commitlint` to keep the guidelines consistent across contributors.
+
 Spell check documentation:
 
 ```bash

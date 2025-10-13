@@ -5,6 +5,33 @@ on:
     branches: [main]
 
 jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install commitlint dependencies
+        run: npm ci
+      - name: Determine base commit
+        id: commit_range
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Lint commit messages
+        run: |
+          set -euo pipefail
+          BASE="${{ steps.commit_range.outputs.base }}"
+          if [ -z "$BASE" ]; then
+            BASE=$(git rev-list --max-parents=0 HEAD | tail -n 1)
+          fi
+          npx commitlint --from="$BASE" --to="$GITHUB_SHA"
   lint:
     runs-on: ubuntu-latest
     strategy:

@@ -8,6 +8,8 @@ workflow:
         description: "Run ./scripts/setup.sh to create the virtualenv and install hooks"
   - stage: development
     tasks:
+      - id: commitlint
+        description: "Validate commit messages with npx commitlint"
       - id: lint
         description: "Run pre-commit run --all-files"
       - id: test

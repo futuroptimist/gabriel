@@ -17,13 +17,21 @@ def test_pymarkdown_scan() -> None:
     if cache_dir.exists():
         shutil.rmtree(cache_dir)
     config = repo_root / ".pymarkdown.json"
+    excluded = {"node_modules", ".pytest_cache", ".venv"}
+    markdown_suffixes = {".md", ".markdown"}
+    targets = [
+        str(path)
+        for path in sorted(repo_root.rglob("*"))
+        if path.is_file()
+        and path.suffix.lower() in markdown_suffixes
+        and not any(part in excluded for part in path.parts)
+    ]
     cmd = [
         "pymarkdown",
         "--config",
         str(config),
         "scan",
-        "-r",
-        str(repo_root),
+        *targets,
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # nosec B603
     if result.returncode != 0:

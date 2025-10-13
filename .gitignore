@@ -16,3 +16,6 @@ coverage.xml
 .venv/
 
 dictionary.dic
+
+# Node tooling
+node_modules/
