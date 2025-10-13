@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 import unicodedata
 from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
+from html import unescape
+from html.parser import HTMLParser
 from pathlib import Path
 
 _MONITORED_CHARACTERS: dict[str, str] = {
@@ -27,6 +30,165 @@ _MONITORED_CHARACTERS: dict[str, str] = {
     "\u2069": "POP DIRECTIONAL ISOLATE",
     "\ufeff": "ZERO WIDTH NO-BREAK SPACE",
 }
+
+_ZERO_WIDTH_TRANSLATION = {ord(character): None for character in _MONITORED_CHARACTERS}
+
+_MARKDOWN_IMAGE_INLINE_PATTERN = re.compile(
+    r"!\[[^\]]*\]\([^\n\r]*?\)",
+    flags=re.IGNORECASE,
+)
+
+_MARKDOWN_IMAGE_REFERENCE_PATTERN = re.compile(
+    r"!\[[^\]]*\]\[[^\]]*\]",
+    flags=re.IGNORECASE,
+)
+
+_MARKDOWN_REFERENCE_DEFINITION_PATTERN = re.compile(
+    r"^\s*\[([^\]]+)\]:\s*(<[^>]+>|\S+)(?:\s+['\"(].*?)?\s*$",
+    flags=re.IGNORECASE | re.MULTILINE,
+)
+
+_IMAGE_EXTENSIONS = (
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".webp",
+    ".bmp",
+    ".svg",
+    ".ico",
+    ".tiff",
+    ".tif",
+)
+
+_BLOCK_TAGS = {
+    "address",
+    "article",
+    "aside",
+    "blockquote",
+    "br",
+    "dd",
+    "div",
+    "dl",
+    "dt",
+    "figcaption",
+    "figure",
+    "footer",
+    "form",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "header",
+    "hr",
+    "li",
+    "main",
+    "nav",
+    "ol",
+    "p",
+    "pre",
+    "section",
+    "table",
+    "tbody",
+    "td",
+    "tfoot",
+    "th",
+    "thead",
+    "tr",
+    "ul",
+}
+
+
+class _HTMLTextExtractor(HTMLParser):
+    """HTML parser that extracts text content while discarding tags."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=False)
+        self._segments: list[str] = []
+        self._suppressed_stack: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:  # noqa: D401
+        lower = tag.lower()
+        if lower in {"script", "style"}:
+            self._suppressed_stack.append(lower)
+            return
+        if not self._suppressed_stack and lower in _BLOCK_TAGS:
+            self._segments.append("\n")
+
+    def handle_endtag(self, tag: str) -> None:  # noqa: D401
+        lower = tag.lower()
+        if self._suppressed_stack and self._suppressed_stack[-1] == lower:
+            self._suppressed_stack.pop()
+            return
+        if not self._suppressed_stack and lower in _BLOCK_TAGS:
+            self._segments.append("\n")
+
+    def handle_startendtag(
+        self, tag: str, attrs: list[tuple[str, str | None]]
+    ) -> None:  # noqa: D401
+        lower = tag.lower()
+        if not self._suppressed_stack and lower in {"br", "hr"}:
+            self._segments.append("\n")
+
+    def handle_data(self, data: str) -> None:  # noqa: D401
+        if not self._suppressed_stack and data:
+            self._segments.append(data)
+
+    def handle_entityref(self, name: str) -> None:  # noqa: D401
+        if not self._suppressed_stack:
+            self._segments.append(unescape(f"&{name};"))
+
+    def handle_charref(self, name: str) -> None:  # noqa: D401
+        if not self._suppressed_stack:
+            self._segments.append(unescape(f"&#{name};"))
+
+    def get_text(self) -> str:
+        """Return the accumulated text content."""
+
+        return "".join(self._segments)
+
+
+def _strip_markdown_images(text: str) -> str:
+    without_inline = _MARKDOWN_IMAGE_INLINE_PATTERN.sub(" ", text)
+    without_references = _MARKDOWN_IMAGE_REFERENCE_PATTERN.sub(" ", without_inline)
+
+    def _replace_definition(match: re.Match[str]) -> str:
+        target = match.group(2).strip()
+        if target.startswith("<") and target.endswith(">"):
+            target = target[1:-1]
+        normalized = target.lower()
+        if normalized.startswith("data:image/"):
+            return ""
+        if any(normalized.endswith(extension) for extension in _IMAGE_EXTENSIONS):
+            return ""
+        return match.group(0)
+
+    sanitized = _MARKDOWN_REFERENCE_DEFINITION_PATTERN.sub(_replace_definition, without_references)
+    return sanitized
+
+
+def _strip_html(text: str) -> str:
+    parser = _HTMLTextExtractor()
+    parser.feed(text)
+    parser.close()
+    stripped = parser.get_text()
+    stripped = re.sub(r"[ \t]+", " ", stripped)
+    stripped = re.sub(r"\n{3,}", "\n\n", stripped)
+    return stripped.strip()
+
+
+def sanitize_prompt(text: str) -> str:
+    """Return a sanitized representation of ``text`` safe for prompt execution."""
+
+    without_zero_width = text.translate(_ZERO_WIDTH_TRANSLATION)
+    without_images = _strip_markdown_images(without_zero_width)
+    stripped_html = _strip_html(without_images)
+    sanitized = re.sub(r"\s+", " ", stripped_html.replace("\n", " \n "))
+    sanitized = re.sub(r"(?: \n ){2,}", " \n ", sanitized)
+    sanitized = sanitized.replace(" \n ", "\n").strip()
+    return sanitized
 
 
 @dataclass(frozen=True, slots=True)

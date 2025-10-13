@@ -108,7 +108,8 @@ agentic coding workflows, regardless of deployment environment.
 ### Prompt & Retrieval Controls Checklist
 
 - [ ] System prompts stored in `config/prompts/system.md` signed with SLSA provenance.
-- [ ] Sanitizer strips HTML, markdown images, and zero-width characters before execution.
+- [x] Sanitizer strips HTML, markdown images, and zero-width characters before execution
+      (`gabriel.text.sanitize_prompt`).
 - [ ] Embedding writes require repo-specific API keys and TTL ≤7 days.
 - [x] PR templates include a "Prompt Injection Review" checklist referencing
       OWASP LLM01–LLM10 (`.github/PULL_REQUEST_TEMPLATE.md`).

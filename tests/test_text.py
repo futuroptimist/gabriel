@@ -8,10 +8,12 @@ import pytest
 
 from gabriel.text import (
     _character_name,
+    _HTMLTextExtractor,
     find_hidden_characters,
     format_findings,
     main,
     normalize_allow_value,
+    sanitize_prompt,
     scan_paths,
 )
 
@@ -114,6 +116,73 @@ def test_main_errors_on_invalid_allow(capsys: pytest.CaptureFixture[str]) -> Non
         main(["--allow", "U+XYZ", "README.md"])
     captured = capsys.readouterr()
     assert "invalid literal" in captured.err  # nosec B101
+
+
+def test_sanitize_prompt_strips_zero_width_and_markdown_images() -> None:
+    payload = f"Click here{ZWSP}!<br/>![payload](https://evil.test/payload.png)"
+    sanitized = sanitize_prompt(payload)
+    assert ZWSP not in sanitized  # nosec B101
+    assert "payload" not in sanitized  # nosec B101
+    assert "https://evil.test" not in sanitized  # nosec B101
+    assert sanitized == "Click here!"  # nosec B101
+
+
+def test_sanitize_prompt_removes_html_and_script_blocks() -> None:
+    html = "<p>Hello <strong>World</strong></p><script>alert('x')</script><div>Stay safe</div>"
+    sanitized = sanitize_prompt(html)
+    lines = sanitized.splitlines()
+    assert "<" not in sanitized  # nosec B101
+    assert "alert" not in sanitized  # nosec B101
+    assert "Hello World" in lines[0]  # nosec B101
+    assert any("Stay safe" in line for line in lines)  # nosec B101
+
+
+def test_sanitize_prompt_drops_reference_style_images() -> None:
+    text = "![diagram][diagram]\n\n[diagram]: https://example.com/assets/diagram.svg"
+    sanitized = sanitize_prompt(text)
+    assert sanitized == ""  # nosec B101
+
+
+def test_sanitize_prompt_removes_angle_bracket_references() -> None:
+    text = "![chart][chart]\n\n[chart]: <https://attacker.test/chart.png>"
+    sanitized = sanitize_prompt(text)
+    assert sanitized == ""  # nosec B101
+
+
+def test_sanitize_prompt_removes_data_uri_references() -> None:
+    text = (
+        "Look! ![sneaky][sneaky]\n\n" "[sneaky]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA"
+    )
+    sanitized = sanitize_prompt(text)
+    assert sanitized == "Look!"  # nosec B101
+
+
+def test_sanitize_prompt_preserves_non_image_reference() -> None:
+    text = "Reference [guide][guide]\n\n" "[guide]: https://example.com/docs/security-checklist"
+    sanitized = sanitize_prompt(text)
+    assert "https://example.com/docs/security-checklist" in sanitized  # nosec B101
+
+
+def test_sanitize_prompt_decodes_html_entities() -> None:
+    text = "<p>Keep &amp; cherish &#169; notes</p>"
+    sanitized = sanitize_prompt(text)
+    assert sanitized == "Keep & cherish © notes"  # nosec B101
+
+
+def test_sanitize_prompt_discards_script_payloads() -> None:
+    text = "<script>ignore &amp; &#169; <br/></script><p>Visible</p>"
+    sanitized = sanitize_prompt(text)
+    assert sanitized == "Visible"  # nosec B101
+
+
+def test_html_text_extractor_suppresses_entities_inside_blocks() -> None:
+    parser = _HTMLTextExtractor()
+    parser.handle_starttag("script", [])
+    parser.handle_entityref("amp")
+    parser.handle_charref("169")
+    parser.handle_startendtag("br", [])
+    parser.handle_endtag("script")
+    assert parser.get_text() == ""  # nosec B101
 
 
 __all__: list[str] = []
