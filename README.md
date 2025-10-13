@@ -29,6 +29,19 @@ The project is organized into four tentative modules:
 
 This modular structure keeps responsibilities clear and allows future extensions like phishing detection or network monitoring. The new phishing heuristics below provide an early look at that roadmap item.
 
+## Map of the repo
+
+Gabriel is migrating toward a four-module layout. The table below highlights the current hotspots and where they will land as we complete the polish plan captured in [docs/prompts/codex/polish.md](docs/prompts/codex/polish.md).
+
+| Path | Current focus | Target module |
+| --- | --- | --- |
+| `gabriel/text.py`, `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
+| `gabriel/phishing.py`, `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
+| `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
+| `viewer/`, `gabriel/viewer.py`, `gabriel/utils.py` | CLI and viewer surfaces | UI |
+
+Shared primitives (cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the boundaries. For a deeper security breakdown, review the [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md).
+
 ## Getting Started
 
 Gabriel requires Python 3.10 or later. Continuous integration pipelines exercise
@@ -70,8 +83,10 @@ python -m gabriel.text README.md
 Common tasks are available via the `Makefile`:
 
 ```bash
-make lint  # run pre-commit checks
-make test  # run the test suite with coverage
+make lint   # run pre-commit checks
+make test   # run the test suite with coverage
+make spell  # run the spell checker
+make links  # scan documentation links with lychee
 ```
 
 Continuous integration also runs `pre-commit run --all-files` to mirror local hook behavior

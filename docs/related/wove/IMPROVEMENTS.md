@@ -7,7 +7,7 @@ This document tracks opportunities for the
 
 - **Status:** ✅ via the Futuroptimist roster.
 - **Stack:** Python utilities, OpenSCAD models, Sphinx docs, and pytest.
-- **Conventions:** Prompt docs live under `docs/prompts-codex*.md`, hardware CAD assets pair with STL
+- **Conventions:** Prompt docs live under `docs/prompts/codex/`, hardware CAD assets pair with STL
   exports, and CI covers lint/tests/docs.
 - **Security delta:** PR #105 added full repository overview docs, codified workflows, and new STL
   assets. No networked services were introduced, but contributors should vet large STL additions.

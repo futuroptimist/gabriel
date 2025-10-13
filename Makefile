@@ -1,4 +1,4 @@
-.PHONY: preview lint test
+.PHONY: preview lint test spell links
 
 preview:
 	python -m gabriel.viewer
@@ -8,3 +8,9 @@ lint:
 
 test:
 	pytest --cov=gabriel --cov-report=term-missing
+
+spell:
+	pyspelling -c .spellcheck.yaml
+
+links:
+	lychee --config lychee.toml README.md docs
