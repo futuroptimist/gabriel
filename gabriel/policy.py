@@ -166,8 +166,8 @@ def validate_policy_document(document: dict[str, Any]) -> PolicyValidationResult
                     )
                     if missing:
                         warnings.append(
-                            "metadata.extra_allow_commands contains entries not present in"
-                            f" commands.allow: {', '.join(missing)}"
+                            "metadata.extra_allow_commands contains entries not present in "
+                            f"commands.allow: {', '.join(missing)}"
                         )
 
     return PolicyValidationResult(errors=tuple(errors), warnings=tuple(warnings))
