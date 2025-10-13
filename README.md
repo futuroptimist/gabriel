@@ -80,6 +80,13 @@ Scan for hidden zero-width characters:
 python -m gabriel.text README.md
 ```
 
+Validate policy guardrails before committing updates to `llm_policy.yaml` or downstream
+overrides:
+
+```bash
+./scripts/validate_policy.py path/to/llm_policy.yaml
+```
+
 Common tasks are available via the `Makefile`:
 
 ```bash
@@ -182,8 +189,10 @@ The helper inspects each HTTP(S) link for punycode, suspicious top-level domains
 embedded credentials, plaintext HTTP, IP-based hosts, lookalikes of the supplied
 domains, known URL shorteners that mask the final destination, unusual port usage,
 suspicious executable or archive downloads, redirect parameters that jump to
-external hosts, and domains that nest trusted brands inside attacker-controlled
-registrable domains. Combine it with Gabriel's secret helpers to build secure intake
+external hosts, domains that nest trusted brands inside attacker-controlled
+registrable domains, references to trusted domains buried in paths or query strings,
+and base64-like tokens that often indicate obfuscated redirects or payloads.
+Combine it with Gabriel's secret helpers to build secure intake
 pipelines for inbound phishing reports.
 
 ### Sanitize prompts before execution
