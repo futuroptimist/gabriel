@@ -258,6 +258,33 @@ for finding in audit_vaultwarden(config):
 
 The helper only reports actionable findings so hardened deployments return an empty list.
 
+### Audit Docker daemon hardening
+
+The Docker improvement checklist highlights three controls that frequently slip through
+reviews: running the daemon in [rootless mode](https://docs.docker.com/engine/security/rootless/),
+requiring [Docker Content Trust](https://docs.docker.com/engine/security/trust/), and enabling
+[user namespace remapping](https://docs.docker.com/engine/security/userns-remap/) so container
+root users map to non-root UIDs on the host. Use
+`gabriel.selfhosted.audit_docker_daemon` to flag missing safeguards:
+
+```python
+from gabriel import DockerDaemonConfig, audit_docker_daemon
+
+config = DockerDaemonConfig(
+    rootless_enabled=False,
+    content_trust_required=False,
+    userns_remap_enabled=False,
+)
+
+for finding in audit_docker_daemon(config):
+    print(f"{finding.severity.upper()} — {finding.message}")
+    print(f"Fix: {finding.remediation}\n")
+```
+
+The helper mirrors Gabriel's Docker checklist and keeps feedback focused on actionable
+changes. Hardened daemons with rootless mode, signature enforcement, and user namespace remapping
+return an empty list of findings.
+
 ### Audit Syncthing deployments
 
 Syncthing operators can use `gabriel.selfhosted.audit_syncthing` to identify risky defaults such

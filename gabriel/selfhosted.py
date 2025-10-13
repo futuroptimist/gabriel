@@ -21,6 +21,62 @@ class CheckResult:
 
 
 @dataclass(frozen=True, slots=True)
+class DockerDaemonConfig:
+    """Configuration snapshot for a Docker Engine daemon."""
+
+    rootless_enabled: bool
+    content_trust_required: bool
+    userns_remap_enabled: bool
+
+
+def audit_docker_daemon(config: DockerDaemonConfig) -> list[CheckResult]:
+    """Return security findings for a Docker Engine daemon configuration."""
+
+    findings: list[CheckResult] = []
+
+    if not config.rootless_enabled:
+        findings.append(
+            CheckResult(
+                slug="docker-rootless",
+                message="Docker daemon is running with root privileges.",
+                severity="high",
+                remediation=(
+                    "Enable rootless mode so the Docker daemon runs without root by following "
+                    "the upstream setup guide."
+                ),
+            )
+        )
+
+    if not config.content_trust_required:
+        findings.append(
+            CheckResult(
+                slug="docker-content-trust",
+                message="Docker Content Trust is not enforced for image pulls and pushes.",
+                severity="medium",
+                remediation=(
+                    "Set DOCKER_CONTENT_TRUST=1 for clients or enforce signature checks in "
+                    "daemon configuration to require signed images."
+                ),
+            )
+        )
+
+    if not config.userns_remap_enabled:
+        findings.append(
+            CheckResult(
+                slug="docker-userns-remap",
+                message="User namespace remapping is disabled for the Docker daemon.",
+                severity="medium",
+                remediation=(
+                    "Configure the daemon with userns-remap (for example 'default') so "
+                    "container root users map to non-root host UIDs."
+                ),
+            )
+        )
+
+    return findings
+
+
+@dataclass(frozen=True, slots=True)
 class VaultWardenConfig:
     """Configuration snapshot for a VaultWarden deployment."""
 
@@ -456,6 +512,8 @@ def _normalize_device_ids(device_ids: Sequence[str]) -> set[str]:
 __all__ = [
     "CheckResult",
     "Severity",
+    "DockerDaemonConfig",
+    "audit_docker_daemon",
     "VaultWardenConfig",
     "audit_vaultwarden",
     "SyncthingConfig",

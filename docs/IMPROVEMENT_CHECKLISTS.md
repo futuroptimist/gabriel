@@ -61,6 +61,9 @@ See [related/jobbot3000/IMPROVEMENTS.md](related/jobbot3000/IMPROVEMENTS.md).
 - [ ] Enable Docker Content Trust to verify signed images ([docs][docker-trust]).
 - [ ] Use user ID remapping to isolate container file systems ([docs][docker-userns]).
 
+Gabriel now offers `gabriel.selfhosted.audit_docker_daemon` to evaluate these controls and
+surface remediation guidance alongside other self-hosted helpers.
+
 [docker-rootless]: https://docs.docker.com/engine/security/rootless/
 [docker-trust]: https://docs.docker.com/engine/security/trust/
 [docker-userns]: https://docs.docker.com/engine/security/userns-remap/
