@@ -91,7 +91,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Enforce docstring conventions using `pydocstyle` or similar
       (`.pre-commit-config.yaml`, `gabriel/utils.py`).
       *Aligns with flywheel best practices.*
-- [ ] Cache Python dependencies in CI workflows to improve build times
+- [x] Cache Python dependencies in CI workflows to improve build times
       (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`,
       `.github/workflows/docs.yml`).
       *Aligns with flywheel best practices.*
