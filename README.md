@@ -180,10 +180,10 @@ alt text or invisible characters.
 ```python
 from gabriel import sanitize_prompt
 
-raw = """<p>Summarise the notes below.</p>![leak](https://evil.test/spy.png)"""
+raw = """<p>Summarize the notes below.</p>![leak](https://evil.test/spy.png)"""
 safe = sanitize_prompt(raw)
 print(safe)
-# Summarise the notes below.
+# Summarize the notes below.
 ```
 
 ### Organize security notes into a knowledge store
