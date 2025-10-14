@@ -19,6 +19,7 @@ from .common import (
     _env_secret_key,
     read_secret_from_input,
 )
+from .ingestion import sanitize_prompt
 from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
 from .phishing import (
     PhishingFinding,
@@ -50,7 +51,6 @@ from .viewer import (
     serve_viewer,
     start_viewer_server,
 )
-from .ui.text import sanitize_prompt
 
 SUPPORTED_PYTHON_VERSIONS = ("3.10", "3.11")
 

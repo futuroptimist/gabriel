@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from .text import (
     HiddenCharacter,
-    _HTMLTextExtractor,
     _character_name,
+    _HTMLTextExtractor,
     find_hidden_characters,
     format_findings,
     iter_hidden_characters,

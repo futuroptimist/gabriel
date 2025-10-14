@@ -26,10 +26,10 @@ __all__ = getattr(_target_module, "__all__", []) or [
 del _target_module
 
 if __name__ == "__main__":  # pragma: no cover - legacy CLI compatibility
-    from typing import Callable, Optional
+    maybe_main = globals().get("main")
+    if callable(maybe_main):
+        run_main = maybe_main
+    else:
+        from gabriel.ingestion.text import main as run_main
 
-    _maybe_main: Optional[Callable[[], int]] = globals().get("main")
-    if not callable(_maybe_main):
-        from gabriel.ingestion.text import main as _maybe_main
-
-    raise SystemExit(_maybe_main())
+    raise SystemExit(run_main())
