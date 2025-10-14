@@ -4,6 +4,7 @@ CodeQL
 DEPENDABOT
 Dependabot
 DoS
+DX
 DockerDaemonConfig
 ESLint
 JS
@@ -168,6 +169,7 @@ Nextcloud
 nextcloud
 MFA
 mfa
+mypy
 NextcloudConfig
 audit_nextcloud
 svg
@@ -196,6 +198,8 @@ permissioned
 electromechanical
 outsized
 Touchpoints
+touchpoints
+typosquats
 NPC
 Gameplay
 Automations
@@ -319,5 +323,6 @@ allowlisted
 allowlists
 exfiltrate
 hostnames
+hotspots
 RiskTolerance
 func
