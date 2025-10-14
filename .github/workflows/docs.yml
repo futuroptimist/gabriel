@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Markdown link checker
-        uses: lycheeverse/lychee-action@v1.6.1
+        uses: lycheeverse/lychee-action@v2.6.1
         with:
           args: --config lychee.toml README.md docs/
       - name: Upload lychee report
