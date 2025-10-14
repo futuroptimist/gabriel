@@ -31,7 +31,10 @@ This modular structure keeps responsibilities clear and allows future extensions
 
 ## Map of the repo
 
-Gabriel is migrating toward a four-module layout. The table below highlights the current hotspots and where they will land as we complete the polish plan captured in [docs/prompts/codex/polish.md](docs/prompts/codex/polish.md).
+Gabriel is migrating toward a four-module layout.
+The table below highlights the current hotspots and where they will land as we
+complete the work outlined in the [Polish Four-Module Architecture
+prompt](docs/prompts/codex/polish.md).
 
 | Path | Current focus | Target module |
 | --- | --- | --- |

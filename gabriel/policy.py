@@ -35,7 +35,6 @@ class PolicyValidationResult:
     @property
     def is_valid(self) -> bool:
         """Return ``True`` when the policy has no blocking errors."""
-
         return not self.errors
 
 
@@ -53,23 +52,17 @@ _SIMPLE_VALUE_TYPES = (str, int, float, bool)
 
 
 def load_policy_document(path: Path | str) -> dict[str, Any]:
-    """Return the parsed policy document from ``path``.
-
-    Parameters
-    ----------
-    path:
-        File system path pointing to the YAML policy definition.
-    """
+    """Return the parsed policy document from ``path``."""
 
     policy_path = Path(path)
     try:
         raw = policy_path.read_text(encoding="utf-8")
-    except FileNotFoundError as exc:  # pragma: no cover - exercised via tests
+    except FileNotFoundError as exc:  # pragma: no cover
         raise PolicyValidationError(f"Policy file not found: {policy_path}") from exc
 
     try:
         document = yaml.safe_load(raw) or {}
-    except yaml.YAMLError as exc:  # pragma: no cover - YAML parser exercised in tests
+    except yaml.YAMLError as exc:  # pragma: no cover
         raise PolicyValidationError(f"Failed to parse YAML in {policy_path}: {exc}") from exc
 
     if not isinstance(document, dict):
@@ -230,7 +223,6 @@ def _is_supported_value(value: Any) -> bool:
 
 def validate_policy_file(path: Path | str) -> PolicyValidationResult:
     """Load and validate a policy at ``path``."""
-
     document = load_policy_document(path)
     return validate_policy_document(document)
 
