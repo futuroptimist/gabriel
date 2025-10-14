@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from gabriel.phishing import (
+import gabriel.phishing as legacy_phishing
+from gabriel.analysis.phishing import (
     PhishingFinding,
     _registrable_domain_for,
     _split_registrable_domain,
@@ -300,3 +301,9 @@ def test_analyze_url_allows_trailing_dot_hostname() -> None:
     indicators = _indicator_set(findings)
     assert "embedded-known-domain" not in indicators  # nosec B101
     assert "lookalike-domain" not in indicators  # nosec B101
+
+
+def test_legacy_phishing_module_reexports_analysis_helpers() -> None:
+    assert legacy_phishing.analyze_url is analyze_url
+    assert legacy_phishing.extract_urls is extract_urls
+    assert legacy_phishing.PhishingFinding is PhishingFinding

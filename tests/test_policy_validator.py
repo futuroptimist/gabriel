@@ -9,7 +9,8 @@ from pathlib import Path
 
 import pytest
 
-from gabriel.policy import (
+import gabriel.policy as legacy_policy
+from gabriel.analysis.policy import (
     PolicyValidationError,
     PolicyValidationResult,
     load_policy_document,
@@ -400,3 +401,9 @@ def test_load_policy_document_rejects_non_mapping(tmp_path: Path) -> None:
     policy_path = _write_policy(tmp_path, "- item")
     with pytest.raises(PolicyValidationError):
         load_policy_document(policy_path)
+
+
+def test_legacy_policy_module_reexports_analysis_helpers() -> None:
+    assert legacy_policy.validate_policy_document is validate_policy_document
+    assert legacy_policy.load_policy_document is load_policy_document
+    assert legacy_policy.PolicyValidationResult is PolicyValidationResult

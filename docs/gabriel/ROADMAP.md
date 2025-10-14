@@ -20,7 +20,7 @@ This document outlines tentative phases for Gabriel. Dates are aspirational and 
 - Organize user notes and security data into a searchable store.
   (`gabriel.knowledge.KnowledgeStore` now indexes Markdown notes locally.)
 - Provide advanced LLM-driven recommendations.
-  Initial heuristics now ship via ``gabriel.recommendations.generate_recommendations`` to
+  Initial heuristics now ship via ``gabriel.analysis.generate_recommendations`` to
   blend audit findings with local knowledge notes.
 - Explore synergy with [sigma](https://github.com/futuroptimist/sigma) as a push-to-talk interface for local LLM interactions.
 

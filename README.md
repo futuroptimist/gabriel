@@ -39,16 +39,19 @@ prompt](docs/prompts/codex/polish.md).
 | Path | Current focus | Target module |
 | --- | --- | --- |
 | `gabriel/ingestion/text.py` (via `gabriel/text.py` shim), `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
-| `gabriel/phishing.py`, `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
+| `gabriel/analysis/` (`phishing.py`, `policy.py`, `recommendations.py`), `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
 | `gabriel/common/` | Cryptography, persistence, and inference adapters | Common services |
 | `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
 | `viewer/`, `gabriel/ui/` (CLI + viewer), `gabriel/utils.py` | CLI and viewer surfaces | UI |
 
-The newly introduced `gabriel/ui/` package now owns the CLI and viewer helpers, while
+The `gabriel/analysis/` package now aggregates phishing heuristics, policy validation, and
+recommendation scoring behind typed interfaces. Compatibility shims in `gabriel/phishing.py`,
+`gabriel/policy.py`, and `gabriel/recommendations.py` keep downstream imports working while we
+transition callers to the new paths. The `gabriel/ui/` package owns the CLI and viewer helpers, and
 `gabriel/utils.py` provides backwards-compatible imports for existing callers. Shared primitives
-(cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the
-boundaries. For a deeper security breakdown, review the
-[docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md). The new
+(cryptography, persistence, LLM adapters) continue to consolidate under `gabriel/common` as we carve
+the boundaries. For a deeper security breakdown, review the
+[docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md). The
 [docs/gabriel/SECRET_BOUNDARY.md](docs/gabriel/SECRET_BOUNDARY.md) document captures how
 credentials flow between local inference and token.place relaying.
 
@@ -245,7 +248,7 @@ you can jump directly to the relevant remediation guidance when triaging inciden
 ### Generate prioritized recommendations
 
 Phase 2 of the roadmap calls for richer guidance that blends audit data with personal
-notes. Use :func:`gabriel.recommendations.generate_recommendations` to turn audit
+notes. Use :func:`gabriel.analysis.generate_recommendations` to turn audit
 findings into a prioritized action plan tuned to your risk tolerance:
 
 ```python

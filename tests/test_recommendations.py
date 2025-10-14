@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from gabriel.knowledge import Note
-from gabriel.recommendations import (
+import gabriel.recommendations as legacy_recommendations
+from gabriel.analysis.recommendations import (
     Recommendation,
     RiskTolerance,
     generate_recommendations,
 )
+from gabriel.knowledge import Note
 from gabriel.selfhosted import CheckResult
 
 
@@ -160,3 +161,9 @@ def test_generate_recommendations_honours_max_recommendations() -> None:
 
     assert len(recommendations) == 1
     assert recommendations[0].slug in {"vaultwarden-https", "vaultwarden-admin-network"}
+
+
+def test_legacy_recommendations_module_reexports_analysis_helpers() -> None:
+    assert legacy_recommendations.generate_recommendations is generate_recommendations
+    assert legacy_recommendations.Recommendation is Recommendation
+    assert legacy_recommendations.RiskTolerance is RiskTolerance

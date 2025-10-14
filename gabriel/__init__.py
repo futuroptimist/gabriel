@@ -10,6 +10,20 @@ from .__about__ import (
     __uri__,
     __version__,
 )
+from .analysis import (
+    PhishingFinding,
+    Recommendation,
+    RiskTolerance,
+    _registrable_domain_for,
+    _split_registrable_domain,
+    analyze_text_for_phishing,
+    analyze_url,
+    extract_urls,
+    generate_recommendations,
+    load_policy_document,
+    validate_policy_document,
+    validate_policy_file,
+)
 from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
 from .common import (
     DEFAULT_SECRET_STORE,
@@ -21,13 +35,6 @@ from .common import (
 )
 from .ingestion import sanitize_prompt
 from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
-from .phishing import (
-    PhishingFinding,
-    analyze_text_for_phishing,
-    analyze_url,
-    extract_urls,
-)
-from .recommendations import Recommendation, RiskTolerance, generate_recommendations
 from .secrets import delete_secret, get_secret, store_secret
 from .selfhosted import (
     CheckResult,
@@ -82,10 +89,15 @@ __all__ = [
     "KnowledgeStore",
     "Note",
     "SearchResult",
+    "_registrable_domain_for",
+    "_split_registrable_domain",
     "extract_urls",
     "analyze_url",
     "analyze_text_for_phishing",
     "PhishingFinding",
+    "load_policy_document",
+    "validate_policy_document",
+    "validate_policy_file",
     "generate_recommendations",
     "Recommendation",
     "RiskTolerance",
