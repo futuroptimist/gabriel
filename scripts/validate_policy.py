@@ -9,12 +9,13 @@ from pathlib import Path
 
 from gabriel.policy import (
     PolicyValidationError,
-    validate_policy_document,
     load_policy_document,
+    validate_policy_document,
 )
 
 
 def _validate_path(path: Path, *, strict_warnings: bool) -> int:
+    """Validate a single policy file and return the resulting exit status."""
     try:
         document = load_policy_document(path)
     except PolicyValidationError as exc:
@@ -44,6 +45,7 @@ def _validate_path(path: Path, *, strict_warnings: bool) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Run the policy validator CLI entrypoint."""
     parser = argparse.ArgumentParser(
         description=(
             "Validate llm_policy.yaml files to ensure command allow-lists and validators "
