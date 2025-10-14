@@ -321,3 +321,8 @@ exfiltrate
 hostnames
 RiskTolerance
 func
+DX
+hotspots
+mypy
+touchpoints
+typosquats
