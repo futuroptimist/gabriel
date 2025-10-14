@@ -326,3 +326,4 @@ mypy
 typosquats
 touchpoints
 detections
+ui
