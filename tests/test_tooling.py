@@ -160,6 +160,7 @@ def test_cli_viewer_invokes_helper(monkeypatch: pytest.MonkeyPatch) -> None:
         recorded["args"] = (host, port, open_browser)
 
     monkeypatch.setattr(utils_module, "serve_viewer", fake_serve)
+    monkeypatch.setattr("gabriel.ui.cli.serve_viewer", fake_serve)
 
     utils_module.main(
         ["viewer", "--host", "0.0.0.0", "--port", "9999", "--no-browser"]  # nosec B104

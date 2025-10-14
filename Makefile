@@ -1,7 +1,7 @@
 .PHONY: preview lint test spell links
 
 preview:
-	python -m gabriel.viewer
+	python -m gabriel.ui.viewer
 
 lint:
 	pre-commit run --all-files

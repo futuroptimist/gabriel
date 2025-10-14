@@ -41,9 +41,13 @@ prompt](docs/prompts/codex/polish.md).
 | `gabriel/text.py`, `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
 | `gabriel/phishing.py`, `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
 | `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
-| `viewer/`, `gabriel/viewer.py`, `gabriel/utils.py` | CLI and viewer surfaces | UI |
+| `viewer/`, `gabriel/ui/` (CLI + viewer), `gabriel/utils.py` | CLI and viewer surfaces | UI |
 
-Shared primitives (cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the boundaries. For a deeper security breakdown, review the [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md).
+The newly introduced `gabriel/ui/` package now owns the CLI and viewer helpers, while
+`gabriel/utils.py` provides backwards-compatible imports for existing callers. Shared primitives
+(cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the
+boundaries. For a deeper security breakdown, review the
+[docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md).
 
 ## Getting Started
 
