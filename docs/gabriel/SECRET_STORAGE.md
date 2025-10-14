@@ -53,4 +53,5 @@ When a secret value is not provided via `--secret`, the command accepts input
 from stdin (e.g. `printf` pipelines) or falls back to an interactive prompt.
 The retrieval subcommand deliberately omits the secret value from stdout so that
 logs and terminal scrollback do not expose it. Retrieve the secret in scripts
-with `gabriel.utils.get_secret` if you need to process the value directly.
+with `gabriel.ui.cli.get_secret` if you need to process the value directly. The
+legacy `gabriel.utils` module forwards to the same helpers for compatibility.

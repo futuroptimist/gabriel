@@ -1,12 +1,18 @@
 from __future__ import annotations
 
+import importlib
 import json
 from typing import Any
 from urllib import request
 
 import pytest
 
-from gabriel.tokenplace import TokenPlaceClient, TokenPlaceError
+from gabriel.notify.tokenplace import (
+    EgressControlPolicy,
+    TokenPlaceClient,
+    TokenPlaceError,
+    _reset_egress_policy_cache,
+)
 
 
 class DummyResponse:
@@ -169,9 +175,7 @@ def test_request_rejects_invalid_json(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def test_egress_policy_loaded_on_first_request(monkeypatch: pytest.MonkeyPatch) -> None:
-    from gabriel import tokenplace
-
-    tokenplace._reset_egress_policy_cache()
+    _reset_egress_policy_cache()
     try:
         calls: list[str] = []
 
@@ -182,15 +186,14 @@ def test_egress_policy_loaded_on_first_request(monkeypatch: pytest.MonkeyPatch) 
         instantiations: list[DummyPolicy] = []
 
         def fake_from_env(
-            cls: type[tokenplace.EgressControlPolicy],
+            cls: type[EgressControlPolicy],
         ) -> DummyPolicy:
             policy = DummyPolicy()
             instantiations.append(policy)
             return policy
 
         monkeypatch.setattr(
-            tokenplace.EgressControlPolicy,
-            "from_env",
+            "gabriel.notify.tokenplace.EgressControlPolicy.from_env",
             classmethod(fake_from_env),
         )
 
@@ -210,4 +213,10 @@ def test_egress_policy_loaded_on_first_request(monkeypatch: pytest.MonkeyPatch) 
         assert len(calls) == 2  # nosec B101 - same cached policy reused
         assert len(instantiations) == 1  # nosec B101 - cached policy reused
     finally:
-        tokenplace._reset_egress_policy_cache()
+        _reset_egress_policy_cache()
+
+
+def test_tokenplace_module_shim() -> None:
+    legacy = importlib.import_module("gabriel.tokenplace")
+    assert legacy.TokenPlaceClient is TokenPlaceClient  # nosec B101
+    assert legacy.TokenPlaceError is TokenPlaceError  # nosec B101

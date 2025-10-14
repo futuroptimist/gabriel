@@ -21,7 +21,7 @@ attempt to bypass the store to reach disk or third-party services.
 
 When encrypted inference is required, Gabriel talks to a co-hosted token.place relay using the
 `TokenPlaceClient`. The client enforces SAFE_MODE egress checks before issuing HTTP requests and
-attaches bearer credentials only when configured.【F:gabriel/tokenplace.py†L13-L94】 The relay path
+attaches bearer credentials only when configured.【F:gabriel/notify/tokenplace.py†L13-L119】 The relay path
 is opt-in: new code must not call token.place unless the operator has explicitly configured the
 base URL and API key via the upcoming notifier settings.
 
@@ -52,9 +52,9 @@ the allowlist or documenting why SAFE_MODE should be disabled for a specific wor
   expose redacted previews of sensitive information and should rely on `gabriel.common` façade
   objects for any stateful interactions.
 
-Each feature module depends on `gabriel.common` rather than importing from its siblings. Shared
-helpers that still live under legacy modules (for example `gabriel.secrets` or `gabriel.tokenplace`)
-should move into `gabriel.common` as part of the polish effort so the boundary remains explicit.
+Each feature module depends on `gabriel.common` rather than importing from its siblings. Legacy
+shims like `gabriel.secrets` or `gabriel.tokenplace` remain for compatibility but simply import
+from `gabriel.common` and `gabriel.notify` respectively so the boundary stays explicit.
 
 ## Who may handle secrets?
 

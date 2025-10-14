@@ -10,17 +10,18 @@ from .__about__ import (
     __uri__,
     __version__,
 )
-from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
-from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
-from .phishing import (
+from .analysis.phishing import (
     PhishingFinding,
     analyze_text_for_phishing,
     analyze_url,
     extract_urls,
 )
-from .recommendations import Recommendation, RiskTolerance, generate_recommendations
-from .secrets import delete_secret, get_secret, store_secret
-from .selfhosted import (
+from .analysis.recommendations import (
+    Recommendation,
+    RiskTolerance,
+    generate_recommendations,
+)
+from .analysis.selfhosted import (
     CheckResult,
     DockerDaemonConfig,
     NextcloudConfig,
@@ -34,9 +35,17 @@ from .selfhosted import (
     audit_syncthing,
     audit_vaultwarden,
 )
-from .text import sanitize_prompt
-from .tokenplace import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
-from .viewer import (
+from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
+from .common.secrets import delete_secret, get_secret, store_secret
+from .ingestion.knowledge import (
+    KnowledgeStore,
+    Note,
+    SearchResult,
+    load_notes_from_paths,
+)
+from .ingestion.text import sanitize_prompt
+from .notify.tokenplace import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
+from .ui.viewer import (
     DEFAULT_HOST,
     DEFAULT_PORT,
     ViewerServer,

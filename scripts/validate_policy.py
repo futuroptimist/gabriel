@@ -7,7 +7,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from gabriel.policy import (
+from gabriel.analysis.policy import (
     PolicyValidationError,
     load_policy_document,
     validate_policy_document,

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import builtins
+import importlib
 import io
 import os
 import string
@@ -14,9 +15,14 @@ from hypothesis import assume, given, settings
 from hypothesis import strategies as st
 from keyring.backend import KeyringBackend
 
-import gabriel.utils as utils_module
-from gabriel.secrets import _env_secret_key, delete_secret, get_secret, store_secret
-from gabriel.utils import main
+import gabriel.ui.cli as utils_module
+from gabriel.common.secrets import (
+    _env_secret_key,
+    delete_secret,
+    get_secret,
+    store_secret,
+)
+from gabriel.ui.cli import main
 
 
 class InMemoryKeyring(KeyringBackend):
@@ -184,3 +190,10 @@ def test_secret_env_round_trip_property(service: str, username: str, secret: str
 
 def test_utils_module_provides_env_secret_key_alias() -> None:
     assert utils_module._env_secret_key is _env_secret_key  # nosec B101
+
+
+def test_secrets_and_utils_shims() -> None:
+    legacy_secrets = importlib.import_module("gabriel.secrets")
+    assert legacy_secrets.store_secret is store_secret  # nosec B101
+    legacy_utils = importlib.import_module("gabriel.utils")
+    assert legacy_utils.main is main  # nosec B101

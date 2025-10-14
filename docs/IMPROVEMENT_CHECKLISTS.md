@@ -61,8 +61,9 @@ See [related/jobbot3000/IMPROVEMENTS.md](related/jobbot3000/IMPROVEMENTS.md).
 - [ ] Enable Docker Content Trust to verify signed images ([docs][docker-trust]).
 - [ ] Use user ID remapping to isolate container file systems ([docs][docker-userns]).
 
-Gabriel now offers `gabriel.selfhosted.audit_docker_daemon` to evaluate these controls and
-surface remediation guidance alongside other self-hosted helpers.
+Gabriel now offers `gabriel.analysis.selfhosted.audit_docker_daemon`
+to evaluate these controls and surface remediation guidance alongside
+other self-hosted helpers.
 
 [docker-rootless]: https://docs.docker.com/engine/security/rootless/
 [docker-trust]: https://docs.docker.com/engine/security/trust/
@@ -72,8 +73,9 @@ surface remediation guidance alongside other self-hosted helpers.
 
 See [related/nextcloud/IMPROVEMENTS.md](related/nextcloud/IMPROVEMENTS.md).
 
-Gabriel now offers `gabriel.selfhosted.audit_nextcloud` to evaluate these controls and surface
-remediation guidance alongside VaultWarden and Syncthing helpers.
+Gabriel now offers `gabriel.analysis.selfhosted.audit_nextcloud`
+to evaluate these controls and surface remediation guidance alongside
+VaultWarden and Syncthing helpers.
 
 ## PhotoPrism
 
@@ -82,8 +84,8 @@ remediation guidance alongside VaultWarden and Syncthing helpers.
 - [ ] Set up scheduled backups to a secure location.
 - [ ] Review third-party plugins for security issues before enabling them.
 
-Gabriel now offers `gabriel.selfhosted.audit_photoprism` to evaluate these safeguards alongside
-other self-hosted service checks.
+Gabriel now offers `gabriel.analysis.selfhosted.audit_photoprism`
+to evaluate these safeguards alongside other self-hosted service checks.
 
 ## Syncthing
 
@@ -92,8 +94,9 @@ other self-hosted service checks.
   ([docs](https://docs.syncthing.net/users/stdiscosrv.html)).
 - [ ] Audit IDs and remove unknown connections ([repo](https://github.com/syncthing/syncthing)).
 
-Gabriel now offers `gabriel.selfhosted.audit_syncthing` to check these controls and surface
-remediation guidance alongside VaultWarden.
+Gabriel now offers `gabriel.analysis.selfhosted.audit_syncthing`
+to check these controls and surface remediation guidance alongside
+VaultWarden.
 
 ## VaultWarden
 
@@ -102,5 +105,6 @@ remediation guidance alongside VaultWarden.
 - [ ] Enable automatic database backups and verify restore procedures.
 - [ ] Restrict admin interface access to trusted networks or VPN.
 
-Gabriel now offers `gabriel.selfhosted.audit_vaultwarden` to evaluate these controls and surface
-remediation steps for misconfigurations.
+Gabriel now offers `gabriel.analysis.selfhosted.audit_vaultwarden`
+to evaluate these controls and surface remediation steps for
+misconfigurations.

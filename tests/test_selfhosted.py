@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+import importlib
 from collections.abc import Iterable
 
 import pytest
 
-from gabriel.selfhosted import (
+from gabriel.analysis.selfhosted import (
     CheckResult,
     DockerDaemonConfig,
     NextcloudConfig,
@@ -486,3 +487,9 @@ def test_audit_docker_daemon_allows_mixed_findings() -> None:
         "docker-content-trust",
         "docker-userns-remap",
     }  # nosec B101
+
+
+def test_selfhosted_module_shim() -> None:
+    legacy = importlib.import_module("gabriel.selfhosted")
+    assert legacy.audit_docker_daemon is audit_docker_daemon  # nosec B101
+    assert legacy.DockerDaemonConfig is DockerDaemonConfig  # nosec B101

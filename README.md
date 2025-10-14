@@ -31,20 +31,17 @@ This modular structure keeps responsibilities clear and allows future extensions
 
 ## Map of the repo
 
-Gabriel is migrating toward a four-module layout.
-The table below highlights the current hotspots and where they will land as we
-complete the work outlined in the [Polish Four-Module Architecture
-prompt](docs/prompts/codex/polish.md).
+Gabriel now ships with a four-module layout aligned with the architecture outlined in the [Polish Four-Module Architecture prompt](docs/prompts/codex/polish.md).
 
-| Path | Current focus | Target module |
+| Path | Responsibility | Highlights |
 | --- | --- | --- |
-| `gabriel/text.py`, `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
-| `gabriel/phishing.py`, `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
-| `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
-| `viewer/`, `gabriel/viewer.py`, `gabriel/utils.py` | CLI and viewer surfaces | UI |
+| `gabriel/ingestion/` | Scrape, normalize, and persist user-consented evidence | `knowledge` indexing and prompt sanitizers in `text` |
+| `gabriel/analysis/` | Heuristics, classifiers, and policy validation | phishing detectors, risk recommendations, self-hosted audits |
+| `gabriel/notify/` | Alert delivery and token.place relay clients | `tokenplace` HTTP client guarded by SAFE_MODE |
+| `gabriel/ui/` | CLI entry points and the bundled WebGL viewer | `cli` command groups and viewer server wrappers |
+| `gabriel/common/` | Shared protocols and secret management primitives | typed registries, `secrets` helpers, inference abstractions |
 
-Shared primitives (cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the boundaries. For a deeper security breakdown, review the [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) and the
-[docs/gabriel/SECRET_BOUNDARY.md](docs/gabriel/SECRET_BOUNDARY.md).
+Top-level modules such as `gabriel.text` and `gabriel.viewer` remain as compatibility shims that import from their new homes. Review the [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) and the [docs/gabriel/SECRET_BOUNDARY.md](docs/gabriel/SECRET_BOUNDARY.md) for details on the trust boundaries enforced across these packages.
 
 ## Getting Started
 
@@ -81,8 +78,11 @@ pyspelling -c .spellcheck.yaml
 Scan for hidden zero-width characters:
 
 ```bash
-python -m gabriel.text README.md
+python -m gabriel.ingestion.text README.md
 ```
+
+The legacy `python -m gabriel.text` entry point remains available via the
+compatibility shim for downstream scripts that have not migrated yet.
 
 Validate policy guardrails before committing updates to `llm_policy.yaml` or downstream
 overrides:
@@ -137,8 +137,8 @@ print(sqrt(9))  # 3
 ```
 
 The arithmetic helpers now live in `gabriel.arithmetic`, while secret management utilities
-reside in `gabriel.secrets`. Importing from `gabriel` continues to expose both families for
-backwards compatibility.
+reside in `gabriel.common.secrets`. Importing from `gabriel` continues to expose both
+families for backwards compatibility.
 
 Run the helpers from the command line (available as `gabriel` or `gabriel-calc`):
 
@@ -160,8 +160,9 @@ gabriel secret delete my-service alice
 
 If you omit `--secret`, the command reads from standard input or securely prompts
 when attached to a TTY. The retrieval command intentionally avoids printing the
-stored value so it cannot leak via logs; use ``python -c "from gabriel.utils import
-get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access.
+stored value so it cannot leak via logs; use ``python -c "from gabriel.ui.cli import
+get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access. The
+legacy `gabriel.utils` shim continues to forward these helpers.
 
 ### Package metadata
 
@@ -201,7 +202,7 @@ pipelines for inbound phishing reports.
 
 ### Sanitize prompts before execution
 
-Use `gabriel.text.sanitize_prompt` to strip risky markup from prompts gathered from
+Use `gabriel.ingestion.text.sanitize_prompt` to strip risky markup from prompts gathered from
 untrusted sources. The helper removes HTML tags (including script/style blocks),
 Markdown image embeddings, and zero-width characters before passing text to language
 models. This blocks common prompt-injection tricks that smuggle hostile payloads in
@@ -219,7 +220,7 @@ print(safe)
 ### Organize security notes into a knowledge store
 
 Phase 2 of the roadmap introduces a personal knowledge manager that keeps security
-notes searchable and local. Use the new `gabriel.knowledge` helpers to index Markdown
+notes searchable and local. Use the new `gabriel.ingestion.knowledge` helpers to index Markdown
 files or structured snippets and run lightweight keyword searches:
 
 ```python
@@ -238,7 +239,7 @@ you can jump directly to the relevant remediation guidance when triaging inciden
 ### Generate prioritized recommendations
 
 Phase 2 of the roadmap calls for richer guidance that blends audit data with personal
-notes. Use :func:`gabriel.recommendations.generate_recommendations` to turn audit
+notes. Use :func:`gabriel.analysis.recommendations.generate_recommendations` to turn audit
 findings into a prioritized action plan tuned to your risk tolerance:
 
 ```python
@@ -283,7 +284,7 @@ noise when you are comfortable accepting more operational risk, or supply
 ### Audit VaultWarden deployments
 
 Phase 1 of the roadmap calls for tailored advice for self-hosted services such as
-VaultWarden. Use `gabriel.selfhosted.audit_vaultwarden` to surface misconfigurations
+VaultWarden. Use `gabriel.analysis.selfhosted.audit_vaultwarden` to surface misconfigurations
 based on the [VaultWarden improvement checklist](docs/IMPROVEMENT_CHECKLISTS.md#vaultwarden).
 
 ```python
@@ -314,7 +315,7 @@ reviews: running the daemon in [rootless mode](https://docs.docker.com/engine/se
 requiring [Docker Content Trust](https://docs.docker.com/engine/security/trust/), and enabling
 [user namespace remapping](https://docs.docker.com/engine/security/userns-remap/) so container
 root users map to non-root UIDs on the host. Use
-`gabriel.selfhosted.audit_docker_daemon` to flag missing safeguards:
+`gabriel.analysis.selfhosted.audit_docker_daemon` to flag missing safeguards:
 
 ```python
 from gabriel import DockerDaemonConfig, audit_docker_daemon
@@ -336,7 +337,7 @@ return an empty list of findings.
 
 ### Audit Syncthing deployments
 
-Syncthing operators can use `gabriel.selfhosted.audit_syncthing` to identify risky defaults such
+Syncthing operators can use `gabriel.analysis.selfhosted.audit_syncthing` to identify risky defaults such
 as plaintext dashboards, public discovery, or unknown device IDs.
 
 ```python
@@ -360,7 +361,7 @@ lists will return an empty list, mirroring VaultWarden behavior.
 
 ### Audit Nextcloud deployments
 
-Nextcloud administrators can call `gabriel.selfhosted.audit_nextcloud` to evaluate
+Nextcloud administrators can call `gabriel.analysis.selfhosted.audit_nextcloud` to evaluate
 hardening tasks such as enforcing HTTPS, MFA, and backup verification as outlined in the
 [Nextcloud improvement checklist](docs/related/nextcloud/IMPROVEMENTS.md).
 
@@ -389,7 +390,7 @@ restricted admin networks, and log monitoring return an empty list.
 ### Audit PhotoPrism deployments
 
 PhotoPrism curates personal photo libraries, so losing data or exposing galleries publicly can
-be painful. `gabriel.selfhosted.audit_photoprism` evaluates HTTPS coverage, admin credential
+be painful. `gabriel.analysis.selfhosted.audit_photoprism` evaluates HTTPS coverage, admin credential
 strength, backup posture, and plugin hygiene based on the
 [PhotoPrism checklist](docs/IMPROVEMENT_CHECKLISTS.md#photoprism).
 

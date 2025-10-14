@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 import sys
 import threading
 import time
@@ -7,7 +8,7 @@ from urllib.request import urlopen
 
 import pytest
 
-from gabriel.viewer import get_viewer_directory, serve_viewer, start_viewer_server
+from gabriel.ui.viewer import get_viewer_directory, serve_viewer, start_viewer_server
 
 
 def test_get_viewer_directory_contains_assets() -> None:
@@ -65,7 +66,7 @@ def test_serve_viewer_handles_keyboard_interrupt(monkeypatch: pytest.MonkeyPatch
         call_count["sleep"] += 1
         raise KeyboardInterrupt
 
-    monkeypatch.setattr("gabriel.viewer.time.sleep", fake_sleep)
+    monkeypatch.setattr("gabriel.ui.viewer.time.sleep", fake_sleep)
 
     serve_viewer(host="127.0.0.1", port=0, open_browser=False)
 
@@ -73,7 +74,7 @@ def test_serve_viewer_handles_keyboard_interrupt(monkeypatch: pytest.MonkeyPatch
 
 
 def test_viewer_main_invokes_serve(monkeypatch: pytest.MonkeyPatch) -> None:
-    import gabriel.viewer as viewer_module
+    import gabriel.ui.viewer as viewer_module
 
     recorded: dict[str, tuple[str, int, bool]] = {}
 
@@ -84,9 +85,15 @@ def test_viewer_main_invokes_serve(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         sys,
         "argv",
-        ["gabriel.viewer", "--host", "0.0.0.0", "--port", "4321", "--no-browser"],  # nosec B104
+        ["gabriel.ui.viewer", "--host", "0.0.0.0", "--port", "4321", "--no-browser"],  # nosec B104
     )
 
     viewer_module._main()
 
     assert recorded["args"] == ("0.0.0.0", 4321, False)  # nosec B101 B104
+
+
+def test_viewer_module_shim() -> None:
+    legacy = importlib.import_module("gabriel.viewer")
+    assert legacy.serve_viewer is serve_viewer  # nosec B101
+    assert legacy.start_viewer_server is start_viewer_server  # nosec B101

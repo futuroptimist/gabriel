@@ -79,13 +79,13 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 19. **How can I organize recurring security notes?**
 
     Gabriel's roadmap now includes a lightweight knowledge store for Markdown notes.
-    Use `gabriel.knowledge.KnowledgeStore` to index local files and search by keyword
+    Use `gabriel.ingestion.knowledge.KnowledgeStore` to index local files and search by keyword
     or tag without sending data to external services. The helper extracts titles,
     tags, and contextual snippets so you can jump straight to remediation guidance.
 
 20. **Does Gabriel include phishing detection yet?**
 
-    A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for
+    A lightweight heuristic scanner in `gabriel.analysis.phishing` analyses pasted links for
     punycode, suspicious TLDs, HTTP usage, lookalike domains, known URL shorteners,
     unusual ports, redirect parameters that jump to other domains, and attachments with
     risky executable or archive extensions. Extend it with additional rules as the
@@ -110,7 +110,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
 22. **Can Gabriel audit my VaultWarden deployment?**
 
-    Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a `VaultWardenConfig` snapshot to identify gaps from the checklist in [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
+    Yes. Use `gabriel.analysis.selfhosted.audit_vaultwarden` with a `VaultWardenConfig` snapshot to identify gaps from the checklist in [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
 
 23. **How do I preview the bundled WebGL viewer?**
 
@@ -120,14 +120,14 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
 24. **How should I sanitize prompts pulled from external sources?**
 
-    Call `gabriel.text.sanitize_prompt` before handing text to a model. It strips HTML tags,
+    Call `gabriel.ingestion.text.sanitize_prompt` before handing text to a model. It strips HTML tags,
     Markdown image embeddings, and zero-width characters that attackers use for
     prompt-injection payloads. Pair it with `gabriel.prompt_lint` to flag instructions that
     attempt to bypass guardrails.
 
 25. **Can Gabriel suggest which findings to tackle first?**
 
-    Yes. Pass audit findings to `gabriel.recommendations.generate_recommendations` and
-    optionally include knowledge notes from `gabriel.knowledge.KnowledgeStore`. The helper
+    Yes. Pass audit findings to `gabriel.analysis.recommendations.generate_recommendations` and
+    optionally include knowledge notes from `gabriel.ingestion.knowledge.KnowledgeStore`. The helper
     scores each finding, blends in related notes for context, and honors `RiskTolerance`
     preferences so you can down-rank lower-severity items when appropriate.

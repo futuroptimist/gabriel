@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from gabriel.knowledge import Note
-from gabriel.recommendations import (
+import importlib
+
+from gabriel.analysis.recommendations import (
     Recommendation,
     RiskTolerance,
     generate_recommendations,
 )
-from gabriel.selfhosted import CheckResult
+from gabriel.analysis.selfhosted import CheckResult
+from gabriel.ingestion.knowledge import Note
 
 
 def _note(identifier: str, title: str, content: str, *tags: str) -> Note:
@@ -160,3 +162,14 @@ def test_generate_recommendations_honours_max_recommendations() -> None:
 
     assert len(recommendations) == 1
     assert recommendations[0].slug in {"vaultwarden-https", "vaultwarden-admin-network"}
+
+
+def test_recommendations_module_shim() -> None:
+    legacy = importlib.import_module("gabriel.recommendations")
+    assert legacy.generate_recommendations is generate_recommendations  # nosec B101
+    assert legacy.RiskTolerance is RiskTolerance  # nosec B101
+
+
+def test_selfhosted_module_shim() -> None:
+    legacy = importlib.import_module("gabriel.selfhosted")
+    assert legacy.CheckResult is CheckResult  # nosec B101

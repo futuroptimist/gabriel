@@ -17,10 +17,11 @@ Polish the codebase so it cleanly reflects the four-module architecture while
 preserving security controls and contributor ergonomics.
 
 SNAPSHOT:
-- Detected modules still sit directly under `gabriel/`: `arithmetic.py`,
-  `knowledge.py`, `phishing.py`, `policy.py`, `prompt_lint.py`, `security/`,
-  `secrets.py`, `selfhosted.py`, `text.py`, `tokenplace.py`, `utils.py`, and
-  `viewer.py`.
+- Feature modules now live under `gabriel/ingestion`, `gabriel/analysis`,
+  `gabriel/notify`, and `gabriel/ui`, with compatibility shims preserved at the
+  top level.
+- Shared protocols and secret helpers ship from `gabriel/common`, including the
+  `SecretStore`, `KnowledgeRepository`, and `InferenceClient` registries.
 - Python targets: `pyproject.toml` declares `requires-python >= 3.10`; CI runs on
   Python 3.10 and 3.11.
 - CI gates: `ci.yml` (lint + tests), `coverage.yml`, `codeql.yml`, `docs.yml`,
@@ -28,36 +29,35 @@ SNAPSHOT:
 - Coverage floor: pytest is configured with `--cov-fail-under=100`.
 
 REFACTORS:
-- Enforce the four-module boundary by reshaping the package tree into
-  `gabriel/ingestion`, `gabriel/analysis`, `gabriel/notify`, and `gabriel/ui`.
-  * Move scrapers, prompt sanitizers, and knowledge ingest helpers into
-    `gabriel/ingestion`.
-  * Consolidate phishing heuristics, risk scoring, classifiers, and policy logic
-    within `gabriel/analysis`.
-  * Relocate token.place relay code, alert delivery, and persistence adapters to
-    `gabriel/notify`.
-  * House CLI entry points, the viewer, and ergonomic shims inside `gabriel/ui`.
-  * Provide compatibility re-exports in `gabriel/__init__.py` while downstream
-    callers migrate.
-- Extract shared services into `gabriel/common` with typed interfaces.
-  * Define protocols for cryptography (e.g., `KeyManager`, `EnvelopeEncryptor`),
-    persistence (`SecretStore`, `KnowledgeRepository`), and LLM adapters
-    (`InferenceClient`).
-  * Move cross-cutting helpers from `gabriel/secrets.py`, `gabriel/tokenplace.py`,
-    `gabriel/security/`, and similar modules into the new package. Document that
-    feature modules depend on `common`, not on each other.
-  * Publish factory functions and registries that keep runtime swaps ergonomic
-    and mypy-friendly.
-- Author `docs/gabriel/SECRET_BOUNDARY.md` to explain how local inference differs
-  from token.place relaying, which privacy toggles exist, and which modules are
-  permitted to handle secrets.
+- Keep the four-module boundary sharp by routing new functionality through the
+  appropriate package and relying on `gabriel.common` instead of cross-module
+  imports.
+  * Scrapers, prompt sanitizers, and knowledge ingest helpers belong in
+    `gabriel.ingestion`.
+  * Phishing heuristics, risk scoring, classifiers, and policy logic stay within
+    `gabriel.analysis` alongside self-hosted audits.
+  * Token.place relay code, alert delivery, and persistence adapters continue to
+    live in `gabriel.notify`.
+  * CLI entry points, viewer helpers, and ergonomic shims live under `gabriel.ui`
+    while exposing compatibility import paths.
+- Expand `gabriel.common` with typed protocols and registry helpers when new
+  shared services emerge.
+  * Define cryptography (`KeyManager`, `EnvelopeEncryptor`), persistence
+    (`SecretStore`, `KnowledgeRepository`), and inference (`InferenceClient`)
+    interfaces up front.
+  * Publish factory functions that keep runtime swaps ergonomic and
+    mypy-friendly while enforcing boundaries between feature modules.
+- Ensure documentation such as `docs/gabriel/SECRET_BOUNDARY.md` explains how
+  local inference differs from token.place relaying, which privacy toggles
+  exist, and which modules may handle secrets whenever the interfaces change.
 
 TESTING:
 - Maintain 100% statement and branch coverage after every move.
 - Add contract tests for phishing heuristics and URL classifiers when migrating
   into `gabriel/analysis` to ensure detections remain stable.
-- Introduce fuzz/property tests for text sanitizers (e.g., `gabriel.text.
-  sanitize_prompt`) to cover HTML/Markdown edge cases and zero-width characters.
+- Introduce fuzz/property tests for text sanitizers (e.g.,
+  `gabriel.ingestion.text.sanitize_prompt`) to cover HTML/Markdown edge cases
+  and zero-width characters.
 - Extend integration tests that straddle notification boundaries so local secret
   storage vs. token.place relay paths remain explicit and opt-in.
 

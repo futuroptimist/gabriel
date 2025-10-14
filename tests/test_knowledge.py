@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import importlib
 from pathlib import Path
 
 import pytest
 
-import gabriel.knowledge as knowledge_module
-from gabriel import KnowledgeStore, Note, load_notes_from_paths
+import gabriel.ingestion.knowledge as knowledge_module
+from gabriel.ingestion import KnowledgeStore, Note, load_notes_from_paths
 
 
 def _write(tmp_path: Path, name: str, content: str) -> Path:
@@ -208,3 +209,9 @@ def test_internal_helpers_cover_branches() -> None:
     short_preview_note = Note("short-preview", "Short", "Small body without keyword.", ())
     short_preview = knowledge_module._build_snippet(short_preview_note, ("absent",))
     assert not short_preview.endswith("...")  # nosec B101
+
+
+def test_knowledge_module_shim() -> None:
+    legacy = importlib.import_module("gabriel.knowledge")
+    assert legacy.KnowledgeStore is KnowledgeStore  # nosec B101
+    assert legacy.Note is Note  # nosec B101

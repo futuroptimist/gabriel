@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from gabriel.text import (
+from gabriel.ingestion.text import (
     _character_name,
     _HTMLTextExtractor,
     find_hidden_characters,
@@ -192,3 +192,11 @@ def test_html_text_extractor_suppresses_entities_inside_blocks() -> None:
 
 
 __all__: list[str] = []
+
+
+def test_text_module_shim() -> None:
+    import importlib
+
+    legacy = importlib.import_module("gabriel.text")
+    assert legacy.sanitize_prompt is sanitize_prompt  # nosec B101
+    assert legacy.scan_paths is scan_paths  # nosec B101
