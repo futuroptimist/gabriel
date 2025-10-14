@@ -24,6 +24,7 @@ backend
 cd
 cli
 configs
+detections
 dev
 dspace
 eslint
