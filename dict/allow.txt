@@ -315,3 +315,5 @@ allowlisted
 allowlists
 exfiltrate
 hostnames
+RiskTolerance
+func

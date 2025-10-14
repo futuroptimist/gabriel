@@ -1,15 +1,18 @@
 from __future__ import annotations
 
+import importlib
 from pathlib import Path
-
-import yaml
+from typing import Any, cast
 
 
 def test_dependabot_monitors_github_actions() -> None:
     config_path = Path(".github/dependabot.yml")
-    config = yaml.safe_load(config_path.read_text())
+    yaml = importlib.import_module("yaml")
+    config = cast(dict[str, Any], yaml.safe_load(config_path.read_text()))
 
-    updates = config.get("updates", [])
+    updates_raw = config.get("updates", [])
+    assert isinstance(updates_raw, list), "Dependabot updates should be a list."
+    updates = cast(list[dict[str, Any]], updates_raw)
     assert updates, "Dependabot configuration must define at least one update entry."
 
     ecosystems = {entry.get("package-ecosystem") for entry in updates}
