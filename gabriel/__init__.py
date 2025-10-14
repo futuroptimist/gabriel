@@ -44,7 +44,7 @@ from .selfhosted import (
     audit_vaultwarden,
 )
 from .tokenplace import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
-from .viewer import (
+from .ui import (
     DEFAULT_HOST,
     DEFAULT_PORT,
     ViewerServer,

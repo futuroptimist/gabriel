@@ -42,10 +42,12 @@ prompt](docs/prompts/codex/polish.md).
 | `gabriel/phishing.py`, `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
 | `gabriel/common/` | Cryptography, persistence, and inference adapters | Common services |
 | `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
-| `viewer/`, `gabriel/viewer.py`, `gabriel/utils.py` | CLI and viewer surfaces | UI |
+| `viewer/`, `gabriel/ui/` (CLI + viewer), `gabriel/utils.py` | CLI and viewer surfaces | UI |
 
-Shared primitives (cryptography, persistence, LLM adapters) will consolidate under
-`gabriel/common` as we carve the boundaries. For a deeper security breakdown, review the
+The newly introduced `gabriel/ui/` package now owns the CLI and viewer helpers, while
+`gabriel/utils.py` provides backwards-compatible imports for existing callers. Shared primitives
+(cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the
+boundaries. For a deeper security breakdown, review the
 [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md). The new
 [docs/gabriel/SECRET_BOUNDARY.md](docs/gabriel/SECRET_BOUNDARY.md) document captures how
 credentials flow between local inference and token.place relaying.

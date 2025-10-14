@@ -21,18 +21,19 @@ available to other devices on your LAN, or add `--no-browser` when running on a 
 The same helper is also available as a module:
 
 ```bash
-python -m gabriel.viewer --port 8001 --no-browser
+python -m gabriel.ui.viewer --port 8001 --no-browser
 ```
 
 This variant is useful for shell scripts or the `Makefile` `preview` task, which now delegates to the
-module to avoid duplicating logic.
+module to avoid duplicating logic. A legacy shim at ``gabriel.viewer`` remains available so existing
+scripts keep working during the migration.
 
 ## Automation building blocks
 
 For bespoke workflows import the underlying helpers in Python code:
 
 ```python
-from gabriel.viewer import start_viewer_server
+from gabriel.ui.viewer import start_viewer_server
 
 with start_viewer_server(port=0) as server:
     print("Viewer available at", server.url())
