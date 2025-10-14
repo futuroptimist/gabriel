@@ -25,3 +25,8 @@ __all__ = getattr(_target_module, "__all__", []) or [
 ]
 
 del _target_module
+
+if __name__ == "__main__":  # pragma: no cover - legacy CLI compatibility
+    from gabriel.ingestion.text import main as _main
+
+    raise SystemExit(_main())
