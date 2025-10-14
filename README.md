@@ -402,6 +402,10 @@ For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
 For storing secrets in the system keyring, see
 [docs/gabriel/SECRET_STORAGE.md](docs/gabriel/SECRET_STORAGE.md).
 
+Review the new secrets boundary map in
+[docs/gabriel/SECRET_BOUNDARY.md](docs/gabriel/SECRET_BOUNDARY.md) when wiring relay access
+or local inference so responsibilities stay clear.
+
 ### Docker builds
 
 The repository ships with a `.dockerignore` file that trims the build context by excluding
