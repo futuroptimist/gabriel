@@ -124,3 +124,10 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     Markdown image embeddings, and zero-width characters that attackers use for
     prompt-injection payloads. Pair it with `gabriel.prompt_lint` to flag instructions that
     attempt to bypass guardrails.
+
+25. **Can Gabriel suggest which findings to tackle first?**
+
+    Yes. Pass audit findings to `gabriel.recommendations.generate_recommendations` and
+    optionally include knowledge notes from `gabriel.knowledge.KnowledgeStore`. The helper
+    scores each finding, blends in related notes for context, and honors `RiskTolerance`
+    preferences so you can down-rank lower-severity items when appropriate.

@@ -14,6 +14,8 @@ workflow:
         description: "Run pytest"
       - id: preview
         description: "Serve the WebGL viewer locally with gabriel viewer"
+      - id: secrets-boundary
+        description: "Review docs/gabriel/SECRET_BOUNDARY.md before touching relay or storage code"
   - stage: release
     tasks:
       - id: merge

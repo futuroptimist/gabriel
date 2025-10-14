@@ -18,6 +18,7 @@ from .phishing import (
     analyze_url,
     extract_urls,
 )
+from .recommendations import Recommendation, RiskTolerance, generate_recommendations
 from .secrets import delete_secret, get_secret, store_secret
 from .selfhosted import (
     CheckResult,
@@ -71,6 +72,9 @@ __all__ = [
     "analyze_url",
     "analyze_text_for_phishing",
     "PhishingFinding",
+    "generate_recommendations",
+    "Recommendation",
+    "RiskTolerance",
     "DockerDaemonConfig",
     "VaultWardenConfig",
     "SyncthingConfig",
