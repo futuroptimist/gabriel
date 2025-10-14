@@ -21,6 +21,7 @@ autoplay
 axel
 axel's
 backend
+backends
 cd
 cli
 configs
@@ -75,6 +76,7 @@ virtualenvs
 Makefile
 YAML
 solarpunk
+stateful
 Futuroptimist's
 LLMs
 Anthropic
@@ -137,14 +139,17 @@ VaultWarden
 WaaS
 aspirational
 changelog
+ciphertext
 codebase
 cybersecurity
 datasets
 exfiltration
 filesystem
+façade
 formatters
 gitshelves
 integrations
+py
 pytest
 keychains
 allowlist

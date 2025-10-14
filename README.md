@@ -43,7 +43,8 @@ prompt](docs/prompts/codex/polish.md).
 | `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
 | `viewer/`, `gabriel/viewer.py`, `gabriel/utils.py` | CLI and viewer surfaces | UI |
 
-Shared primitives (cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the boundaries. For a deeper security breakdown, review the [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md).
+Shared primitives (cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the boundaries. For a deeper security breakdown, review the [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md) and the
+[docs/gabriel/SECRET_BOUNDARY.md](docs/gabriel/SECRET_BOUNDARY.md).
 
 ## Getting Started
 
