@@ -171,6 +171,7 @@ validators:
 - Offer **configuration parameters**:
   - `repo_name`, `sensitivity_level`, `allowed_domains`, `token_ttl_hours`.
   - Hooks for custom tools (`extra_allow_commands`).
-- Provide **verification scripts** (`scripts/validate_policy.py`) to ensure local overrides conform.
+- Provide **verification scripts** (`scripts/validate_policy.py`) to ensure local overrides conform. Gabriel now ships a
+  reference implementation that validates command allow-lists, deny-lists, and validator settings.
 - Maintain **changelog and version manifest** so downstream users can track updates and
   automatically open PRs when new security fixes release.

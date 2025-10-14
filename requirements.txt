@@ -12,5 +12,6 @@ keyring
 hypothesis
 tomli
 pydocstyle
+pyyaml
 pymarkdownlnt==0.9.16
 PyYAML

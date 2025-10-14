@@ -8,10 +8,12 @@ import pytest
 
 from gabriel.selfhosted import (
     CheckResult,
+    DockerDaemonConfig,
     NextcloudConfig,
     PhotoPrismConfig,
     SyncthingConfig,
     VaultWardenConfig,
+    audit_docker_daemon,
     audit_nextcloud,
     audit_photoprism,
     audit_syncthing,
@@ -439,3 +441,48 @@ def test_audit_photoprism_passes_hardened_config() -> None:
     findings = audit_photoprism(config)
 
     assert findings == []  # nosec B101
+
+
+def test_audit_docker_daemon_flags_missing_controls() -> None:
+    config = DockerDaemonConfig(
+        rootless_enabled=False,
+        content_trust_required=False,
+        userns_remap_enabled=False,
+    )
+
+    findings = audit_docker_daemon(config)
+
+    slugs = _finding_slugs(findings)
+    assert slugs == {
+        "docker-rootless",
+        "docker-content-trust",
+        "docker-userns-remap",
+    }  # nosec B101
+
+
+def test_audit_docker_daemon_passes_hardened_config() -> None:
+    config = DockerDaemonConfig(
+        rootless_enabled=True,
+        content_trust_required=True,
+        userns_remap_enabled=True,
+    )
+
+    findings = audit_docker_daemon(config)
+
+    assert findings == []  # nosec B101
+
+
+def test_audit_docker_daemon_allows_mixed_findings() -> None:
+    config = DockerDaemonConfig(
+        rootless_enabled=True,
+        content_trust_required=False,
+        userns_remap_enabled=False,
+    )
+
+    findings = audit_docker_daemon(config)
+
+    slugs = _finding_slugs(findings)
+    assert slugs == {
+        "docker-content-trust",
+        "docker-userns-remap",
+    }  # nosec B101

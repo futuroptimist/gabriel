@@ -1,9 +1,9 @@
 ---
-title: 'Codex Related Projects Refresh Prompt'
-slug: 'codex-related-projects-refresh'
+title: 'Refresh Related Project Knowledge Prompt'
+slug: 'refresh-related-project-knowledge'
 ---
 
-# Codex Related Projects Refresh Prompt
+# Refresh Related Project Knowledge Prompt
 
 Type: evergreen
 
@@ -26,7 +26,7 @@ CONTEXT:
 - Update this repository accordingly:
   - Refresh docs/related/**/IMPROVEMENTS.md and THREAT_MODEL.md files with 2025-09-24-style
     status notes.
-  - Extend README.md, prompts-repos.md, and any checklists referencing the repository roster.
+  - Extend README.md, docs/prompts/codex/scan-related-repositories.md, and any checklists referencing the repository roster.
   - Add new terminology to dict/allow.txt if spellcheck fails.
 - Follow AGENTS.md instructions and repository conventions for commits and PRs.
 - Ensure the following checks succeed:
