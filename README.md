@@ -239,6 +239,51 @@ for result in store.search("vaultwarden admin token", required_tags=["passwords"
 Each result includes the originating note, matched terms, and a contextual snippet so
 you can jump directly to the relevant remediation guidance when triaging incidents.
 
+### Generate prioritized recommendations
+
+Phase 2 of the roadmap calls for richer guidance that blends audit data with personal
+notes. Use :func:`gabriel.recommendations.generate_recommendations` to turn audit
+findings into a prioritized action plan tuned to your risk tolerance:
+
+```python
+from gabriel import (
+    KnowledgeStore,
+    RiskTolerance,
+    VaultWardenConfig,
+    audit_vaultwarden,
+    generate_recommendations,
+)
+
+config = VaultWardenConfig(
+    https_enabled=False,
+    certificate_trusted=False,
+    encryption_key="weak",  # pragma: allowlist secret
+    backup_enabled=True,
+    backup_frequency_hours=48,
+    last_restore_verification_days=90,
+    admin_interface_enabled=True,
+    admin_allowed_networks=("0.0.0.0/0",),
+)
+
+store = KnowledgeStore.from_paths(["docs/IMPROVEMENT_CHECKLISTS.md"])
+recommendations = generate_recommendations(
+    findings=audit_vaultwarden(config),
+    knowledge_notes=store.notes,
+    focus_tags=("vaultwarden",),
+    risk_tolerance=RiskTolerance.LOW,
+)
+
+for rec in recommendations:
+    print(f"{rec.severity.upper()} • {rec.summary}")
+    for action in rec.remediation:
+        print("  -", action)
+```
+
+Recommendations include the originating slug, a blended rationale, and every
+unique remediation captured during the audits. Adjust ``risk_tolerance`` to filter
+noise when you are comfortable accepting more operational risk, or supply
+``focus_tags`` to boost topics that demand immediate attention.
+
 ### Audit VaultWarden deployments
 
 Phase 1 of the roadmap calls for tailored advice for self-hosted services such as
@@ -545,7 +590,7 @@ pre-commit hooks also run `detect-secrets`, `pip-audit`, the `lychee` Markdown l
 `pymarkdown`, and the custom `gabriel.prompt_lint` scanner to catch secrets, vulnerable
 dependencies, stale references, style regressions, and prompt-injection red flags in Markdown
 content.
-Dependabot monitors Python dependencies weekly.
+Dependabot monitors Python dependencies and GitHub Actions workflows weekly.
 
 ## Release management
 
