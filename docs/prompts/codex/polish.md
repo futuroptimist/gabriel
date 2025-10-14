@@ -1,5 +1,5 @@
 ---
-title: 'Polish Codex Prompt'
+title: 'Polish Four-Module Architecture'
 evergreen: true
 one_click: true
 ---
@@ -10,107 +10,121 @@ Copy the prompt you need.
 
 ```text
 SYSTEM:
-You are an automated contributor for the futuroptimist/gabriel repository.
+You are an automated contributor working on the futuroptimist/gabriel repository.
 
 PURPOSE:
-Polish the codebase so it cleanly reflects the four-module architecture without breaking security
-contracts.
+Polish the codebase so it cleanly reflects the four-module architecture while
+preserving security controls and contributor ergonomics.
 
 SNAPSHOT:
-- Detected modules: `arithmetic`, `knowledge`, `phishing`, `security`, `selfhosted`, `text`,
-  `tokenplace`, `secrets`, `viewer`, and `utils` currently live directly under `gabriel/`.
-- Python targets: `requires-python >= 3.10`; CI exercises Python 3.10 and 3.11.
-- CI gates: `ci.yml` (pre-commit, Ruff, Flake8, Bandit), `coverage.yml` (pytest + Codecov),
-  `codeql.yml`, `docs.yml`, `docker.yml`, and `spellcheck.yml` run on pull requests.
-- Coverage floor: `pytest` enforces `--cov-fail-under=100` via `pyproject.toml`.
+- Detected modules still sit directly under `gabriel/`: `arithmetic.py`,
+  `knowledge.py`, `phishing.py`, `policy.py`, `prompt_lint.py`, `security/`,
+  `secrets.py`, `selfhosted.py`, `text.py`, `tokenplace.py`, `utils.py`, and
+  `viewer.py`.
+- Python targets: `pyproject.toml` declares `requires-python >= 3.10`; CI runs on
+  Python 3.10 and 3.11.
+- CI gates: `ci.yml` (lint + tests), `coverage.yml`, `codeql.yml`, `docs.yml`,
+  `docker.yml`, and `spellcheck.yml` run on pull requests.
+- Coverage floor: pytest is configured with `--cov-fail-under=100`.
 
 REFACTORS:
-- Enforce the four-module boundary by reshaping the package tree to
+- Enforce the four-module boundary by reshaping the package tree into
   `gabriel/ingestion`, `gabriel/analysis`, `gabriel/notify`, and `gabriel/ui`.
-  * Move scrapers, prompt sanitizers, and knowledge ingest helpers into `gabriel/ingestion`.
-  * House phishing heuristics, risk scoring, and classifier training in `gabriel/analysis`.
-  * Relocate token.place relay logic, alert delivery, and secret persistence adapters to
+  * Move scrapers, prompt sanitizers, and knowledge ingest helpers into
+    `gabriel/ingestion`.
+  * Consolidate phishing heuristics, risk scoring, classifiers, and policy logic
+    within `gabriel/analysis`.
+  * Relocate token.place relay code, alert delivery, and persistence adapters to
     `gabriel/notify`.
-  * Collect CLI entry points, the viewer, and ergonomic shims under `gabriel/ui`.
-  * Provide compatibility re-exports from `gabriel/__init__.py` while downstream callers migrate.
-- Extract cross-cutting services into `gabriel/common` with typed interfaces.
-  * Define protocols for cryptography (`KeyManager`, `EnvelopeEncryptor`), persistence
-    (`SecretStore`, `KnowledgeRepository`), and LLM adapters (`InferenceClient`).
-  * Relocate shared helpers from `gabriel/secrets.py`, `gabriel/tokenplace.py`, and
-    `gabriel/security/` into the new module and document dependency direction (leaf modules depend
-    on `common`, not each other).
-  * Add mypy-friendly factory functions and registries so runtime swaps stay ergonomic.
-- Document the secrets boundary in `docs/gabriel/SECRET_BOUNDARY.md`.
-  * Describe how local inference differs from token.place relaying, the privacy toggles exposed via
-    CLI flags, and expectations for offline mode.
-  * Spell out which modules may load or emit secrets and how they authenticate to storage layers.
+  * House CLI entry points, the viewer, and ergonomic shims inside `gabriel/ui`.
+  * Provide compatibility re-exports in `gabriel/__init__.py` while downstream
+    callers migrate.
+- Extract shared services into `gabriel/common` with typed interfaces.
+  * Define protocols for cryptography (e.g., `KeyManager`, `EnvelopeEncryptor`),
+    persistence (`SecretStore`, `KnowledgeRepository`), and LLM adapters
+    (`InferenceClient`).
+  * Move cross-cutting helpers from `gabriel/secrets.py`, `gabriel/tokenplace.py`,
+    `gabriel/security/`, and similar modules into the new package. Document that
+    feature modules depend on `common`, not on each other.
+  * Publish factory functions and registries that keep runtime swaps ergonomic
+    and mypy-friendly.
+- Author `docs/gabriel/SECRET_BOUNDARY.md` to explain how local inference differs
+  from token.place relaying, which privacy toggles exist, and which modules are
+  permitted to handle secrets.
 
 TESTING:
-- Maintain 100% statement and branch coverage for the reshuffled modules.
-- Add contract tests for phishing heuristics and URL classifiers so the move into
-  `gabriel/analysis` preserves behavior (fixtures with known malicious URLs, typosquats, redirect
-  chains).
-- Introduce fuzz/property tests for text sanitizers (`gabriel.text.sanitize_prompt`) using
-  Hypothesis to stress HTML/Markdown edge cases and zero-width characters.
-- Expand integration tests that exercise the notification boundary (local secrets vs. token.place
-  relay) to assert explicit opt-in/opt-out paths.
+- Maintain 100% statement and branch coverage after every move.
+- Add contract tests for phishing heuristics and URL classifiers when migrating
+  into `gabriel/analysis` to ensure detections remain stable.
+- Introduce fuzz/property tests for text sanitizers (e.g., `gabriel.text.
+  sanitize_prompt`) to cover HTML/Markdown edge cases and zero-width characters.
+- Extend integration tests that straddle notification boundaries so local secret
+  storage vs. token.place relay paths remain explicit and opt-in.
 
 DX & DOCS:
-- Keep `Makefile` targets (`make lint`, `make test`, `make spell`, `make links`) up to date with the
-  underlying tooling and document them in the README.
-- Refresh the README “Map of the repo” section whenever modules move and link it to the latest
-  threat model.
-- Update `docs/gabriel/SECRET_BOUNDARY.md`, `docs/gabriel/THREAT_MODEL.md`, and the prompt catalog to
-  reflect new boundaries or security controls.
-- Ensure new interfaces in `gabriel/common` ship with docstrings and cross-links from the developer
-  runbook.
+- Ensure the CLI targets `make lint`, `make test`, `make spell`, and `make links`
+  stay wired to the correct tooling and document them in the README.
+- Maintain a README "Map of the repo" that mirrors the four-module layout and
+  links to the threat model.
+- Update the developer runbook and prompt catalog whenever interfaces or module
+  boundaries shift, including `gabriel/common` abstractions and the secrets
+  boundary doc.
 
 ORTHOGONALITY RUBRIC:
-- Boundary drift: If a change introduces cross-module imports that bypass `gabriel/common`, stop
-  feature work and realign the module boundaries.
-- Coverage regression: If coverage drops below 100% or a contract/fuzz test fails, prioritize
-  restoring the safety net before adding features.
-- Secrets ambiguity: When a change touches token.place integration or local secret handling without
-  a documented boundary update, finish the polish doc before merging.
-- DX mismatch: If CLI targets or README map fall out of sync with the code tree, schedule a polish
-  pass so contributors do not rely on stale guidance.
+- Boundary drift: Stop feature work if code bypasses `gabriel/common` to reach
+  another module directly.
+- Coverage regression: Restore 100% coverage or fix failing contract/fuzz tests
+  before adding new features.
+- Secrets ambiguity: If changes touch token.place or local secret handling
+  without updating `docs/gabriel/SECRET_BOUNDARY.md`, finish the polish work
+  first.
+- DX mismatch: Realign docs and Makefile targets whenever they fall out of sync
+  with the code tree.
 
 EXECUTION:
-1. Assess the current module layout against the Refactors and Secrets Boundary plans.
-2. Implement one cohesive polish task (e.g., move a module, introduce a `gabriel/common` interface,
-   or author the secrets boundary doc).
-3. Add or update tests highlighted above.
-4. Refresh DX and documentation touchpoints as needed (Makefile targets, README map, linked refs).
-5. Run `make lint`, `make test`, `make spell`, and `make links` before opening a PR.
+1. Audit the current layout against the refactor goals and secrets boundary
+   expectations.
+2. Ship one cohesive polish slice (module relocation, interface extraction, or
+   secrets documentation) at a time.
+3. Add or update the tests listed above alongside the code changes.
+4. Refresh the README, secrets boundary doc, and prompt catalog so contributors
+   have accurate guidance.
+5. Run `make lint`, `make test`, `make spell`, and `make links` before opening a
+   pull request.
 
 OUTPUT:
-Summarize the polish task, enumerate tests run, and list follow-up items if larger refactors remain.
+Summarize the polish task, list tests executed, and note any follow-up polish
+work that remains.
 ```
 
 ## Upgrade Prompt
 
 ```text
 SYSTEM:
-You are reviewing the "Prompt" section in docs/prompts/codex/polish.md for the futuroptimist/gabriel
-repository.
+You are reviewing the "Prompt" section in docs/prompts/codex/polish.md for the
+futuroptimist/gabriel repository.
 
 PURPOSE:
-Improve that primary prompt so it stays actionable, current, and aligned with the four-module
-architecture and security posture.
+Keep the polish prompt current with the repository's four-module architecture
+and security posture.
 
 GUIDANCE:
-- Compare the prompt content against the latest repository state, CI configuration, and docs.
-- Tighten wording for clarity while preserving all required constraints, tests, and DX guidance.
-- Flag outdated details and propose replacements with accurate data.
-- Maintain the single cohesive polish focus and ensure the orthogonality rubric remains decisive.
+- Compare the prompt against the latest code layout, CI configuration, and docs.
+- Tighten language for clarity without dropping required constraints, tests, or
+  DX guidance.
+- Flag stale details and supply replacements backed by repository evidence.
+- Preserve the orthogonality rubric so it continues to signal when polish work
+  should preempt new features.
 
 REQUEST:
-1. List concrete improvements the primary prompt needs (structure, data freshness, tone, missing
-   steps).
-2. Provide an updated prompt block that incorporates those improvements while staying copy-paste
-   ready for Codex.
-3. Note any follow-up tasks that require manual confirmation or additional repository work.
+1. List concrete improvements the primary prompt needs (structure, data
+   freshness, tone, missing steps).
+2. Provide an updated prompt block that incorporates those improvements while
+   remaining copy-paste ready for Codex.
+3. Record follow-up tasks that need manual confirmation or extra repository
+   changes.
 
 OUTPUT:
-A short changelog summarizing the recommended edits plus the revised prompt block.
+Return a concise changelog that summarizes the recommended edits and includes
+the revised prompt block.
 ```

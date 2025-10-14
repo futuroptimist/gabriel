@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-import re
 
 import yaml
 
@@ -92,9 +92,7 @@ def validate_policy_document(document: dict[str, Any]) -> PolicyValidationResult
         overlap = allow_commands & deny_commands
         if overlap:
             formatted = ", ".join(sorted(overlap))
-            errors.append(
-                f"Commands present in both allow and deny lists: {formatted}"
-            )
+            errors.append(f"Commands present in both allow and deny lists: {formatted}")
 
     validators = document.get("validators")
     if validators is None:
@@ -138,11 +136,13 @@ def validate_policy_document(document: dict[str, Any]) -> PolicyValidationResult
             if allowed_domains is not None:
                 if not isinstance(allowed_domains, list) or not allowed_domains:
                     errors.append("metadata.allowed_domains must be a non-empty list of domains")
-                elif not all(isinstance(domain, str) and domain.strip() for domain in allowed_domains):
+                elif not all(
+                    isinstance(domain, str) and domain.strip() for domain in allowed_domains
+                ):
                     errors.append("metadata.allowed_domains entries must be non-empty strings")
             ttl = metadata.get("token_ttl_hours")
             if ttl is not None:
-                if not isinstance(ttl, (int, float)):
+                if not isinstance(ttl, int | float):
                     errors.append("metadata.token_ttl_hours must be a number when specified")
                 elif ttl <= 0:
                     errors.append("metadata.token_ttl_hours must be greater than zero")
@@ -153,16 +153,10 @@ def validate_policy_document(document: dict[str, Any]) -> PolicyValidationResult
                         "metadata.extra_allow_commands must be a non-empty list when specified"
                     )
                 elif not all(isinstance(item, str) and item.strip() for item in extra_allow):
-                    errors.append(
-                        "metadata.extra_allow_commands entries must be non-empty strings"
-                    )
+                    errors.append("metadata.extra_allow_commands entries must be non-empty strings")
                 else:
                     missing = sorted(
-                        {
-                            item.strip()
-                            for item in extra_allow
-                            if item.strip() not in allow_commands
-                        }
+                        {item.strip() for item in extra_allow if item.strip() not in allow_commands}
                     )
                     if missing:
                         warnings.append(
@@ -194,9 +188,7 @@ def _validate_command_list(
             errors.append(f"commands.{key}[{index}] must not be empty")
             continue
         if candidate in bucket:
-            errors.append(
-                f"commands.{key} contains duplicate entry '{candidate}'"
-            )
+            errors.append(f"commands.{key} contains duplicate entry '{candidate}'")
             continue
         bucket.add(candidate)
 
@@ -226,7 +218,7 @@ def _is_supported_value(value: Any) -> bool:
 
 
 def validate_policy_file(path: Path | str) -> PolicyValidationResult:
-    """Convenience helper to load and validate a policy at ``path``."""
+    """Load and validate a policy located at ``path``."""
 
     document = load_policy_document(path)
     return validate_policy_document(document)

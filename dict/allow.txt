@@ -325,3 +325,4 @@ hotspots
 mypy
 typosquats
 touchpoints
+detections
