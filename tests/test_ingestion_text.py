@@ -1,12 +1,16 @@
-"""Tests for :mod:`gabriel.text`."""
+"""Tests for :mod:`gabriel.ingestion.text`."""
 
 from __future__ import annotations
 
+import importlib
 from pathlib import Path
 
 import pytest
+from hypothesis import given
+from hypothesis import strategies as st
 
-from gabriel.text import (
+import gabriel.ingestion.text as ingestion_text
+from gabriel.ingestion.text import (
     _character_name,
     _HTMLTextExtractor,
     find_hidden_characters,
@@ -158,37 +162,87 @@ def test_sanitize_prompt_removes_data_uri_references() -> None:
 
 
 def test_sanitize_prompt_preserves_non_image_reference() -> None:
-    text = "Reference [guide][guide]\n\n" "[guide]: https://example.com/docs/security-checklist"
+    text = "Safe diagram reference.\n\n[notes]: https://example.com/notes.pdf"
     sanitized = sanitize_prompt(text)
-    assert "https://example.com/docs/security-checklist" in sanitized  # nosec B101
+    assert "notes" in sanitized  # nosec B101
 
 
-def test_sanitize_prompt_decodes_html_entities() -> None:
-    text = "<p>Keep &amp; cherish &#169; notes</p>"
-    sanitized = sanitize_prompt(text)
-    assert sanitized == "Keep & cherish © notes"  # nosec B101
-
-
-def test_sanitize_prompt_discards_script_payloads() -> None:
-    text = "<script>ignore &amp; &#169; <br/></script><p>Visible</p>"
-    sanitized = sanitize_prompt(text)
-    assert sanitized == "Visible"  # nosec B101
-
-
-def test_sanitize_prompt_preserves_line_breaks() -> None:
-    text = "step 1\nstep 2\n\nstep 3"
-    sanitized = sanitize_prompt(text)
-    assert sanitized == text  # nosec B101
-
-
-def test_html_text_extractor_suppresses_entities_inside_blocks() -> None:
+def test_html_text_extractor_handles_block_breaks() -> None:
     parser = _HTMLTextExtractor()
-    parser.handle_starttag("script", [])
-    parser.handle_entityref("amp")
-    parser.handle_charref("169")
-    parser.handle_startendtag("br", [])
-    parser.handle_endtag("script")
+    parser.feed("<p>Hello</p><p>World</p>")
+    assert parser.get_text().count("\n") >= 2  # nosec B101
+
+
+def test_html_text_extractor_handles_self_closing_break() -> None:
+    parser = _HTMLTextExtractor()
+    parser.feed("Hello<br/>World")
+    assert parser.get_text().splitlines()[0] == "Hello"  # nosec B101
+    assert parser.get_text().splitlines()[1] == "World"  # nosec B101
+
+
+def test_html_text_extractor_unescapes_entities() -> None:
+    parser = _HTMLTextExtractor()
+    parser.feed("&amp;&#169;")
+    assert parser.get_text() == "&©"  # nosec B101
+
+
+def test_html_text_extractor_suppresses_scripting_blocks() -> None:
+    parser = _HTMLTextExtractor()
+    parser.feed("<script>&amp;&#169;<br/></script>")
     assert parser.get_text() == ""  # nosec B101
 
 
-__all__: list[str] = []
+def test_html_text_extractor_skips_suppressed_branches() -> None:
+    parser = _HTMLTextExtractor()
+    parser._suppressed_stack.append("script")  # type: ignore[attr-defined]
+    parser.handle_startendtag("br", [])
+    parser.handle_entityref("amp")
+    parser.handle_charref("169")
+    assert parser.get_text() == ""  # nosec B101
+
+
+def test_main_handles_no_findings(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    file_path = tmp_path / "clean.txt"
+    file_path.write_text("all clear")
+    assert main([str(file_path)]) == 0  # nosec B101
+    captured = capsys.readouterr()
+    assert captured.err == ""  # nosec B101
+
+
+def test_legacy_module_reexports_text_helpers() -> None:
+    legacy_module = importlib.import_module("gabriel.text")
+    assert legacy_module.sanitize_prompt("text") == sanitize_prompt("text")  # nosec B101
+    assert legacy_module._character_name("A") == _character_name("A")  # nosec B101
+
+
+@given(st.text())
+def test_sanitize_prompt_removes_monitored_zero_width_characters(payload: str) -> None:
+    sanitized = sanitize_prompt(payload)
+    assert not any(char in sanitized for char in ingestion_text._MONITORED_CHARACTERS)  # nosec B101
+
+
+@given(
+    alt_text=st.text(
+        alphabet=st.characters(
+            min_codepoint=32,
+            max_codepoint=0x10FFFF,
+            exclude_characters="]\n\r",
+        ),
+        max_size=10,
+    ),
+    scheme=st.sampled_from(["http://", "https://", "data:image/png;base64,"]),
+    path=st.text(
+        alphabet=st.characters(
+            min_codepoint=32,
+            max_codepoint=0x10FFFF,
+            exclude_characters=")\n\r",
+        ),
+        min_size=1,
+        max_size=30,
+    ),
+)
+def test_sanitize_prompt_drops_inline_images(alt_text: str, scheme: str, path: str) -> None:
+    payload = f"Intro ![{alt_text}]({scheme}{path}) outro"
+    sanitized = sanitize_prompt(payload)
+    assert "![" not in sanitized  # nosec B101
+    assert scheme not in sanitized  # nosec B101

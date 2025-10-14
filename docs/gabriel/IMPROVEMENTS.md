@@ -57,7 +57,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Create setup script referenced in `runbook.yml` for developer onboarding
       (`runbook.yml`, `scripts/setup.sh`).
 - [x] Scan for zero-width characters and hidden text via pre-commit hook
-      (`.pre-commit-config.yaml`, `docs/gabriel/THREAT_MODEL.md`, `gabriel/text.py`).
+      (`.pre-commit-config.yaml`, `docs/gabriel/THREAT_MODEL.md`, `gabriel/ingestion/text.py`).
       *Aligns with flywheel best practices.*
 - [ ] Add Jest unit tests for the WebGL viewer (`viewer/viewer.js`).
 - [x] Enforce minimum test coverage in CI using `--cov-fail-under`

@@ -42,7 +42,6 @@ from .selfhosted import (
     audit_syncthing,
     audit_vaultwarden,
 )
-from .text import sanitize_prompt
 from .tokenplace import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
 from .viewer import (
     DEFAULT_HOST,
@@ -51,6 +50,7 @@ from .viewer import (
     serve_viewer,
     start_viewer_server,
 )
+from .ui.text import sanitize_prompt
 
 SUPPORTED_PYTHON_VERSIONS = ("3.10", "3.11")
 

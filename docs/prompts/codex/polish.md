@@ -58,7 +58,7 @@ TESTING:
 - Maintain 100% statement and branch coverage after every move.
 - Add contract tests for phishing heuristics and URL classifiers when migrating
   into `gabriel/analysis` to ensure detections remain stable.
-- Introduce fuzz/property tests for text sanitizers (e.g., `gabriel.text.
+- Introduce fuzz/property tests for text sanitizers (e.g., `gabriel.ingestion.text.
   sanitize_prompt`) to cover HTML/Markdown edge cases and zero-width characters.
 - Extend integration tests that straddle notification boundaries so local secret
   storage vs. token.place relay paths remain explicit and opt-in.
