@@ -29,6 +29,19 @@ The project is organized into four tentative modules:
 
 This modular structure keeps responsibilities clear and allows future extensions like phishing detection or network monitoring. The new phishing heuristics below provide an early look at that roadmap item.
 
+## Map of the repo
+
+Gabriel is migrating toward a four-module layout. The table below highlights the current hotspots and where they will land as we complete the polish plan captured in [docs/prompts/codex/polish.md](docs/prompts/codex/polish.md).
+
+| Path | Current focus | Target module |
+| --- | --- | --- |
+| `gabriel/text.py`, `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
+| `gabriel/phishing.py`, `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
+| `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
+| `viewer/`, `gabriel/viewer.py`, `gabriel/utils.py` | CLI and viewer surfaces | UI |
+
+Shared primitives (cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the boundaries. For a deeper security breakdown, review the [docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md).
+
 ## Getting Started
 
 Gabriel requires Python 3.10 or later. Continuous integration pipelines exercise
@@ -74,11 +87,20 @@ Scan for hidden zero-width characters:
 python -m gabriel.text README.md
 ```
 
+Validate policy guardrails before committing updates to `llm_policy.yaml` or downstream
+overrides:
+
+```bash
+./scripts/validate_policy.py path/to/llm_policy.yaml
+```
+
 Common tasks are available via the `Makefile`:
 
 ```bash
-make lint  # run pre-commit checks
-make test  # run the test suite with coverage
+make lint   # run pre-commit checks
+make test   # run the test suite with coverage
+make spell  # run the spell checker
+make links  # scan documentation links with lychee
 ```
 
 Continuous integration also runs `pre-commit run --all-files` to mirror local hook behavior
@@ -174,8 +196,10 @@ The helper inspects each HTTP(S) link for punycode, suspicious top-level domains
 embedded credentials, plaintext HTTP, IP-based hosts, lookalikes of the supplied
 domains, known URL shorteners that mask the final destination, unusual port usage,
 suspicious executable or archive downloads, redirect parameters that jump to
-external hosts, and domains that nest trusted brands inside attacker-controlled
-registrable domains. Combine it with Gabriel's secret helpers to build secure intake
+external hosts, domains that nest trusted brands inside attacker-controlled
+registrable domains, references to trusted domains buried in paths or query strings,
+and base64-like tokens that often indicate obfuscated redirects or payloads.
+Combine it with Gabriel's secret helpers to build secure intake
 pipelines for inbound phishing reports.
 
 ### Sanitize prompts before execution
@@ -240,6 +264,33 @@ for finding in audit_vaultwarden(config):
 ```
 
 The helper only reports actionable findings so hardened deployments return an empty list.
+
+### Audit Docker daemon hardening
+
+The Docker improvement checklist highlights three controls that frequently slip through
+reviews: running the daemon in [rootless mode](https://docs.docker.com/engine/security/rootless/),
+requiring [Docker Content Trust](https://docs.docker.com/engine/security/trust/), and enabling
+[user namespace remapping](https://docs.docker.com/engine/security/userns-remap/) so container
+root users map to non-root UIDs on the host. Use
+`gabriel.selfhosted.audit_docker_daemon` to flag missing safeguards:
+
+```python
+from gabriel import DockerDaemonConfig, audit_docker_daemon
+
+config = DockerDaemonConfig(
+    rootless_enabled=False,
+    content_trust_required=False,
+    userns_remap_enabled=False,
+)
+
+for finding in audit_docker_daemon(config):
+    print(f"{finding.severity.upper()} — {finding.message}")
+    print(f"Fix: {finding.remediation}\n")
+```
+
+The helper mirrors Gabriel's Docker checklist and keeps feedback focused on actionable
+changes. Hardened daemons with rootless mode, signature enforcement, and user namespace remapping
+return an empty list of findings.
 
 ### Audit Syncthing deployments
 

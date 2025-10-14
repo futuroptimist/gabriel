@@ -1,9 +1,9 @@
 ---
-title: 'Gabriel Codex Prompt'
-slug: 'prompts-codex'
+title: 'Baseline Codex Automation Prompt'
+slug: 'baseline-automation'
 ---
 
-# Codex Automation Prompt
+# Baseline Codex Automation Prompt
 
 This document stores the baseline prompt used when instructing OpenAI Codex (or compatible agents) to contribute to the Gabriel repository. Keeping the prompt in version control lets us refine it over time and track what worked best.
 

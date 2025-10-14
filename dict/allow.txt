@@ -4,6 +4,7 @@ CodeQL
 DEPENDABOT
 Dependabot
 DoS
+DockerDaemonConfig
 ESLint
 JS
 LLM
@@ -42,6 +43,7 @@ js
 macOS
 md
 npm
+namespace
 pipx
 pre
 prettierrc
@@ -128,6 +130,7 @@ PII
 PhotoPrism
 PhotoPrismConfig
 UI
+UIDs
 VPN
 VaultWarden
 WaaS
@@ -152,6 +155,7 @@ overreliance
 photoprism
 unencrypted
 untrusted
+userns
 vaultwarden
 vuln
 Codecov
@@ -315,3 +319,9 @@ allowlisted
 allowlists
 exfiltrate
 hostnames
+
+DX
+hotspots
+mypy
+typosquats
+touchpoints
