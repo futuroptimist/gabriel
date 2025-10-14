@@ -11,7 +11,7 @@ This directory collects example prompts for using an LLM with Gabriel. These pro
 - [Scan Related Repositories](scan-related-repositories.md)
 - [Refresh Related Project Knowledge](refresh-related-project-knowledge.md)
 - [Update Flywheel Risk Model](update-flywheel-risk-model.md)
-- [Polish Codex Prompt](polish.md)
+- [Polish Four-Module Architecture](polish.md)
 
 ## Example: Summarize Security Posture
 
