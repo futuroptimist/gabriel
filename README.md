@@ -38,7 +38,7 @@ prompt](docs/prompts/codex/polish.md).
 
 | Path | Current focus | Target module |
 | --- | --- | --- |
-| `gabriel/text.py`, `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
+| `gabriel/ingestion/text.py` (via `gabriel/text.py` shim), `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
 | `gabriel/phishing.py`, `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
 | `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
 | `viewer/`, `gabriel/viewer.py`, `gabriel/utils.py` | CLI and viewer surfaces | UI |
@@ -80,7 +80,8 @@ pyspelling -c .spellcheck.yaml
 Scan for hidden zero-width characters:
 
 ```bash
-python -m gabriel.text README.md
+python -m gabriel.ingestion.text README.md
+# `python -m gabriel.text README.md` remains available for compatibility.
 ```
 
 Validate policy guardrails before committing updates to `llm_policy.yaml` or downstream
@@ -200,7 +201,7 @@ pipelines for inbound phishing reports.
 
 ### Sanitize prompts before execution
 
-Use `gabriel.text.sanitize_prompt` to strip risky markup from prompts gathered from
+Use `gabriel.ingestion.text.sanitize_prompt` to strip risky markup from prompts gathered from
 untrusted sources. The helper removes HTML tags (including script/style blocks),
 Markdown image embeddings, and zero-width characters before passing text to language
 models. This blocks common prompt-injection tricks that smuggle hostile payloads in

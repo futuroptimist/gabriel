@@ -11,6 +11,7 @@ from .__about__ import (
     __version__,
 )
 from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
+from .ingestion.text import sanitize_prompt
 from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
 from .phishing import (
     PhishingFinding,
@@ -33,7 +34,6 @@ from .selfhosted import (
     audit_syncthing,
     audit_vaultwarden,
 )
-from .text import sanitize_prompt
 from .tokenplace import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
 from .viewer import (
     DEFAULT_HOST,

@@ -120,7 +120,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
 24. **How should I sanitize prompts pulled from external sources?**
 
-    Call `gabriel.text.sanitize_prompt` before handing text to a model. It strips HTML tags,
+    Call `gabriel.ingestion.text.sanitize_prompt` before handing text to a model. It strips HTML tags,
     Markdown image embeddings, and zero-width characters that attackers use for
     prompt-injection payloads. Pair it with `gabriel.prompt_lint` to flag instructions that
     attempt to bypass guardrails.
