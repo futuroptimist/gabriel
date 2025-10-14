@@ -40,6 +40,7 @@ prompt](docs/prompts/codex/polish.md).
 | --- | --- | --- |
 | `gabriel/ingestion/text.py` (via `gabriel/text.py` shim), `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
 | `gabriel/phishing.py`, `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
+| `gabriel/common/` | Cryptography, persistence, and inference adapters | Common services |
 | `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
 | `viewer/`, `gabriel/ui/` (CLI + viewer), `gabriel/utils.py` | CLI and viewer surfaces | UI |
 
@@ -47,7 +48,9 @@ The newly introduced `gabriel/ui/` package now owns the CLI and viewer helpers, 
 `gabriel/utils.py` provides backwards-compatible imports for existing callers. Shared primitives
 (cryptography, persistence, LLM adapters) will consolidate under `gabriel/common` as we carve the
 boundaries. For a deeper security breakdown, review the
-[docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md).
+[docs/gabriel/THREAT_MODEL.md](docs/gabriel/THREAT_MODEL.md). The new
+[docs/gabriel/SECRET_BOUNDARY.md](docs/gabriel/SECRET_BOUNDARY.md) document captures how
+credentials flow between local inference and token.place relaying.
 
 ## Getting Started
 
@@ -140,9 +143,9 @@ print(floordiv(7, 2))  # 3
 print(sqrt(9))  # 3
 ```
 
-The arithmetic helpers now live in `gabriel.arithmetic`, while secret management utilities
-reside in `gabriel.secrets`. Importing from `gabriel` continues to expose both families for
-backwards compatibility.
+The arithmetic helpers now live in `gabriel.arithmetic`, while secret management interfaces
+reside in `gabriel.common`. Importing from `gabriel` continues to expose both families for
+backwards compatibility via the compatibility layer in `gabriel.secrets`.
 
 Run the helpers from the command line (available as `gabriel` or `gabriel-calc`):
 

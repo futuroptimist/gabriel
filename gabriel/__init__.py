@@ -11,7 +11,15 @@ from .__about__ import (
     __version__,
 )
 from .arithmetic import add, divide, floordiv, modulo, multiply, power, sqrt, subtract
-from .ingestion.text import sanitize_prompt
+from .common import (
+    DEFAULT_SECRET_STORE,
+    SECRET_ENV_PREFIX,
+    KeyringSecretStore,
+    SecretStore,
+    _env_secret_key,
+    read_secret_from_input,
+)
+from .ingestion import sanitize_prompt
 from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
 from .phishing import (
     PhishingFinding,
@@ -64,6 +72,12 @@ __all__ = [
     "store_secret",
     "get_secret",
     "delete_secret",
+    "SecretStore",
+    "KeyringSecretStore",
+    "DEFAULT_SECRET_STORE",
+    "SECRET_ENV_PREFIX",
+    "_env_secret_key",
+    "read_secret_from_input",
     "load_notes_from_paths",
     "KnowledgeStore",
     "Note",

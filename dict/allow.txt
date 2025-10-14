@@ -26,6 +26,7 @@ cd
 cli
 configs
 detections
+decrypts
 dev
 dspace
 eslint
@@ -53,6 +54,7 @@ release-drafter
 repo
 repo_manager
 repos
+reviewable
 roadmap
 subcommands
 subprocess

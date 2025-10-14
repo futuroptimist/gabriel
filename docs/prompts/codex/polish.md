@@ -43,6 +43,8 @@ REFACTORS:
   * Define protocols for cryptography (e.g., `KeyManager`, `EnvelopeEncryptor`),
     persistence (`SecretStore`, `KnowledgeRepository`), and LLM adapters
     (`InferenceClient`).
+  * The default secret store now lives in `gabriel/common/secret_store.py` and
+    re-exports compatibility shims through `gabriel/secrets.py`.
   * Move cross-cutting helpers from `gabriel/secrets.py`, `gabriel/tokenplace.py`,
     `gabriel/security/`, and similar modules into the new package. Document that
     feature modules depend on `common`, not on each other.
