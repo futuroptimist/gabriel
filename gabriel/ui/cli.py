@@ -8,7 +8,6 @@ from decimal import Decimal
 from .. import arithmetic
 from .. import secrets as secrets_module
 from ..secrets import delete_secret, get_secret, read_secret_from_input, store_secret
-
 from .viewer import DEFAULT_HOST, DEFAULT_PORT, serve_viewer
 
 SECRET_CMD_STORE = "store"  # nosec B105 - CLI command name  # pragma: allowlist secret
