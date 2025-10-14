@@ -11,8 +11,8 @@ from .interfaces import (
 )
 from .secret_store import (
     DEFAULT_SECRET_STORE,
-    KeyringSecretStore,
     SECRET_ENV_PREFIX,
+    KeyringSecretStore,
     _env_secret_key,
     read_secret_from_input,
 )

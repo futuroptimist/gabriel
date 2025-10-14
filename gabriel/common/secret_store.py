@@ -32,6 +32,7 @@ class KeyringSecretStore(SecretStore):
     """Secret store that prefers ``keyring`` but falls back to environment variables."""
 
     def store(self, service: str, username: str, secret: str, /) -> None:  # noqa: D401
+        """Persist ``secret`` for ``service``/``username`` via keyring or env fallback."""
         try:
             import keyring
         except ImportError:  # pragma: no cover - exercised via unit tests
@@ -40,6 +41,7 @@ class KeyringSecretStore(SecretStore):
             keyring.set_password(service, username, secret)
 
     def retrieve(self, service: str, username: str, /) -> str | None:  # noqa: D401
+        """Return secret for ``service``/``username`` from keyring or env fallback."""
         try:
             import keyring
         except ImportError:  # pragma: no cover - exercised via unit tests
@@ -47,6 +49,7 @@ class KeyringSecretStore(SecretStore):
         return keyring.get_password(service, username)
 
     def delete(self, service: str, username: str, /) -> None:  # noqa: D401
+        """Remove stored secret for ``service``/``username``."""
         try:
             import keyring
         except ImportError:  # pragma: no cover - exercised via unit tests
