@@ -31,6 +31,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
       `.github/workflows/ci.yml`). *Aligns with flywheel best practices.*
 - [x] Prototype phishing detection heuristics for suspicious links
       (`gabriel/phishing.py`, `tests/test_phishing.py`).
+- [x] Provide a recommendation engine that prioritizes audit findings
+      (`gabriel/recommendations.py`, `tests/test_recommendations.py`, `README.md`).
 - [x] Add CodeQL workflow for static application security testing
       (`.github/workflows/codeql.yml`). *Aligns with flywheel best practices.*
 - [x] Create `SECURITY.md` with vulnerability disclosure guidelines
@@ -42,7 +44,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Provide GitHub issue templates for bugs and features
       (`.github/ISSUE_TEMPLATE/bug_report.yml`,
       `.github/ISSUE_TEMPLATE/feature_request.yml`).
-- [ ] Expand Dependabot to monitor GitHub Actions updates (`.github/dependabot.yml`).
+- [x] Expand Dependabot to monitor GitHub Actions updates (`.github/dependabot.yml`).
       *Aligns with flywheel best practices.*
 - [x] Add Release Drafter configuration for automated changelog
       (`.github/release-drafter.yml`, `.github/workflows/release-drafter.yml`).

@@ -24,6 +24,7 @@ backend
 cd
 cli
 configs
+detections
 dev
 dspace
 eslint
@@ -319,10 +320,10 @@ allowlisted
 allowlists
 exfiltrate
 hostnames
-
+RiskTolerance
+func
 DX
 hotspots
 mypy
-typosquats
 touchpoints
-detections
+typosquats
