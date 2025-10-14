@@ -17,10 +17,11 @@ Polish the codebase so it cleanly reflects the four-module architecture while
 preserving security controls and contributor ergonomics.
 
 SNAPSHOT:
-- Detected modules still sit directly under `gabriel/`: `arithmetic.py`,
-  `knowledge.py`, `phishing.py`, `policy.py`, `prompt_lint.py`, `security/`,
-  `secrets.py`, `selfhosted.py`, `text.py`, `tokenplace.py`, `utils.py`, and
-  `viewer.py`.
+- Core heuristics now live in `gabriel/analysis/` (`phishing.py`, `policy.py`,
+  `recommendations.py`) with compatibility shims left in place for
+  downstream callers. Remaining top-level modules include `arithmetic.py`,
+  `knowledge.py`, `prompt_lint.py`, `security/`, `secrets.py`, `selfhosted.py`,
+  `text.py`, `tokenplace.py`, `utils.py`, and `viewer.py`.
 - Python targets: `pyproject.toml` declares `requires-python >= 3.10`; CI runs on
   Python 3.10 and 3.11.
 - CI gates: `ci.yml` (lint + tests), `coverage.yml`, `codeql.yml`, `docs.yml`,

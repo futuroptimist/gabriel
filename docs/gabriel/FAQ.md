@@ -85,7 +85,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
 20. **Does Gabriel include phishing detection yet?**
 
-    A lightweight heuristic scanner in `gabriel.phishing` analyses pasted links for
+    A lightweight heuristic scanner in `gabriel.analysis.phishing` analyses pasted links for
     punycode, suspicious TLDs, HTTP usage, lookalike domains, known URL shorteners,
     unusual ports, redirect parameters that jump to other domains, and attachments with
     risky executable or archive extensions. Extend it with additional rules as the
@@ -127,7 +127,7 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
 25. **Can Gabriel suggest which findings to tackle first?**
 
-    Yes. Pass audit findings to `gabriel.recommendations.generate_recommendations` and
+    Yes. Pass audit findings to `gabriel.analysis.generate_recommendations` and
     optionally include knowledge notes from `gabriel.knowledge.KnowledgeStore`. The helper
     scores each finding, blends in related notes for context, and honors `RiskTolerance`
     preferences so you can down-rank lower-severity items when appropriate.
