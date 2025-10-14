@@ -28,8 +28,8 @@ Source = "https://github.com/futuroptimist/gabriel"
 Issues = "https://github.com/futuroptimist/gabriel/issues"
 
 [project.scripts]
-gabriel = "gabriel.utils:main"
-gabriel-calc = "gabriel.utils:main"
+gabriel = "gabriel.ui.cli:main"
+gabriel-calc = "gabriel.ui.cli:main"
 
 [tool.isort]
 profile = "black"

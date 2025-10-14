@@ -331,4 +331,6 @@ DX
 hotspots
 mypy
 touchpoints
+detections
+ui
 typosquats
