@@ -2,7 +2,9 @@
 
 Gabriel can store tokens or other secrets using the
 [keyring](https://pypi.org/project/keyring/) library. It relies on the
-operating system's credential manager.
+operating system's credential manager and is exposed through the
+`gabriel.common.secret_store.KeyringSecretStore` implementation of the
+`SecretStore` protocol.
 
 ## Example
 
@@ -27,7 +29,8 @@ def delete_token() -> None:
 
 Install `keyring` with `pip install keyring` if it is not already available.
 When the package is missing, Gabriel's ``store_secret``, ``get_secret``, and
-``delete_secret`` helpers gracefully fall back to sanitized environment
+``delete_secret`` helpers (which delegate to the default ``SecretStore`` instance)
+gracefully fall back to sanitized environment
 variables named ``GABRIEL_SECRET_<IDENTIFIER>``. The identifier is derived from
 ``<SERVICE>`` and ``<USERNAME>`` by converting them to uppercase, replacing each
 punctuation character with an underscore, and preserving any trailing
