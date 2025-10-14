@@ -20,13 +20,16 @@ for _name in dir(_target_module):
 del _name
 
 __all__ = getattr(_target_module, "__all__", []) or [
-    name for name in globals()
-    if not name.startswith("__") and name != "_target_module"
+    name for name in globals() if not name.startswith("__") and name != "_target_module"
 ]
 
 del _target_module
 
 if __name__ == "__main__":  # pragma: no cover - legacy CLI compatibility
-    from gabriel.ingestion.text import main as _main
+    from typing import Callable, Optional
 
-    raise SystemExit(_main())
+    _maybe_main: Optional[Callable[[], int]] = globals().get("main")
+    if not callable(_maybe_main):
+        from gabriel.ingestion.text import main as _maybe_main
+
+    raise SystemExit(_maybe_main())
