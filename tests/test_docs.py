@@ -28,5 +28,6 @@ def test_codex_implement_prompt_alias_is_present() -> None:
     prompt_path = ROOT / "docs/prompts/codex/implement.md"
     contents = prompt_path.read_text(encoding="utf-8")
     assert "Implement Mentioned Feature Prompt" in contents  # nosec B101
-    assert "Implement Requested Feature Prompt" in contents  # nosec B101
-    assert "legacy links" in contents  # nosec B101
+    assert (
+        'previously circulated as the "Implement Requested Feature Prompt."' in contents
+    )  # nosec B101
