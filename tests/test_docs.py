@@ -22,3 +22,12 @@ def test_faq_answers_docker_usage() -> None:
 def test_readme_documents_viewer_cli() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "gabriel viewer" in readme  # nosec B101
+
+
+def test_codex_implement_prompt_alias_is_present() -> None:
+    prompt_path = ROOT / "docs/prompts/codex/implement.md"
+    contents = prompt_path.read_text(encoding="utf-8")
+    assert "Implement Mentioned Feature Prompt" in contents  # nosec B101
+    assert (
+        'previously circulated as the "Implement Requested Feature Prompt."' in contents
+    )  # nosec B101

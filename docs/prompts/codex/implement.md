@@ -1,9 +1,12 @@
 ---
-title: 'Implement Requested Feature Prompt'
-slug: 'implement-requested-feature'
+title: 'Implement Mentioned Feature Prompt'
+slug: 'codex-implement'
 ---
 
-# Implement Requested Feature Prompt
+# Implement Mentioned Feature Prompt
+
+> **Note:** This prompt previously circulated as the "Implement Requested Feature Prompt."
+> The content remains unchanged; only the file name has been updated.
 
 Type: evergreen · One-click: yes
 
@@ -45,7 +48,7 @@ include the diff in a fenced block.
 
 Type: evergreen
 
-Use this prompt to refine the Implement Requested Feature prompt.
+Use this prompt to refine the Implement Mentioned Feature prompt.
 
 ```text
 SYSTEM:
@@ -55,7 +58,7 @@ Ensure `pre-commit run --all-files` and `pytest --cov=gabriel --cov-report=term-
 pass before committing.
 
 USER:
-1. Review `docs/prompts/codex/implement-requested-feature.md` for accuracy and clarity.
+1. Review this prompt for accuracy and clarity.
 2. Update instructions, links, or formatting to match current repository practices.
 3. Verify examples and command references remain valid.
 4. Update related prompt indexes (e.g., docs/prompts/codex/README.md) if the summary changes.
