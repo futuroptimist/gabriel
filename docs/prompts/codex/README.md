@@ -8,6 +8,7 @@ This directory collects example prompts for using an LLM with Gabriel. These pro
 - [Scan for Bright and Dark Patterns](scan-bright-dark-patterns.md)
 - [Generate Improvement Checklist Items](generate-improvement-checklists.md)
 - [Implement Requested Feature](implement-requested-feature.md)
+- [Implement Mentioned Feature](implement.md) *(legacy alias maintained for existing links)*
 - [Scan Related Repositories](scan-related-repositories.md)
 - [Refresh Related Project Knowledge](refresh-related-project-knowledge.md)
 - [Update Flywheel Risk Model](update-flywheel-risk-model.md)
