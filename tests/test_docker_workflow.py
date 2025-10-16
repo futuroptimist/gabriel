@@ -42,8 +42,7 @@ def test_docker_workflow_targets_multi_architectures(docker_workflow_path: Path)
     build_steps = [
         step
         for step in steps
-        if isinstance(step, dict)
-        and step.get("uses", "").startswith("docker/build-push-action@")
+        if isinstance(step, dict) and step.get("uses", "").startswith("docker/build-push-action@")
     ]
     assert build_steps, "Docker workflow must invoke docker/build-push-action"  # nosec B101
 
@@ -51,4 +50,6 @@ def test_docker_workflow_targets_multi_architectures(docker_workflow_path: Path)
     platforms = _normalize_platforms(build_step.get("with", {}).get("platforms"))
     expected = {"linux/amd64", "linux/arm64"}
     missing = sorted(expected.difference(platforms))
-    assert not missing, f"Docker build should target multi-arch platforms, missing: {missing}"  # nosec B101
+    assert (
+        not missing
+    ), f"Docker build should target multi-arch platforms, missing: {missing}"  # nosec B101
