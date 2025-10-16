@@ -53,7 +53,8 @@ See [related/pr-reaper/IMPROVEMENTS.md](related/pr-reaper/IMPROVEMENTS.md).
 
 ## jobbot3000
 
-See [related/jobbot3000/IMPROVEMENTS.md](related/jobbot3000/IMPROVEMENTS.md).
+See [related/jobbot3000/IMPROVEMENTS.md](related/jobbot3000/IMPROVEMENTS.md) and the
+[polish snapshot plan](related/jobbot3000/POLISH_PLAN.md).
 
 ## Docker
 
