@@ -6,47 +6,47 @@ const start = document.getElementById('start');
 let nodes = [];
 
 mv.addEventListener('load', () => {
-  const scene = mv.model?.scene;
-  if (!scene) return;
-  nodes = scene.children;
-  legend.innerHTML = '';
-  nodes.forEach((n, i) => {
-    const li = document.createElement('li');
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.textContent = n.name || `part-${i}`;
-    btn.addEventListener('click', () => {
-      if (li.classList.toggle('hidden')) {
-        n.visible = false;
-      } else {
-        const solo = legend.querySelector('.solo');
-        if (solo && solo !== li) {
-          nodes.forEach((m) => (m.visible = true));
-          solo.classList.remove('solo');
-        }
-        if (li.classList.toggle('solo')) {
-          nodes.forEach((m, j) => (m.visible = j === i));
-        } else {
-          nodes.forEach((m) => (m.visible = true));
-        }
-      }
+    const scene = mv.model?.scene;
+    if (!scene) return;
+    nodes = scene.children;
+    legend.innerHTML = '';
+    nodes.forEach((n, i) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = n.name || `part-${i}`;
+        btn.addEventListener('click', () => {
+            if (li.classList.toggle('hidden')) {
+                n.visible = false;
+            } else {
+                const solo = legend.querySelector('.solo');
+                if (solo && solo !== li) {
+                    nodes.forEach((m) => (m.visible = true));
+                    solo.classList.remove('solo');
+                }
+                if (li.classList.toggle('solo')) {
+                    nodes.forEach((m, j) => (m.visible = j === i));
+                } else {
+                    nodes.forEach((m) => (m.visible = true));
+                }
+            }
+        });
+        li.appendChild(btn);
+        legend.appendChild(li);
     });
-    li.appendChild(btn);
-    legend.appendChild(li);
-  });
 });
 
 explode.addEventListener('input', () => {
-  const f = parseFloat(explode.value);
-  nodes.forEach((n, i) => {
-    n.position.z = i * f * 10;
-  });
+    const f = parseFloat(explode.value);
+    nodes.forEach((n, i) => {
+        n.position.z = i * f * 10;
+    });
 });
 
 dark.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
+    document.body.classList.toggle('dark');
 });
 
 start.addEventListener('click', () => {
-  mv.play();
+    mv.play();
 });

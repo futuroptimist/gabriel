@@ -21,7 +21,8 @@ SNAPSHOT:
   `recommendations.py`) with compatibility shims left in place for
   downstream callers. Remaining top-level modules include `arithmetic.py`,
   `knowledge.py`, `prompt_lint.py`, `security/`, `secrets.py`, `selfhosted.py`,
-  `text.py`, `tokenplace.py`, `utils.py`, and `viewer.py`.
+  `text.py`, `utils.py`, and `viewer.py` (compatibility shim). Notification
+  adapters now reside in `gabriel/notify/`.
 - Python targets: `pyproject.toml` declares `requires-python >= 3.10`; CI runs on
   Python 3.10 and 3.11.
 - CI gates: `ci.yml` (lint + tests), `coverage.yml`, `codeql.yml`, `docs.yml`,
@@ -46,7 +47,7 @@ REFACTORS:
     (`InferenceClient`).
   * The default secret store now lives in `gabriel/common/secret_store.py` and
     re-exports compatibility shims through `gabriel/secrets.py`.
-  * Move cross-cutting helpers from `gabriel/secrets.py`, `gabriel/tokenplace.py`,
+  * Move cross-cutting helpers from `gabriel/secrets.py`, `gabriel/notify/tokenplace.py`,
     `gabriel/security/`, and similar modules into the new package. Document that
     feature modules depend on `common`, not on each other.
   * Publish factory functions and registries that keep runtime swaps ergonomic

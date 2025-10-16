@@ -1,152 +1,34 @@
-"""Helpers for interacting with a local token.place relay."""
+"""Compatibility shims for the token.place relay adapters.
+
+This module preserves the historical ``gabriel.tokenplace`` import path while the
+notification adapters finish migrating into :mod:`gabriel.notify`. Downstream
+callers should prefer :mod:`gabriel.notify.tokenplace` going forward.
+"""
 
 from __future__ import annotations
 
-import json
-import logging
-import urllib.error
-import urllib.request
-from dataclasses import dataclass, field
-from functools import lru_cache
-from typing import Any
-from urllib.parse import urljoin, urlparse
+from warnings import warn
 
-from gabriel.security.policies import EgressControlPolicy
+from gabriel.notify.tokenplace import (  # noqa: F401 - re-exported API surface
+    TokenPlaceClient,
+    TokenPlaceCompletion,
+    TokenPlaceError,
+    _load_egress_policy,
+    _reset_egress_policy_cache,
+)
+from gabriel.security.policies import EgressControlPolicy  # noqa: F401 - shim export
 
-logger = logging.getLogger(__name__)
-
-
-@lru_cache(maxsize=1)
-def _load_egress_policy() -> EgressControlPolicy:
-    """Return the cached egress policy, initialising it on first use."""
-
-    return EgressControlPolicy.from_env()
-
-
-def _reset_egress_policy_cache() -> None:
-    """Clear the cached egress policy (intended for tests)."""
-
-    _load_egress_policy.cache_clear()
-
-
-class TokenPlaceError(RuntimeError):
-    """Raised when token.place returns an error or unexpected payload."""
-
-
-@dataclass(frozen=True, slots=True)
-class TokenPlaceCompletion:
-    """Represents a successful completion returned by token.place."""
-
-    text: str
-    model: str
-    usage: dict[str, Any]
-    raw: dict[str, Any]
-
-
-@dataclass(slots=True)
-class TokenPlaceClient:
-    """Small HTTP client for the token.place relay API."""
-
-    base_url: str
-    api_key: str | None = None
-    timeout: float = 10.0
-    _base_url: str = field(init=False, repr=False)
-
-    def __post_init__(self) -> None:
-        """Validate and normalize the configured base URL."""
-        parsed = urlparse(self.base_url)
-        if not parsed.scheme or not parsed.netloc:
-            raise ValueError("base_url must include scheme and host, e.g. https://relay.local")
-        normalized = self.base_url.rstrip("/") + "/"
-        object.__setattr__(self, "_base_url", normalized)
-
-    def infer(
-        self,
-        prompt: str,
-        *,
-        model: str | None = None,
-        temperature: float | None = None,
-        metadata: dict[str, Any] | None = None,
-    ) -> TokenPlaceCompletion:
-        """Send ``prompt`` to token.place and return the resulting completion."""
-        payload: dict[str, Any] = {"prompt": prompt}
-        if model is not None:
-            payload["model"] = model
-        if temperature is not None:
-            payload["temperature"] = temperature
-        if metadata:
-            payload["metadata"] = metadata
-
-        response = self._request("POST", "v1/infer", payload)
-        if not isinstance(response, dict):
-            raise TokenPlaceError("token.place returned an unexpected payload")
-
-        text = response.get("text") or response.get("response")
-        if not isinstance(text, str) or not text:
-            raise TokenPlaceError("token.place response did not include generated text")
-
-        model_name = response.get("model")
-        if not isinstance(model_name, str) or not model_name:
-            model_name = model or "unknown"
-
-        usage_raw = response.get("usage")
-        usage: dict[str, Any]
-        if isinstance(usage_raw, dict):
-            usage = dict(usage_raw)
-        else:
-            usage = {}
-
-        return TokenPlaceCompletion(text=text, model=model_name, usage=usage, raw=response)
-
-    def check_health(self) -> bool:
-        """Return ``True`` if the relay reports an OK status."""
-        response = self._request("GET", "v1/health")
-        if not isinstance(response, dict):
-            return False
-        status = response.get("status")
-        return isinstance(status, str) and status.lower() == "ok"
-
-    def _request(self, method: str, path: str, payload: dict[str, Any] | None = None) -> Any:
-        url = urljoin(self._base_url, path)
-        _load_egress_policy().validate_request(url)
-        data: bytes | None = None
-        headers = {"Accept": "application/json"}
-        if payload is not None:
-            data = json.dumps(payload).encode("utf-8")
-            headers["Content-Type"] = "application/json"
-        if self.api_key:
-            headers["Authorization"] = f"Bearer {self.api_key}"
-
-        request = urllib.request.Request(url, data=data, method=method, headers=headers)
-        try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:  # nosec B310
-                status = getattr(response, "status", response.getcode())
-                body = response.read()
-        except (
-            urllib.error.HTTPError
-        ) as exc:  # pragma: no cover - error path exercised via URLError
-            detail = exc.read().decode("utf-8", "replace").strip()
-            message = f"token.place responded with HTTP {exc.code}: {detail}"
-            raise TokenPlaceError(message) from exc
-        except urllib.error.URLError as exc:  # pragma: no cover - network failure path
-            message = f"Failed to reach token.place at {url}: {exc.reason}"
-            raise TokenPlaceError(message) from exc
-
-        if status >= 400:
-            body_preview = body.decode("utf-8", "replace").strip()
-            raise TokenPlaceError(f"token.place responded with HTTP {status}: {body_preview}")
-
-        if not body:
-            return {}
-
-        try:
-            return json.loads(body.decode("utf-8"))
-        except json.JSONDecodeError as exc:
-            raise TokenPlaceError("token.place returned invalid JSON") from exc
-
+warn(
+    "`gabriel.tokenplace` is deprecated; import from `gabriel.notify.tokenplace` instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 __all__ = [
     "TokenPlaceClient",
     "TokenPlaceCompletion",
     "TokenPlaceError",
+    "EgressControlPolicy",
+    "_load_egress_policy",
+    "_reset_egress_policy_cache",
 ]

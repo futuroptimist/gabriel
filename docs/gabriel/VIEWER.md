@@ -46,6 +46,16 @@ object exposes a `url()` helper and shuts down cleanly when leaving the context 
 These utilities keep the viewer experience entirely local and make it straightforward to integrate
 with other automation, CI checks, or manual demos.
 
+## Formatting viewer assets
+
+Viewer JavaScript and HTML files are auto-formatted with Prettier via pre-commit. Run
+
+```bash
+npx prettier --write viewer/index.html viewer/viewer.js
+```
+
+before committing manual edits so local changes align with the repository style.
+
 ## Testing
 
 Use the Jest suite to exercise viewer interactions in a headless DOM:
