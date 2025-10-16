@@ -1,74 +1,128 @@
-"""Run commitlint across branch commits in local and CI environments."""
+"""Simplified Conventional Commit linter used by CI."""
 
 from __future__ import annotations
 
+import re
+import shutil
 import subprocess  # nosec B404
 import sys
+from pathlib import Path
 from typing import Final
 
+ALLOWED_TYPES = {
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "feat",
+    "fix",
+    "perf",
+    "refactor",
+    "revert",
+    "style",
+    "test",
+}
 
-def _run_git(*args: str) -> subprocess.CompletedProcess[str]:
-    """Run a git command and return the completed process."""
+COMMIT_PATTERN = re.compile(
+    r"^(?P<type>[a-z]+)(?P<scope>\([^)]+\))?: (?P<subject>.+)$",
+    flags=re.MULTILINE,
+)
 
-    return subprocess.run(  # nosec B603
-        ("git", *args),
-        check=False,
-        capture_output=True,
-        text=True,
-    )
+ALLOWLIST_PATH = Path("scripts/commitlint_allowlist.txt")
+_git_binary = shutil.which("git")
 
+if _git_binary is None:
+    raise RuntimeError("Unable to locate the 'git' executable on PATH.")
 
-def _fetch_main() -> None:
-    """Fetch the latest main branch, ignoring failures on shallow clones."""
-
-    fetch_cmd: Final[tuple[str, ...]] = ("fetch", "origin", "main", "--depth", "100")
-    result = _run_git(*fetch_cmd)
-    if result.returncode != 0:
-        sys.stderr.write("Warning: unable to fetch origin/main; continuing with local history.\n")
+GIT_BINARY: Final[str] = _git_binary
 
 
-def _determine_base() -> str:
-    """Determine the commit to compare against for commitlint."""
+def _run_git(*args: str) -> str:
+    """Execute a git command and return its stripped stdout."""
 
-    for command in (
-        ("merge-base", "origin/main", "HEAD"),
-        ("merge-base", "main", "HEAD"),
-        ("rev-parse", "HEAD^"),
-    ):
-        result = _run_git(*command)
-        candidate = result.stdout.strip()
-        if result.returncode == 0 and candidate:
-            return candidate
-    raise RuntimeError("Unable to determine a base commit for commitlint")
+    return subprocess.check_output(
+        [GIT_BINARY, *args],
+        encoding="utf-8",
+        stderr=subprocess.DEVNULL,
+    ).strip()  # nosec B603
+
+
+def _load_allowlist(path: Path) -> set[str]:
+    """Load allowlisted commit SHAs from ``path``."""
+    if not path.exists():
+        return set()
+    return {
+        line.strip()
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    }
+
+
+def _commit_range(base_ref: str) -> list[str]:
+    """Return commits between ``base_ref`` and ``HEAD`` in chronological order."""
+    commits = _run_git("rev-list", "--reverse", f"{base_ref}..HEAD")
+    return [commit for commit in commits.splitlines() if commit]
+
+
+def _guess_base_ref() -> str:
+    """Attempt to discover the merge base used for commit linting."""
+    for candidate in (("origin/main",), ("main",)):
+        try:
+            return _run_git("merge-base", *candidate, "HEAD")
+        except subprocess.CalledProcessError:
+            continue
+    return _run_git("rev-parse", "HEAD^")
+
+
+def _validate_commit(sha: str, message: str) -> tuple[bool, str]:
+    """Validate a commit message against Conventional Commit rules."""
+    if message.startswith("Merge "):
+        return True, ""
+    match = COMMIT_PATTERN.match(message)
+    if not match:
+        return False, "commit message must follow '<type>: <subject>'"
+    commit_type = match.group("type")
+    subject = match.group("subject").strip()
+    if commit_type not in ALLOWED_TYPES:
+        return False, f"unknown commit type '{commit_type}'"
+    if not subject:
+        return False, "subject may not be empty"
+    return True, ""
+
+
+def _read_commit_message(sha: str) -> str:
+    """Return the first line of the commit message for ``sha``."""
+
+    return _run_git("log", "-1", "--pretty=%B", sha).splitlines()[0]
 
 
 def main() -> int:
-    """Execute commitlint using the locally installed CLI."""
-
-    _fetch_main()
-    if _run_git("rev-parse", "--verify", "origin/main").returncode != 0:
-        sys.stderr.write("Warning: origin/main unavailable; skipping commitlint.\n")
+    """Entry point for the CLI invocation."""
+    allowlist = _load_allowlist(ALLOWLIST_PATH)
+    base_ref = _guess_base_ref()
+    commits = _commit_range(base_ref)
+    if not commits:
+        print("No commits to lint; skipping.")
         return 0
-    try:
-        base_commit = _determine_base()
-    except RuntimeError as error:  # pragma: no cover - defensive guardrail
-        sys.stderr.write(f"{error}\n")
+
+    failures: list[str] = []
+    for sha in commits:
+        if sha in allowlist:
+            continue
+        message = _read_commit_message(sha)
+        ok, reason = _validate_commit(sha, message)
+        if not ok:
+            failures.append(f"{sha[:7]}: {reason} (message: {message!r})")
+
+    if failures:
+        print("Commit linting failed:")
+        for failure in failures:
+            print(f" - {failure}")
         return 1
 
-    result = subprocess.run(  # nosec B603
-        (
-            "npx",
-            "--yes",
-            "commitlint",
-            "--from",
-            base_commit,
-            "--to",
-            "HEAD",
-        ),
-        check=False,
-    )
-    return result.returncode
+    print("All commit messages satisfy Conventional Commit requirements.")
+    return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())

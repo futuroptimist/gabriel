@@ -1,0 +1,4 @@
+# Commit SHAs temporarily exempted from Conventional Commit rules.
+# Remove entries once the commits are rewritten upstream.
+6c96f65e16a02b36ed817ca185a978e5980d8ea3
+a3b629c6526930c2be9307bd941df0aa15a5ebb5

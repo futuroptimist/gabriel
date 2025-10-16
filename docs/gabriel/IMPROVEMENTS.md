@@ -75,7 +75,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`gabriel/utils.py`, `tests/test_utils.py`). *Aligns with flywheel best practices.*
 - [x] Use `decimal.Decimal` in arithmetic helpers to improve precision
       (`gabriel/utils.py`, `tests/test_utils.py`).
-- [ ] Enable multi-architecture Docker builds for `amd64` and `arm64`
+- [x] Enable multi-architecture Docker builds for `amd64` and `arm64`
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
 - [x] Run `pre-commit` hooks in CI to ensure local and CI checks match
       (`.github/workflows/ci.yml`, `.pre-commit-config.yaml`). *Aligns with flywheel best practices.*

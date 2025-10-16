@@ -506,6 +506,15 @@ repository checkout; dependencies are installed within the container.
 docker build -t gabriel .
 ```
 
+The GitHub Actions workflow publishes a multi-architecture image for
+`linux/amd64` and `linux/arm64`, so `docker pull ghcr.io/futuroptimist/gabriel:latest`
+works on modern Intel/AMD and Apple Silicon hosts without additional flags. To
+test other architectures locally, pass the desired platform to Buildx:
+
+```bash
+docker buildx build --platform linux/arm64 -t gabriel:arm64 .
+```
+
 Pass `--build-arg PYTHON_VERSION=3.11` to experiment with alternate Python releases that remain
 supported by the Docker base image.
 
