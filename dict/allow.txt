@@ -273,6 +273,7 @@ Misbuilt
 deployable
 TODOs
 docstrings
+commitlint
 alice
 scrollback
 stdin

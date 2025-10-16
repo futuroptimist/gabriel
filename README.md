@@ -117,6 +117,17 @@ make spell  # run the spell checker
 make links  # scan documentation links with lychee
 ```
 
+### Commit message conventions
+
+Gabriel enforces [Conventional Commits](https://www.conventionalcommits.org/)
+using `commitlint`. The commit message hook installs automatically when you run
+`./scripts/setup.sh`, and CI runs `npm run lint:commits` to validate the branch
+history. You can invoke the same check locally before pushing changes:
+
+```bash
+npm run lint:commits
+```
+
 Continuous integration also runs `pre-commit run --all-files` to mirror local hook behavior
 and catch formatting or security regressions before merge. Dependency installation is
 cached across the CI matrix so lint, test, and docs pipelines reuse previously resolved

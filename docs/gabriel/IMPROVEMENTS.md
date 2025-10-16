@@ -127,8 +127,10 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Document usage and setup steps for the WebGL viewer
       (`README.md`, `docs/gabriel/VIEWER.md`, `Makefile`).
       *Aligns with flywheel best practices.*
-- [ ] Integrate `commitlint` to enforce Conventional Commits
-      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
+- [x] Integrate `commitlint` to enforce Conventional Commits
+      (`commitlint.config.cjs`, `.pre-commit-config.yaml`,
+      `.github/workflows/ci.yml`, `package.json`,
+      `scripts/run_commitlint.py`).
       *Aligns with flywheel best practices.*
 - [x] Add `.editorconfig` for consistent editor formatting
       (`.editorconfig`). *Aligns with flywheel best practices.*
