@@ -513,7 +513,8 @@ Passing `--no-browser` skips automatically launching the system browser. See
 [`docs/gabriel/VIEWER.md`](docs/gabriel/VIEWER.md) for additional automation tips.
 The `make preview` target runs the same helper with default settings. Viewer scripts
 are linted with ESLint via pre-commit; run `npx eslint viewer/viewer.js` when iterating
-on WebGL logic.
+on WebGL logic. Prettier also formats the HTML and JavaScript sources; apply fixes with
+`npx prettier --write viewer/index.html viewer/viewer.js` before committing changes.
 
 ## Tracked Repositories
 

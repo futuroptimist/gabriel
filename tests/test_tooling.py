@@ -79,6 +79,14 @@ def test_pre_commit_configuration_runs_eslint_for_viewer() -> None:
     assert "viewer/(?!model-viewer" in config  # nosec B101
 
 
+def test_pre_commit_configuration_runs_prettier_for_viewer() -> None:
+    """Ensure viewer assets are formatted consistently via Prettier."""
+
+    config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
+    assert "https://github.com/pre-commit/mirrors-prettier" in config  # nosec B101
+    assert "Prettier viewer assets" in config  # nosec B101
+
+
 def test_eslint_configuration_targets_browser_scripts() -> None:
     """Verify the ESLint configuration supports modern browser code."""
 
