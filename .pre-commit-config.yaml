@@ -82,19 +82,17 @@ repos:
     hooks:
       - id: trufflehog-scan
         name: TruffleHog secret scan
-        entry: trufflehog
+        entry: python scripts/run_trufflehog_precommit.py
         language: python
         additional_dependencies:
           - trufflehog==2.2.1
         pass_filenames: false
         args:
+          - --
           - --entropy=False
           - --regex
           - --max_depth
           - "1"
-          - --since_commit
-          - HEAD
-          - .
       - id: markdown-link-check
         name: Markdown link checker
         entry: python scripts/run_lychee.py
