@@ -87,6 +87,25 @@ def test_pre_commit_configuration_runs_prettier_for_viewer() -> None:
     assert "Prettier viewer assets" in config  # nosec B101
 
 
+def test_commitlint_configured_across_tooling() -> None:
+    """Ensure commitlint enforces Conventional Commits locally and in CI."""
+
+    config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
+    assert "commitlint --edit" in config  # nosec B101
+    assert "stages: [commit-msg]" in config  # nosec B101
+
+    config_path = Path("commitlint.config.cjs")
+    assert config_path.exists(), "Expected commitlint.config.cjs to exist"  # nosec B101
+
+    package = json.loads(Path("package.json").read_text(encoding="utf-8"))
+    assert package["scripts"]["lint:commits"] == "python scripts/run_commitlint.py"  # nosec B101
+    assert "@commitlint/cli" in package["devDependencies"]  # nosec B101
+    assert "@commitlint/config-conventional" in package["devDependencies"]  # nosec B101
+
+    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    assert "npm run lint:commits" in workflow  # nosec B101
+
+
 def test_eslint_configuration_targets_browser_scripts() -> None:
     """Verify the ESLint configuration supports modern browser code."""
 

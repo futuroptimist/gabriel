@@ -119,3 +119,11 @@ repos:
         language: system
         types: [text]
         require_serial: true
+      - id: commitlint
+        name: commitlint (Conventional Commits)
+        entry: commitlint --edit
+        language: node
+        stages: [commit-msg]
+        additional_dependencies:
+          - "@commitlint/cli@18.6.1"
+          - "@commitlint/config-conventional@18.6.1"
