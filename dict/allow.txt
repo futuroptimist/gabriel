@@ -338,3 +338,7 @@ ui
 typosquats
 DOM
 JSDOM
+amd64
+arm64
+Buildx
+multi-architecture
