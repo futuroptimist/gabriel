@@ -8,7 +8,7 @@ import subprocess  # nosec B404
 import sys
 import tempfile
 from collections.abc import Sequence
-
+from typing import Any
 
 GIT_EXECUTABLE = shutil.which("git") or "git"
 
@@ -19,7 +19,7 @@ def run_git(
     cwd: str | None = None,
     capture_output: bool = False,
     text: bool = True,
-    **kwargs: object,
+    **kwargs: Any,
 ) -> subprocess.CompletedProcess[str]:
     """Execute a git command and return the completed process."""
 
@@ -52,22 +52,25 @@ def _prepare_snapshot_repo(repo_root: str) -> tuple[tempfile.TemporaryDirectory[
     temp_dir = tempfile.TemporaryDirectory()
     prefix = f"{temp_dir.name}/"
     run_git(["checkout-index", "--all", f"--prefix={prefix}"], cwd=repo_root)
-    run_git(["init"], cwd=temp_dir.name, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=False)
+    run_git(["init"], cwd=temp_dir.name, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     run_git(
         ["config", "user.name", "trufflehog-pre-commit"],
         cwd=temp_dir.name,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
-        text=False,
     )
     run_git(
         ["config", "user.email", "trufflehog-pre-commit@example.com"],
         cwd=temp_dir.name,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
-        text=False,
     )
-    run_git(["add", "--all"], cwd=temp_dir.name, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=False)
+    run_git(
+        ["add", "--all"],
+        cwd=temp_dir.name,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
     status = run_git(
         ["status", "--porcelain"],
