@@ -41,7 +41,7 @@ prompt](docs/prompts/codex/polish.md).
 | `gabriel/ingestion/text.py` (via `gabriel/text.py` shim), `gabriel/knowledge.py` | Scrape, normalize, and store local evidence | Ingestion |
 | `gabriel/analysis/` (`phishing.py`, `policy.py`, `recommendations.py`), `gabriel/security/` | Heuristics, classifiers, and risk scoring | Analysis |
 | `gabriel/common/` | Cryptography, persistence, and inference adapters | Common services |
-| `gabriel/secrets.py`, `gabriel/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
+| `gabriel/secrets.py`, `gabriel/notify/tokenplace.py` | Alerts, encrypted delivery, and relay hooks | Notification |
 | `viewer/`, `gabriel/ui/` (CLI + viewer), `gabriel/utils.py` | CLI and viewer surfaces | UI |
 
 The `gabriel/analysis/` package now aggregates phishing heuristics, policy validation, and

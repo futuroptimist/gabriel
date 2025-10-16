@@ -6,7 +6,7 @@ from urllib import request
 
 import pytest
 
-from gabriel.tokenplace import TokenPlaceClient, TokenPlaceError
+from gabriel.notify.tokenplace import TokenPlaceClient, TokenPlaceError
 
 
 class DummyResponse:
