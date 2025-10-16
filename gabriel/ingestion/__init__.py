@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from .git import CommitRecord, RepositoryCommits, collect_repository_commits
 from .text import (
     HiddenCharacter,
     _character_name,
@@ -17,6 +18,9 @@ from .text import (
 )
 
 __all__ = [
+    "CommitRecord",
+    "RepositoryCommits",
+    "collect_repository_commits",
     "HiddenCharacter",
     "_HTMLTextExtractor",
     "_character_name",

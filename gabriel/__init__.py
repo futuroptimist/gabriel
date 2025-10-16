@@ -33,7 +33,12 @@ from .common import (
     _env_secret_key,
     read_secret_from_input,
 )
-from .ingestion import sanitize_prompt
+from .ingestion import (
+    CommitRecord,
+    RepositoryCommits,
+    collect_repository_commits,
+    sanitize_prompt,
+)
 from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
 from .secrets import delete_secret, get_secret, store_secret
 from .selfhosted import (
@@ -117,6 +122,9 @@ __all__ = [
     "TokenPlaceCompletion",
     "TokenPlaceError",
     "sanitize_prompt",
+    "collect_repository_commits",
+    "RepositoryCommits",
+    "CommitRecord",
     "SUPPORTED_PYTHON_VERSIONS",
     "serve_viewer",
     "start_viewer_server",

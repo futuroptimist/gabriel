@@ -52,7 +52,10 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
 13. **What new flywheel features require extra caution?**
 
-    The `crawl` subcommand now collects commit data across repositories. Use read-only tokens and avoid scanning private repos without permission.
+    The `crawl` subcommand now collects commit data across repositories. Run commands
+    such as ``gabriel crawl ../token.place ../sigma --limit 10 --redact-emails`` to
+    produce JSON summaries of recent commits. Use read-only tokens and avoid scanning
+    private repos without permission.
 
 14. **What improvements are recommended for token.place integration?**
 

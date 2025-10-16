@@ -25,7 +25,7 @@ Gabriel aims to act as a privacy-first assistant that helps users maintain situa
 - Limit logs to debug-level messages and strip sensitive data before writing.
 - Prefer offline models or encrypted inference when possible.
 - Use pre-commit hooks and CI checks to block risky automated changes.
-- Restrict cross-repo crawl tokens to read-only scope and sanitize output.
+- Restrict cross-repo crawl tokens used by `gabriel crawl` or similar utilities to read-only scope and sanitize output.
 - Treat third-party code and docs as untrusted and review for hidden prompts or commands.
 - Employ the `gabriel.ingestion.text` scanner (pre-commit hook) to detect zero-width characters or other concealed text.
 - Grant automated agents least privilege and require human review before executing their suggestions.
