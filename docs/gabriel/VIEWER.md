@@ -45,3 +45,15 @@ object exposes a `url()` helper and shuts down cleanly when leaving the context 
 
 These utilities keep the viewer experience entirely local and make it straightforward to integrate
 with other automation, CI checks, or manual demos.
+
+## Testing
+
+Use the Jest suite to exercise viewer interactions in a headless DOM:
+
+```bash
+npm ci
+npm run test:ci
+```
+
+The tests load `viewer.js` inside JSDOM, dispatch model events, and verify legend toggles,
+explode offsets, and theme switches to catch regressions before shipping new assets.

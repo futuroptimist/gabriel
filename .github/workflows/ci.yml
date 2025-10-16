@@ -30,6 +30,16 @@ jobs:
         run: |
           uv pip install --system -r requirements.txt
           uv pip install --system bandit flake8 ruff pre-commit
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Run viewer lint
+        run: npm run lint
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure
       - name: Run Ruff

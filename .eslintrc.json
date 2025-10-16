@@ -8,5 +8,17 @@
   "parserOptions": {
     "ecmaVersion": 2021,
     "sourceType": "module"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["viewer/__tests__/**/*.js"],
+      "env": {
+        "jest": true,
+        "node": true
+      },
+      "parserOptions": {
+        "sourceType": "script"
+      }
+    }
+  ]
 }
