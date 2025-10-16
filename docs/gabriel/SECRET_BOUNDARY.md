@@ -18,7 +18,7 @@ and is the safest choice when network egress must be avoided.
 ## Token.place relay
 
 Token.place relaying allows Gabriel to delegate inference to a hardened remote enclave. The
-`gabriel/tokenplace.py` adapter encrypts prompts before transmission and decrypts responses once
+`gabriel/notify/tokenplace.py` adapter encrypts prompts before transmission and decrypts responses once
 returned. Encryption keys are delivered through the `KeyManager` and `EnvelopeEncryptor` protocols
 in `gabriel/common`, keeping the integration decoupled from the feature modules. Secrets required to
 authenticate with token.place are stored using the same `SecretStore` instance, making it obvious
@@ -36,7 +36,7 @@ would skip validation hooks that enforce encryption and audit logging.
 Only the following modules are permitted to work with plaintext secrets:
 
 - `gabriel/common/secret_store.py` and its re-exports in `gabriel/secrets.py`
-- `gabriel/tokenplace.py` when preparing encrypted payloads
+- `gabriel/notify/tokenplace.py` when preparing encrypted payloads
 - Persistence adapters that implement the `SecretStore` protocol for sanctioned backends
 
 Feature modules in `gabriel/ingestion`, `gabriel/analysis`, and `gabriel/notify` consume secrets
