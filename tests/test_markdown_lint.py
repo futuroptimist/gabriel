@@ -19,8 +19,8 @@ def test_pymarkdown_scan() -> None:
     config = repo_root / ".pymarkdown.json"
     markdown_files = sorted(
         p
-        for p in repo_root.rglob('*')
-        if p.suffix.lower() == '.md' and 'node_modules' not in p.parts
+        for p in repo_root.rglob("*")
+        if p.suffix.lower() == ".md" and "node_modules" not in p.parts
     )
     cmd = [
         "pymarkdown",
