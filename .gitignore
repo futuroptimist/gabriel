@@ -16,3 +16,7 @@ coverage.xml
 .venv/
 
 dictionary.dic
+
+# Node artifacts
+node_modules/
+viewer/coverage/

@@ -31,6 +31,16 @@ jobs:
       - name: Install dependencies
         run: |
           uv pip install --system -r requirements.txt
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Run viewer tests
+        run: npm run test:ci
       - name: Run tests with coverage
         run: |
           pytest --cov=gabriel --cov-report=term-missing --cov-report=xml

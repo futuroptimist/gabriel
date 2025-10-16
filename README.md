@@ -78,6 +78,13 @@ Activate the environment and run `pytest` with coverage enabled:
 python -m pytest --cov=gabriel --cov-report=term-missing
 ```
 
+Run the WebGL viewer unit tests to exercise DOM interactions under Jest:
+
+```bash
+npm ci
+npm run test:ci
+```
+
 Pytest is configured to fail the run if coverage dips below 100%, keeping the suite honest as
 the codebase grows.
 

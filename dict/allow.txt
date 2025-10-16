@@ -336,3 +336,5 @@ touchpoints
 detections
 ui
 typosquats
+DOM
+JSDOM

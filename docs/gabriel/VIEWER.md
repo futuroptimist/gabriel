@@ -55,3 +55,15 @@ npx prettier --write viewer/index.html viewer/viewer.js
 ```
 
 before committing manual edits so local changes align with the repository style.
+
+## Testing
+
+Use the Jest suite to exercise viewer interactions in a headless DOM:
+
+```bash
+npm ci
+npm run test:ci
+```
+
+The tests load `viewer.js` inside JSDOM, dispatch model events, and verify legend toggles,
+explode offsets, and theme switches to catch regressions before shipping new assets.

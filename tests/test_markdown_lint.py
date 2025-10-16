@@ -17,13 +17,17 @@ def test_pymarkdown_scan() -> None:
     if cache_dir.exists():
         shutil.rmtree(cache_dir)
     config = repo_root / ".pymarkdown.json"
+    markdown_files = sorted(
+        p
+        for p in repo_root.rglob("*")
+        if p.suffix.lower() == ".md" and "node_modules" not in p.parts
+    )
     cmd = [
         "pymarkdown",
         "--config",
         str(config),
         "scan",
-        "-r",
-        str(repo_root),
+        *[str(path) for path in markdown_files],
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # nosec B603
     if result.returncode != 0:
