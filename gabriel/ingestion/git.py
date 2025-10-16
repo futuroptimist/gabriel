@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import subprocess  # nosec B404
+from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Iterable
 
 _GIT_LOG_SEPARATOR = "\x1f"
 
@@ -89,9 +89,7 @@ def _ensure_git_repository(path: Path) -> None:
         raise ValueError(f"Path is not a Git repository: {path}")
 
 
-def _read_commits(
-    path: Path, limit: int, *, redact_emails: bool = False
-) -> list[CommitRecord]:
+def _read_commits(path: Path, limit: int, *, redact_emails: bool = False) -> list[CommitRecord]:
     if limit == 0:
         return []
     try:

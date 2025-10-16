@@ -5,12 +5,24 @@ import subprocess
 from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
+from typing import TypedDict, cast
 
 import pytest
 
 import gabriel.ingestion.git as git_module
 from gabriel.ingestion.git import collect_repository_commits
 from gabriel.ui import cli as cli_module
+
+
+class _CommitPayload(TypedDict, total=False):
+    summary: str
+    author: str
+    email: str
+
+
+class _CrawlEntry(TypedDict):
+    path: str
+    commits: list[_CommitPayload]
 
 
 def _init_repository(path: Path) -> None:
@@ -65,7 +77,8 @@ def test_collect_repository_commits_returns_metadata(tmp_path: Path) -> None:
     assert latest.sha
 
     as_dict = summary.to_dict()
-    assert as_dict["commits"][0]["email"] == "bot@example.com"
+    commits = cast(list[_CommitPayload], as_dict["commits"])
+    assert commits[0]["email"] == "bot@example.com"
 
 
 def test_cli_crawl_outputs_json_and_respects_redaction(tmp_path: Path) -> None:
@@ -89,7 +102,7 @@ def test_cli_crawl_outputs_json_and_respects_redaction(tmp_path: Path) -> None:
             ]
         )
 
-    payload = json.loads(buffer.getvalue())
+    payload = cast(list[_CrawlEntry], json.loads(buffer.getvalue()))
     assert len(payload) == 1
     [entry] = payload
     assert entry["path"] == str(repo.resolve())
@@ -99,7 +112,7 @@ def test_cli_crawl_outputs_json_and_respects_redaction(tmp_path: Path) -> None:
     assert "email" not in commit
     assert commit["author"] == "Gabriel Bot"
 
-    written = json.loads(output_file.read_text(encoding="utf-8"))
+    written = cast(list[_CrawlEntry], json.loads(output_file.read_text(encoding="utf-8")))
     assert written == payload
 
 
@@ -145,7 +158,9 @@ def test_collect_repository_commits_empty_repository(tmp_path: Path) -> None:
     assert summaries[0].commits == ()
 
 
-def test_collect_repository_commits_skips_malformed_lines(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_collect_repository_commits_skips_malformed_lines(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()
 
@@ -160,7 +175,9 @@ def test_collect_repository_commits_skips_malformed_lines(tmp_path: Path, monkey
             return DummyResult(stdout="true\n")
         if command[3] == "log":
             stdout = "\nmalformed\n"
-            stdout += "sha123\x1fAuthor\x1fauthor@example.com\x1f2024-01-01T00:00:00+00:00\x1fSubject\n"
+            stdout += (
+                "sha123\x1fAuthor\x1fauthor@example.com\x1f2024-01-01T00:00:00+00:00\x1fSubject\n"
+            )
             return DummyResult(stdout=stdout)
         raise AssertionError(f"Unexpected git command: {command}")
 
@@ -174,7 +191,9 @@ def test_collect_repository_commits_skips_malformed_lines(tmp_path: Path, monkey
     assert commit.email == "author@example.com"
 
 
-def test_collect_repository_commits_git_failure(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_collect_repository_commits_git_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()
 
@@ -208,6 +227,6 @@ def test_cli_crawl_without_output_file(tmp_path: Path) -> None:
     with redirect_stdout(buffer):
         cli_module.main(["crawl", str(repo), "--limit", "1"])
 
-    payload = json.loads(buffer.getvalue())
+    payload = cast(list[_CrawlEntry], json.loads(buffer.getvalue()))
     commit = payload[0]["commits"][0]
     assert commit["email"] == "bot@example.com"
