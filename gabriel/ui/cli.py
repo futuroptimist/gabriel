@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import json
 from decimal import Decimal
+from pathlib import Path
 
 from .. import arithmetic
 from .. import secrets as secrets_module
+from ..ingestion import collect_repository_commits
 from ..secrets import delete_secret, get_secret, read_secret_from_input, store_secret
 from .viewer import DEFAULT_HOST, DEFAULT_PORT, serve_viewer
 
@@ -77,6 +80,32 @@ def main(argv: list[str] | None = None) -> None:
         help="Do not open the default web browser when serving the viewer",
     )
 
+    crawl_parser = subparsers.add_parser(
+        "crawl",
+        help="Collect commit metadata across Git repositories",
+    )
+    crawl_parser.add_argument(
+        "paths",
+        nargs="*",
+        help="Paths to scan; defaults to the current working directory",
+    )
+    crawl_parser.add_argument(
+        "--limit",
+        type=int,
+        default=20,
+        help="Number of commits to capture per repository (default: 20)",
+    )
+    crawl_parser.add_argument(
+        "--output",
+        type=Path,
+        help="Optional file path to write JSON results",
+    )
+    crawl_parser.add_argument(
+        "--redact-emails",
+        action="store_true",
+        help="Exclude author email addresses from the JSON output",
+    )
+
     args = parser.parse_args(argv)
 
     funcs = {
@@ -113,6 +142,24 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.command == "viewer":
         serve_viewer(host=args.host, port=args.port, open_browser=not args.no_browser)
+        return
+
+    if args.command == "crawl":
+        repo_paths = args.paths or [Path.cwd()]
+        try:
+            summaries = collect_repository_commits(
+                repo_paths,
+                limit=args.limit,
+                redact_emails=args.redact_emails,
+            )
+        except (FileNotFoundError, NotADirectoryError, ValueError, RuntimeError) as exc:
+            raise SystemExit(str(exc)) from exc
+
+        payload = [summary.to_dict() for summary in summaries]
+        rendered = json.dumps(payload, indent=2)
+        if args.output:
+            args.output.write_text(rendered + "\n", encoding="utf-8")
+        print(rendered)
         return
 
     print(funcs[args.command](args.a, args.b))

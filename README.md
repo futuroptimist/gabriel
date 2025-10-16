@@ -173,6 +173,21 @@ when attached to a TTY. The retrieval command intentionally avoids printing the
 stored value so it cannot leak via logs; use ``python -c "from gabriel.utils import
 get_secret; print(get_secret('my-service', 'alice'))"`` for programmatic access.
 
+### Crawl Git repositories for commit metadata
+
+Gabriel now bundles a `crawl` helper that collects recent commit metadata across
+local repositories. Supply one or more repository paths (defaults to the current
+directory) and optionally redact author email addresses:
+
+```bash
+gabriel crawl ../token.place ../sigma --limit 5 --redact-emails
+```
+
+The command prints JSON containing each repository's absolute path, commit
+hashes, authors, ISO-8601 timestamps, and commit subjects. Use `--output` to
+write the same payload to disk, and prefer read-only credentials when scanning
+remote mirrors.
+
 ### Package metadata
 
 Gabriel exposes standard package metadata so downstream tooling can introspect

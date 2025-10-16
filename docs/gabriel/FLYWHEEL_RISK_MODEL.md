@@ -12,7 +12,7 @@ This document outlines potential risks and mitigations when applying the **flywh
 - **Data sensitivity** – Logs or stored information may expose secrets if not encrypted or access controlled.
 - **Resource usage** – Continual monitoring could strain CPU/GPU resources and degrade user experience.
 - **Complex configuration** – More settings increase the chance of misconfiguration.
-- **Cross-repo scanning** – The new `crawl` command in flywheel retrieves commit
+- **Cross-repo scanning** – The new `crawl` command in flywheel and Gabriel retrieves commit
   metadata from multiple repositories. Misuse or overly broad tokens may leak
   private information.
 
@@ -47,7 +47,7 @@ This document outlines potential risks and mitigations when applying the **flywh
    - Encourage peer review of new modules and periodic code cleanup to limit complexity.
    - Document hardware requirements and fallback modes for low-resource environments.
 7. Scoped access for cross-repo tools
-   - Use read-only tokens when running `flywheel crawl` or similar utilities.
+   - Use read-only tokens when running `gabriel crawl`, `flywheel crawl`, or similar utilities.
    - Sanitize or omit private repository details before storing reports.
 
 This risk model will evolve as the project grows. Contributors should update this document whenever the flywheel approach expands or new integrations are added.
