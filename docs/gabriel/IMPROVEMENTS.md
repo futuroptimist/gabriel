@@ -112,8 +112,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [ ] Cache dependencies in GitHub Actions to speed up CI
       (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`).
 - [x] Add Markdown linting to pre-commit and CI (`.pre-commit-config.yaml`, `.github/workflows/docs.yml`).
-- [ ] Integrate `trufflehog` secret scanning into pre-commit and CI
-      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
+- [x] Integrate `trufflehog` secret scanning into pre-commit and CI
+      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`, `tests/test_trufflehog_hook.py`).
       *Aligns with flywheel best practices.*
 - [x] Add property-based tests using `hypothesis` for arithmetic and secret helpers
       (`tests/test_utils.py`, `requirements.txt`, `gabriel/utils.py`).
