@@ -1,6 +1,6 @@
 [flake8]
 max-line-length = 100
-exclude = .git,__pycache__,build,dist
+exclude = .git,__pycache__,build,dist,node_modules
 extend-select = D
 extend-ignore = D202
 per-file-ignores =
