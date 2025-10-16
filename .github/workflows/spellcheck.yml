@@ -15,7 +15,7 @@ jobs:
           - name: python
             pattern: '**/*.py'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - uses: crate-ci/typos@v1
         with:
           files: ${{ matrix.pattern }}
