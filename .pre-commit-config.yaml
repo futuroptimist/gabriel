@@ -80,6 +80,21 @@ repos:
         args: ['--baseline', '.secrets.baseline']
   - repo: local
     hooks:
+      - id: trufflehog-scan
+        name: TruffleHog secret scan
+        entry: trufflehog
+        language: python
+        additional_dependencies:
+          - trufflehog==2.2.1
+        pass_filenames: false
+        args:
+          - --entropy=False
+          - --regex
+          - --max_depth
+          - "1"
+          - --since_commit
+          - HEAD
+          - .
       - id: markdown-link-check
         name: Markdown link checker
         entry: python scripts/run_lychee.py
