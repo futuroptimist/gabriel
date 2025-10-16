@@ -99,7 +99,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [ ] Scan Docker images for vulnerabilities during builds
       (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
-- [ ] Format viewer assets with Prettier via pre-commit
+- [x] Format viewer assets with Prettier via pre-commit
       (`viewer/viewer.js`, `.pre-commit-config.yaml`).
 - [x] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
       *Aligns with flywheel best practices.*
