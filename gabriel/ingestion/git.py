@@ -89,6 +89,12 @@ def _ensure_git_repository(path: Path) -> None:
         raise ValueError(f"Path is not a Git repository: {path}")
 
 
+def _parse_git_iso_datetime(value: str) -> datetime:
+    """Parse ISO-8601 strings emitted by ``git log``."""
+    sanitized = f"{value[:-1]}+00:00" if value.endswith("Z") else value
+    return datetime.fromisoformat(sanitized)
+
+
 def _read_commits(path: Path, limit: int, *, redact_emails: bool = False) -> list[CommitRecord]:
     if limit == 0:
         return []
@@ -125,7 +131,7 @@ def _read_commits(path: Path, limit: int, *, redact_emails: bool = False) -> lis
         if len(fields) != 5:
             continue
         sha, author, email, date_str, summary = (field.strip() for field in fields)
-        parsed_date = datetime.fromisoformat(date_str)
+        parsed_date = _parse_git_iso_datetime(date_str)
         normalized_email: str | None = None
         if email and not redact_emails:
             normalized_email = email
