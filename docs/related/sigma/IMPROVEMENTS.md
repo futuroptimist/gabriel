@@ -1,21 +1,22 @@
 # Suggested Improvements for sigma
 
-This document summarizes enhancements for the
-[futuroptimist/sigma](https://github.com/futuroptimist/sigma) repository.
+This document tracks enhancement ideas for the
+[futuroptimist/sigma](https://github.com/futuroptimist/sigma) project.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Status:** ✅ on the Futuroptimist roster.
-- **Stack:** Python utilities, OpenSCAD CAD models, and Makefile automation complemented by
-  TypeScript prompt docs.
-- **Conventions:** Prompt documents now live under `docs/prompts/codex/`, with SCAD builds handled by
-  `scripts/build_stl.sh` and tests covering clamp math and utility functions.
-- **Security delta:** PR #95 reorganized prompt docs and added hardware documentation; no new
-  firmware or OTA channels were introduced.
-- **Watchlist:** Continue validating the STL outputs and ensuring `llms.py` remains offline friendly.
+- **Status:** ✅ (roster snapshot 2025-10-18 23:02 UTC).
+- **Stack:** ESP32 firmware with PlatformIO, Python orchestration, and a new Three.js viewer alongside
+  Python audio/TTS/Whisper clients.
+- **Conventions:** Prompt docs live under `docs/prompts/codex/`, hardware assets in `hardware/` and
+  `docs/hardware/`, and sigma-specific scripts ship in `scripts/` with Playwright tests for the viewer.
+- **Security delta:** PR #173 introduced configurable Whisper endpoints (`SIGMA_WHISPER_URL`), expanded
+  docs, and bundled large Three.js artifacts, raising supply-chain risk but clarifying operations.
+- **Watchlist:** Track vendor JS hashes, ensure firmware secrets remain isolated, and test Whisper URL
+  overrides for SSRF or downgrade pitfalls.
 
-## Improvement Themes
+## Improvement Backlog
 
-- [ ] Publish an end-to-end assembly hardening checklist for the Sigma S1 enclosure.
-- [ ] Add examples for rotating encryption keys if Sigma integrates with `token.place` in the future.
-- [ ] Document how to audit generated STL hashes prior to printing.
+- [ ] Document secure provisioning for local Whisper servers used during overrides.
+- [ ] Add guidance for signing firmware images and distributing checksum manifests.
+- [ ] Expand Playwright coverage to include authenticated viewer flows once available.

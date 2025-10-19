@@ -1,23 +1,22 @@
 # Suggested Improvements for flywheel
 
-This document captures recommended enhancements for the
-[futuroptimist/flywheel](https://github.com/futuroptimist/flywheel) template.
+This document aggregates suggested enhancements for the
+[futuroptimist/flywheel](https://github.com/futuroptimist/flywheel) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Status:** ✅ via the Futuroptimist roster refresh.
-- **Stack:** Python packaging (`pyproject.toml`), Node/Playwright tooling, OpenSCAD assets, and a
-  docs-site built with Astro/React, all managed via npm and Makefile helpers.
-- **Conventions:** Maintains prompt libraries in `docs/prompts/codex/`, runs nightly repo scans,
-  and publishes STL/GLB assets for the viewer.
-- **Security delta:** Automated status workflow updated README to match the new roster sync; no
-  runtime code changes beyond documentation.
-- **Watchlist:** Ensure the repo-status automation keeps secrets minimal and continue reviewing
-  generated STL artifacts before publishing.
+- **Status:** ✅ per the Futuroptimist roster (2025-10-18 23:02 UTC).
+- **Stack:** Polyglot template bundling Python tooling, TypeScript viewer code, and CAD assets with
+  Makefiles and GitHub Actions mirroring Gabriel's CI surface.
+- **Conventions:** Prompt docs under `docs/prompts/codex/`, incident tracking via `outages/`, and
+  repo feature summaries that seed downstream templates.
+- **Security delta:** Commit 86f4f03 updated the repo feature summary to reflect the latest automations
+  without altering the build pipelines, so security posture is unchanged but documentation is current.
+- **Watchlist:** Ensure template secrets referenced in `infra/` scripts stay rotated and that bundled
+  CAD exports continue to ship with checksums.
 
-## Improvement Themes
+## Improvement Backlog
 
-- [ ] Expand documentation for integrating downstream repos (e.g., sigma, sugarkube) with the
-      template's status updater.
-- [ ] Add guidance for hardening the Astro docs deployment when self-hosted.
-- [ ] Track OpenSCAD dependency updates and validate viewer builds after upgrades.
+- [ ] Expand documentation around secret provisioning for template-driven repos.
+- [ ] Provide a quick-start for porting existing projects into the flywheel scaffolding.
+- [ ] Add automated checks verifying CAD assets render with known-good parameters.

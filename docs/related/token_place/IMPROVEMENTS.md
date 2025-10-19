@@ -4,17 +4,18 @@ This document summarizes potential enhancements for the `token.place` project ba
 of its architecture and threat model. The goal is to strengthen relay and server node security while
 preserving the privacy-first design.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Status:** ✅ on the Futuroptimist related projects roster (refreshed 2025-09-29 05:02 UTC).
-- **Stack:** FastAPI- and asyncio-driven Python services, Electron desktop client, and TypeScript
-  utilities orchestrated via Makefile scripts and GitHub Actions.
-- **Conventions:** Prompts now live under `docs/prompts/codex/`, outages under `outages/`, and
-  tests wrap both crypto compatibility and full relay flows.
-- **Security delta:** Prompt docs were renamed for clarity; no runtime changes landed, but the
-  documentation move helps agents avoid stale automation scripts.
-- **Watchlist:** Continue monitoring crypto dependencies (`cryptography`, `pyNaCl`, `tweetnacl`
-  bindings) and the optional desktop updater path.
+- **Status:** ✅ on the Futuroptimist related projects roster (2025-10-18 23:02 UTC snapshot).
+- **Stack:** FastAPI- and asyncio-driven Python services, a freshly added TypeScript client harness,
+  and Electron desktop bundles orchestrated with Makefiles and GitHub Actions.
+- **Conventions:** Prompts stay under `docs/prompts/codex/`, outages under `outages/`, and tests now
+  span crypto compatibility, REST routes, and the alias-aware desktop harness.
+- **Security delta:** PR #464 introduced a TypeScript client for alias integrations plus expansive
+  documentation, increasing supply-chain surface (desktop `package.json`, additional Dockerfiles)
+  while keeping crypto primitives untouched.
+- **Watchlist:** Monitor the new Node/Electron dependencies for CVEs, revalidate signing paths for the
+  desktop releases, and keep an eye on provider registry updates in `config/server_providers.yaml`.
 
 ## Recommended Improvements
 

@@ -3,12 +3,13 @@
 The **DSPACE** repository powers the democratized.space quest platform, combining offline-first
 content with rich quest data.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
 - **Operational context:** Frontend and backend bundles ship through pnpm with automated quest
   validation, outage tracking, and monitoring hooks.
-- **Key changes since 2025-09-24:** Quest expansion PRs injected many new static assets, outage
-  incident reports, and regression tests, increasing repository size but keeping workflows intact.
+- **Key changes since 2025-09-29:** The `v3` branch landed a stream of quest-ingestion fixes,
+  offline cache hardening, and CLI clean-up merges that still await a stable tag, increasing review
+  load while the team keeps the pipelines healthy and documentation accurate.
 - **Risks to monitor:** Asset provenance, secrets embedded in quest metadata, and telemetry scripts
   that might expand analytics scope.
 

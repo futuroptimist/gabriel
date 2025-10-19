@@ -1,21 +1,21 @@
 # Suggested Improvements for danielsmith.io
 
-This document summarizes follow-ups for the
+This document tracks enhancement ideas for the
 [futuroptimist/danielsmith.io](https://github.com/futuroptimist/danielsmith.io) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Status:** ✅ in the Futuroptimist roster.
-- **Stack:** Vite + Three.js site with TypeScript, Playwright/Vitest tests, and npm-managed
-  workflows.
-- **Conventions:** Prompt docs live under `docs/prompts/codex/`, scripts generate floorplan diagrams,
-  and CI captures launch screenshots.
-- **Security delta:** Latest commit refreshed the launch screenshot workflow and kept automation in
-  place; no new backend components were added.
-- **Watchlist:** Monitor Playwright artifacts for PII and ensure resume assets stay current.
+- **Status:** ✅ (roster snapshot 2025-10-18 23:02 UTC).
+- **Stack:** Vite + Three.js portfolio scene with TypeScript and GLSL assets.
+- **Conventions:** Screenshots and assets live in `public/`, prompts under `docs/prompts/codex/`, and
+  CI mirrors flywheel's lint/test/docs split.
+- **Security delta:** Commit 2f1e29e refreshed the launch screenshot only; runtime code and build
+  tooling remain unchanged.
+- **Watchlist:** Continue checking Three.js version pins and ensure screenshot updates do not mask UI
+  regressions.
 
-## Improvement Themes
+## Improvement Backlog
 
-- [ ] Document how to rotate assets in `docs/resume` without leaking personal data.
-- [ ] Provide a hardening guide for hosting the Vite build on static providers.
-- [ ] Add instructions for purging cached screenshots if credentials appear.
+- [ ] Document deployment hardening tips (headers, CSP) for the static site.
+- [ ] Provide guidance on privacy-sensitive assets embedded in the portfolio.
+- [ ] Add uptime monitoring instructions for the static hosting provider.

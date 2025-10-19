@@ -1,24 +1,25 @@
 # pr-reaper Threat Model
 
-The **pr-reaper** tool automates closing stale pull requests in bulk.
+pr-reaper closes stale pull requests owned by the repository maintainer.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Operational context:** Runs as a CLI or GitHub Action that iterates through repositories using a
-  personal access token.
-- **Key changes since 2025-09-24:** New workflows and docs formalized automation; functionality
-  remains focused on GitHub API interactions.
-- **Risks to monitor:** Token scopes for closing PRs, rate-limit handling, and ensuring dry-run mode
-  stays default.
+- **Operational context:** GitHub Action written in TypeScript compiles to `dist/` JavaScript and runs
+  in GitHub-hosted or self-hosted runners.
+- **Key changes since 2025-09-29:** PR #51 ensures composite inputs flow to the runtime environment,
+  clarifying configuration and reducing accidental no-ops.
+- **Risks to monitor:** Repository or workflow secrets forwarded to the action, GitHub API rate limits,
+  and potential misuse on repositories without proper filtering.
 
 ## Threats
 
-- **Token misuse:** Leaked PATs could let attackers close or modify PRs.
-- **Mass closure accidents:** Misconfigured filters may close active PRs.
-- **Workflow escalation:** GitHub Actions might gain write access beyond intention.
+- **Overbroad deletion:** Misconfigured filters could close active PRs.
+- **Secret leakage:** Inputs passed to the runtime may include secrets if consumers configure their
+  workflows incorrectly.
+- **Supply chain:** Dependencies for building `dist/` might introduce vulnerabilities.
 
 ## Mitigations
 
-- Encourage fine-grained PATs or GitHub Apps with repository-specific scopes.
-- Keep dry-run mode on by default and require explicit confirmation for destructive runs.
-- Log actions to provide audit trails when sweeping PRs.
+- Document conservative defaults and encourage dry runs before closing PRs.
+- Mask sensitive inputs and avoid logging token values.
+- Keep dependencies pinned and run `npm audit` before releasing new action bundles.

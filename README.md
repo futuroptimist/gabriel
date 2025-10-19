@@ -562,29 +562,28 @@ on WebGL logic. Prettier also formats the HTML and JavaScript sources; apply fix
 
 The table below summarizes all repositories where we currently maintain
 improvement tasks or security audits.
-Last roster sync: 2025-09-29 05:02 UTC (per Futuroptimist).
-improvement tasks or security audits. Following these links will jump to the
-relevant documentation.
+Last roster sync: 2025-10-18 23:02 UTC (per Futuroptimist). Status icons mirror the upstream README.
+Following these links will jump to the relevant documentation.
 
-| Repository | Improvement Docs | Threat Model |
-|------------|------------------|--------------|
-| Gabriel (this repo) | [IMPROVEMENTS.md][gabriel-improve] | [THREAT_MODEL.md][gabriel-threat] |
-| futuroptimist | [IMPROVEMENTS.md][futuroptimist-improve] | [THREAT_MODEL.md][futuroptimist-threat] |
-| token.place | [IMPROVEMENTS.md][token-place-improve] | N/A |
-| DSPACE | [IMPROVEMENTS.md][dspace-improve] | [THREAT_MODEL.md][dspace-threat] |
-| flywheel | [IMPROVEMENTS.md][flywheel-improve] | [THREAT_MODEL.md][flywheel-threat] |
-| f2clipboard | [IMPROVEMENTS.md][f2clipboard-improve] | [THREAT_MODEL.md][f2clipboard-threat] |
-| axel | [IMPROVEMENTS.md][axel-improve] | [THREAT_MODEL.md][axel-threat] |
-| sigma | [IMPROVEMENTS.md][sigma-improve] | [THREAT_MODEL.md][sigma-threat] |
-| gitshelves | [IMPROVEMENTS.md][gitshelves-improve] | [THREAT_MODEL.md][gitshelves-threat] |
-| wove | [IMPROVEMENTS.md][wove-improve] | [THREAT_MODEL.md][wove-threat] |
-| sugarkube | [IMPROVEMENTS.md][sugarkube-improve] | [THREAT_MODEL.md][sugarkube-threat] |
-| pr-reaper | [IMPROVEMENTS.md][pr-reaper-improve] | [THREAT_MODEL.md][pr-reaper-threat] |
-| jobbot3000 | [IMPROVEMENTS.md][jobbot-improve] | [THREAT_MODEL.md][jobbot-threat] |
-| danielsmith.io | [IMPROVEMENTS.md][danielsmith-io-improve] | [THREAT_MODEL.md][danielsmith-io-threat] |
-| Nextcloud | [IMPROVEMENTS.md][nextcloud-improve] | N/A |
-| PhotoPrism | [IMPROVEMENT_CHECKLISTS.md#photoprism][photoprism-improve] | N/A |
-| VaultWarden | [IMPROVEMENT_CHECKLISTS.md#vaultwarden][vaultwarden-improve] | N/A |
+| Repository | Status | Improvement Docs | Threat Model |
+|------------|--------|------------------|--------------|
+| Gabriel (this repo) | ✅ | [IMPROVEMENTS.md][gabriel-improve] | [THREAT_MODEL.md][gabriel-threat] |
+| futuroptimist | ✅ | [IMPROVEMENTS.md][futuroptimist-improve] | [THREAT_MODEL.md][futuroptimist-threat] |
+| token.place | ✅ | [IMPROVEMENTS.md][token-place-improve] | N/A |
+| DSPACE | ✅ | [IMPROVEMENTS.md][dspace-improve] | [THREAT_MODEL.md][dspace-threat] |
+| flywheel | ✅ | [IMPROVEMENTS.md][flywheel-improve] | [THREAT_MODEL.md][flywheel-threat] |
+| f2clipboard | ✅ | [IMPROVEMENTS.md][f2clipboard-improve] | [THREAT_MODEL.md][f2clipboard-threat] |
+| axel | ✅ | [IMPROVEMENTS.md][axel-improve] | [THREAT_MODEL.md][axel-threat] |
+| sigma | ✅ | [IMPROVEMENTS.md][sigma-improve] | [THREAT_MODEL.md][sigma-threat] |
+| gitshelves | ✅ | [IMPROVEMENTS.md][gitshelves-improve] | [THREAT_MODEL.md][gitshelves-threat] |
+| wove | ✅ | [IMPROVEMENTS.md][wove-improve] | [THREAT_MODEL.md][wove-threat] |
+| sugarkube | ❌ | [IMPROVEMENTS.md][sugarkube-improve] | [THREAT_MODEL.md][sugarkube-threat] |
+| pr-reaper | ✅ | [IMPROVEMENTS.md][pr-reaper-improve] | [THREAT_MODEL.md][pr-reaper-threat] |
+| jobbot3000 | ✅ | [IMPROVEMENTS.md][jobbot-improve] | [THREAT_MODEL.md][jobbot-threat] |
+| danielsmith.io | ✅ | [IMPROVEMENTS.md][danielsmith-io-improve] | [THREAT_MODEL.md][danielsmith-io-threat] |
+| Nextcloud | – | [IMPROVEMENTS.md][nextcloud-improve] | N/A |
+| PhotoPrism | – | [IMPROVEMENT_CHECKLISTS.md#photoprism][photoprism-improve] | N/A |
+| VaultWarden | – | [IMPROVEMENT_CHECKLISTS.md#vaultwarden][vaultwarden-improve] | N/A |
 
 [gabriel-improve]: docs/gabriel/IMPROVEMENTS.md
 [gabriel-threat]: docs/gabriel/THREAT_MODEL.md
