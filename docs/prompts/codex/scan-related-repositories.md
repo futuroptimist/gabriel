@@ -39,7 +39,7 @@ Tasks:
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
-- Clone https://github.com/democratizedspace/dspace and check out the v3 branch.
+- Clone https://github.com/democratizedspace/dspace and check out the `v3` branch (stay on `main` if the branch is unavailable).
 - Map the codebase to grasp architecture and goals.
 - Hunt for security vulnerabilities and misconfigurations.
 - Document findings in docs/security/vuln-<slug>.md with steps and fixes.
@@ -201,4 +201,4 @@ Tasks:
 - Commit the new docs.
 ```
 
-Updated manually: 2025-09-29
+Updated manually: 2025-10-18

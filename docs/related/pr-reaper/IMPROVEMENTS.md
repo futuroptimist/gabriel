@@ -1,21 +1,22 @@
 # Suggested Improvements for pr-reaper
 
-This document tracks recommendations for the
+This document captures recommended enhancements for the
 [futuroptimist/pr-reaper](https://github.com/futuroptimist/pr-reaper) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Status:** ✅ on the Futuroptimist roster.
-- **Stack:** Node.js CLI (pnpm/npm) with GitHub Action automation and lightweight TypeScript-free
-  scripts.
-- **Conventions:** Prompts relocated to `docs/prompts/codex/`, workflows manage PR cleanup and CI,
-  and `scripts/scan-secrets.py` is bundled for local validation.
-- **Security delta:** PR #20 added status badges, a `close-my-open-prs` workflow, and standard repo
-  scaffolding; new workflows introduce GitHub token usage that must remain scoped.
-- **Watchlist:** Audit workflow permissions and ensure automation uses dry-run mode by default.
+- **Status:** ✅ (roster snapshot 2025-10-18 23:02 UTC).
+- **Stack:** TypeScript composite GitHub Action compiled to `dist/`, backed by vitest and Playwright
+  tests, with automation prompts in `docs/prompts/codex/`.
+- **Conventions:** Release artifacts live in `dist/`, prompts drive automation behavior, and CI mirrors
+  consumer environments.
+- **Security delta:** PR #51 updated the action to forward composite inputs to the runtime environment,
+  expanded docs, and added workflow examples, reducing misconfiguration risk without altering scopes.
+- **Watchlist:** Continue validating `dist/` outputs after TypeScript changes and ensure repository
+  secrets remain masked when forwarding inputs.
 
 ## Improvement Themes
 
-- [ ] Document how to run the `close-my-open-prs` workflow safely against forks.
-- [ ] Provide rate-limit guidance when sweeping large PR backlogs.
-- [ ] Add integration tests that simulate dry-run vs. destructive modes.
+- [ ] Document environment variable expectations for self-hosted runners.
+- [ ] Provide dry-run guardrails explaining which PRs will be closed before execution.
+- [ ] Add dependency audit notes so consumers trust the published `dist/` bundle.

@@ -1,23 +1,24 @@
 # sigma Threat Model
 
-The **sigma** project builds a local-first ESP32 AI pin with voice interaction.
+Sigma is an ESP32-powered AI pin with voice input, LLM calls, and local TTS playback.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Operational context:** CAD designs and Python control scripts guide the open hardware build.
-- **Key changes since 2025-09-24:** Prompt docs relocated and hardware documentation expanded; core
-  firmware paths remain offline.
-- **Risks to monitor:** Hardware supply chain (printed parts vs. purchased electronics) and
-  documentation that might encourage unsafe power configurations.
+- **Operational context:** Firmware, Python orchestration, and web viewers coordinate on-device
+  inference, audio capture, and 3D visualization.
+- **Key changes since 2025-09-29:** PR #173 added Whisper endpoint overrides and bundled new Three.js
+  assets, increasing dependency footprints but improving configurability.
+- **Risks to monitor:** Network access to alternate Whisper servers, embedded credentials in firmware,
+  and supply-chain integrity for large JS bundles.
 
 ## Threats
 
-- **Hardware tampering:** STL files or SCAD macros could be modified maliciously.
-- **Firmware compromise:** Scripts interacting with the ESP32 may flash untrusted binaries.
-- **Privacy leakage:** Voice logs or telemetry could leak if future integrations add cloud sync.
+- **Firmware compromise:** Unsigned binaries could allow malicious payloads on the ESP32.
+- **Network eavesdropping:** Whisper traffic routed to remote servers may expose sensitive voice data.
+- **Web viewer exploits:** Bundled Three.js assets could harbor vulnerabilities if not kept current.
 
 ## Mitigations
 
-- Provide checksums or signed releases for STL files.
-- Recommend flashing firmware from trusted, versioned sources.
-- Encourage builders to keep inference local and explicitly opt into any telemetry collection.
+- Sign firmware builds and publish checksum manifests for users to verify downloads.
+- Encourage local Whisper deployments or TLS-enforced endpoints when overrides are enabled.
+- Track upstream Three.js advisories and refresh vendor bundles promptly.

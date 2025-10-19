@@ -1,23 +1,22 @@
 # danielsmith.io Threat Model
 
-The **danielsmith.io** project serves a Three.js-powered interactive portfolio site.
+The `danielsmith.io` repository hosts a personal portfolio built with Vite and Three.js.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Operational context:** Static Vite build with Playwright-driven screenshot automation and
-  TypeScript source.
-- **Key changes since 2025-09-24:** Screenshot workflow refreshed launch imagery; no new APIs or
-  services were integrated.
-- **Risks to monitor:** Handling of resume data, screenshot storage, and any analytics integrations.
+- **Operational context:** Static site served from a Vite build, showcasing 3D scenes and media assets.
+- **Key changes since 2025-09-29:** Commit 2f1e29e refreshed a launch screenshot; no runtime code was
+  modified.
+- **Risks to monitor:** Third-party model imports, asset licensing, and browser security headers.
 
 ## Threats
 
-- **Asset leakage:** Resume PDFs or textures may contain sensitive personal information.
-- **Automation misuse:** Playwright workflows could leak GitHub tokens if misconfigured.
-- **Dependency drift:** Vite/Three.js dependencies might introduce vulnerabilities.
+- **Asset poisoning:** Replacing hosted textures or models could compromise the scene.
+- **Script vulnerabilities:** Outdated Three.js releases may contain XSS or sandbox escapes.
+- **Privacy concerns:** Embedded analytics or media might leak personal data if misconfigured.
 
 ## Mitigations
 
-- Keep resume assets reviewed for PII before committing.
-- Store workflow artifacts in private buckets and limit retention time.
-- Use Dependabot and security audits to keep npm dependencies patched.
+- Pin Three.js versions and audit dependencies before deployment.
+- Serve via TLS with strict CSP and disable inline scripts where possible.
+- Review assets for licensing and privacy implications before publishing updates.

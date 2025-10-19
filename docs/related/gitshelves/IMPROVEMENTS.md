@@ -1,21 +1,22 @@
 # Suggested Improvements for gitshelves
 
-This document highlights possible enhancements for
-[futuroptimist/gitshelves](https://github.com/futuroptimist/gitshelves).
+This document summarizes enhancement opportunities for the
+[futuroptimist/gitshelves](https://github.com/futuroptimist/gitshelves) repository.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Status:** ✅ in the Futuroptimist roster.
-- **Stack:** Python CLI with OpenSCAD/SCAD templates, pytest suites, and npm-based viewer assets.
-- **Conventions:** Prompt docs relocated to `docs/prompts/codex/`, viewer HTML lives under `docs/`,
-  and `gitshelves/scad.py` renders STL output.
-- **Security delta:** Prompt doc move plus refreshed CLI/tests (PR #109) expanded automation but did
-  not modify STL generation logic.
-- **Watchlist:** Ensure `dict/allow.txt` stays aligned with new SCAD terminology and keep SCAD
-  renders in CI to detect tampering.
+- **Status:** ✅ (roster snapshot 2025-10-18 23:02 UTC).
+- **Stack:** Python 3.11 package bundling OpenSCAD generators, Typer CLI wrappers, and pytest snapshot
+  coverage for SCAD outputs.
+- **Conventions:** Prompt docs consolidated under `docs/prompts/codex/`, SCAD sources in `openscad/`
+  plus Python wrappers in `gitshelves/`, and tests verify CLI ergonomics alongside geometry snapshots.
+- **Security delta:** PR #186 added SCAD snapshot tests, CLI scaffolding, and new docs—improving
+  reproducibility but increasing dependency surface (Typer, GitHub APIs) that must be monitored.
+- **Watchlist:** Review GitHub token usage in `gitshelves/core/github.py`, ensure generated SCAD files
+  stay deterministic, and keep CLI environment variables masked in docs.
 
-## Improvement Themes
+## Improvement Backlog
 
-- [ ] Document how to validate STL checksums before printing block sets.
-- [ ] Provide guidance on distributing viewer builds without exposing GitHub API tokens.
-- [ ] Consider adding a sandbox mode for rendering contributions before merging.
+- [ ] Provide checksum manifests for exported STL files.
+- [ ] Document how to rotate GitHub tokens used for fetching contribution data.
+- [ ] Offer optional anonymization when rendering public contribution histories.

@@ -1,24 +1,26 @@
 # sugarkube Threat Model
 
-The **sugarkube** project delivers an off-grid Raspberry Pi cluster platform with scripted
-provisioning and rich documentation.
+Sugarkube packages solar-powered Raspberry Pi clusters with Kubernetes, imaging scripts, and
+hardware plans.
 
-## Current Snapshot (2025-09-29)
+## Current Snapshot (2025-10-18)
 
-- **Operational context:** Builds pi images, manages k3s clusters, and documents solar hardware.
-- **Key changes since 2025-09-24:** Major documentation and script expansion introduced new CI
-  workflows, QR code assets, and onboarding helpers.
-- **Risks to monitor:** Credential handling in pi image builders, telemetry publishing scripts, and
-  the growing number of workflow secrets.
+- **Operational context:** GitHub Actions build Pi images, render CAD, and publish docs; scripts manage
+  telemetry, token.place samples, and hardware provisioning.
+- **Key changes since 2025-09-29:** Vision doc refresh (PR #1348) added telemetry helpers, QR assets,
+  and additional workflows, expanding automation complexity while CI currently reports red.
+- **Risks to monitor:** Sensitive telemetry data in artifacts, Pi image credentials, and long-lived
+  GitHub tokens driving imaging pipelines.
 
 ## Threats
 
-- **Secrets exposure:** Cloud-init files and scripts may embed API keys.
-- **Supply chain:** Pi image dependencies and KiCad exports could be tampered with.
-- **Operational drift:** Telemetry collectors or workflow bots might gain excessive privileges.
+- **Artifact leakage:** Pi images may embed credentials if build scripts collect secrets from the
+  environment.
+- **Telemetry exposure:** Workflow notifiers could post sensitive logs externally if misconfigured.
+- **Build system compromise:** Extensive GitHub Actions surface increases attack opportunities.
 
 ## Mitigations
 
-- Keep `scripts/scan-secrets.py` and tests enforcing secret hygiene up to date.
-- Document environment variables separately for local vs. CI image builds.
-- Rotate tokens used by automation (Cloudflare, GitHub) and monitor audit logs for unusual access.
+- Enforce secret scanning and artifact scrubbing in imaging workflows.
+- Limit telemetry destinations to trusted endpoints and document anonymization steps.
+- Stabilize CI pipelines and apply least-privilege policies to GitHub tokens used during builds.
