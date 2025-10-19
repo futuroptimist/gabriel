@@ -14,7 +14,7 @@ projects.
 
 ## Threats
 
-- **Token exposure:** Discord bot credentials could leak via logs or mis-scoped permissions.
+- **Token exposure:** Discord bot credentials could leak via logs or incorrectly scoped permissions.
 - **Cross-repo mutations:** Automation that writes to other repos risks propagating secrets or
   misconfigurations.
 - **Local artifact leakage:** Hillclimb scripts store repo metadata in `local/`, which may include

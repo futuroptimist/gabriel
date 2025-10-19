@@ -9,7 +9,7 @@ and release pipelines baked in.
   projects such as `gabriel`, `token.place`, and `axel`.
 - **Key changes since 2025-09-29:** Docs refresh (86f4f03) updated the feature summary; runtime code
   and workflows remain unchanged.
-- **Risks to monitor:** Reusable GitHub Actions secrets, templated infra scripts, and CAD assets that
+- **Risks to monitor:** Reusable GitHub Actions secrets, template-generated infra scripts, and CAD assets that
   downstream repos compile automatically.
 
 ## Threats

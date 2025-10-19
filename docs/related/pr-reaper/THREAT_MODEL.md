@@ -14,8 +14,8 @@ pr-reaper closes stale pull requests owned by the repository maintainer.
 ## Threats
 
 - **Overbroad deletion:** Misconfigured filters could close active PRs.
-- **Secret leakage:** Inputs passed to the runtime may include secrets if consumers misconfigure their
-  workflows.
+- **Secret leakage:** Inputs passed to the runtime may include secrets if consumers configure their
+  workflows incorrectly.
 - **Supply chain:** Dependencies for building `dist/` might introduce vulnerabilities.
 
 ## Mitigations

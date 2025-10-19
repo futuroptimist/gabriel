@@ -17,6 +17,6 @@ This document aggregates suggested enhancements for the
 
 ## Improvement Backlog
 
-- [ ] Expand documentation around secret provisioning for templated repos.
+- [ ] Expand documentation around secret provisioning for template-driven repos.
 - [ ] Provide a quick-start for porting existing projects into the flywheel scaffolding.
 - [ ] Add automated checks verifying CAD assets render with known-good parameters.
