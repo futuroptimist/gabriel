@@ -2,3 +2,5 @@
 # Remove entries once the commits are rewritten upstream.
 6c96f65e16a02b36ed817ca185a978e5980d8ea3
 a3b629c6526930c2be9307bd941df0aa15a5ebb5
+f6bbce7ba72eccc5678d2fc6625b5f892c77442d
+25ed9a196ef59e60cf8effdf4a67149ac60c1553
