@@ -13,6 +13,6 @@ hypothesis
 tomli
 pydocstyle
 pyyaml
-pymarkdownlnt==0.9.16
+pymarkdownlnt==0.9.32
 types-PyYAML
 PyYAML
