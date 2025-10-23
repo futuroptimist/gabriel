@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+import yaml
 
 
 def _load_toml_module() -> Any:
@@ -147,11 +148,55 @@ def test_ci_workflow_runs_pre_commit() -> None:
     assert "pre-commit run --all-files" in workflow  # nosec B101
 
 
-def test_ci_workflow_runs_semgrep_scan() -> None:
-    """Ensure CI executes Semgrep against the repository."""
+def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
+    """Validate that Docker publishes run a Trivy scan before pushing images."""
 
-    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
-    assert "semgrep scan" in workflow  # nosec B101
+    workflow = yaml.safe_load(Path(".github/workflows/docker.yml").read_text(encoding="utf-8"))
+
+    scan_job = workflow["jobs"].get("scan")
+    assert scan_job is not None, "Expected scan job to guard Docker publishes"  # nosec B101
+
+    matrix = scan_job.get("strategy", {}).get("matrix", {})
+    platforms = matrix.get("platform", [])
+    assert set(platforms) == {"linux/amd64", "linux/arm64"}  # nosec B101
+
+    scan_steps = scan_job["steps"]
+    build_step = next(
+        (step for step in scan_steps if step.get("uses") == "docker/build-push-action@v6"),
+        None,
+    )
+    assert (
+        build_step is not None
+    ), "Expected build step to create an image per architecture"  # nosec B101
+
+    build_config = build_step.get("with", {})
+    assert build_config.get("platforms") == "${{ matrix.platform }}"  # nosec B101
+    assert build_config.get("load") is True  # nosec B101
+    assert build_config.get("tags") == (
+        "ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}"
+    )  # nosec B101
+
+    trivy_step = next(
+        (
+            step
+            for step in scan_steps
+            if str(step.get("uses", "")).startswith("aquasecurity/trivy-action@")
+        ),
+        None,
+    )
+    assert trivy_step is not None, "Trivy scan step missing from Docker workflow"  # nosec B101
+
+    trivy_config = trivy_step.get("with", {})
+    assert (
+        trivy_config.get("image-ref")
+        == "ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}"
+    )  # nosec B101
+    assert trivy_config.get("severity") == "CRITICAL,HIGH"  # nosec B101
+    assert trivy_config.get("exit-code") == "1"  # nosec B101
+
+    build_job = workflow["jobs"].get("build")
+    assert build_job is not None, "Expected build job to push the release images"  # nosec B101
+    assert build_job.get("needs") == "scan"  # nosec B101
 
 
 def test_workflows_cover_supported_python_versions() -> None:
