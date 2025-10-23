@@ -88,6 +88,14 @@ def test_pre_commit_configuration_runs_prettier_for_viewer() -> None:
     assert "Prettier viewer assets" in config  # nosec B101
 
 
+def test_pre_commit_configuration_runs_semgrep() -> None:
+    """Verify Semgrep static analysis runs via pre-commit."""
+
+    config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
+    assert "https://github.com/returntocorp/semgrep" in config  # nosec B101
+    assert "config/semgrep/rules.yaml" in config  # nosec B101
+
+
 def test_commitlint_configured_across_tooling() -> None:
     """Ensure commitlint enforces Conventional Commits locally and in CI."""
 
