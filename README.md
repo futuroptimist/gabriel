@@ -101,6 +101,16 @@ python -m gabriel.ingestion.text README.md
 # `python -m gabriel.text README.md` remains available for compatibility.
 ```
 
+Build and preview the MkDocs documentation site locally:
+
+```bash
+pip install -r requirements.txt
+mkdocs serve
+```
+
+The rendered site is also published to GitHub Pages at
+futuroptimist.github.io/gabriel after every merge to `main`.
+
 Validate policy guardrails before committing updates to `llm_policy.yaml` or downstream
 overrides:
 
@@ -115,6 +125,7 @@ make lint   # run pre-commit checks
 make test   # run the test suite with coverage
 make spell  # run the spell checker
 make links  # scan documentation links with lychee
+make docs   # build the static MkDocs site
 ```
 
 ### Commit message conventions

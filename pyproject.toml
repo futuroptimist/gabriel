@@ -23,7 +23,7 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/futuroptimist/gabriel"
-Documentation = "https://github.com/futuroptimist/gabriel#readme"
+Documentation = "https://futuroptimist.github.io/gabriel/"
 Source = "https://github.com/futuroptimist/gabriel"
 Issues = "https://github.com/futuroptimist/gabriel/issues"
 

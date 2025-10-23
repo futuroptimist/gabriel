@@ -118,8 +118,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Add property-based tests using `hypothesis` for arithmetic and secret helpers
       (`tests/test_utils.py`, `requirements.txt`, `gabriel/utils.py`).
       *Aligns with flywheel best practices.*
-- [ ] Generate API documentation with `mkdocs` and publish to GitHub Pages
-      (`docs/`, `pyproject.toml`, `.github/workflows/docs.yml`).
+- [x] Generate API documentation with `mkdocs` and publish to GitHub Pages
+      (`mkdocs.yml`, `docs/api/index.md`, `.github/workflows/mkdocs-pages.yml`).
       *Aligns with flywheel best practices.*
 - [ ] Expand Dependabot to monitor Docker base image updates
       (`.github/dependabot.yml`, `docker/Dockerfile`).
