@@ -1,0 +1,21 @@
+rules:
+  - id: gabriel-python-subprocess-shell
+    message: Avoid shell=True in subprocess calls; prefer explicit argument lists.
+    languages: [python]
+    severity: ERROR
+    pattern: subprocess.run(..., shell=True, ...)
+    metadata:
+      category: security
+      cwe: CWE-78
+      references:
+        - https://docs.python.org/3/library/subprocess.html#security-considerations
+  - id: gabriel-python-os-system
+    message: Prefer subprocess.run with explicit arguments instead of os.system.
+    languages: [python]
+    severity: WARNING
+    pattern: os.system(...)
+    metadata:
+      category: security
+      cwe: CWE-78
+      references:
+        - https://docs.python.org/3/library/os.html#os.system

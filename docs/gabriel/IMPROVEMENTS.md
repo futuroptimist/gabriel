@@ -140,6 +140,6 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`gabriel/utils.py`, `tests/test_utils.py`).
 - [x] Add PhotoPrism audit helper covering HTTPS, storage, backups, and plugins
       (`gabriel/selfhosted.py`, `tests/test_selfhosted.py`).
-- [ ] Integrate `semgrep` static analysis into pre-commit and CI
-      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`).
+- [x] Integrate `semgrep` static analysis into pre-commit and CI
+      (`.pre-commit-config.yaml`, `.github/workflows/ci.yml`, `config/semgrep/rules.yaml`).
       *Aligns with flywheel best practices.*
