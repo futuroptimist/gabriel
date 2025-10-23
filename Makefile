@@ -1,4 +1,4 @@
-.PHONY: preview lint test spell links
+.PHONY: preview lint test spell links docs
 
 preview:
 	python -m gabriel.ui.viewer
@@ -14,3 +14,6 @@ spell:
 
 links:
 	lychee --config lychee.toml README.md docs
+
+docs:
+	mkdocs build --strict

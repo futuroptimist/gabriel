@@ -363,3 +363,5 @@ Typer
 uptime
 vitest
 XSS
+MkDocs
+mkdocstrings

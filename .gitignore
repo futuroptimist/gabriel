@@ -12,6 +12,9 @@ coverage.xml
 .lycheecache/
 .lycheecache
 
+# MkDocs site output
+site/
+
 # Virtual environments
 .venv/
 

@@ -9,6 +9,8 @@ mypy
 pip-audit
 semgrep
 pyspelling
+mkdocs
+mkdocstrings[python]
 keyring
 hypothesis
 tomli
