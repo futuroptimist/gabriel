@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: |
           uv pip install --system -r requirements.txt
-          uv pip install --system bandit flake8 ruff pre-commit
+          uv pip install --system bandit flake8 ruff pre-commit semgrep
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -52,3 +52,5 @@ jobs:
         run: flake8 .
       - name: Run Bandit
         run: bandit -c pyproject.toml -r gabriel scripts
+      - name: Run Semgrep
+        run: semgrep scan --config config/semgrep/rules.yaml --metrics=off

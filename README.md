@@ -133,6 +133,10 @@ and catch formatting or security regressions before merge. Dependency installati
 cached across the CI matrix so lint, test, and docs pipelines reuse previously resolved
 packages, significantly reducing run time on repeat builds.
 
+Semgrep scans run alongside these hooks using the local rule bundle in
+[`config/semgrep/rules.yaml`](config/semgrep/rules.yaml) to flag risky subprocess usage in
+Python code before it lands in the repository.
+
 Ruff powers the lightweight linting layer used in both pre-commit hooks and CI. Run it directly
 when iterating on lint fixes:
 
