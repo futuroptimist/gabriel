@@ -8,6 +8,8 @@ publicsuffix2
 mypy
 pip-audit
 pyspelling
+mkdocs
+mkdocstrings[python]
 keyring
 hypothesis
 tomli

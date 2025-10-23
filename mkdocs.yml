@@ -1,0 +1,48 @@
+site_name: Gabriel Documentation
+site_description: Local-first security companion guides and API reference.
+site_url: https://futuroptimist.github.io/gabriel/
+repo_url: https://github.com/futuroptimist/gabriel
+repo_name: futuroptimist/gabriel
+docs_dir: docs
+
+strict: true
+
+theme:
+  name: mkdocs
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+  - footnotes
+  - def_list
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: sphinx
+            show_if_no_docstring: false
+            show_source: false
+            show_root_heading: true
+            show_root_full_path: false
+            heading_level: 2
+            filters:
+              - "!^_"
+watch:
+  - gabriel
+
+nav:
+  - Overview: index.md
+  - Gabriel Guides:
+      - Roadmap: gabriel/ROADMAP.md
+      - Threat Model: gabriel/THREAT_MODEL.md
+      - Secret Boundary: gabriel/SECRET_BOUNDARY.md
+      - Offline Operations: gabriel/OFFLINE.md
+      - FAQ: gabriel/FAQ.md
+  - API Reference:
+      - Modules: api/index.md
