@@ -515,6 +515,11 @@ test other architectures locally, pass the desired platform to Buildx:
 docker buildx build --platform linux/arm64 -t gabriel:arm64 .
 ```
 
+Every publish run now performs a `trivy` vulnerability scan against the freshly
+built `linux/amd64` image before pushing the multi-architecture manifest. Builds
+fail when high or critical issues surface, keeping the public image aligned with
+our hardening guidance.
+
 Pass `--build-arg PYTHON_VERSION=3.11` to experiment with alternate Python releases that remain
 supported by the Docker base image.
 

@@ -97,8 +97,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`.github/workflows/ci.yml`, `.github/workflows/coverage.yml`,
       `.github/workflows/docs.yml`).
       *Aligns with flywheel best practices.*
-- [ ] Scan Docker images for vulnerabilities during builds
-      (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
+  - [x] Scan Docker images for vulnerabilities during builds
+        (`.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
 - [x] Format viewer assets with Prettier via pre-commit
       (`viewer/viewer.js`, `.pre-commit-config.yaml`).
 - [x] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+import yaml
 
 
 def _load_toml_module() -> Any:
@@ -137,6 +138,34 @@ def test_ci_workflow_runs_pre_commit() -> None:
 
     workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
     assert "pre-commit run --all-files" in workflow  # nosec B101
+
+
+def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
+    """Validate that Docker publishes run a Trivy scan before pushing images."""
+
+    workflow = yaml.safe_load(Path(".github/workflows/docker.yml").read_text(encoding="utf-8"))
+
+    steps = workflow["jobs"]["build"]["steps"]
+    scan_build = next((step for step in steps if step.get("id") == "build-scan"), None)
+    assert (
+        scan_build is not None
+    ), "Expected build-scan step to prepare the local image"  # nosec B101
+    assert scan_build.get("with", {}).get("load") is True  # nosec B101
+
+    trivy_step = next(
+        (
+            step
+            for step in steps
+            if str(step.get("uses", "")).startswith("aquasecurity/trivy-action@")
+        ),
+        None,
+    )
+    assert trivy_step is not None, "Trivy scan step missing from Docker workflow"  # nosec B101
+
+    config = trivy_step.get("with", {})
+    assert config.get("image-ref") == "ghcr.io/${{ github.repository }}:scan"  # nosec B101
+    assert config.get("severity") == "CRITICAL,HIGH"  # nosec B101
+    assert config.get("exit-code") == "1"  # nosec B101
 
 
 def test_workflows_cover_supported_python_versions() -> None:
