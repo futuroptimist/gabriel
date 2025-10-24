@@ -659,7 +659,7 @@ pre-commit hooks also run `detect-secrets`, `trufflehog`, `pip-audit`, the `lych
 checker, `pymarkdown`, and the custom `gabriel.prompt_lint` scanner to catch secrets, vulnerable
 dependencies, stale references, style regressions, and prompt-injection red flags in Markdown
 content.
-Dependabot monitors Python dependencies and GitHub Actions workflows weekly.
+Dependabot monitors Python dependencies, GitHub Actions workflows, and Docker base image updates weekly.
 
 ## Release management
 
