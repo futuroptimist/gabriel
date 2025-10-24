@@ -684,16 +684,17 @@ We use `AGENTS.md` to outline repository-specific instructions for automated age
 
 ## CI & Security
 
-The repository includes GitHub Actions workflows for linting, testing, and documentation.
-`flake8` and `bandit` catch style issues and common security mistakes, while coverage results are
-uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is committed to
-[coverage.svg](coverage.svg) after tests run. Coverage builds now exercise Linux, macOS, and Windows
-runners to surface platform-specific issues before they reach `main`.
+The repository includes GitHub Actions workflows for linting, testing, documentation, and weekly
+security scanning. `flake8` and `bandit` catch style issues and common security mistakes, while
+coverage results are uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is
+committed to [coverage.svg](coverage.svg) after tests run. Coverage builds now exercise Linux,
+macOS, and Windows runners to surface platform-specific issues before they reach `main`.
 pre-commit hooks also run `detect-secrets`, `trufflehog`, `pip-audit`, the `lychee` Markdown link
 checker, `pymarkdown`, and the custom `gabriel.prompt_lint` scanner to catch secrets, vulnerable
 dependencies, stale references, style regressions, and prompt-injection red flags in Markdown
-content.
-Dependabot monitors Python dependencies, GitHub Actions workflows, and Docker base image updates weekly.
+content. Dependabot monitors Python dependencies, GitHub Actions workflows, and Docker base image
+updates weekly. The `Security Scans` workflow (see `.github/workflows/security.yml`) runs every
+Monday at 05:00 UTC to execute CodeQL, Semgrep, `pip-audit`, and a high-severity `npm audit`.
 
 ## Release management
 

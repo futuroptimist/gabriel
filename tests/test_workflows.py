@@ -27,3 +27,28 @@ def test_coverage_workflow_runs_on_multiple_operating_systems() -> None:
         "windows-latest",
     ]
     assert matrix["python-version"] == ["3.10", "3.11"]
+
+
+def test_security_workflow_schedules_weekly_scans() -> None:
+    """The security workflow should run weekly and cover all required scanners."""
+
+    workflow = load_workflow("security.yml")
+
+    triggers = workflow.get("on") or workflow.get(True)
+    assert triggers is not None, "Security workflow is missing triggers"
+    assert "workflow_dispatch" in triggers
+
+    schedule = triggers.get("schedule")
+    assert schedule, "Security workflow must define a schedule trigger"
+    assert schedule[0]["cron"] == "0 5 * * 1"
+
+    jobs = workflow["jobs"]
+    expected_jobs = {"codeql", "semgrep", "dependency-scan"}
+    assert expected_jobs.issubset(jobs), "Missing required security jobs"
+
+    codeql_steps = [
+        step.get("uses")
+        for step in jobs["codeql"]["steps"]
+        if isinstance(step, dict) and "uses" in step
+    ]
+    assert "github/codeql-action/init@v4" in codeql_steps
