@@ -60,6 +60,8 @@ agentic coding workflows, regardless of deployment environment.
 - Enforce a **prompt sanitization pipeline**: strip HTML, collapse whitespace, reject `ignore`
   directives unless explicitly allow-listed.
 - Maintain **immutable system prompts** stored in signed config files.
+  (`gabriel.prompts.load_system_prompt` validates the SLSA provenance for
+  `config/prompts/system.md`.)
 - Adopt **retrieval isolation**: per-repo embeddings stored in ephemeral indices with TTLs.
 - Run **content provenance checks** (e.g., checksum verified docs) before ingestion.
 - Apply **prompt-injection linting** to PRs and docs referencing agent workflows
@@ -84,6 +86,7 @@ agentic coding workflows, regardless of deployment environment.
 ### Mitigation: Tool & Function-Call Safety
 
 - Maintain an **allow-listed command registry** (YAML) that maps tasks → permitted tools.
+  *(Implemented via `config/command_allowlist.yaml` and enforced by `gabriel.ui.cli`.)*
 - Enforce **tool-call validators** that check arguments against regex policies and rate limits.
 - Route outbound HTTP via an **allow-listed fetch proxy** with domain verification and logging.
 - Require **human approval** for escalation requests (e.g., installing new packages).
@@ -107,7 +110,7 @@ agentic coding workflows, regardless of deployment environment.
 
 ### Prompt & Retrieval Controls Checklist
 
-- [ ] System prompts stored in `config/prompts/system.md` signed with SLSA provenance.
+- [x] System prompts stored in `config/prompts/system.md` signed with SLSA provenance.
 - [x] Sanitizer strips HTML, markdown images, and zero-width characters before execution
       (`gabriel.ingestion.text.sanitize_prompt`).
 - [ ] Embedding writes require repo-specific API keys and TTL ≤7 days.

@@ -43,6 +43,13 @@ from .ingestion import (
 )
 from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
 from .notify import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
+from .prompts import (
+    DEFAULT_PROVENANCE_PATH,
+    DEFAULT_SYSTEM_PROMPT_PATH,
+    PromptProvenanceError,
+    load_system_prompt,
+    validate_provenance,
+)
 from .secrets import delete_secret, get_secret, store_secret
 from .selfhosted import (
     CheckResult,
@@ -110,6 +117,11 @@ __all__ = [
     "generate_recommendations",
     "Recommendation",
     "RiskTolerance",
+    "load_system_prompt",
+    "validate_provenance",
+    "PromptProvenanceError",
+    "DEFAULT_SYSTEM_PROMPT_PATH",
+    "DEFAULT_PROVENANCE_PATH",
     "DockerDaemonConfig",
     "VaultWardenConfig",
     "SyncthingConfig",

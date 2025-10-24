@@ -1,0 +1,27 @@
+# Allow-listed CLI operations grouped by logical task area.
+tasks:
+  arithmetic:
+    description: "Arithmetic helpers available via the Gabriel CLI."
+    tools:
+      - add
+      - subtract
+      - multiply
+      - divide
+      - power
+      - modulo
+      - floordiv
+      - sqrt
+  secrets:
+    description: "Secret management commands exposed by the CLI."
+    tools:
+      - secret.store
+      - secret.get
+      - secret.delete
+  viewer:
+    description: "Viewer hosting commands for the local WebGL interface."
+    tools:
+      - viewer.serve
+  ingestion:
+    description: "Repository ingestion helpers that gather commit metadata."
+    tools:
+      - crawl
