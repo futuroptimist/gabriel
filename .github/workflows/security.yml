@@ -51,10 +51,10 @@ jobs:
           python-version: "3.11"
       - name: Install uv
         uses: astral-sh/setup-uv@v7
-      - name: Install pip-audit
-        run: uv pip install --system pip-audit
+      - name: Install Python dependencies
+        run: uv pip install --system -r requirements.txt
       - name: Run pip-audit
-        run: pip-audit --progress-spinner=off
+        run: pip-audit --progress-spinner=off -r requirements.txt
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
