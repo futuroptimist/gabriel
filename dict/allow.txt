@@ -17,6 +17,7 @@ README
 RSA
 YOURNAME
 auth
+autodoc
 autoplay
 axel
 axel's

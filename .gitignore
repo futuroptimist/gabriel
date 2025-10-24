@@ -14,6 +14,7 @@ coverage.xml
 
 # MkDocs site output
 site/
+docs/_build/
 
 # Virtual environments
 .venv/

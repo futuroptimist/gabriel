@@ -11,6 +11,8 @@ semgrep
 pyspelling
 mkdocs
 mkdocstrings[python]
+sphinx
+sphinx-autodoc-typehints
 keyring
 hypothesis
 tomli

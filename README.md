@@ -108,6 +108,21 @@ pip install -r requirements.txt
 mkdocs serve
 ```
 
+Generate the Sphinx API documentation to view the autodoc pages locally (install the required
+extras with `pip install -r requirements.txt` or `pip install "gabriel[docs]"`):
+
+```bash
+python scripts/build_sphinx_docs.py --output docs/_build/sphinx
+open docs/_build/sphinx/index.html  # macOS example; use xdg-open/start on Linux/Windows
+```
+
+After running `mkdocs build`, copy the rendered HTML into the MkDocs site output so the pages
+publish alongside the rest of the documentation:
+
+```bash
+python scripts/build_sphinx_docs.py --output docs/_build/sphinx --site-dir site/sphinx --skip-build
+```
+
 The rendered site is also published to GitHub Pages at
 futuroptimist.github.io/gabriel after every merge to `main`.
 
