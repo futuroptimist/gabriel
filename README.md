@@ -327,6 +327,32 @@ for result in store.search("vaultwarden admin token", required_tags=["passwords"
 Each result includes the originating note, matched terms, and a contextual snippet so
 you can jump directly to the relevant remediation guidance when triaging incidents.
 
+### Enforce repository-scoped vector store access
+
+The agent threat model calls for repository-scoped API keys and short-lived embeddings
+so credential exposure windows stay tight. Use `gabriel.SecureVectorStore` to store
+embeddings with enforced prefixes and a maximum seven-day TTL:
+
+```python
+from datetime import datetime, timedelta, timezone
+
+from gabriel import MAX_VECTOR_TTL, SecureVectorStore
+
+store = SecureVectorStore("gabriel")
+record = store.write_embedding(
+    [0.12, 0.34, 0.56],
+    api_key_id="gabriel:threat-retriever",
+    ttl=timedelta(days=3),
+    metadata={"task": "threat-report"},
+)
+print(record.api_key_id)
+print(record.expires_at - datetime.now(tz=timezone.utc) <= MAX_VECTOR_TTL)
+```
+
+The helper rejects API keys that are not prefixed with the repository name, enforces
+TTL values of seven days or less, and exposes `purge_expired()` so hourly cleanup jobs
+can remove stale embeddings before they leak across tasks.
+
 ### Generate prioritized recommendations
 
 Phase 2 of the roadmap calls for richer guidance that blends audit data with personal
