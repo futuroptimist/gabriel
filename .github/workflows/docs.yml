@@ -68,8 +68,12 @@ jobs:
           cache-dependency-path: requirements.txt
       - name: Install MkDocs dependencies
         run: pip install -r requirements.txt
+      - name: Build Sphinx API docs
+        run: python scripts/build_sphinx_docs.py --output docs/_build/sphinx
       - name: Build MkDocs site
         run: mkdocs build --strict --site-dir site
+      - name: Copy Sphinx HTML into MkDocs site
+        run: python scripts/build_sphinx_docs.py --output docs/_build/sphinx --site-dir site/sphinx --skip-build
       - name: Upload MkDocs artifact
         uses: actions/upload-artifact@v4
         with:

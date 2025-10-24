@@ -4,6 +4,10 @@ Gabriel exposes typed helpers for analysis, phishing detection, and secure stora
 below render documentation directly from the source tree so you can review signatures and
 docstrings without leaving the browser.
 
+Run `python scripts/build_sphinx_docs.py --output docs/_build/sphinx` to generate an accompanying
+Sphinx HTML reference at `docs/_build/sphinx/index.html`. Copy it into `site/sphinx/` after running
+`mkdocs build` to publish the rendered pages with the rest of the documentation.
+
 ## Analysis recommendations
 
 ::: gabriel.analysis.recommendations
