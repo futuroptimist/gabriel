@@ -67,6 +67,12 @@ output = "coverage.xml"
 exclude_dirs = ["tests"]
 skips = ["B101"]
 
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["gabriel*"]
+
 [tool.setuptools.package-data]
 gabriel = [
     "config/command_allowlist.yaml",
