@@ -33,6 +33,8 @@ class SecureVectorStore:
     """In-memory vector store enforcing repository-scoped API keys and TTLs."""
 
     def __init__(self, repository: str, *, now: Callable[[], datetime] | None = None) -> None:
+        """Initialize the store with the provided repository scope and clock."""
+
         if not repository or not repository.strip():
             raise ValueError("repository must be a non-empty string")
         self._repository = repository.strip()
@@ -51,7 +53,7 @@ class SecureVectorStore:
         *,
         api_key_id: str,
         ttl: timedelta | None = None,
-        metadata: Mapping[str, str] | None = None,
+        metadata: Mapping[str, object] | None = None,
     ) -> VectorRecord:
         """Persist ``embedding`` with repository-scoped API key enforcement."""
 
@@ -80,7 +82,9 @@ class SecureVectorStore:
         """Return all non-expired records in insertion order."""
 
         now = self._now()
-        return tuple(record for record in self._records.values() if not record.is_expired(reference=now))
+        return tuple(
+            record for record in self._records.values() if not record.is_expired(reference=now)
+        )
 
     def purge_expired(self) -> int:
         """Remove expired records and return the number of purged items."""
@@ -92,6 +96,8 @@ class SecureVectorStore:
         return len(expired)
 
     def __len__(self) -> int:  # pragma: no cover - simple delegation
+        """Return the number of embeddings currently stored."""
+
         return len(self._records)
 
     def _validate_api_key(self, api_key_id: str) -> str:
@@ -111,9 +117,7 @@ class SecureVectorStore:
         if normalized <= timedelta(0):
             raise ValueError("ttl must be greater than zero")
         if normalized > MAX_VECTOR_TTL:
-            raise ValueError(
-                f"ttl must be less than or equal to {MAX_VECTOR_TTL.days} days"
-            )
+            raise ValueError(f"ttl must be less than or equal to {MAX_VECTOR_TTL.days} days")
         return normalized
 
     @staticmethod
@@ -129,7 +133,7 @@ class SecureVectorStore:
         return tuple(normalized)
 
     @staticmethod
-    def _normalize_metadata(metadata: Mapping[str, str] | None) -> Mapping[str, str]:
+    def _normalize_metadata(metadata: Mapping[str, object] | None) -> Mapping[str, str]:
         if metadata is None:
             return MappingProxyType({})
         materialized: dict[str, str] = {}
