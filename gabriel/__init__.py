@@ -31,9 +31,12 @@ from .common import (
     KeyringSecretStore,
     ScratchSpace,
     SecretStore,
+    VolumeMount,
     _env_secret_key,
     read_secret_from_input,
+    run_in_disposable_container,
     scratch_space,
+    volume_mount,
 )
 from .ingestion import (
     CommitRecord,
@@ -94,6 +97,9 @@ __all__ = [
     "_env_secret_key",
     "read_secret_from_input",
     "scratch_space",
+    "run_in_disposable_container",
+    "VolumeMount",
+    "volume_mount",
     "load_notes_from_paths",
     "KnowledgeStore",
     "Note",

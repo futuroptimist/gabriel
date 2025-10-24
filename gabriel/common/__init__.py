@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from .docker import VolumeMount, run_in_disposable_container, volume_mount
 from .interfaces import (
     EnvelopeEncryptor,
     InferenceClient,
@@ -31,4 +32,7 @@ __all__ = [
     "SECRET_ENV_PREFIX",
     "_env_secret_key",
     "read_secret_from_input",
+    "run_in_disposable_container",
+    "VolumeMount",
+    "volume_mount",
 ]

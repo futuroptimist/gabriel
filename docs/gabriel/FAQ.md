@@ -79,14 +79,18 @@ This FAQ lists questions we have for the maintainers and community. Answers will
 
     Yes. Build the image with `docker build -t gabriel .` and run commands such as `docker run --rm -it gabriel gabriel-calc add 2 3`. Mount volumes or supply `--env-file` when secrets or configuration should persist between runs. See the README section titled *Docker builds* for more recipes.
 
-19. **How can I organize recurring security notes?**
+19. **How do automated jobs avoid leaving stray containers behind?**
+
+    Use `gabriel.run_in_disposable_container` from scripts and schedulers. The helper always adds `--rm`, normalizes environment variables and volume mounts, and rejects duplicate `--rm` flags so cleanup remains automatic even when jobs fail.
+
+20. **How can I organize recurring security notes?**
 
     Gabriel's roadmap now includes a lightweight knowledge store for Markdown notes.
     Use `gabriel.knowledge.KnowledgeStore` to index local files and search by keyword
     or tag without sending data to external services. The helper extracts titles,
     tags, and contextual snippets so you can jump straight to remediation guidance.
 
-20. **Does Gabriel include phishing detection yet?**
+21. **Does Gabriel include phishing detection yet?**
 
     A lightweight heuristic scanner in `gabriel.analysis.phishing` analyses pasted links for
     punycode, suspicious TLDs, HTTP usage, lookalike domains, known URL shorteners,
@@ -94,41 +98,39 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     risky executable or archive extensions. Extend it with additional rules as the
     roadmap advances.
 
-21. **How do I call token.place for encrypted inference?**
+22. **How do I call token.place for encrypted inference?**
 
     Import `TokenPlaceClient` and point it at your relay. The helper signs requests with your API
     token, provides a `check_health()` probe, and normalizes responses into a simple
     `TokenPlaceCompletion` dataclass. Example:
 
-    ```python
-    from gabriel import TokenPlaceClient
+        from gabriel import TokenPlaceClient
 
-    client = TokenPlaceClient("https://relay.local", api_key="tp_test_123")
-    completion = client.infer("Summarize pending CVEs", model="llama3-70b")
-    print(completion.text)
-    ```
+        client = TokenPlaceClient("https://relay.local", api_key="tp_test_123")
+        completion = client.infer("Summarize pending CVEs", model="llama3-70b")
+        print(completion.text)
 
     The client keeps traffic on the configured relay URL so you can pair encrypted inference with
     Gabriel's offline-first design.
 
-22. **Can Gabriel audit my VaultWarden deployment?**
+23. **Can Gabriel audit my VaultWarden deployment?**
 
     Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a `VaultWardenConfig` snapshot to identify gaps from the checklist in [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
 
-23. **How do I preview the bundled WebGL viewer?**
+24. **How do I preview the bundled WebGL viewer?**
 
     Run `gabriel viewer` to launch a threaded HTTP server that opens your browser locally. Add
     `--no-browser` for headless systems or `--host 0.0.0.0` to share the preview on your LAN. See
     [VIEWER.md](VIEWER.md) for more automation-friendly patterns.
 
-24. **How should I sanitize prompts pulled from external sources?**
+25. **How should I sanitize prompts pulled from external sources?**
 
     Call `gabriel.ingestion.text.sanitize_prompt` before handing text to a model. It strips HTML tags,
     Markdown image embeddings, and zero-width characters that attackers use for
     prompt-injection payloads. Pair it with `gabriel.prompt_lint` to flag instructions that
     attempt to bypass guardrails.
 
-25. **Can Gabriel suggest which findings to tackle first?**
+26. **Can Gabriel suggest which findings to tackle first?**
 
     Yes. Pass audit findings to `gabriel.analysis.generate_recommendations` and
     optionally include knowledge notes from `gabriel.knowledge.KnowledgeStore`. The helper
