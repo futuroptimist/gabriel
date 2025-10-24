@@ -24,6 +24,13 @@ def test_load_system_prompt_success() -> None:
     assert "privacy" in prompt.lower()
 
 
+def test_load_system_prompt_accepts_resource_objects() -> None:
+    """``Traversable`` resources can be supplied directly to the loader."""
+
+    prompt = load_system_prompt(DEFAULT_SYSTEM_PROMPT_PATH, DEFAULT_PROVENANCE_PATH)
+    assert "Gabriel" in prompt
+
+
 def test_load_system_prompt_digest_mismatch(tmp_path: Path) -> None:
     """Digest mismatches in the provenance metadata raise an error."""
 
@@ -65,6 +72,14 @@ def test_validate_provenance_requires_subject(tmp_path: Path) -> None:
 
     with pytest.raises(PromptProvenanceError):
         validate_provenance(prompt_copy, provenance_copy)
+
+
+def test_validate_provenance_accepts_resource_objects() -> None:
+    """The provenance validator supports importlib resource handles."""
+
+    payload = validate_provenance(DEFAULT_SYSTEM_PROMPT_PATH, DEFAULT_PROVENANCE_PATH)
+    subject = payload["subject"][0]
+    assert "sha256" in subject["digest"]
 
 
 def test_validate_provenance_requires_matching_subject(tmp_path: Path) -> None:
