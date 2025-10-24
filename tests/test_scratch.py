@@ -42,7 +42,9 @@ def test_scratch_space_sanitizes_identifier(task_id, tmp_path):
         assert name.startswith("gabriel-task-")
         suffix = name.removeprefix("gabriel-task-")
         assert suffix
-        assert set(suffix) <= set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_")
+        assert set(suffix) <= set(
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_"
+        )
     assert not path.exists()
 
 

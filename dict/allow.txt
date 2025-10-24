@@ -158,6 +158,9 @@ allowlist
 pragma
 misconfiguration
 misconfigured
+containerised
+ScratchSpace
+utf
 mitigations
 overreliance
 photoprism

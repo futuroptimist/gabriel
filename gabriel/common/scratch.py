@@ -1,3 +1,5 @@
+"""Scratch directory context manager utilities."""
+
 from __future__ import annotations
 
 import os
@@ -45,6 +47,7 @@ class ScratchSpace(AbstractContextManager[Path]):
     _active: bool = field(init=False, default=False)
 
     def __post_init__(self) -> None:
+        """Normalize the configuration and compute resolved paths."""
         base = Path(self.base_dir) if self.base_dir is not None else Path(tempfile.gettempdir())
         sanitized_identifier = _sanitize_identifier(self.task_id)
         if not sanitized_identifier:
