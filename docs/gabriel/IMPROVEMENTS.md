@@ -85,8 +85,8 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [x] Integrate `flake8-docstrings` into pre-commit for docstring style checks
       (`.pre-commit-config.yaml`, `.flake8`). *Aligns with flywheel best practices.*
-- [ ] Test on Linux, macOS, and Windows in CI
-      (`.github/workflows/coverage.yml`, `.github/workflows/ci.yml`).
+- [x] Test on Linux, macOS, and Windows in CI
+      (`.github/workflows/coverage.yml`).
 - [ ] Add markdown linting to pre-commit for doc style consistency
       (`.pre-commit-config.yaml`, `docs/**`).
       *Aligns with flywheel best practices.*

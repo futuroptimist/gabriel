@@ -6,13 +6,15 @@ on:
 
 jobs:
   coverage:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.10", "3.11"]
     steps:
       - uses: actions/checkout@v3
       - name: Install spellcheck dictionaries
+        if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,6 +23,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
       - name: Cache uv dependencies
+        if: runner.os != 'Windows'
         uses: actions/cache@v4
         with:
           path: ~/.cache/uv
@@ -29,8 +32,14 @@ jobs:
             ${{ runner.os }}-uv-${{ matrix.python-version }}-
             ${{ runner.os }}-uv-
       - name: Install dependencies
+        shell: bash
         run: |
-          uv pip install --system -r requirements.txt
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.txt
+          else
+            uv pip install --system -r requirements.txt
+          fi
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -46,11 +55,13 @@ jobs:
           pytest --cov=gabriel --cov-report=term-missing --cov-report=xml
           coverage-badge -o coverage.svg -f
       - name: Upload coverage reports to Codecov
+        if: runner.os == 'Linux'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Commit coverage badge
         if: >-
+          runner.os == 'Linux' &&
           matrix.python-version == '3.10' &&
           github.event_name == 'push' &&
           github.ref == 'refs/heads/main'
