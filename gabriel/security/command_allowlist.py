@@ -6,6 +6,7 @@ import fnmatch
 import importlib
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
+from importlib import resources
 from pathlib import Path
 from typing import Protocol, cast
 
@@ -229,11 +230,16 @@ class CommandAllowlist:
 
 
 def load_default_allowlist() -> CommandAllowlist:
-    """Load the repository's default allowlist configuration."""
+    """Load the package's default allowlist configuration."""
 
-    repo_root = Path(__file__).resolve().parents[2]
-    allowlist_path = repo_root / "config" / "command_allowlist.yaml"
-    return CommandAllowlist.from_file(allowlist_path)
+    resource = resources.files("gabriel").joinpath("config", "command_allowlist.yaml")
+    try:
+        with resources.as_file(resource) as path:
+            return CommandAllowlist.from_file(path)
+    except FileNotFoundError as exc:  # pragma: no cover - defensive
+        raise CommandAllowlistError(
+            "Default command allowlist resource is missing from the package"
+        ) from exc
 
 
 class _YamlModule(Protocol):

@@ -692,9 +692,9 @@ runners to surface platform-specific issues before they reach `main`.
 pre-commit hooks also run `detect-secrets`, `trufflehog`, `pip-audit`, the `lychee` Markdown link
 checker, `pymarkdown`, and the custom `gabriel.prompt_lint` scanner to catch secrets, vulnerable
 dependencies, stale references, style regressions, and prompt-injection red flags in Markdown
-content. CLI entry points additionally consult `config/command_allowlist.yaml` to ensure every
+content. CLI entry points additionally consult `gabriel/config/command_allowlist.yaml` to ensure every
 task only invokes allow-listed helpers before executing. The default system prompt ships in
-`config/prompts/system.md` with a SLSA-style provenance statement; `gabriel.prompts.load_system_prompt`
+`gabriel/config/prompts/system.md` with a SLSA-style provenance statement; `gabriel.prompts.load_system_prompt`
 verifies the signed digest before returning the content to guard against tampering.
 Dependabot monitors Python dependencies, GitHub Actions workflows, and Docker base image updates weekly.
 

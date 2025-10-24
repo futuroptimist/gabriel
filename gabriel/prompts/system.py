@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+from contextlib import ExitStack
+from importlib import resources
+from importlib.resources.abc import Traversable
 from pathlib import Path
 from typing import Any
 
@@ -15,11 +18,11 @@ __all__ = [
     "validate_provenance",
 ]
 
-_REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SYSTEM_PROMPT_PATH = _REPO_ROOT / "config" / "prompts" / "system.md"
-DEFAULT_PROVENANCE_PATH = (
-    DEFAULT_SYSTEM_PROMPT_PATH.with_name(f"{DEFAULT_SYSTEM_PROMPT_PATH.stem}.provenance.json")
-)
+_PROMPT_RESOURCES = resources.files("gabriel").joinpath("config", "prompts")
+DEFAULT_SYSTEM_PROMPT_PATH = _PROMPT_RESOURCES.joinpath("system.md")
+DEFAULT_PROVENANCE_PATH = _PROMPT_RESOURCES.joinpath("system.provenance.json")
+_PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+_DEFAULT_PROMPT_CANONICAL_NAME = "config/prompts/system.md"
 
 
 class PromptProvenanceError(RuntimeError):
@@ -27,44 +30,92 @@ class PromptProvenanceError(RuntimeError):
 
 
 def load_system_prompt(
-    prompt_path: Path | str | None = None,
-    provenance_path: Path | str | None = None,
+    prompt_path: Path | str | Traversable | None = None,
+    provenance_path: Path | str | Traversable | None = None,
 ) -> str:
     """Return the system prompt after validating its provenance metadata."""
 
-    prompt = Path(prompt_path) if prompt_path is not None else DEFAULT_SYSTEM_PROMPT_PATH
-    provenance = (
-        Path(provenance_path)
-        if provenance_path is not None
-        else _derive_provenance_path(prompt)
-    )
+    with ExitStack() as stack:
+        prompt, canonical_name, is_default_prompt = _resolve_prompt_path(prompt_path, stack)
+        provenance = _resolve_provenance_path(
+            provenance_path,
+            prompt,
+            stack,
+            use_default_prompt=is_default_prompt,
+        )
 
-    if not prompt.is_file():
-        raise PromptProvenanceError(f"System prompt file not found: {prompt}")
+        if not prompt.is_file():
+            raise PromptProvenanceError(f"System prompt file not found: {prompt}")
 
-    validate_provenance(prompt, provenance)
-    return prompt.read_text(encoding="utf-8")
+        _validate_provenance_resolved(prompt, provenance, canonical_name)
+        return prompt.read_text(encoding="utf-8")
 
 
 def validate_provenance(
-    prompt_path: Path | str | None = None,
-    provenance_path: Path | str | None = None,
+    prompt_path: Path | str | Traversable | None = None,
+    provenance_path: Path | str | Traversable | None = None,
+    *,
+    canonical_name: str | None = None,
 ) -> dict[str, Any]:
     """Validate the provenance document for ``prompt_path`` and return its payload."""
 
-    prompt = Path(prompt_path) if prompt_path is not None else DEFAULT_SYSTEM_PROMPT_PATH
-    provenance = (
-        Path(provenance_path)
-        if provenance_path is not None
-        else _derive_provenance_path(prompt)
-    )
+    with ExitStack() as stack:
+        prompt, default_canonical, is_default_prompt = _resolve_prompt_path(prompt_path, stack)
+        canonical_hint = canonical_name or default_canonical
+        provenance = _resolve_provenance_path(
+            provenance_path,
+            prompt,
+            stack,
+            use_default_prompt=is_default_prompt,
+        )
 
+        payload = _validate_provenance_resolved(prompt, provenance, canonical_hint)
+    return payload
+
+
+def _resolve_prompt_path(
+    value: Path | str | Traversable | None,
+    stack: ExitStack,
+) -> tuple[Path, str | None, bool]:
+    if value is None or (
+        isinstance(value, Traversable) and value == DEFAULT_SYSTEM_PROMPT_PATH
+    ):
+        path = stack.enter_context(resources.as_file(DEFAULT_SYSTEM_PROMPT_PATH))
+        return Path(path), _DEFAULT_PROMPT_CANONICAL_NAME, True
+    return _coerce_path(value, stack), None, False
+
+
+def _resolve_provenance_path(
+    value: Path | str | Traversable | None,
+    prompt: Path,
+    stack: ExitStack,
+    *,
+    use_default_prompt: bool,
+) -> Path:
+    if value is None:
+        if use_default_prompt:
+            path = stack.enter_context(resources.as_file(DEFAULT_PROVENANCE_PATH))
+            return Path(path)
+        return _derive_provenance_path(prompt)
+    return _coerce_path(value, stack)
+
+
+def _coerce_path(value: Path | str | Traversable, stack: ExitStack) -> Path:
+    if isinstance(value, Traversable):
+        path = stack.enter_context(resources.as_file(value))
+        return Path(path)
+    return Path(value)
+
+
+def _validate_provenance_resolved(
+    prompt: Path, provenance: Path, canonical_name: str | None
+) -> dict[str, Any]:
     payload = _load_provenance_document(provenance)
     subjects = payload.get("subject")
     if not isinstance(subjects, list) or not subjects:
         raise PromptProvenanceError("Provenance document is missing subject entries")
 
-    subject = _match_subject(subjects, prompt)
+    subject = _match_subject(subjects, prompt, canonical_name)
     digest_section = subject.get("digest") if isinstance(subject, dict) else None
     if not isinstance(digest_section, dict) or "sha256" not in digest_section:
         raise PromptProvenanceError("Provenance subject is missing a sha256 digest")
@@ -113,8 +164,10 @@ def _load_provenance_document(path: Path) -> dict[str, Any]:
     return payload
 
 
-def _match_subject(subjects: list[Any], prompt_path: Path) -> dict[str, Any]:
-    expected_names = _candidate_subject_names(prompt_path)
+def _match_subject(
+    subjects: list[Any], prompt_path: Path, canonical_name: str | None
+) -> dict[str, Any]:
+    expected_names = _candidate_subject_names(prompt_path, canonical_name)
     for entry in subjects:
         if not isinstance(entry, dict):
             continue
@@ -126,10 +179,12 @@ def _match_subject(subjects: list[Any], prompt_path: Path) -> dict[str, Any]:
     )
 
 
-def _candidate_subject_names(prompt_path: Path) -> set[str]:
+def _candidate_subject_names(prompt_path: Path, canonical_name: str | None) -> set[str]:
     candidates = {prompt_path.name, str(prompt_path)}
+    if canonical_name:
+        candidates.add(canonical_name)
     try:
-        relative = prompt_path.relative_to(_REPO_ROOT)
+        relative = prompt_path.relative_to(_PACKAGE_ROOT)
     except ValueError:
         pass
     else:

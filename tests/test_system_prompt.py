@@ -168,3 +168,34 @@ def test_validate_provenance_skips_non_dict_subjects(tmp_path: Path) -> None:
 
     validated = validate_provenance(prompt_copy, provenance_copy)
     assert validated["subject"][1]["digest"] == digest
+
+
+def test_validate_provenance_derives_path_for_custom_prompt(tmp_path: Path) -> None:
+    """Default provenance is discovered when a custom prompt path is provided."""
+
+    prompt_dir = tmp_path / "custom"
+    prompt_dir.mkdir()
+    prompt_copy = prompt_dir / "system.md"
+    provenance_copy = prompt_dir / "system.provenance.json"
+
+    prompt_copy.write_text(DEFAULT_SYSTEM_PROMPT_PATH.read_text(encoding="utf-8"))
+    payload = json.loads(DEFAULT_PROVENANCE_PATH.read_text(encoding="utf-8"))
+    payload["subject"][0]["name"] = prompt_copy.name
+    provenance_copy.write_text(json.dumps(payload), encoding="utf-8")
+
+    validated = validate_provenance(prompt_copy)
+    assert validated["subject"][0]["name"] == prompt_copy.name
+
+
+def test_validate_provenance_accepts_string_paths(tmp_path: Path) -> None:
+    """String paths are coerced to ``Path`` instances when validating provenance."""
+
+    prompt_copy = tmp_path / "system.md"
+    provenance_copy = tmp_path / "system.provenance.json"
+    prompt_copy.write_text(DEFAULT_SYSTEM_PROMPT_PATH.read_text(encoding="utf-8"))
+    payload = json.loads(DEFAULT_PROVENANCE_PATH.read_text(encoding="utf-8"))
+    payload["subject"][0]["name"] = prompt_copy.name
+    provenance_copy.write_text(json.dumps(payload), encoding="utf-8")
+
+    validated = validate_provenance(str(prompt_copy), str(provenance_copy))
+    assert validated["subject"][0]["digest"]["sha256"]
