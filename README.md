@@ -593,6 +593,34 @@ docker run --rm -it -v "$(pwd)/secrets:/app/secrets" \
 Running in detached mode (`-d`) allows long-lived tasks such as scheduled scans. Combine with
 `--env-file` to load configuration managed outside the container.
 
+#### Use the disposable container helper from Python
+
+When scripting automated tasks, prefer the `gabriel.run_in_disposable_container`
+helper. It always injects `--rm` so containers are removed after they exit and
+normalizes volume mounts, environment variables, and working directories in a
+single call:
+
+```python
+from pathlib import Path
+
+from gabriel import run_in_disposable_container, volume_mount
+
+artifact_dir = Path("artifacts")
+artifact_dir.mkdir(exist_ok=True)
+
+run_in_disposable_container(
+    "python:3.11",
+    ["python", "-m", "http.server", "8000"],
+    volumes=[volume_mount(artifact_dir, "/workspace", read_only=False)],
+    environment={"GABRIEL_MODE": "scan"},
+    workdir="/workspace",
+    extra_args=["--network", "host"],
+)
+```
+
+The helper raises `ValueError` if callers attempt to override `--rm`, ensuring
+scheduled jobs and local experiments do not leave stray containers behind.
+
 ### Runbook & 3D Viewer
 
 This repo now mirrors flywheel's development helpers. `runbook.yml` lists

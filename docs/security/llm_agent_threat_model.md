@@ -122,7 +122,8 @@ agentic coding workflows, regardless of deployment environment.
 
 ### Sandboxing & Storage Checklist
 
-- [ ] Tasks execute in disposable containers (`docker run --rm`).
+- [x] Tasks execute in disposable containers (`docker run --rm`) via
+      `gabriel.run_in_disposable_container`.
 - [x] Scratch space mounted under `/tmp/$TASK_ID` and wiped post-run
       (`gabriel.common.scratch.ScratchSpace`).
 - [ ] Vector stores tagged with task metadata; purge job runs hourly.

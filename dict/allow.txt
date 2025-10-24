@@ -17,6 +17,7 @@ README
 RSA
 YOURNAME
 auth
+args
 autodoc
 autoplay
 axel
@@ -37,6 +38,7 @@ futuroptimist
 Gabriel
 github
 https
+ok
 idempotency
 img
 init
@@ -45,6 +47,7 @@ isort
 json
 js
 macOS
+mkdir
 md
 npm
 namespace
@@ -61,6 +64,7 @@ subcommands
 subprocess
 token.place
 tokenplace
+workdir
 txt
 wasm
 yml
