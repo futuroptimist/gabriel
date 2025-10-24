@@ -236,6 +236,25 @@ hashes, authors, ISO-8601 timestamps, and commit subjects. Use `--output` to
 write the same payload to disk, and prefer read-only credentials when scanning
 remote mirrors.
 
+### Create ephemeral scratch space
+
+Security-sensitive tasks often need isolated scratch directories that disappear
+once work completes. Gabriel now includes a dedicated context manager that
+provisions directories under the system temporary path (for example `/tmp`) and
+wipes them automatically:
+
+```python
+from gabriel import ScratchSpace
+
+with ScratchSpace(task_id="scan-42") as workspace:
+    temp_file = workspace / "artifact.txt"
+    temp_file.write_text("temporary data", encoding="utf-8")
+# Directory and contents removed on exit.
+```
+
+Use the optional `base_dir` argument when a different temporary root is
+required, such as during integration tests or containerised runs.
+
 ### Package metadata
 
 Gabriel exposes standard package metadata so downstream tooling can introspect
