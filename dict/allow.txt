@@ -198,6 +198,9 @@ Gridfinity
 baseplates
 stackable
 heatmaps
+SecureVectorStore
+TTL
+embeddings
 TTS
 BLE
 Wi

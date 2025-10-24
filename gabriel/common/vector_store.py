@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from types import MappingProxyType
-from typing import Callable, Mapping, Sequence
 from uuid import uuid4
 
 MAX_VECTOR_TTL = timedelta(days=7)
