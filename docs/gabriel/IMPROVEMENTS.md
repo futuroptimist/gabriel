@@ -121,7 +121,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
 - [x] Generate API documentation with `mkdocs` and publish to GitHub Pages
       (`mkdocs.yml`, `docs/api/index.md`, `.github/workflows/mkdocs-pages.yml`).
       *Aligns with flywheel best practices.*
-- [ ] Expand Dependabot to monitor Docker base image updates
+- [x] Expand Dependabot to monitor Docker base image updates
       (`.github/dependabot.yml`, `docker/Dockerfile`).
       *Aligns with flywheel best practices.*
 - [x] Document usage and setup steps for the WebGL viewer
