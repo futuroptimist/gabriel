@@ -2,20 +2,19 @@ from __future__ import annotations
 
 import subprocess
 from pathlib import Path
+from typing import Any, cast
 
 import pytest
 
-from gabriel.common.docker import (
-    VolumeMount,
-    run_in_disposable_container,
-    volume_mount,
-)
+from gabriel.common.docker import VolumeMount, run_in_disposable_container, volume_mount
 
 
-def test_run_in_disposable_container_builds_command(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
-    recorded: dict[str, object] = {}
+def test_run_in_disposable_container_builds_command(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    recorded: dict[str, Any] = {}
 
-    def fake_run(cmd: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+    def fake_run(cmd: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
         recorded["cmd"] = cmd
         recorded["kwargs"] = kwargs
         return subprocess.CompletedProcess(cmd, 0)
@@ -40,7 +39,7 @@ def test_run_in_disposable_container_builds_command(monkeypatch: pytest.MonkeyPa
         text=True,
     )
 
-    command = recorded["cmd"]
+    command = cast(list[str], recorded["cmd"])
     assert command[:3] == ["docker", "run", "--rm"]
     assert command[3:5] == ["--cpus", "1"]
     assert "--network" in command
@@ -55,16 +54,18 @@ def test_run_in_disposable_container_builds_command(monkeypatch: pytest.MonkeyPa
     assert command[-4] == "python:3.11"
     assert command[-3:] == ["python", "-m", "http.server"]
 
-    kwargs = recorded["kwargs"]
+    kwargs = cast(dict[str, Any], recorded["kwargs"])
     assert kwargs["capture_output"] is True
     assert kwargs["text"] is True
     assert kwargs["check"] is True
 
 
-def test_run_in_disposable_container_accepts_string_command(monkeypatch: pytest.MonkeyPatch) -> None:
-    recorded: dict[str, object] = {}
+def test_run_in_disposable_container_accepts_string_command(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    recorded: dict[str, Any] = {}
 
-    def fake_run(cmd: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+    def fake_run(cmd: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
         recorded["cmd"] = cmd
         return subprocess.CompletedProcess(cmd, 0)
 
@@ -100,10 +101,12 @@ def test_run_in_disposable_container_rejects_empty_command_string() -> None:
         run_in_disposable_container("alpine:3.19", "   ")
 
 
-def test_run_in_disposable_container_allows_default_entrypoint(monkeypatch: pytest.MonkeyPatch) -> None:
-    recorded: dict[str, object] = {}
+def test_run_in_disposable_container_allows_default_entrypoint(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    recorded: dict[str, Any] = {}
 
-    def fake_run(cmd: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+    def fake_run(cmd: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
         recorded["cmd"] = cmd
         return subprocess.CompletedProcess(cmd, 0)
 

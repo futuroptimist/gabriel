@@ -4,9 +4,9 @@ from __future__ import annotations
 
 # docker CLI invocation is controlled by validated arguments below
 import subprocess  # nosec B404
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Mapping, Sequence
 
 
 @dataclass(frozen=True, slots=True)
@@ -18,6 +18,7 @@ class VolumeMount:
     read_only: bool = False
 
     def __post_init__(self) -> None:  # pragma: no cover - dataclass boilerplate
+        """Normalize the host path to an absolute ``Path``."""
         host_path = Path(self.host_path).expanduser()
         object.__setattr__(self, "host_path", host_path)
 
@@ -37,9 +38,11 @@ def volume_mount(
     *,
     read_only: bool = False,
 ) -> VolumeMount:
-    """Convenience helper for creating :class:`VolumeMount` instances."""
+    """Create a :class:`VolumeMount` from host and container paths."""
 
-    return VolumeMount(host_path=Path(host_path), container_path=container_path, read_only=read_only)
+    return VolumeMount(
+        host_path=Path(host_path), container_path=container_path, read_only=read_only
+    )
 
 
 def _normalize_command(command: Sequence[str] | str | None) -> list[str]:
