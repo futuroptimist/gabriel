@@ -1,12 +1,18 @@
 """Build Sphinx API documentation and optionally publish it to the MkDocs site."""
-
 from __future__ import annotations
 
 import argparse
 import shutil
 from pathlib import Path
 
-from sphinx.cmd.build import build_main
+try:
+    from sphinx.cmd.build import build_main
+except ModuleNotFoundError as exc:
+    message = (
+        "Sphinx is required to build the API documentation. "
+        "Install it with 'pip install -r requirements.txt' or 'pip install \"gabriel[docs]\"'."
+    )
+    raise SystemExit(message) from exc
 
 
 def parse_args() -> argparse.Namespace:

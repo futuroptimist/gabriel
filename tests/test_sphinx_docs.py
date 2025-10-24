@@ -22,9 +22,7 @@ def test_sphinx_builds_successfully(tmp_path: Path) -> None:
         check=False,
     )
 
-    assert (
-        result.returncode == 0
-    ), f"Sphinx build failed: {result.stdout}\n{result.stderr}"
+    assert result.returncode == 0, f"Sphinx build failed: {result.stdout}\n{result.stderr}"
 
     index_html = build_dir / "index.html"
     assert index_html.exists(), "Sphinx build did not produce index.html"

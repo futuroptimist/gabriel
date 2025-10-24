@@ -108,7 +108,8 @@ pip install -r requirements.txt
 mkdocs serve
 ```
 
-Generate the Sphinx API documentation to view the autodoc pages locally:
+Generate the Sphinx API documentation to view the autodoc pages locally (install the required
+extras with `pip install -r requirements.txt` or `pip install "gabriel[docs]"`):
 
 ```bash
 python scripts/build_sphinx_docs.py --output docs/_build/sphinx
