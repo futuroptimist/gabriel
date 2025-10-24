@@ -653,7 +653,8 @@ We use `AGENTS.md` to outline repository-specific instructions for automated age
 The repository includes GitHub Actions workflows for linting, testing, and documentation.
 `flake8` and `bandit` catch style issues and common security mistakes, while coverage results are
 uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is committed to
-[coverage.svg](coverage.svg) after tests run.
+[coverage.svg](coverage.svg) after tests run. Coverage builds now exercise Linux, macOS, and Windows
+runners to surface platform-specific issues before they reach `main`.
 pre-commit hooks also run `detect-secrets`, `trufflehog`, `pip-audit`, the `lychee` Markdown link
 checker, `pymarkdown`, and the custom `gabriel.prompt_lint` scanner to catch secrets, vulnerable
 dependencies, stale references, style regressions, and prompt-injection red flags in Markdown
