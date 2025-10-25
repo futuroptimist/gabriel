@@ -48,7 +48,8 @@ def load_system_prompt(
             raise PromptProvenanceError(f"System prompt file not found: {prompt}")
 
         _validate_provenance_resolved(prompt, provenance, canonical_name)
-        return prompt.read_text(encoding="utf-8")
+        contents = prompt.read_text(encoding="utf-8")
+    return contents
 
 
 def validate_provenance(
@@ -77,11 +78,10 @@ def _resolve_prompt_path(
     value: Path | str | Traversable | None,
     stack: ExitStack,
 ) -> tuple[Path, str | None, bool]:
-    if value is None or (
-        isinstance(value, Traversable) and value == DEFAULT_SYSTEM_PROMPT_PATH
-    ):
+    if value is None or (isinstance(value, Traversable) and value == DEFAULT_SYSTEM_PROMPT_PATH):
         path = stack.enter_context(resources.as_file(DEFAULT_SYSTEM_PROMPT_PATH))
         return Path(path), _DEFAULT_PROMPT_CANONICAL_NAME, True
+    assert value is not None
     return _coerce_path(value, stack), None, False
 
 
@@ -123,9 +123,7 @@ def _validate_provenance_resolved(
     expected_digest = str(digest_section["sha256"]).lower()
     actual_digest = hashlib.sha256(prompt.read_bytes()).hexdigest()
     if expected_digest != actual_digest:
-        raise PromptProvenanceError(
-            "System prompt digest mismatch; provenance validation failed"
-        )
+        raise PromptProvenanceError("System prompt digest mismatch; provenance validation failed")
 
     predicate_type = payload.get("predicateType")
     if predicate_type != "https://slsa.dev/provenance/v1":
@@ -174,9 +172,7 @@ def _match_subject(
         name = entry.get("name")
         if isinstance(name, str) and name in expected_names:
             return entry
-    raise PromptProvenanceError(
-        "Provenance document does not describe the system prompt file"
-    )
+    raise PromptProvenanceError("Provenance document does not describe the system prompt file")
 
 
 def _candidate_subject_names(prompt_path: Path, canonical_name: str | None) -> set[str]:

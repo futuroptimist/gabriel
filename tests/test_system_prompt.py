@@ -111,7 +111,7 @@ def test_validate_provenance_missing_digest(tmp_path: Path) -> None:
 
 
 def test_validate_provenance_invalid_predicate_type(tmp_path: Path) -> None:
-    """predicateType must match the SLSA v1 identifier."""
+    """Predicate type must match the SLSA v1 identifier."""
 
     prompt_copy = tmp_path / "system.md"
     provenance_copy = tmp_path / "system.provenance.json"
@@ -127,7 +127,7 @@ def test_validate_provenance_invalid_predicate_type(tmp_path: Path) -> None:
 
 
 def test_validate_provenance_invalid_statement_type(tmp_path: Path) -> None:
-    """_type must match the in-toto statement schema."""
+    """The _type field must match the in-toto statement schema."""
 
     prompt_copy = tmp_path / "system.md"
     provenance_copy = tmp_path / "system.provenance.json"
