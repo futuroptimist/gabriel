@@ -1,0 +1,29 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "config/prompts/system.md",
+      "digest": {
+        "sha256": "976fb38d8fd5e65d9a9a03334ec449122df12f109ddac69aa281bb5388cb3d01"
+      }
+    }
+  ],
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "predicate": {
+    "buildDefinition": {
+      "buildType": "https://github.com/futuroptimist/gabriel/system-prompt@v1",
+      "externalParameters": {
+        "source": "config/prompts/system.md"
+      },
+      "resolvedDependencies": []
+    },
+    "runDetails": {
+      "builder": {
+        "id": "https://github.com/futuroptimist/gabriel"
+      },
+      "metadata": {
+        "invocationId": "manual-seed-32851"
+      }
+    }
+  }
+}

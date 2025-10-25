@@ -66,3 +66,16 @@ output = "coverage.xml"
 [tool.bandit]
 exclude_dirs = ["tests"]
 skips = ["B101"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["gabriel*"]
+
+[tool.setuptools.package-data]
+gabriel = [
+    "config/command_allowlist.yaml",
+    "config/prompts/system.md",
+    "config/prompts/system.provenance.json",
+]

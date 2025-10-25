@@ -11,6 +11,12 @@ from .. import arithmetic
 from .. import secrets as secrets_module
 from ..ingestion import collect_repository_commits
 from ..secrets import delete_secret, get_secret, read_secret_from_input, store_secret
+from ..security.command_allowlist import (
+    CommandAllowlist,
+    CommandAllowlistError,
+    CommandNotAllowedError,
+    load_default_allowlist,
+)
 from .viewer import DEFAULT_HOST, DEFAULT_PORT, serve_viewer
 
 SECRET_CMD_STORE = "store"  # nosec B105 - CLI command name  # pragma: allowlist secret
@@ -21,8 +27,31 @@ __all__ = [
     "SECRET_CMD_STORE",
     "SECRET_CMD_GET",
     "SECRET_CMD_DELETE",
+    "configure_command_allowlist",
     "main",
 ]
+
+
+try:
+    _COMMAND_ALLOWLIST = load_default_allowlist()
+except CommandAllowlistError as exc:  # pragma: no cover - configuration error
+    raise RuntimeError(f"Failed to load command allowlist: {exc}") from exc
+
+
+def configure_command_allowlist(allowlist: CommandAllowlist) -> None:
+    """Override the process-wide command allowlist (intended for tests)."""
+
+    global _COMMAND_ALLOWLIST
+    _COMMAND_ALLOWLIST = allowlist
+
+
+def _ensure_allowed(task: str, tool: str) -> None:
+    """Exit gracefully when ``tool`` is not allow-listed for ``task``."""
+
+    try:
+        _COMMAND_ALLOWLIST.require_allowed(task, tool)
+    except CommandNotAllowedError as exc:
+        raise SystemExit(str(exc)) from exc
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -119,10 +148,13 @@ def main(argv: list[str] | None = None) -> None:
     }
 
     if args.command == "sqrt":
+        _ensure_allowed("arithmetic", "sqrt")
         print(arithmetic.sqrt(args.a))
         return
 
     if args.command == "secret":
+        secret_tool = f"secret.{args.secret_command}"
+        _ensure_allowed("secrets", secret_tool)
         if args.secret_command == SECRET_CMD_STORE:
             secret_value = read_secret_from_input(args.secret)
             store_secret(args.service, args.username, secret_value)
@@ -141,10 +173,12 @@ def main(argv: list[str] | None = None) -> None:
         raise SystemExit("Unknown secret command.")  # pragma: no cover - argparse guards choices
 
     if args.command == "viewer":
+        _ensure_allowed("viewer", "viewer.serve")
         serve_viewer(host=args.host, port=args.port, open_browser=not args.no_browser)
         return
 
     if args.command == "crawl":
+        _ensure_allowed("ingestion", "crawl")
         repo_paths = args.paths or [Path.cwd()]
         try:
             summaries = collect_repository_commits(
@@ -162,6 +196,7 @@ def main(argv: list[str] | None = None) -> None:
         print(rendered)
         return
 
+    _ensure_allowed("arithmetic", args.command)
     print(funcs[args.command](args.a, args.b))
 
 
