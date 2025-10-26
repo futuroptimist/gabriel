@@ -291,6 +291,30 @@ and base64-like tokens that often indicate obfuscated redirects or payloads.
 Combine it with Gabriel's secret helpers to build secure intake
 pipelines for inbound phishing reports.
 
+### Assess network exposure
+
+Network monitoring is another roadmap goal. Gabriel now includes a lightweight
+`gabriel.analysis.network.analyze_network_services` helper that reviews service
+bindings for risky exposures before they ship to production:
+
+```python
+from gabriel import NetworkService, analyze_network_services
+
+services = [
+    NetworkService(name="Admin Dashboard", port=3000, exposure="internet", authenticated=False),
+    NetworkService(name="Status Page", port=8080, exposure="internet", encrypted=False),
+]
+
+for finding in analyze_network_services(services):
+    print(f"[{finding.severity}] {finding.service}: {finding.message}")
+```
+
+The analyzer highlights unauthenticated dashboards, unencrypted HTTP listeners,
+wildcard bindings on localhost-only services, database ports exposed to the
+internet, and UDP amplification targets that should stay rate-limited or
+disabled. Pair these findings with your existing firewall policies to confirm
+that sensitive services stay behind trusted networks.
+
 ### Sanitize prompts before execution
 
 Use `gabriel.ingestion.text.sanitize_prompt` to strip risky markup from prompts gathered from
