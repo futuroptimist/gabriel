@@ -126,7 +126,8 @@ agentic coding workflows, regardless of deployment environment.
 - [ ] Tasks execute in disposable containers (`docker run --rm`).
 - [x] Scratch space mounted under `/tmp/$TASK_ID` and wiped post-run
       (`gabriel.common.scratch.ScratchSpace`).
-- [ ] Vector stores tagged with task metadata; purge job runs hourly.
+- [x] Vector stores tagged with task metadata; purge job runs hourly
+      (`gabriel.common.vector_store.SecureVectorStore.purge_stale`).
 
 ### Tooling Policy Snippet
 
