@@ -43,6 +43,21 @@ def test_unencrypted_http_service_warns() -> None:
     assert "Status Page" in finding.message
 
 
+def test_database_service_is_flagged_even_with_tls() -> None:
+    service = NetworkService(
+        name="Analytics DB",
+        port=5432,
+        exposure="internet",
+        encrypted=True,
+    )
+
+    findings = analyze_network_services([service])
+
+    finding = _finding_by_indicator(findings, "internet-database")
+    assert finding.severity == "high"
+    assert "TLS enabled" in finding.message
+
+
 def test_missing_authentication_on_public_service_is_high_severity() -> None:
     service = NetworkService(
         name="Grafana",

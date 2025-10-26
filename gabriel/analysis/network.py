@@ -216,18 +216,26 @@ def _evaluate_internet_exposure(
             ),
         )
 
-    if not service.encrypted and _looks_like_database(service):
+    if _looks_like_database(service):
         label = _DATABASE_PORTS.get(service.port, service.name)
+        if service.encrypted:
+            message = (
+                f"Database service {label} is internet-accessible even with TLS enabled;"
+                " restrict access to trusted networks."
+            )
+        else:
+            message = (
+                f"Database service {label} is internet-accessible without transport encryption;"
+                " restrict access to trusted networks."
+            )
+
         _record_finding(
             findings,
             seen,
             service,
             indicator="internet-database",
             severity="high",
-            message=(
-                f"Database service {label} is internet-accessible without transport encryption;"
-                " restrict access to trusted networks."
-            ),
+            message=message,
         )
 
     if service.protocol == "udp" and service.port in _UDP_AMPLIFICATION_PORTS:
