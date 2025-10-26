@@ -331,7 +331,7 @@ you can jump directly to the relevant remediation guidance when triaging inciden
 
 The agent threat model calls for repository-scoped API keys and short-lived embeddings
 so credential exposure windows stay tight. Use `gabriel.SecureVectorStore` to store
-embeddings with enforced prefixes and a maximum seven-day TTL:
+embeddings with enforced prefixes, task tagging, and a maximum seven-day TTL:
 
 ```python
 from datetime import datetime, timedelta, timezone
@@ -342,16 +342,20 @@ store = SecureVectorStore("gabriel")
 record = store.write_embedding(
     [0.12, 0.34, 0.56],
     api_key_id="gabriel:threat-retriever",
+    task_id="audit-2025-02-12",
     ttl=timedelta(days=3),
     metadata={"task": "threat-report"},
 )
-print(record.api_key_id)
+print(record.task_id)
 print(record.expires_at - datetime.now(tz=timezone.utc) <= MAX_VECTOR_TTL)
+
+# Purge embeddings older than one hour regardless of TTL to emulate the hourly cleanup job.
+store.purge_stale(timedelta(hours=1))
 ```
 
 The helper rejects API keys that are not prefixed with the repository name, enforces
-TTL values of seven days or less, and exposes `purge_expired()` so hourly cleanup jobs
-can remove stale embeddings before they leak across tasks.
+TTL values of seven days or less, and exposes `purge_stale()` so hourly cleanup jobs
+can remove embeddings older than their task rotation window.
 
 ### Generate prioritized recommendations
 
@@ -558,6 +562,31 @@ print(completion.text)
 `check_health()` performs a lightweight `GET /v1/health` probe so you can verify connectivity
 before submitting a prompt. The helper never sends telemetry beyond the configured relay URL,
 keeping Gabriel's privacy posture intact.
+
+### Choose inference mode from the CLI
+
+Use the unified `gabriel infer` command to switch between offline completions powered by
+`llama.cpp` and encrypted relay requests. When `GABRIEL_MODEL_PATH` points to a local GGUF model,
+Gabriel defaults to local inference and generates responses without network access:
+
+```bash
+gabriel infer --model-path ~/models/llama3.gguf "Summarize the latest CVE bulletin"
+```
+
+Pass `--mode relay` to override the default and route prompts through token.place instead. Supply
+the relay URL, API key, and optional metadata in a single invocation:
+
+```bash
+gabriel infer --mode relay \
+  --relay-url https://relay.local \
+  --api-key tp_test_123 \
+  --model llama3-70b \
+  --metadata '{"source": "gabriel-demo"}' \
+  "Draft weekend hardening tasks"
+```
+
+The CLI surfaces sampling controls like `--temperature`, `--top-p`, and `--max-tokens` so scripted
+workflows can tune output without touching Python APIs.
 
 ### Offline Usage
 

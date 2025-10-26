@@ -20,6 +20,8 @@ class VectorRecord:
     embedding: tuple[float, ...]
     metadata: Mapping[str, str]
     api_key_id: str
+    task_id: str
+    created_at: datetime
     expires_at: datetime
 
     def is_expired(self, *, reference: datetime | None = None) -> bool:
@@ -52,15 +54,19 @@ class SecureVectorStore:
         embedding: Sequence[float],
         *,
         api_key_id: str,
+        task_id: str,
         ttl: timedelta | None = None,
         metadata: Mapping[str, object] | None = None,
+        created_at: datetime | None = None,
     ) -> VectorRecord:
-        """Persist ``embedding`` with repository-scoped API key enforcement."""
+        """Persist ``embedding`` with repository-scoped API key and task tagging enforcement."""
 
         normalized_key = self._validate_api_key(api_key_id)
         normalized_ttl = self._validate_ttl(ttl)
         embedding_tuple = self._normalize_embedding(embedding)
+        task_identifier = self._normalize_task_id(task_id)
         metadata_map = self._normalize_metadata(metadata)
+        created_time = self._normalize_created_at(created_at)
         identifier = str(uuid4())
         expires_at = self._now() + normalized_ttl
         record = VectorRecord(
@@ -68,6 +74,8 @@ class SecureVectorStore:
             embedding=embedding_tuple,
             metadata=metadata_map,
             api_key_id=normalized_key,
+            task_id=task_identifier,
+            created_at=created_time,
             expires_at=expires_at,
         )
         self._records[identifier] = record
@@ -95,6 +103,23 @@ class SecureVectorStore:
             del self._records[key]
         return len(expired)
 
+    def records_for_task(self, task_id: str, /) -> tuple[VectorRecord, ...]:
+        """Return all records associated with ``task_id`` in insertion order."""
+
+        normalized = self._normalize_task_id(task_id)
+        return tuple(record for record in self._records.values() if record.task_id == normalized)
+
+    def purge_stale(self, max_age: timedelta, /) -> int:
+        """Remove records older than ``max_age`` relative to the current clock."""
+
+        if max_age <= timedelta(0):
+            raise ValueError("max_age must be greater than zero")
+        cutoff = self._now() - max_age
+        stale = [key for key, record in self._records.items() if record.created_at < cutoff]
+        for key in stale:
+            del self._records[key]
+        return len(stale)
+
     def __len__(self) -> int:  # pragma: no cover - simple delegation
         """Return the number of embeddings currently stored."""
 
@@ -119,6 +144,20 @@ class SecureVectorStore:
         if normalized > MAX_VECTOR_TTL:
             raise ValueError(f"ttl must be less than or equal to {MAX_VECTOR_TTL.days} days")
         return normalized
+
+    def _normalize_task_id(self, task_id: str) -> str:
+        if not task_id or not task_id.strip():
+            raise ValueError("task_id must be a non-empty string")
+        return task_id.strip()
+
+    def _normalize_created_at(self, created_at: datetime | None) -> datetime:
+        if created_at is None:
+            return self._now()
+        if created_at.tzinfo is None:
+            created_at = created_at.replace(tzinfo=timezone.utc)
+        else:
+            created_at = created_at.astimezone(timezone.utc)
+        return created_at
 
     @staticmethod
     def _normalize_embedding(embedding: Sequence[float]) -> tuple[float, ...]:

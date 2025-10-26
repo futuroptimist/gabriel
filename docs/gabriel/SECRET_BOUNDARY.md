@@ -31,6 +31,10 @@ and UI flows must surface these toggles so no secret or prompt leaves the device
 Feature code **must not** bypass the `gabriel/common` interfaces when switching modes; doing so
 would skip validation hooks that enforce encryption and audit logging.
 
+The `gabriel infer` command now exposes the required toggle. When `GABRIEL_MODEL_PATH` is set the
+CLI selects the offline llama.cpp backend; passing `--mode relay` with `--relay-url` redirects the
+request through token.place and preserves the guardrails enforced by `TokenPlaceClient`.
+
 ## Authorized secret handlers
 
 Only the following modules are permitted to work with plaintext secrets:
