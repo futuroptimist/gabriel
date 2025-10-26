@@ -7,6 +7,7 @@ Gabriel is an open source "guardian angel" LLM aimed at helping individuals secu
 [![Coverage](https://raw.githubusercontent.com/futuroptimist/gabriel/main/coverage.svg)](https://codecov.io/gh/futuroptimist/gabriel)
 [![Docs](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/docs.yml?label=docs&branch=main)](https://github.com/futuroptimist/gabriel/actions/workflows/docs.yml)
 [![CodeQL](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/codeql.yml?label=codeql)](https://github.com/futuroptimist/gabriel/actions/workflows/codeql.yml)
+[![Security scans](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/security.yml?label=security%20scans)](https://github.com/futuroptimist/gabriel/actions/workflows/security.yml)
 [![License](https://img.shields.io/github/license/futuroptimist/gabriel)](LICENSE)
 
 ## Goals
@@ -710,7 +711,7 @@ We use `AGENTS.md` to outline repository-specific instructions for automated age
 
 ## CI & Security
 
-The repository includes GitHub Actions workflows for linting, testing, and documentation.
+The repository includes GitHub Actions workflows for linting, testing, documentation, and recurring security sweeps.
 `flake8` and `bandit` catch style issues and common security mistakes, while coverage results are
 uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is committed to
 [coverage.svg](coverage.svg) after tests run. Coverage builds now exercise Linux, macOS, and Windows
@@ -719,6 +720,8 @@ pre-commit hooks also run `detect-secrets`, `trufflehog`, `pip-audit`, the `lych
 checker, `pymarkdown`, and the custom `gabriel.prompt_lint` scanner to catch secrets, vulnerable
 dependencies, stale references, style regressions, and prompt-injection red flags in Markdown
 content.
+The scheduled [`security.yml`](.github/workflows/security.yml) workflow re-runs CodeQL, Semgrep,
+and dependency audits every Monday at 06:00 UTC so regressions surface even during quieter weeks.
 Dependabot monitors Python dependencies, GitHub Actions workflows, and Docker base image updates weekly.
 
 ## Release management
