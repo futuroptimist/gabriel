@@ -28,15 +28,15 @@ jobs:
           platforms: ${{ matrix.platform }}
           load: true
           tags: ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy-action@v0.12.0
       - name: Scan image with Trivy (${{ matrix.platform }})
-        uses: aquasecurity/trivy-action@0.20.0
-        with:
-          image-ref: ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}
-          format: table
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '1'
+        env:
+          TRIVY_CACHE_DIR: ${{ runner.temp }}/trivy-cache
+        run: |
+          python3 -m gabriel.security.container_scanning "ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}" \
+            --extra-arg --cache-dir \
+            --extra-arg "${{ runner.temp }}/trivy-cache"
       - name: Remove local scan image (${{ matrix.platform }})
         if: always()
         run: docker image rm ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }} || true

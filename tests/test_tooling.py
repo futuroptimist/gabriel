@@ -176,23 +176,30 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
         "ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}"
     )  # nosec B101
 
+    install_step = next(
+        (
+            step
+            for step in scan_steps
+            if step.get("uses") == "aquasecurity/setup-trivy-action@v0.12.0"
+        ),
+        None,
+    )
+    assert install_step is not None, "Trivy install step missing from Docker workflow"  # nosec B101
+
     trivy_step = next(
         (
             step
             for step in scan_steps
-            if str(step.get("uses", "")).startswith("aquasecurity/trivy-action@")
+            if "python3 -m gabriel.security.container_scanning" in str(step.get("run", ""))
         ),
         None,
     )
     assert trivy_step is not None, "Trivy scan step missing from Docker workflow"  # nosec B101
-
-    trivy_config = trivy_step.get("with", {})
     assert (
-        trivy_config.get("image-ref")
-        == "ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}"
+        trivy_step.get("env", {}).get("TRIVY_CACHE_DIR") == "${{ runner.temp }}/trivy-cache"
     )  # nosec B101
-    assert trivy_config.get("severity") == "CRITICAL,HIGH"  # nosec B101
-    assert trivy_config.get("exit-code") == "1"  # nosec B101
+    run_command = str(trivy_step.get("run", ""))
+    assert "scan-${{ matrix.platform }}" in run_command  # nosec B101
 
     build_job = workflow["jobs"].get("build")
     assert build_job is not None, "Expected build job to push the release images"  # nosec B101

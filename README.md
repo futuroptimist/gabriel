@@ -353,6 +353,25 @@ The helper rejects API keys that are not prefixed with the repository name, enfo
 TTL values of seven days or less, and exposes `purge_expired()` so hourly cleanup jobs
 can remove stale embeddings before they leak across tasks.
 
+### Scan Docker images for vulnerabilities
+
+Use Trivy to inspect built container images directly from Python or the CLI.
+The helper wraps Gabriel's security defaults so local and CI scans stay aligned:
+
+```bash
+python -m gabriel.security.container_scanning ghcr.io/example/app:latest
+# Prints the Trivy table report and exits non-zero on high/critical findings.
+```
+
+Programmatic usage is also available:
+
+```python
+from gabriel.security import scan_image_with_trivy
+
+result = scan_image_with_trivy("ghcr.io/example/app:latest")
+print(result.stdout)
+```
+
 ### Generate prioritized recommendations
 
 Phase 2 of the roadmap calls for richer guidance that blends audit data with personal
