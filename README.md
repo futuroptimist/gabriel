@@ -316,6 +316,27 @@ internet, and UDP amplification targets that should stay rate-limited or
 disabled. Pair these findings with your existing firewall policies to confirm
 that sensitive services stay behind trusted networks.
 
+### Review credential audit logs
+
+Use `gabriel.security.analyze_expired_tokens` to surface personal access tokens
+that have outlived their expiration timestamps. Pair it with
+`gabriel.security.load_token_audit_records` to parse JSON or newline-delimited
+audit trails exported from your identity provider:
+
+```python
+from gabriel.security import analyze_expired_tokens, load_token_audit_records
+
+records = load_token_audit_records("logs/token_audit.jsonl")
+findings = analyze_expired_tokens(records)
+for finding in findings:
+    print(f"[{finding.severity.upper()}] {finding.summary} → {finding.details}")
+```
+
+Tokens that remain active after their declared expiry are flagged with a high
+severity finding when post-expiry usage is observed, while unrevoked-but-unused
+tokens trigger medium-severity recommendations so security teams can clean up
+stale credentials before they are abused.
+
 ### Sanitize prompts before execution
 
 Use `gabriel.ingestion.text.sanitize_prompt` to strip risky markup from prompts gathered from
