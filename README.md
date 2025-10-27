@@ -333,6 +333,32 @@ print(safe)
 # Summarize the notes below.
 ```
 
+### Route outbound HTTP requests through an allow-listed proxy
+
+Gabriel's threat model recommends routing outbound HTTP through a proxy that
+verifies destinations before sending requests. Use
+``gabriel.security.AllowlistedFetchProxy`` to enforce domain allow-lists and
+capture an audit log of every request:
+
+```python
+from gabriel.security import AllowlistedFetchProxy
+
+proxy = AllowlistedFetchProxy(["api.example.com", "*.trusted.test"])
+result = proxy.fetch(
+    "https://api.example.com/v1/status",
+    headers={"User-Agent": "gabriel"},
+)
+print(result.status_code)
+print(result.headers["content-type"])
+
+for entry in proxy.audit_log:
+    print(entry.url, entry.allowed, entry.status_code)
+```
+
+By default the proxy requires HTTPS, rejects destinations that are not
+explicitly allow-listed, and records timing, status codes, and failure reasons
+for downstream analysis.
+
 ### Organize security notes into a knowledge store
 
 Phase 2 of the roadmap introduces a personal knowledge manager that keeps security

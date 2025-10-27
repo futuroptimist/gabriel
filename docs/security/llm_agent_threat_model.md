@@ -85,7 +85,8 @@ agentic coding workflows, regardless of deployment environment.
 
 - Maintain an **allow-listed command registry** (YAML) that maps tasks → permitted tools.
 - Enforce **tool-call validators** that check arguments against regex policies and rate limits.
-- Route outbound HTTP via an **allow-listed fetch proxy** with domain verification and logging.
+- Route outbound HTTP via an **allow-listed fetch proxy** with domain verification and logging
+  (see `gabriel.security.AllowlistedFetchProxy`).
 - Require **human approval** for escalation requests (e.g., installing new packages).
 
 ### Mitigation: CI/CD & Repo Hardening
