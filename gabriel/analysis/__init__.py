@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from .network import NetworkExposureFinding, NetworkService, analyze_network_services
 from .phishing import (
     PhishingFinding,
     _registrable_domain_for,
@@ -24,6 +25,9 @@ __all__ = [
     "extract_urls",
     "analyze_url",
     "analyze_text_for_phishing",
+    "NetworkService",
+    "NetworkExposureFinding",
+    "analyze_network_services",
     "_registrable_domain_for",
     "_split_registrable_domain",
     "PolicyValidationError",

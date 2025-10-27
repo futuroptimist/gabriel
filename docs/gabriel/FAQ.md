@@ -111,6 +111,16 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     The client keeps traffic on the configured relay URL so you can pair encrypted inference with
     Gabriel's offline-first design.
 
+    Run `gabriel infer` to toggle between local and relay inference without leaving the CLI. When
+    `GABRIEL_MODEL_PATH` points to a local GGUF model the command stays offline:
+
+    ```bash
+    gabriel infer --model-path ~/models/llama3.gguf "Summarize recent alerts"
+    ```
+
+    Add `--mode relay --relay-url https://relay.local --api-key <token>` to route the same prompt
+    through token.place while preserving encrypted transport and policy enforcement.
+
 22. **Can Gabriel audit my VaultWarden deployment?**
 
     Yes. Use `gabriel.selfhosted.audit_vaultwarden` with a `VaultWardenConfig` snapshot to identify gaps from the checklist in [docs/IMPROVEMENT_CHECKLISTS.md](../IMPROVEMENT_CHECKLISTS.md#vaultwarden).
@@ -134,3 +144,10 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     optionally include knowledge notes from `gabriel.knowledge.KnowledgeStore`. The helper
     scores each finding, blends in related notes for context, and honors `RiskTolerance`
     preferences so you can down-rank lower-severity items when appropriate.
+
+26. **Can Gabriel flag risky network exposures?**
+
+    Yes. Describe listeners with `gabriel.analysis.network.NetworkService` and call
+    `analyze_network_services()` to surface heuristics for unauthenticated dashboards,
+    wildcard bindings, exposed databases, or UDP amplification services before shipping
+    them to the internet.

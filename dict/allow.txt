@@ -380,3 +380,5 @@ mkdocstrings
 GHCR
 Trivy
 imagetools
+NetworkService
+UDP

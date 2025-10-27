@@ -126,7 +126,8 @@ agentic coding workflows, regardless of deployment environment.
 - [ ] Tasks execute in disposable containers (`docker run --rm`).
 - [x] Scratch space mounted under `/tmp/$TASK_ID` and wiped post-run
       (`gabriel.common.scratch.ScratchSpace`).
-- [ ] Vector stores tagged with task metadata; purge job runs hourly.
+- [x] Vector stores tagged with task metadata; purge job runs hourly
+      (`gabriel.common.vector_store.SecureVectorStore.purge_stale`).
 
 ### Tooling Policy Snippet
 
@@ -146,7 +147,7 @@ validators:
 
 ### CI/CD Hardening Checklist
 
-- [ ] `.github/workflows/security.yml` runs CodeQL, Semgrep, dependency scans weekly.
+- [x] `.github/workflows/security.yml` runs CodeQL, Semgrep, dependency scans weekly.
 - [ ] `Plan.md` signed with cosign; workflow verifies signature before merge.
 - [x] Prompt-injection linter executes on `docs/**` and `prompts/**` changes.
 - [ ] Branch protection requires two approvals for security-sensitive directories.
