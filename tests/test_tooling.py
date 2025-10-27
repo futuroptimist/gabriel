@@ -153,33 +153,28 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
 
     workflow = yaml.safe_load(Path(".github/workflows/docker.yml").read_text(encoding="utf-8"))
 
-    scan_job = workflow["jobs"].get("scan")
-    assert scan_job is not None, "Expected scan job to guard Docker publishes"  # nosec B101
+    job = workflow["jobs"].get("build-and-scan")
+    assert job is not None, "Expected build-and-scan job to guard Docker publishes"  # nosec B101
 
-    matrix = scan_job.get("strategy", {}).get("matrix", {})
-    platforms = matrix.get("platform", [])
-    assert set(platforms) == {"linux/amd64", "linux/arm64"}  # nosec B101
-
-    scan_steps = scan_job["steps"]
+    steps = job["steps"]
     build_step = next(
-        (step for step in scan_steps if step.get("uses") == "docker/build-push-action@v6"),
+        (step for step in steps if step.get("uses") == "docker/build-push-action@v6"),
         None,
     )
     assert (
         build_step is not None
-    ), "Expected build step to create an image per architecture"  # nosec B101
+    ), "Expected build step to create a multi-arch image"  # nosec B101
 
     build_config = build_step.get("with", {})
-    assert build_config.get("platforms") == "${{ matrix.platform }}"  # nosec B101
-    assert build_config.get("load") is True  # nosec B101
-    assert build_config.get("tags") == (
-        "ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}"
-    )  # nosec B101
+    assert "linux/amd64" in str(build_config.get("platforms"))  # nosec B101
+    assert "linux/arm64" in str(build_config.get("platforms"))  # nosec B101
+    assert build_config.get("push") is True  # nosec B101
+    assert build_config.get("tags") == "ghcr.io/${{ github.repository }}:scan"  # nosec B101
 
     install_step = next(
         (
             step
-            for step in scan_steps
+            for step in steps
             if step.get("uses") == "aquasecurity/setup-trivy-action@v0.12.0"
         ),
         None,
@@ -189,7 +184,7 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
     trivy_step = next(
         (
             step
-            for step in scan_steps
+            for step in steps
             if "python3 -m gabriel.security.container_scanning" in str(step.get("run", ""))
         ),
         None,
@@ -198,12 +193,15 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
     assert (
         trivy_step.get("env", {}).get("TRIVY_CACHE_DIR") == "${{ runner.temp }}/trivy-cache"
     )  # nosec B101
-    run_command = str(trivy_step.get("run", ""))
-    assert "scan-${{ matrix.platform }}" in run_command  # nosec B101
+    assert "${IMAGE_DIGEST}" in str(trivy_step.get("run", ""))  # nosec B101
 
-    build_job = workflow["jobs"].get("build")
-    assert build_job is not None, "Expected build job to push the release images"  # nosec B101
-    assert build_job.get("needs") == "scan"  # nosec B101
+    promote_step = next(
+        (step for step in steps if "imagetools create" in str(step.get("run", ""))),
+        None,
+    )
+    assert promote_step is not None, "Expected imagetools promotion step"  # nosec B101
+    promote_command = str(promote_step.get("run", ""))
+    assert "ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}" in promote_command  # nosec B101
 
 
 def test_workflows_cover_supported_python_versions() -> None:

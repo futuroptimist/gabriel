@@ -35,7 +35,7 @@ def test_docker_workflow_targets_multi_architectures(docker_workflow_path: Path)
     """Ensure the Docker build publishes manifests for amd64 and arm64."""
 
     workflow = yaml.safe_load(docker_workflow_path.read_text(encoding="utf-8"))
-    build_job = workflow.get("jobs", {}).get("build")
+    build_job = workflow.get("jobs", {}).get("build-and-scan")
     assert build_job is not None, "Docker workflow must define a build job"  # nosec B101
 
     steps = build_job.get("steps", [])
