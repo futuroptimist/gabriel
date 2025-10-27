@@ -88,6 +88,16 @@ def test_pre_commit_configuration_runs_prettier_for_viewer() -> None:
     assert "Prettier viewer assets" in config  # nosec B101
 
 
+def test_pre_commit_configuration_pins_node_version() -> None:
+    """Ensure node-based hooks reuse a consistent, supported runtime."""
+
+    raw_config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
+    config = yaml.safe_load(raw_config)
+
+    default_versions = config.get("default_language_version", {})
+    assert default_versions.get("node") == "20.18.0"  # nosec B101
+
+
 def test_pre_commit_configuration_runs_semgrep() -> None:
     """Verify Semgrep static analysis runs via pre-commit."""
 
