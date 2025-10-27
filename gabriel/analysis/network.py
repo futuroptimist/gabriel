@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import ipaddress
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Final, Iterable
+from typing import Final
 
 _VALID_PROTOCOLS: Final[frozenset[str]] = frozenset({"tcp", "udp"})
 _VALID_EXPOSURES: Final[frozenset[str]] = frozenset({"internet", "lan", "local"})
@@ -49,20 +50,17 @@ class NetworkService:
     authenticated: bool = True
 
     def __post_init__(self) -> None:
+        """Validate and normalize service metadata after initialization."""
         if not self.name or not self.name.strip():
             raise ValueError("name must be a non-empty string")
         if not (1 <= self.port <= 65535):
             raise ValueError("port must be between 1 and 65535")
         normalized_protocol = self.protocol.strip().lower()
         if normalized_protocol not in _VALID_PROTOCOLS:
-            raise ValueError(
-                "protocol must be one of 'tcp' or 'udp'"
-            )
+            raise ValueError("protocol must be one of 'tcp' or 'udp'")
         normalized_exposure = self.exposure.strip().lower()
         if normalized_exposure not in _VALID_EXPOSURES:
-            raise ValueError(
-                "exposure must be one of 'internet', 'lan', or 'local'"
-            )
+            raise ValueError("exposure must be one of 'internet', 'lan', or 'local'")
         address = (
             self.address.strip()
             if self.address
@@ -88,6 +86,7 @@ class NetworkExposureFinding:
     message: str
 
     def __post_init__(self) -> None:
+        """Validate finding details and normalize severity labels."""
         if not self.service or not self.service.strip():
             raise ValueError("service must be a non-empty string")
         if self.port <= 0:
@@ -117,12 +116,14 @@ def analyze_network_services(services: Iterable[NetworkService]) -> list[Network
         elif service.exposure == "lan":
             _evaluate_lan_exposure(service, findings, seen)
 
-    findings.sort(key=lambda finding: (
-        _SEVERITY_ORDER[finding.severity],
-        finding.service.lower(),
-        finding.port,
-        finding.indicator,
-    ))
+    findings.sort(
+        key=lambda finding: (
+            _SEVERITY_ORDER[finding.severity],
+            finding.service.lower(),
+            finding.port,
+            finding.indicator,
+        )
+    )
     return findings
 
 
@@ -186,7 +187,8 @@ def _evaluate_internet_exposure(
             indicator="high-risk-port",
             severity="high",
             message=(
-                f"{service.name or label} exposes {label} to the internet; disable or tunnel the service."
+                f"{service.name or label} exposes {label} to the internet;"
+                " disable or tunnel the service."
             ),
         )
 

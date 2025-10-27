@@ -11,7 +11,9 @@ from gabriel.analysis.network import (
 )
 
 
-def _finding_by_indicator(findings: list[NetworkExposureFinding], indicator: str) -> NetworkExposureFinding:
+def _finding_by_indicator(
+    findings: list[NetworkExposureFinding], indicator: str
+) -> NetworkExposureFinding:
     for finding in findings:
         if finding.indicator == indicator:
             return finding
@@ -110,8 +112,14 @@ def test_results_are_sorted_by_severity_and_name() -> None:
     findings = analyze_network_services(services)
 
     severities = [finding.severity for finding in findings]
-    assert severities == sorted(severities, key=lambda value: {"high": 0, "medium": 1, "low": 2}[value])
-    assert findings[0].indicator in {"high-risk-port", "unauthenticated-service", "internet-database"}
+    assert severities == sorted(
+        severities, key=lambda value: {"high": 0, "medium": 1, "low": 2}[value]
+    )
+    assert findings[0].indicator in {
+        "high-risk-port",
+        "unauthenticated-service",
+        "internet-database",
+    }
 
 
 @pytest.mark.parametrize(
