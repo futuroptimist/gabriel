@@ -151,3 +151,10 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     `analyze_network_services()` to surface heuristics for unauthenticated dashboards,
     wildcard bindings, exposed databases, or UDP amplification services before shipping
     them to the internet.
+
+27. **Can Gabriel scan for high-entropy secrets before commits?**
+
+    Yes. Run `gabriel.security.EntropyScanner` against text buffers or call
+    `gabriel.scan_paths_for_entropy()` on staged files to surface suspicious tokens with
+    high Shannon entropy. Tune the configuration to ignore known fixtures and keep the
+    entropy thresholds aligned with the repository's risk tolerance.

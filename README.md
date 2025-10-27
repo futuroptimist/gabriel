@@ -333,6 +333,28 @@ print(safe)
 # Summarize the notes below.
 ```
 
+### Scan for high-entropy secrets
+
+Entropy-heavy tokens often indicate leaked credentials. Gabriel now provides an
+`EntropyScanner` helper that highlights suspicious strings in text buffers or
+filesystem paths.
+
+```python
+from gabriel import EntropyScanner, scan_paths_for_entropy
+
+scanner = EntropyScanner()
+findings = scanner.scan_text("token=ZXhhbXBsZV9zZWNyZXRfdmFsdWU=")
+for finding in findings:
+    print(f"{finding.pattern} • {finding.entropy:.2f}")
+
+for finding in scan_paths_for_entropy(["secrets.txt"]):
+    print(f"{finding.path}:{finding.line_number} → {finding.secret}")
+```
+
+Use `allowlist` entries on the configuration when deliberate fixtures should be
+ignored and tune `min_length`, `min_entropy`, or `max_file_bytes` to match the
+files being analysed.
+
 ### Organize security notes into a knowledge store
 
 Phase 2 of the roadmap introduces a personal knowledge manager that keeps security

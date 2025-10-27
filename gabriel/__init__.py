@@ -63,6 +63,14 @@ from .ingestion import (
 from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
 from .notify import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
 from .secrets import delete_secret, get_secret, store_secret
+from .security import (
+    EgressControlPolicy,
+    EgressPolicyViolation,
+    EntropyFinding,
+    EntropyScanner,
+    EntropyScannerConfig,
+    scan_paths_for_entropy,
+)
 from .selfhosted import (
     CheckResult,
     DockerDaemonConfig,
@@ -120,6 +128,9 @@ __all__ = [
     "KnowledgeStore",
     "Note",
     "SearchResult",
+    "EntropyFinding",
+    "EntropyScanner",
+    "EntropyScannerConfig",
     "_registrable_domain_for",
     "_split_registrable_domain",
     "extract_urls",
@@ -147,6 +158,8 @@ __all__ = [
     "audit_syncthing",
     "audit_nextcloud",
     "audit_photoprism",
+    "EgressControlPolicy",
+    "EgressPolicyViolation",
     "TokenPlaceClient",
     "TokenPlaceCompletion",
     "TokenPlaceError",
@@ -165,6 +178,7 @@ __all__ = [
     "collect_repository_commits",
     "RepositoryCommits",
     "CommitRecord",
+    "scan_paths_for_entropy",
     "SUPPORTED_PYTHON_VERSIONS",
     "serve_viewer",
     "start_viewer_server",

@@ -79,7 +79,9 @@ agentic coding workflows, regardless of deployment environment.
   1. **Immutable reference docs** (read-only, versioned).
   2. **Quarantined crawl outputs** subjected to entropy and signature scanning.
   3. **Secrets broker** delivering short-lived tokens via IPC, never disk.
-- Schedule **automated entropy scans** (`ripsecrets`, `detect-secrets`) followed by secure purge.
+- Schedule **automated entropy scans** (`ripsecrets`, `detect-secrets`) followed by
+  secure purge. Gabriel ships `gabriel.security.EntropyScanner` so CI jobs can flag
+  high-entropy tokens before they land in the repository.
 
 ### Mitigation: Tool & Function-Call Safety
 
