@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -21,8 +22,8 @@ def test_scan_image_builds_expected_command(monkeypatch: pytest.MonkeyPatch) -> 
         assert binary == "trivy"
         return "/usr/bin/trivy"
 
-    def fake_run(*args: object, **kwargs: object) -> SimpleNamespace:
-        commands["command"] = list(args[0])
+    def fake_run(command: Sequence[str], *args: object, **kwargs: object) -> SimpleNamespace:
+        commands["command"] = list(command)
         assert kwargs["capture_output"] is True
         assert kwargs["text"] is True
         return SimpleNamespace(returncode=0, stdout="scan ok", stderr="")
@@ -88,10 +89,14 @@ def test_scan_image_raises_on_vulnerabilities(monkeypatch: pytest.MonkeyPatch) -
     assert "VULNERABILITIES FOUND" in str(excinfo.value)
 
 
-def test_cli_wrapper_passes_arguments(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+def test_cli_wrapper_passes_arguments(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
     captured_kwargs: dict[str, object] = {}
 
-    def fake_scan_image_with_trivy(image: str, **kwargs: object) -> container_scanning.TrivyScanResult:
+    def fake_scan_image_with_trivy(
+        image: str, **kwargs: object
+    ) -> container_scanning.TrivyScanResult:
         captured_kwargs["image"] = image
         captured_kwargs.update(kwargs)
         return container_scanning.TrivyScanResult(
