@@ -147,7 +147,7 @@ validators:
 
 ### CI/CD Hardening Checklist
 
-- [ ] `.github/workflows/security.yml` runs CodeQL, Semgrep, dependency scans weekly.
+- [x] `.github/workflows/security.yml` runs CodeQL, Semgrep, dependency scans weekly.
 - [ ] `Plan.md` signed with cosign; workflow verifies signature before merge.
 - [x] Prompt-injection linter executes on `docs/**` and `prompts/**` changes.
 - [ ] Branch protection requires two approvals for security-sensitive directories.
