@@ -377,3 +377,6 @@ vitest
 XSS
 MkDocs
 mkdocstrings
+GHCR
+Trivy
+imagetools

@@ -9,9 +9,9 @@ from gabriel.security import (
     DEFAULT_SEVERITIES,
     TrivyError,
     TrivyNotInstalledError,
+    container_scanning,
     scan_image_with_trivy,
 )
-from gabriel.security import container_scanning
 
 
 def test_scan_image_builds_expected_command(monkeypatch: pytest.MonkeyPatch) -> None:
