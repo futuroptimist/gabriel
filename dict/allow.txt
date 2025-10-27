@@ -377,3 +377,5 @@ vitest
 XSS
 MkDocs
 mkdocstrings
+NetworkService
+UDP
