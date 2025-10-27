@@ -119,7 +119,8 @@ agentic coding workflows, regardless of deployment environment.
 
 - [ ] PAT scopes limited to `contents:read`, `pull_requests:write`, `codespaces:secrets` when needed.
 - [ ] Token broker issues per-task credentials with automatic revocation webhooks.
-- [ ] Audit log reviewed weekly for expired-but-active tokens (NIST AI RMF – Measure).
+- [x] Audit log reviewed weekly for expired-but-active tokens (NIST AI RMF – Measure).
+      (`gabriel.security.analyze_expired_tokens` highlights stale credentials.)
 
 ### Sandboxing & Storage Checklist
 
