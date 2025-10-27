@@ -144,3 +144,10 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     optionally include knowledge notes from `gabriel.knowledge.KnowledgeStore`. The helper
     scores each finding, blends in related notes for context, and honors `RiskTolerance`
     preferences so you can down-rank lower-severity items when appropriate.
+
+26. **Can Gabriel flag risky network exposures?**
+
+    Yes. Describe listeners with `gabriel.analysis.network.NetworkService` and call
+    `analyze_network_services()` to surface heuristics for unauthenticated dashboards,
+    wildcard bindings, exposed databases, or UDP amplification services before shipping
+    them to the internet.
