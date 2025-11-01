@@ -354,6 +354,26 @@ print(safe)
 # Summarize the notes below.
 ```
 
+### Verify signed system prompts
+
+Gabriel now ships with a DSSE-wrapped SLSA provenance statement for the default system
+prompt in `config/prompts/system.md`. Call
+`gabriel.load_signed_system_prompt()` to ensure the Ed25519 signature matches the packaged
+attestation before using the prompt in downstream automations:
+
+```python
+from gabriel import load_signed_system_prompt
+
+signed = load_signed_system_prompt()
+print(signed.provenance.builder_id)
+print(signed.text.splitlines()[0])
+```
+
+`SignedPrompt.provenance` exposes the builder metadata, attester label, and SHA-256 digest
+captured in the SLSA statement so you can log or enforce provenance policies alongside prompt
+linting. Verification also rejects attestations with empty subject lists or missing builder
+metadata to prevent ambiguous provenance records.
+
 ### Organize security notes into a knowledge store
 
 Phase 2 of the roadmap introduces a personal knowledge manager that keeps security

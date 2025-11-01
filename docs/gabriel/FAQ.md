@@ -151,3 +151,12 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     `analyze_network_services()` to surface heuristics for unauthenticated dashboards,
     wildcard bindings, exposed databases, or UDP amplification services before shipping
     them to the internet.
+
+27. **How do I confirm the bundled system prompt hasn't been tampered with?**
+
+    Call `gabriel.load_signed_system_prompt()` (or
+    `gabriel.security.load_signed_system_prompt(base_path=...)` when running from a
+    separate checkout) to verify the DSSE-wrapped SLSA provenance statement in
+    `config/prompts/system.attestation.json`. The helper verifies the Ed25519 signature and
+    SHA-256 digest before returning the prompt text. It also enforces non-empty subject lists
+    and requires the builder metadata to remain intact so provenance stays auditable.
