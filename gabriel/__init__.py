@@ -63,6 +63,17 @@ from .ingestion import (
 from .knowledge import KnowledgeStore, Note, SearchResult, load_notes_from_paths
 from .notify import TokenPlaceClient, TokenPlaceCompletion, TokenPlaceError
 from .secrets import delete_secret, get_secret, store_secret
+from .security.provenance import (
+    DEFAULT_ATTESTATION_PATH,
+    DEFAULT_PROMPT_PATH,
+    DEFAULT_PUBLIC_KEY_PATH,
+    EXPECTED_PAYLOAD_TYPE,
+    ProvenanceStatement,
+    ProvenanceVerificationError,
+    SignedPrompt,
+    load_signed_system_prompt,
+    verify_prompt_attestation,
+)
 from .selfhosted import (
     CheckResult,
     DockerDaemonConfig,
@@ -76,17 +87,6 @@ from .selfhosted import (
     audit_photoprism,
     audit_syncthing,
     audit_vaultwarden,
-)
-from .security.provenance import (
-    DEFAULT_ATTESTATION_PATH,
-    DEFAULT_PROMPT_PATH,
-    DEFAULT_PUBLIC_KEY_PATH,
-    EXPECTED_PAYLOAD_TYPE,
-    ProvenanceStatement,
-    ProvenanceVerificationError,
-    SignedPrompt,
-    load_signed_system_prompt,
-    verify_prompt_attestation,
 )
 from .ui import (
     DEFAULT_HOST,
