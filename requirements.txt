@@ -21,3 +21,4 @@ pyyaml
 pymarkdownlnt==0.9.32
 types-PyYAML
 PyYAML
+cryptography

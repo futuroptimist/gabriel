@@ -1,0 +1,10 @@
+{
+  "payloadType": "application/vnd.in-toto+json",
+  "payload": "eyJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YxIiwgInByZWRpY2F0ZSI6IHsiYnVpbGREZWZpbml0aW9uIjogeyJidWlsZFR5cGUiOiAiaHR0cHM6Ly9nYWJyaWVsLnNlY3VyaXR5L3Byb21wdHMvc3lzdGVtQHYxIn0sICJydW5EZXRhaWxzIjogeyJidWlsZGVyIjogeyJpZCI6ICJ1cm46Z2FicmllbDpwcm9tcHQtc2lnbmVyIiwgInZlcnNpb24iOiAiMjAyNS4wMiJ9LCAibWV0YWRhdGEiOiB7ImF0dGVzdGVyIjogIkdhYnJpZWwgU2VjdXJpdHkgRW5naW5lZXJpbmciLCAiYnVpbGRGaW5pc2hlZE9uIjogIjIwMjUtMDItMTBUMTg6MTQ6MTJaIiwgImJ1aWxkU3RhcnRlZE9uIjogIjIwMjUtMDItMTBUMTg6MTM6MDBaIn19fSwgInByZWRpY2F0ZVR5cGUiOiAiaHR0cHM6Ly9zbHNhLmRldi9wcm92ZW5hbmNlL3YxIiwgInN1YmplY3QiOiBbeyJkaWdlc3QiOiB7InNoYTI1NiI6ICI0ZTIyNTBlYzVlOTQzNTA5ZTU4MzE4ZDU4NGNkYjVjOGMyYzEyOWNhMDUzYWI0NDM4ZTViNjUxYzg2NzU1OTkxIn0sICJuYW1lIjogImNvbmZpZy9wcm9tcHRzL3N5c3RlbS5tZCJ9XX0=",
+  "signatures": [
+    {
+      "keyid": "gabriel-prompt-attestor",
+      "sig": "K1kWb4KpO6tm3CtKTFEyLH8km+Rq81mHfboVJHCh0QKnf0EFfu5Ipza9f42sFBBYWSMiN3//CaGfEP6OxTDBDA=="
+    }
+  ]
+}

@@ -77,6 +77,17 @@ from .selfhosted import (
     audit_syncthing,
     audit_vaultwarden,
 )
+from .security.provenance import (
+    DEFAULT_ATTESTATION_PATH,
+    DEFAULT_PROMPT_PATH,
+    DEFAULT_PUBLIC_KEY_PATH,
+    EXPECTED_PAYLOAD_TYPE,
+    ProvenanceStatement,
+    ProvenanceVerificationError,
+    SignedPrompt,
+    load_signed_system_prompt,
+    verify_prompt_attestation,
+)
 from .ui import (
     DEFAULT_HOST,
     DEFAULT_PORT,
@@ -171,4 +182,13 @@ __all__ = [
     "ViewerServer",
     "DEFAULT_HOST",
     "DEFAULT_PORT",
+    "DEFAULT_PROMPT_PATH",
+    "DEFAULT_ATTESTATION_PATH",
+    "DEFAULT_PUBLIC_KEY_PATH",
+    "EXPECTED_PAYLOAD_TYPE",
+    "load_signed_system_prompt",
+    "verify_prompt_attestation",
+    "SignedPrompt",
+    "ProvenanceStatement",
+    "ProvenanceVerificationError",
 ]
