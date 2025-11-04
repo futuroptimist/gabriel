@@ -161,7 +161,7 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
     assert set(platforms) == {"linux/amd64", "linux/arm64"}  # nosec B101
 
     scan_steps = scan_job["steps"]
-    
+
     # Check that platform tag step exists to sanitize the tag
     platform_tag_step = next(
         (step for step in scan_steps if step.get("name") == "Set platform tag"),
@@ -170,7 +170,7 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
     assert (
         platform_tag_step is not None
     ), "Expected platform-tag step to sanitize Docker tag"  # nosec B101
-    
+
     build_step = next(
         (step for step in scan_steps if step.get("uses") == "docker/build-push-action@v6"),
         None,
