@@ -20,6 +20,9 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Set platform tag
+        id: platform-tag
+        run: echo "tag=$(echo '${{ matrix.platform }}' | tr '/' '-')" >> $GITHUB_OUTPUT
       - name: Build image for vulnerability scan (${{ matrix.platform }})
         uses: docker/build-push-action@v6
         with:
@@ -27,11 +30,11 @@ jobs:
           file: docker/Dockerfile
           platforms: ${{ matrix.platform }}
           load: true
-          tags: ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}
+          tags: ghcr.io/${{ github.repository }}:scan-${{ steps.platform-tag.outputs.tag }}
       - name: Scan image with Trivy (${{ matrix.platform }})
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}
+          image-ref: ghcr.io/${{ github.repository }}:scan-${{ steps.platform-tag.outputs.tag }}
           format: table
           ignore-unfixed: true
           vuln-type: 'os,library'
@@ -39,7 +42,7 @@ jobs:
           exit-code: '1'
       - name: Remove local scan image (${{ matrix.platform }})
         if: always()
-        run: docker image rm ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }} || true
+        run: docker image rm ghcr.io/${{ github.repository }}:scan-${{ steps.platform-tag.outputs.tag }} || true
 
   build:
     runs-on: ubuntu-latest
