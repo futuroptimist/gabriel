@@ -161,6 +161,16 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
     assert set(platforms) == {"linux/amd64", "linux/arm64"}  # nosec B101
 
     scan_steps = scan_job["steps"]
+    
+    # Check that platform tag step exists to sanitize the tag
+    platform_tag_step = next(
+        (step for step in scan_steps if step.get("name") == "Set platform tag"),
+        None,
+    )
+    assert (
+        platform_tag_step is not None
+    ), "Expected platform-tag step to sanitize Docker tag"  # nosec B101
+    
     build_step = next(
         (step for step in scan_steps if step.get("uses") == "docker/build-push-action@v6"),
         None,
@@ -173,7 +183,7 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
     assert build_config.get("platforms") == "${{ matrix.platform }}"  # nosec B101
     assert build_config.get("load") is True  # nosec B101
     assert build_config.get("tags") == (
-        "ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}"
+        "ghcr.io/${{ github.repository }}:scan-${{ steps.platform-tag.outputs.tag }}"
     )  # nosec B101
 
     trivy_step = next(
@@ -189,7 +199,7 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
     trivy_config = trivy_step.get("with", {})
     assert (
         trivy_config.get("image-ref")
-        == "ghcr.io/${{ github.repository }}:scan-${{ matrix.platform }}"
+        == "ghcr.io/${{ github.repository }}:scan-${{ steps.platform-tag.outputs.tag }}"
     )  # nosec B101
     assert trivy_config.get("severity") == "CRITICAL,HIGH"  # nosec B101
     assert trivy_config.get("exit-code") == "1"  # nosec B101
