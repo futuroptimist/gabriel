@@ -1,0 +1,11 @@
+{
+  "id": "2025-11-04-spellcheck-jsonl",
+  "date": "2025-11-04",
+  "component": "docs-spellcheck",
+  "rootCause": "PySpelling flagged the README example path `token_audit.jsonl`, causing spellcheck hooks and pytest to fail when aspell was available.",
+  "resolution": "Updated the README to use a `.json` example and documented JSON Lines support so the spellcheck dictionary no longer requires the unsupported token.",
+  "references": [
+    "README.md",
+    "tests/test_spellcheck.py"
+  ]
+}

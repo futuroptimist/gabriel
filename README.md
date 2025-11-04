@@ -326,11 +326,13 @@ audit trails exported from your identity provider:
 ```python
 from gabriel.security import analyze_expired_tokens, load_token_audit_records
 
-records = load_token_audit_records("logs/token_audit.jsonl")
+records = load_token_audit_records("logs/token_audit.json")
 findings = analyze_expired_tokens(records)
 for finding in findings:
     print(f"[{finding.severity.upper()}] {finding.summary} → {finding.details}")
 ```
+
+Records exported in JSON Lines format (`.jsonl`) are supported as well.
 
 Tokens that remain active after their declared expiry are flagged with a high
 severity finding when post-expiry usage is observed, while unrevoked-but-unused

@@ -1,0 +1,11 @@
+{
+  "id": "2025-11-04-docker-pip-vuln",
+  "date": "2025-11-04",
+  "component": "docker-scan",
+  "rootCause": "Trivy reported a high severity advisory (GHSA-4xh5-x5gv-qwph) because the base Python image shipped with pip 25.2.",
+  "resolution": "Upgraded pip in both Dockerfile stages before installing dependencies so the runtime image now bundles pip 25.3 without the advisory.",
+  "references": [
+    "docker/Dockerfile",
+    "pip-audit"
+  ]
+}

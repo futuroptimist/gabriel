@@ -19,7 +19,7 @@ from gabriel.security import audit as audit_module
 
 
 def _dt(text: str) -> datetime:
-    """Helper to parse ISO timestamps with UTC fallback."""
+    """Parse ISO timestamps with a UTC fallback."""
 
     if text.endswith("Z"):
         text = text[:-1] + "+00:00"
