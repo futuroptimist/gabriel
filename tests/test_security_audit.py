@@ -9,12 +9,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from gabriel.security import (
-    FindingSeverity,
-    TokenAuditRecord,
-    analyze_expired_tokens,
-    load_token_audit_records,
-)
+import gabriel.security as security
 from gabriel.security import audit as audit_module
 
 
@@ -38,7 +33,7 @@ def test_load_token_audit_records_supports_json_array() -> None:
             }
         ]
     )
-    records = load_token_audit_records(io.StringIO(payload))
+    records = security.load_token_audit_records(io.StringIO(payload))
     assert len(records) == 1
     record = records[0]
     assert record.token_id == "alpha"
@@ -72,7 +67,7 @@ def test_load_token_audit_records_supports_json_lines(tmp_path) -> None:
         ),
         encoding="utf-8",
     )
-    records = load_token_audit_records(path)
+    records = security.load_token_audit_records(path)
     assert [record.token_id for record in records] == ["bravo", "charlie"]
     assert records[0].scopes == ("repo", "workflow")
     assert records[1].status == "revoked"
@@ -81,7 +76,7 @@ def test_load_token_audit_records_supports_json_lines(tmp_path) -> None:
 def test_analyze_expired_tokens_flags_usage_after_expiry() -> None:
     now = datetime(2024, 8, 10, 12, tzinfo=timezone.utc)
     records = [
-        TokenAuditRecord(
+        security.TokenAuditRecord(
             token_id="delta",
             issued_at=now - timedelta(days=9),
             expires_at=now - timedelta(days=1, hours=2),
@@ -89,7 +84,7 @@ def test_analyze_expired_tokens_flags_usage_after_expiry() -> None:
             scopes=("contents:read",),
             status="active",
         ),
-        TokenAuditRecord(
+        security.TokenAuditRecord(
             token_id="echo",
             issued_at=now - timedelta(days=20),
             expires_at=now - timedelta(days=2),
@@ -97,13 +92,13 @@ def test_analyze_expired_tokens_flags_usage_after_expiry() -> None:
             scopes=("repo",),
             status="active",
         ),
-        TokenAuditRecord(
+        security.TokenAuditRecord(
             token_id="golf",
             issued_at=now - timedelta(days=15),
             expires_at=now - timedelta(days=5),
             status="revoked",
         ),
-        TokenAuditRecord(
+        security.TokenAuditRecord(
             token_id="foxtrot",
             issued_at=now - timedelta(days=5),
             expires_at=now - timedelta(days=1),
@@ -111,32 +106,36 @@ def test_analyze_expired_tokens_flags_usage_after_expiry() -> None:
             status="revoked",
         ),
     ]
-    findings = analyze_expired_tokens(records, now=now)
+    findings = security.analyze_expired_tokens(records, now=now)
     assert len(findings) == 3
     high = next(f for f in findings if f.token_id == "delta")
     medium = next(f for f in findings if f.token_id == "echo")
     revoked = next(f for f in findings if f.token_id == "golf")
-    assert high.severity is FindingSeverity.HIGH
+    assert high.severity is security.FindingSeverity.HIGH
     assert "used" in high.summary.lower()
     assert "delta" in high.details
-    assert medium.severity is FindingSeverity.MEDIUM
+    assert medium.severity is security.FindingSeverity.MEDIUM
     assert "expired" in medium.summary.lower()
-    assert revoked.severity is FindingSeverity.MEDIUM
+    assert revoked.severity is security.FindingSeverity.MEDIUM
     assert "Reported status" not in revoked.details
 
 
 def test_analyze_expired_tokens_respects_grace_period() -> None:
     now = datetime(2024, 8, 10, 12, tzinfo=timezone.utc)
-    record = TokenAuditRecord(
+    record = security.TokenAuditRecord(
         token_id="golf",
         issued_at=now - timedelta(days=3),
         expires_at=now - timedelta(minutes=2),
         status="active",
     )
-    assert analyze_expired_tokens([record], now=now, grace_period=timedelta(minutes=5)) == []
-    findings = analyze_expired_tokens([record], now=now, grace_period=timedelta(seconds=30))
+    assert (
+        security.analyze_expired_tokens([record], now=now, grace_period=timedelta(minutes=5)) == []
+    )
+    findings = security.analyze_expired_tokens(
+        [record], now=now, grace_period=timedelta(seconds=30)
+    )
     assert len(findings) == 1
-    assert findings[0].severity is FindingSeverity.MEDIUM
+    assert findings[0].severity is security.FindingSeverity.MEDIUM
 
 
 def test_token_audit_record_helpers_cover_edge_cases() -> None:
@@ -147,7 +146,7 @@ def test_token_audit_record_helpers_cover_edge_cases() -> None:
         "expires_at": datetime(2024, 8, 5, 12, 0, 0),
         "scopes": None,
     }
-    record = TokenAuditRecord.from_dict(payload)
+    record = security.TokenAuditRecord.from_dict(payload)
     assert record.issued_at.tzinfo is not None
     assert record.expired(now=now)
     delta = record.expired_for(now=now)
@@ -158,11 +157,11 @@ def test_token_audit_record_helpers_cover_edge_cases() -> None:
 def test_load_token_audit_records_handles_empty_and_invalid_payloads(tmp_path) -> None:
     blank = tmp_path / "blank.log"
     blank.write_text("  \n  ", encoding="utf-8")
-    assert load_token_audit_records(blank) == []
+    assert security.load_token_audit_records(blank) == []
 
     invalid = io.StringIO(json.dumps({"token": "missing"}))
     with pytest.raises(ValueError):
-        load_token_audit_records(invalid)
+        security.load_token_audit_records(invalid)
 
 
 def test_load_token_audit_records_rejects_non_list_json(monkeypatch) -> None:
@@ -171,14 +170,16 @@ def test_load_token_audit_records_rejects_non_list_json(monkeypatch) -> None:
 
     monkeypatch.setattr(audit_module, "json", types.SimpleNamespace(loads=fake_loads))
     with pytest.raises(ValueError):
-        load_token_audit_records(io.StringIO("[{}]"))
+        security.load_token_audit_records(io.StringIO("[{}]"))
 
 
 def test_token_audit_record_from_dict_requires_timestamps() -> None:
     with pytest.raises(ValueError):
-        TokenAuditRecord.from_dict({"token_id": "invalid", "issued_at": "2024-08-01T00:00:00Z"})
+        security.TokenAuditRecord.from_dict(
+            {"token_id": "invalid", "issued_at": "2024-08-01T00:00:00Z"}
+        )
     with pytest.raises(ValueError):
-        TokenAuditRecord.from_dict(
+        security.TokenAuditRecord.from_dict(
             {
                 "token_id": "invalid",
                 "issued_at": "2024-08-01T00:00:00Z",
