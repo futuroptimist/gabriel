@@ -53,3 +53,32 @@ def test_docker_workflow_targets_multi_architectures(docker_workflow_path: Path)
     assert (
         not missing
     ), f"Docker build should target multi-arch platforms, missing: {missing}"  # nosec B101
+
+
+def test_docker_workflow_scans_pull_requests(docker_workflow_path: Path) -> None:
+    """Ensure Docker images are scanned on pull requests before merge."""
+
+    workflow = yaml.safe_load(docker_workflow_path.read_text(encoding="utf-8"))
+    events = workflow.get("on", {})
+    assert "pull_request" in events, "Docker workflow should run on pull requests"  # nosec B101
+
+    pull_request = events.get("pull_request", {})
+    branches = (
+        _normalize_platforms(pull_request.get("branches", []))
+        if isinstance(pull_request, dict)
+        else set()
+    )
+    assert (
+        "main" in branches or not branches
+    ), "Pull request scan should target main branch"  # nosec B101
+
+
+def test_docker_workflow_skips_publish_on_pull_requests(docker_workflow_path: Path) -> None:
+    """Ensure publish step does not run on pull request events."""
+
+    workflow = yaml.safe_load(docker_workflow_path.read_text(encoding="utf-8"))
+    build_job = workflow.get("jobs", {}).get("build", {})
+    condition = str(build_job.get("if", "")).strip()
+    assert (
+        condition == "github.event_name != 'pull_request'"
+    ), "Build job should not push images for pull requests"  # nosec B101
