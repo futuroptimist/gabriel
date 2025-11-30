@@ -316,6 +316,18 @@ internet, and UDP amplification targets that should stay rate-limited or
 disabled. Pair these findings with your existing firewall policies to confirm
 that sensitive services stay behind trusted networks.
 
+Run the same checks from the CLI by passing a JSON array of service definitions
+via a file or stdin. Use ``--output-format table`` for a condensed summary:
+
+```bash
+cat <<'JSON' | gabriel network --output-format table
+[
+  {"name": "Public Redis", "port": 6379, "exposure": "internet", "authenticated": false},
+  {"name": "Local Admin", "port": 8080, "exposure": "local", "address": "0.0.0.0"}
+]
+JSON
+```
+
 ### Review credential audit logs
 
 Use `gabriel.security.analyze_expired_tokens` to surface personal access tokens
