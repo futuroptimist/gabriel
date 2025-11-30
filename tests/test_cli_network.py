@@ -36,7 +36,9 @@ def test_cli_network_json_output(tmp_path: Path, capsys: pytest.CaptureFixture[s
     assert any(f["indicator"] == "wildcard-exposure" for f in output)
 
 
-def test_cli_network_table_output(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+def test_cli_network_table_output(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
     services = [
         {
             "name": "UDP Service",
