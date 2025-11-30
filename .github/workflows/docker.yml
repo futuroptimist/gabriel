@@ -1,6 +1,8 @@
 name: Build Docker Image
-on:
+'on':
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -47,6 +49,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: scan
+    if: github.event_name != 'pull_request'
     steps:
       - uses: actions/checkout@v3
       - name: Set up QEMU

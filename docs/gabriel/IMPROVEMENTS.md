@@ -105,7 +105,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       *Aligns with flywheel best practices.*
 - [x] Generate API docs with Sphinx and publish under `docs/`
       (`gabriel/utils.py`, `docs/`). *Aligns with flywheel best practices.*
-- [ ] Scan Docker images for vulnerabilities in CI using `trivy`
+- [x] Scan Docker images for vulnerabilities in CI using `trivy`
       (`docker/Dockerfile`, `.github/workflows/docker.yml`). *Aligns with flywheel best practices.*
 - [x] Define project metadata in `pyproject.toml` for packaging and distribution (`pyproject.toml`,
       `gabriel/__about__.py`). *Aligns with flywheel best practices.*

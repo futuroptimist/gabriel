@@ -794,6 +794,8 @@ pre-commit hooks also run `detect-secrets`, `trufflehog`, `pip-audit`, the `lych
 checker, `pymarkdown`, and the custom `gabriel.prompt_lint` scanner to catch secrets, vulnerable
 dependencies, stale references, style regressions, and prompt-injection red flags in Markdown
 content.
+The Docker workflow builds multi-architecture images and scans them with Trivy on pushes and pull
+requests so high or critical vulnerabilities are blocked before publication.
 The scheduled [`security.yml`](.github/workflows/security.yml) workflow re-runs CodeQL, Semgrep,
 and dependency audits every Monday at 06:00 UTC so regressions surface even during quieter weeks.
 Dependabot monitors Python dependencies, GitHub Actions workflows, and Docker base image updates weekly.
