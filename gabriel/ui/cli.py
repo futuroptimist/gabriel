@@ -6,11 +6,14 @@ import argparse
 import json
 import os
 import sys
+from dataclasses import asdict
 from decimal import Decimal
 from pathlib import Path
+from typing import Any
 
 from .. import arithmetic
 from .. import secrets as secrets_module
+from ..analysis.network import NetworkService, analyze_network_services
 from ..inference import (
     DEFAULT_LOCAL_CONTEXT,
     DEFAULT_LOCAL_MAX_TOKENS,
@@ -188,6 +191,22 @@ def main(argv: list[str] | None = None) -> None:
         help="Exclude author email addresses from the JSON output",
     )
 
+    network_parser = subparsers.add_parser(
+        "network",
+        help="Analyze network service exposure from JSON input",
+    )
+    network_parser.add_argument(
+        "--input",
+        type=Path,
+        help="Path to a JSON array describing network services; reads stdin when omitted",
+    )
+    network_parser.add_argument(
+        "--output-format",
+        choices=("json", "table"),
+        default="json",
+        help="Render findings as JSON (default) or a human-readable table",
+    )
+
     args = parser.parse_args(argv)
 
     funcs = {
@@ -301,6 +320,29 @@ def main(argv: list[str] | None = None) -> None:
         print(rendered)
         return
 
+    if args.command == "network":
+        raw_payload = args.input.read_text(encoding="utf-8") if args.input else sys.stdin.read()
+        if not raw_payload.strip():
+            raise SystemExit("Network service definitions are required as JSON input.")
+        try:
+            parsed = json.loads(raw_payload)
+        except json.JSONDecodeError as exc:
+            raise SystemExit(f"Invalid JSON input: {exc}") from exc
+
+        services = _parse_network_services(parsed)
+        findings = analyze_network_services(services)
+
+        if args.output_format == "json":
+            print(json.dumps([asdict(finding) for finding in findings], indent=2))
+            return
+
+        for finding in findings:
+            print(
+                f"[{finding.severity}] {finding.service}:{finding.port}/{finding.protocol}"
+                f" ({finding.exposure}) → {finding.indicator}: {finding.message}"
+            )
+        return
+
     print(funcs[args.command](args.a, args.b))
 
 
@@ -314,3 +356,27 @@ __all__.extend(
         "_read_secret_from_input",
     ]
 )
+
+
+def _parse_network_services(payload: Any) -> list[NetworkService]:
+    """Convert a JSON payload into ``NetworkService`` instances.
+
+    The payload must be a list of objects with keys accepted by
+    :class:`gabriel.analysis.network.NetworkService`.
+    """
+
+    if not isinstance(payload, list):
+        raise SystemExit("Network services input must be a JSON array of objects.")
+
+    services: list[NetworkService] = []
+    for index, entry in enumerate(payload):
+        if not isinstance(entry, dict):
+            raise SystemExit("Each network service must be represented as a JSON object.")
+        try:
+            services.append(NetworkService(**entry))
+        except (TypeError, ValueError) as exc:
+            raise SystemExit(
+                f"Invalid network service at index {index}: {exc}"  # pragma: no cover - str(exc)
+            ) from exc
+
+    return services

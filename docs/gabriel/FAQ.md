@@ -151,3 +151,9 @@ This FAQ lists questions we have for the maintainers and community. Answers will
     `analyze_network_services()` to surface heuristics for unauthenticated dashboards,
     wildcard bindings, exposed databases, or UDP amplification services before shipping
     them to the internet.
+
+27. **Is there a CLI shortcut for network exposure checks?**
+
+    Yes. Pipe a JSON array of service definitions into ``gabriel network`` or supply
+    ``--input`` with a file path. Add ``--output-format table`` for a condensed, human-
+    readable summary when triaging firewall changes.
