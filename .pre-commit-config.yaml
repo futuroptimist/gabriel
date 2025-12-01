@@ -70,11 +70,16 @@ repos:
         args: [-c, pyproject.toml, -r, gabriel, scripts]
         additional_dependencies:
           - bandit[toml]
-  - repo: https://github.com/returntocorp/semgrep
-    rev: v1.69.0
+  - repo: local
     hooks:
       - id: semgrep
+        name: semgrep
+        entry: semgrep
+        language: python
+        additional_dependencies:
+          - semgrep==1.69.0
         args: ["--config", "config/semgrep/rules.yaml", "--error", "--metrics=off"]
+        types: [python]
   - repo: https://github.com/pypa/pip-audit
     rev: v2.9.0
     hooks:

@@ -91,9 +91,16 @@ def test_pre_commit_configuration_runs_prettier_for_viewer() -> None:
 def test_pre_commit_configuration_runs_semgrep() -> None:
     """Verify Semgrep static analysis runs via pre-commit."""
 
-    config = Path(".pre-commit-config.yaml").read_text(encoding="utf-8")
-    assert "https://github.com/returntocorp/semgrep" in config  # nosec B101
-    assert "config/semgrep/rules.yaml" in config  # nosec B101
+    config = yaml.safe_load(Path(".pre-commit-config.yaml").read_text(encoding="utf-8"))
+    for repo in config.get("repos", []):
+        for hook in repo.get("hooks", []):
+            if hook.get("id") == "semgrep":
+                args = hook.get("args", [])
+                assert "config/semgrep/rules.yaml" in args  # nosec B101
+                assert any(arg.startswith("--config") for arg in args)  # nosec B101
+                return
+
+    pytest.fail("Semgrep hook missing from pre-commit configuration")
 
 
 def test_commitlint_configured_across_tooling() -> None:

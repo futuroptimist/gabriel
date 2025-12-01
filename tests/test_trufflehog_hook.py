@@ -21,13 +21,14 @@ def test_trufflehog_hook_enabled() -> None:
     repos = config.get("repos", [])
 
     for repo in repos:
-        if repo.get("repo") == "local":
-            hooks = repo.get("hooks", [])
-            for hook in hooks:
-                if hook.get("id") == "trufflehog-scan":
-                    assert hook.get("language") == "python"
-                    assert "--max_depth" in hook.get("args", [])
-                    return
-            pytest.fail("Local hooks missing trufflehog-scan entry")
+        if repo.get("repo") != "local":
+            continue
 
-    pytest.fail("Local hook repository missing from pre-commit configuration")
+        hooks = repo.get("hooks", [])
+        for hook in hooks:
+            if hook.get("id") == "trufflehog-scan":
+                assert hook.get("language") == "python"
+                assert "--max_depth" in hook.get("args", [])
+                return
+
+    pytest.fail("Local hooks missing trufflehog-scan entry")
