@@ -19,8 +19,8 @@ def docker_workflow_path() -> Path:
     return path
 
 
-def _normalize_platforms(raw: object) -> set[str]:
-    """Normalize the platforms declaration into a comparable set."""
+def _normalize_string_list(raw: object) -> set[str]:
+    """Normalize a sequence-like object into a comparable set of strings."""
 
     if isinstance(raw, str):
         items: Iterable[str] = (part.strip() for part in raw.split(","))
@@ -29,6 +29,18 @@ def _normalize_platforms(raw: object) -> set[str]:
     else:  # pragma: no cover - defensive guard for unexpected schema changes
         return set()
     return {item for item in items if item}
+
+
+def _get_events_section(workflow: dict) -> dict:
+    """Return the workflow events mapping, handling YAML 1.1 bool parsing."""
+
+    for key in ("on", True):
+        if key not in workflow:
+            continue
+        events = workflow[key]
+        if isinstance(events, dict):
+            return events
+    return {}
 
 
 def test_docker_workflow_targets_multi_architectures(docker_workflow_path: Path) -> None:
@@ -47,7 +59,7 @@ def test_docker_workflow_targets_multi_architectures(docker_workflow_path: Path)
     assert build_steps, "Docker workflow must invoke docker/build-push-action"  # nosec B101
 
     build_step = build_steps[-1]
-    platforms = _normalize_platforms(build_step.get("with", {}).get("platforms"))
+    platforms = _normalize_string_list(build_step.get("with", {}).get("platforms"))
     expected = {"linux/amd64", "linux/arm64"}
     missing = sorted(expected.difference(platforms))
     assert (
@@ -59,12 +71,12 @@ def test_docker_workflow_scans_pull_requests(docker_workflow_path: Path) -> None
     """Ensure Docker images are scanned on pull requests before merge."""
 
     workflow = yaml.safe_load(docker_workflow_path.read_text(encoding="utf-8"))
-    events = workflow.get("on", {})
+    events = _get_events_section(workflow)
     assert "pull_request" in events, "Docker workflow should run on pull requests"  # nosec B101
 
     pull_request = events.get("pull_request", {})
     branches = (
-        _normalize_platforms(pull_request.get("branches", []))
+        _normalize_string_list(pull_request.get("branches", []))
         if isinstance(pull_request, dict)
         else set()
     )

@@ -1,5 +1,5 @@
 name: Build Docker Image
-'on':
+on:
   push:
     branches: [main]
   pull_request:
