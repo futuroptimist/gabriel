@@ -11,7 +11,9 @@ semgrep
 pyspelling
 mkdocs
 mkdocstrings[python]
-sphinx
+# Pin Sphinx below 9.0 until sphinx-autodoc-typehints gains compatibility with
+# newer releases (missing sphinx.ext.autodoc.mock on 9.0). See tests/test_sphinx_docs.py.
+sphinx<9
 sphinx-autodoc-typehints
 keyring
 hypothesis
