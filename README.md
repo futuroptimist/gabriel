@@ -162,7 +162,9 @@ packages, significantly reducing run time on repeat builds.
 
 Semgrep scans run alongside these hooks using the local rule bundle in
 [`config/semgrep/rules.yaml`](config/semgrep/rules.yaml) to flag risky subprocess usage in
-Python code before it lands in the repository.
+Python code before it lands in the repository. The pre-commit hook and security workflow install
+Semgrep in isolated tool environments, so `pip-audit` can audit Gabriel's Python dependency set
+without inheriting vulnerabilities from scanner-only dependencies.
 
 Ruff powers the lightweight linting layer used in both pre-commit hooks and CI. Run it directly
 when iterating on lint fixes:

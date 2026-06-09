@@ -1,0 +1,11 @@
+{
+  "id": "pip-audit-semgrep-pyjwt",
+  "date": "2026-02-02",
+  "component": "Scheduled dependency audit",
+  "rootCause": "The requirements.txt dependency set included Semgrep, a scanner-only tool whose PyJWT transitive dependency was capped below the fixed 2.13.0 release, causing recurring pip-audit failures in the Security Scans workflow.",
+  "resolution": "Removed Semgrep from requirements.txt so the dependency audit covers Gabriel's Python dependency set while Semgrep continues to run from isolated pre-commit and GitHub Actions tool installs.",
+  "references": [
+    "https://github.com/futuroptimist/gabriel/actions/runs/20018430344",
+    "https://github.com/futuroptimist/gabriel/actions/runs/21579647496"
+  ]
+}

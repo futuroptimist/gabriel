@@ -47,3 +47,11 @@ def test_security_workflow_runs_weekly_and_scans() -> None:
         isinstance(step, dict) and "npm audit" in str(step.get("run", ""))
         for step in dependency_steps
     ), "Dependency audit job must run npm audit"
+
+
+def test_requirements_exclude_scanner_only_semgrep_dependency() -> None:
+    """Keep dependency audits focused on Gabriel dependencies, not scanner tooling."""
+
+    requirements = Path("requirements.txt").read_text(encoding="utf-8").splitlines()
+
+    assert "semgrep" not in {line.strip() for line in requirements}  # nosec B101
