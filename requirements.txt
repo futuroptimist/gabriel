@@ -7,7 +7,6 @@ detect-secrets
 publicsuffix2
 mypy
 pip-audit
-semgrep
 pyspelling
 mkdocs
 mkdocstrings[python]
