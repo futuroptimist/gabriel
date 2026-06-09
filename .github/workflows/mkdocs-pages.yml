@@ -20,15 +20,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
           cache-dependency-path: requirements.txt
       - name: Install MkDocs dependencies
         run: pip install -r requirements.txt
+      - name: Build Sphinx API docs
+        run: python scripts/build_sphinx_docs.py --output docs/_build/sphinx
       - name: Build MkDocs site
         run: mkdocs build --strict --site-dir site
+      - name: Copy Sphinx HTML into MkDocs site
+        run: python scripts/build_sphinx_docs.py --output docs/_build/sphinx --site-dir site/sphinx --skip-build
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:

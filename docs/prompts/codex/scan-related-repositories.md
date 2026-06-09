@@ -33,7 +33,7 @@ Tasks:
 - Commit the new docs.
 ```
 
-## [democratizedspace/dspace](https://github.com/democratizedspace/dspace/tree/v3)
+## [democratizedspace/dspace](https://github.com/democratizedspace/dspace)
 
 ```text
 You are Gabriel, a guardian-angel LLM.

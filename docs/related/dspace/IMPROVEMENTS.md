@@ -1,7 +1,7 @@
 # Suggested Improvements for DSPACE
 
 This document tracks enhancement ideas for the
-[democratizedspace/dspace](https://github.com/democratizedspace/dspace/tree/v3) repository.
+[democratizedspace/dspace](https://github.com/democratizedspace/dspace) repository.
 
 ## Current Snapshot (2025-10-18)
 
