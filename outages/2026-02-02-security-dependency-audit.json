@@ -1,0 +1,10 @@
+{
+  "id": "security-dependency-audit-dev-tool-vulnerabilities",
+  "date": "2026-02-02",
+  "component": "Security Scans dependency audits",
+  "rootCause": "The scheduled dependency audit installed Semgrep from requirements.txt, pulling vulnerable PyJWT 2.12.1 transitively, while npm audit also reported vulnerable development-tool transitive packages in package-lock.json.",
+  "resolution": "Removed Semgrep from the shared Python requirements because CI installs it separately for scan jobs, and refreshed npm transitive dependency pins with npm audit fix.",
+  "references": [
+    "https://github.com/futuroptimist/gabriel/actions/runs/21579647496"
+  ]
+}
