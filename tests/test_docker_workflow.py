@@ -53,3 +53,27 @@ def test_docker_workflow_targets_multi_architectures(docker_workflow_path: Path)
     assert (
         not missing
     ), f"Docker build should target multi-arch platforms, missing: {missing}"  # nosec B101
+
+
+def test_trivy_action_uses_existing_version_tag(docker_workflow_path: Path) -> None:
+    """Guard against typoing the Trivy action ref and failing workflow setup."""
+
+    workflow = yaml.safe_load(docker_workflow_path.read_text(encoding="utf-8"))
+    scan_job = workflow.get("jobs", {}).get("scan")
+    assert scan_job is not None, "Docker workflow must define a scan job"  # nosec B101
+
+    trivy_steps = [
+        step
+        for step in scan_job.get("steps", [])
+        if isinstance(step, dict)
+        and str(step.get("uses", "")).startswith("aquasecurity/trivy-action@")
+    ]
+    assert trivy_steps, "Docker workflow must scan images with Trivy"  # nosec B101
+
+    expected_ref = "aquasecurity/trivy-action@v0.20.0"
+    unexpected_refs = sorted(
+        {str(step["uses"]) for step in trivy_steps if step.get("uses") != expected_ref}
+    )
+    assert (
+        not unexpected_refs
+    ), f"Every Trivy scan step should use {expected_ref}, found: {unexpected_refs}"  # nosec B101
