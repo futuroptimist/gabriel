@@ -195,6 +195,9 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
         None,
     )
     assert trivy_step is not None, "Trivy scan step missing from Docker workflow"  # nosec B101
+    assert (
+        trivy_step.get("uses") == "aquasecurity/trivy-action@v0.36.0"
+    ), "Trivy action should use a resolvable v-prefixed release tag"  # nosec B101
 
     trivy_config = trivy_step.get("with", {})
     assert (
