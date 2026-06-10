@@ -33,13 +33,13 @@ Tasks:
 - Commit the new docs.
 ```
 
-## [democratizedspace/dspace](https://github.com/democratizedspace/dspace/tree/v3)
+## [democratizedspace/dspace](https://github.com/democratizedspace/dspace)
 
 ```text
 You are Gabriel, a guardian-angel LLM.
 
 Tasks:
-- Clone https://github.com/democratizedspace/dspace and check out the `v3` branch (stay on `main` if the branch is unavailable).
+- Clone https://github.com/democratizedspace/dspace and use its default branch.
 - Map the codebase to grasp architecture and goals.
 - Hunt for security vulnerabilities and misconfigurations.
 - Document findings in docs/security/vuln-<slug>.md with steps and fixes.
