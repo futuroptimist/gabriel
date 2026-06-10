@@ -69,4 +69,11 @@ def test_trivy_action_uses_existing_version_tag(docker_workflow_path: Path) -> N
         and str(step.get("uses", "")).startswith("aquasecurity/trivy-action@")
     ]
     assert trivy_steps, "Docker workflow must scan images with Trivy"  # nosec B101
-    assert trivy_steps[0]["uses"] == "aquasecurity/trivy-action@v0.20.0"  # nosec B101
+
+    expected_ref = "aquasecurity/trivy-action@v0.20.0"
+    unexpected_refs = sorted(
+        {str(step["uses"]) for step in trivy_steps if step.get("uses") != expected_ref}
+    )
+    assert (
+        not unexpected_refs
+    ), f"Every Trivy scan step should use {expected_ref}, found: {unexpected_refs}"  # nosec B101
