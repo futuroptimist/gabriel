@@ -43,6 +43,9 @@ gabriel-calc = "gabriel.ui.cli:main"
 [tool.setuptools.packages.find]
 include = ["gabriel*"]
 
+[tool.setuptools.package-data]
+"gabriel.security.policies" = ["allowlist.json"]
+
 [tool.isort]
 profile = "black"
 

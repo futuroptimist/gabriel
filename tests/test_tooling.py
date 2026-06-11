@@ -264,3 +264,34 @@ def test_cli_viewer_invokes_helper(monkeypatch: pytest.MonkeyPatch) -> None:
     )
 
     assert recorded["args"] == ("0.0.0.0", 9999, False)  # nosec B101 B104
+
+
+def test_dockerfile_runtime_install_failures_are_not_masked() -> None:
+    """Ensure only the optional wheel removal can fail during image installation."""
+
+    dockerfile = Path("docker/Dockerfile").read_text(encoding="utf-8")
+
+    assert "pip install --no-cache-dir -r requirements-runtime.txt . &&" in dockerfile  # nosec B101
+    assert "(pip uninstall -y wheel || true)" in dockerfile  # nosec B101
+    assert "pip uninstall -y wheel || true &&" not in dockerfile  # nosec B101
+
+
+def test_dockerfile_avoids_runtime_apt_upgrade() -> None:
+    """Keep the runtime image reproducible by avoiding broad OS package upgrades."""
+
+    dockerfile = Path("docker/Dockerfile").read_text(encoding="utf-8")
+
+    assert "apt-get upgrade" not in dockerfile  # nosec B101
+
+
+def test_pyproject_includes_egress_allowlist_package_data() -> None:
+    """Ensure packaged installs include the default egress allowlist JSON."""
+
+    config = Path("pyproject.toml").read_text(encoding="utf-8")
+    data = toml_loader.loads(config)
+
+    assert data["tool"]["setuptools"]["package-data"][
+        "gabriel.security.policies"
+    ] == [  # nosec B101
+        "allowlist.json"
+    ]
