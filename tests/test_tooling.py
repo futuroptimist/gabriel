@@ -203,6 +203,8 @@ def test_docker_workflow_scans_image_for_vulnerabilities() -> None:
     )  # nosec B101
     assert trivy_config.get("severity") == "CRITICAL,HIGH"  # nosec B101
     assert trivy_config.get("exit-code") == "1"  # nosec B101
+    assert trivy_config.get("vuln-type") == "os,library"  # nosec B101
+    assert "pkg-types" not in trivy_config  # nosec B101
 
     build_job = workflow["jobs"].get("build")
     assert build_job is not None, "Expected build job to push the release images"  # nosec B101
