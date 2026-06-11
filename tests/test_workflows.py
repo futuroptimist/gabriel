@@ -27,3 +27,28 @@ def test_coverage_workflow_runs_on_multiple_operating_systems() -> None:
         "windows-latest",
     ]
     assert matrix["python-version"] == ["3.10", "3.11"]
+
+
+def test_mkdocs_pages_deploys_only_when_pages_is_enabled() -> None:
+    """The Pages workflow should validate docs on PRs and only deploy configured Pages sites."""
+    workflow = load_workflow("mkdocs-pages.yml")
+    build_job = workflow["jobs"]["build"]
+    deploy_job = workflow["jobs"]["deploy"]
+
+    assert build_job["outputs"]["pages-enabled"] == "${{ steps.pages.outputs.enabled }}"
+    assert (
+        deploy_job["if"]
+        == "github.event_name != 'pull_request' && needs.build.outputs.pages-enabled == 'true'"
+    )
+
+    steps = build_job["steps"]
+    pages_check = next(step for step in steps if step.get("id") == "pages")
+    assert pages_check["if"] == "github.event_name != 'pull_request'"
+
+    upload_step = next(
+        step for step in steps if step.get("uses") == "actions/upload-pages-artifact@v3"
+    )
+    assert (
+        upload_step["if"]
+        == "github.event_name != 'pull_request' && steps.pages.outputs.enabled == 'true'"
+    )
