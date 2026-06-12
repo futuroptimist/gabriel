@@ -268,6 +268,16 @@ def test_cli_viewer_invokes_helper(monkeypatch: pytest.MonkeyPatch) -> None:
     assert recorded["args"] == ("0.0.0.0", 9999, False)  # nosec B101 B104
 
 
+def test_dockerfile_copies_viewer_assets_into_runtime_image() -> None:
+    """Keep the documented viewer command functional in the runtime image."""
+
+    dockerfile = Path("docker/Dockerfile").read_text(encoding="utf-8")
+    dockerignore = Path(".dockerignore").read_text(encoding="utf-8")
+
+    assert "COPY viewer ./viewer" in dockerfile  # nosec B101
+    assert "/viewer/" not in dockerignore  # nosec B101
+
+
 def test_dockerfile_runtime_install_failures_are_not_masked() -> None:
     """Ensure only the optional wheel removal can fail during image installation."""
 

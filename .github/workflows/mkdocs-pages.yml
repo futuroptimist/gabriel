@@ -51,7 +51,13 @@ jobs:
             --header "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/${GH_REPO}/pages")
           if [ "$status" = "200" ]; then
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            build_type=$(python -c 'import json, pathlib; print(json.loads(pathlib.Path("/tmp/pages.json").read_text(encoding="utf-8")).get("build_type", ""))')
+            if [ "$build_type" = "workflow" ]; then
+              echo "enabled=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "enabled=false" >> "$GITHUB_OUTPUT"
+              echo "GitHub Pages for ${GH_REPO} uses build_type='${build_type:-unknown}', not 'workflow'; skipping deployment after the strict MkDocs build. Set Pages source to GitHub Actions to publish this artifact." >> "$GITHUB_STEP_SUMMARY"
+            fi
           elif [ "$status" = "404" ]; then
             echo "enabled=false" >> "$GITHUB_OUTPUT"
             echo "GitHub Pages is not enabled for ${GH_REPO}; skipping deployment after the strict MkDocs build. Enable Pages with GitHub Actions as the source to publish this artifact." >> "$GITHUB_STEP_SUMMARY"

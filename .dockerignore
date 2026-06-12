@@ -28,7 +28,6 @@ coverage*
 # Exclude documentation and examples not required for runtime image
 /docs/
 /tests/
-/viewer/
 /outages/
 /dict/
 

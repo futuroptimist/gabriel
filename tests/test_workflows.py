@@ -44,6 +44,9 @@ def test_mkdocs_pages_deploys_only_when_pages_is_enabled() -> None:
     steps = build_job["steps"]
     pages_check = next(step for step in steps if step.get("id") == "pages")
     assert pages_check["if"] == "github.event_name != 'pull_request'"
+    assert 'get("build_type", "")' in pages_check["run"]  # nosec B101
+    assert '[ "$build_type" = "workflow" ]' in pages_check["run"]  # nosec B101
+    assert "build_type='${build_type:-unknown}', not 'workflow'" in pages_check["run"]  # nosec B101
 
     upload_step = next(
         step for step in steps if step.get("uses") == "actions/upload-pages-artifact@v3"
