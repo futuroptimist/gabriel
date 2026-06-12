@@ -10,5 +10,6 @@ RUN pip install --no-cache-dir --upgrade "setuptools>=82.0.1" "wheel>=0.46.3" &&
     (pip uninstall -y wheel || true) && \
     useradd -m appuser
 USER appuser
+ENV GABRIEL_VIEWER_DIR=/app/viewer
 ENV PYTHONUNBUFFERED=1
 CMD ["python"]

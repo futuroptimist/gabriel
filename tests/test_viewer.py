@@ -1,6 +1,7 @@
 import sys
 import threading
 import time
+from pathlib import Path
 from urllib.request import urlopen
 
 import pytest
@@ -13,11 +14,23 @@ from gabriel.ui.viewer import (
 )
 
 
-def test_get_viewer_directory_contains_assets() -> None:
+def test_get_viewer_directory_contains_assets(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("GABRIEL_VIEWER_DIR", raising=False)
     directory = get_viewer_directory()
     assert directory.name == "viewer"  # nosec B101
     assert (directory / "index.html").exists()  # nosec B101
     assert (directory / "viewer.js").exists()  # nosec B101
+
+
+def test_get_viewer_directory_uses_environment_override(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """Allow Docker images to point the installed CLI at copied viewer assets."""
+    viewer_dir = tmp_path / "viewer"
+    viewer_dir.mkdir()
+    monkeypatch.setenv("GABRIEL_VIEWER_DIR", str(viewer_dir))
+
+    assert get_viewer_directory() == viewer_dir.resolve()  # nosec B101
 
 
 def test_start_viewer_server_serves_index() -> None:

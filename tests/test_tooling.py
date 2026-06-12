@@ -275,6 +275,7 @@ def test_dockerfile_copies_viewer_assets_into_runtime_image() -> None:
     dockerignore = Path(".dockerignore").read_text(encoding="utf-8")
 
     assert "COPY viewer ./viewer" in dockerfile  # nosec B101
+    assert "ENV GABRIEL_VIEWER_DIR=/app/viewer" in dockerfile  # nosec B101
     assert "/viewer/" not in dockerignore  # nosec B101
 
 
