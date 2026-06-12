@@ -278,6 +278,19 @@ def test_dockerfile_runtime_install_failures_are_not_masked() -> None:
     assert "pip uninstall -y wheel || true &&" not in dockerfile  # nosec B101
 
 
+def test_dockerfile_refreshes_vulnerable_packaging_tools() -> None:
+    """Keep base-image packaging metadata ahead of Trivy vulnerability findings."""
+
+    dockerfile = Path("docker/Dockerfile").read_text(encoding="utf-8")
+
+    assert "pip install --no-cache-dir --upgrade" in dockerfile  # nosec B101
+    assert '"setuptools>=82.0.1"' in dockerfile  # nosec B101
+    assert '"wheel>=0.46.3"' in dockerfile  # nosec B101
+    assert dockerfile.index("setuptools>=82.0.1") < dockerfile.index(
+        "pip install --no-cache-dir -r requirements-runtime.txt ."
+    )  # nosec B101
+
+
 def test_dockerfile_avoids_runtime_apt_upgrade() -> None:
     """Keep the runtime image reproducible by avoiding broad OS package upgrades."""
 
