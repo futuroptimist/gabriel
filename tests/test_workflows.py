@@ -34,7 +34,11 @@ def test_mkdocs_pages_deploys_only_when_pages_is_enabled() -> None:
     workflow = load_workflow("mkdocs-pages.yml")
     build_job = workflow["jobs"]["build"]
     deploy_job = workflow["jobs"]["deploy"]
+    concurrency = workflow["concurrency"]
 
+    assert "github.event.pull_request.number" in concurrency["group"]
+    assert "github.ref" in concurrency["group"]
+    assert concurrency["cancel-in-progress"] == "${{ github.event_name == 'pull_request' }}"
     assert build_job["outputs"]["pages-enabled"] == "${{ steps.pages.outputs.enabled }}"
     assert (
         deploy_job["if"]
