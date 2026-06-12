@@ -4,6 +4,7 @@ import argparse
 import contextlib
 import functools
 import http.server
+import os
 import threading
 import time
 import webbrowser
@@ -25,7 +26,16 @@ __all__ = [
 
 
 def get_viewer_directory() -> Path:
-    """Return the directory containing the static viewer assets."""
+    """Return the directory containing the static viewer assets.
+
+    The Docker runtime imports the installed console script from site-packages,
+    while the static assets are copied into ``/app/viewer``. An explicit
+    environment override keeps that container layout reachable without changing
+    the source-tree default used by local development and tests.
+    """
+    override = os.environ.get("GABRIEL_VIEWER_DIR")
+    if override:
+        return Path(override).expanduser().resolve()
     return Path(__file__).resolve().parents[2] / "viewer"
 
 

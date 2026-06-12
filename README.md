@@ -124,8 +124,10 @@ publish alongside the rest of the documentation:
 python scripts/build_sphinx_docs.py --output docs/_build/sphinx --site-dir site/sphinx --skip-build
 ```
 
-The rendered site is also published to GitHub Pages at
-futuroptimist.github.io/gabriel after every merge to `main`.
+The rendered site is published to GitHub Pages at
+futuroptimist.github.io/gabriel after every merge to `main` when GitHub Pages is enabled for the
+repository with GitHub Actions as the Pages source. Pull requests build the MkDocs site without
+deploying it.
 
 Validate policy guardrails before committing updates to `llm_policy.yaml` or downstream
 overrides:
@@ -649,11 +651,11 @@ and reduces the chance of copying unintended files into the runtime image.
 
 #### Build the image locally
 
-Use the root `Dockerfile` to produce an image tagged `gabriel`. The build only needs the
-repository checkout; dependencies are installed within the container.
+Use the Dockerfile under `docker/` to produce an image tagged `gabriel`. The build only needs the
+repository checkout; runtime dependencies are installed within the container.
 
 ```bash
-docker build -t gabriel .
+docker build -f docker/Dockerfile -t gabriel .
 ```
 
 The GitHub Actions workflow publishes a multi-architecture image for
@@ -662,13 +664,13 @@ works on modern Intel/AMD and Apple Silicon hosts without additional flags. To
 test other architectures locally, pass the desired platform to Buildx:
 
 ```bash
-docker buildx build --platform linux/arm64 -t gabriel:arm64 .
+docker buildx build --platform linux/arm64 -f docker/Dockerfile -t gabriel:arm64 .
 ```
 
-Every publish run now performs a `trivy` vulnerability scan against the freshly
-built `linux/amd64` image before pushing the multi-architecture manifest. Builds
-fail when high or critical issues surface, keeping the public image aligned with
-our hardening guidance.
+Every pull request and publish run performs a `trivy` vulnerability scan against the freshly
+built `linux/amd64` and `linux/arm64` images before default-branch runs push the
+multi-architecture manifest. Builds fail when high or critical issues surface, keeping the
+public image aligned with our hardening guidance.
 
 Pass `--build-arg PYTHON_VERSION=3.11` to experiment with alternate Python releases that remain
 supported by the Docker base image.

@@ -5,6 +5,7 @@
 .github/
 
 # Exclude development and test artifacts
+node_modules/
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -27,7 +28,6 @@ coverage*
 # Exclude documentation and examples not required for runtime image
 /docs/
 /tests/
-/viewer/
 /outages/
 /dict/
 

@@ -9,6 +9,12 @@ authors = [
     { name = "Futuroptimist" },
 ]
 keywords = ["security", "phishing", "self-hosted", "cli", "privacy"]
+dependencies = [
+    "keyring",
+    "publicsuffix2",
+    "PyYAML",
+]
+
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Information Technology",
@@ -33,6 +39,12 @@ docs = ["sphinx>=8.0.0", "sphinx-autodoc-typehints>=3.0.0"]
 [project.scripts]
 gabriel = "gabriel.ui.cli:main"
 gabriel-calc = "gabriel.ui.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["gabriel*"]
+
+[tool.setuptools.package-data]
+"gabriel.security.policies" = ["allowlist.json"]
 
 [tool.isort]
 profile = "black"
