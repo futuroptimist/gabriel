@@ -40,7 +40,7 @@ jobs:
           args: --config lychee.toml README.md docs/
       - name: Upload lychee report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: lychee-report
           path: lychee/out.md
@@ -75,7 +75,7 @@ jobs:
       - name: Copy Sphinx HTML into MkDocs site
         run: python scripts/build_sphinx_docs.py --output docs/_build/sphinx --site-dir site/sphinx --skip-build
       - name: Upload MkDocs artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mkdocs-site
           path: site
