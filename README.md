@@ -7,6 +7,7 @@ Gabriel is an open source "guardian angel" LLM aimed at helping individuals secu
 [![Coverage](https://raw.githubusercontent.com/futuroptimist/gabriel/main/coverage.svg)](https://codecov.io/gh/futuroptimist/gabriel)
 [![Docs](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/docs.yml?label=docs&branch=main)](https://github.com/futuroptimist/gabriel/actions/workflows/docs.yml)
 [![CodeQL](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/codeql.yml?label=codeql)](https://github.com/futuroptimist/gabriel/actions/workflows/codeql.yml)
+[![Security scans](https://img.shields.io/github/actions/workflow/status/futuroptimist/gabriel/.github/workflows/security.yml?label=security%20scans)](https://github.com/futuroptimist/gabriel/actions/workflows/security.yml)
 [![License](https://img.shields.io/github/license/futuroptimist/gabriel)](LICENSE)
 
 ## Goals
@@ -108,8 +109,25 @@ pip install -r requirements.txt
 mkdocs serve
 ```
 
-The rendered site is also published to GitHub Pages at
-futuroptimist.github.io/gabriel after every merge to `main`.
+Generate the Sphinx API documentation to view the autodoc pages locally (install the required
+extras with `pip install -r requirements.txt` or `pip install "gabriel[docs]"`):
+
+```bash
+python scripts/build_sphinx_docs.py --output docs/_build/sphinx
+open docs/_build/sphinx/index.html  # macOS example; use xdg-open/start on Linux/Windows
+```
+
+After running `mkdocs build`, copy the rendered HTML into the MkDocs site output so the pages
+publish alongside the rest of the documentation:
+
+```bash
+python scripts/build_sphinx_docs.py --output docs/_build/sphinx --site-dir site/sphinx --skip-build
+```
+
+The rendered site is published to GitHub Pages at
+futuroptimist.github.io/gabriel after every merge to `main` when GitHub Pages is enabled for the
+repository with GitHub Actions as the Pages source. Pull requests build the MkDocs site without
+deploying it.
 
 Validate policy guardrails before committing updates to `llm_policy.yaml` or downstream
 overrides:
@@ -221,6 +239,25 @@ hashes, authors, ISO-8601 timestamps, and commit subjects. Use `--output` to
 write the same payload to disk, and prefer read-only credentials when scanning
 remote mirrors.
 
+### Create ephemeral scratch space
+
+Security-sensitive tasks often need isolated scratch directories that disappear
+once work completes. Gabriel now includes a dedicated context manager that
+provisions directories under the system temporary path (for example `/tmp`) and
+wipes them automatically:
+
+```python
+from gabriel import ScratchSpace
+
+with ScratchSpace(task_id="scan-42") as workspace:
+    temp_file = workspace / "artifact.txt"
+    temp_file.write_text("temporary data", encoding="utf-8")
+# Directory and contents removed on exit.
+```
+
+Use the optional `base_dir` argument when a different temporary root is
+required, such as during integration tests or containerised runs.
+
 ### Package metadata
 
 Gabriel exposes standard package metadata so downstream tooling can introspect
@@ -257,6 +294,51 @@ and base64-like tokens that often indicate obfuscated redirects or payloads.
 Combine it with Gabriel's secret helpers to build secure intake
 pipelines for inbound phishing reports.
 
+### Assess network exposure
+
+Network monitoring is another roadmap goal. Gabriel now includes a lightweight
+`gabriel.analysis.network.analyze_network_services` helper that reviews service
+bindings for risky exposures before they ship to production:
+
+```python
+from gabriel import NetworkService, analyze_network_services
+
+services = [
+    NetworkService(name="Admin Dashboard", port=3000, exposure="internet", authenticated=False),
+    NetworkService(name="Status Page", port=8080, exposure="internet", encrypted=False),
+]
+
+for finding in analyze_network_services(services):
+    print(f"[{finding.severity}] {finding.service}: {finding.message}")
+```
+
+The analyzer highlights unauthenticated dashboards, unencrypted HTTP listeners,
+wildcard bindings on localhost-only services, database ports exposed to the
+internet, and UDP amplification targets that should stay rate-limited or
+disabled. Pair these findings with your existing firewall policies to confirm
+that sensitive services stay behind trusted networks.
+
+### Review credential audit logs
+
+Use `gabriel.security.analyze_expired_tokens` to surface personal access tokens
+that have outlived their expiration timestamps. Pair it with
+`gabriel.security.load_token_audit_records` to parse JSON or newline-delimited
+audit trails exported from your identity provider:
+
+```python
+from gabriel.security import analyze_expired_tokens, load_token_audit_records
+
+records = load_token_audit_records("logs/token_audit.jsonl")
+findings = analyze_expired_tokens(records)
+for finding in findings:
+    print(f"[{finding.severity.upper()}] {finding.summary} → {finding.details}")
+```
+
+Tokens that remain active after their declared expiry are flagged with a high
+severity finding when post-expiry usage is observed, while unrevoked-but-unused
+tokens trigger medium-severity recommendations so security teams can clean up
+stale credentials before they are abused.
+
 ### Sanitize prompts before execution
 
 Use `gabriel.ingestion.text.sanitize_prompt` to strip risky markup from prompts gathered from
@@ -292,6 +374,36 @@ for result in store.search("vaultwarden admin token", required_tags=["passwords"
 
 Each result includes the originating note, matched terms, and a contextual snippet so
 you can jump directly to the relevant remediation guidance when triaging incidents.
+
+### Enforce repository-scoped vector store access
+
+The agent threat model calls for repository-scoped API keys and short-lived embeddings
+so credential exposure windows stay tight. Use `gabriel.SecureVectorStore` to store
+embeddings with enforced prefixes, task tagging, and a maximum seven-day TTL:
+
+```python
+from datetime import datetime, timedelta, timezone
+
+from gabriel import MAX_VECTOR_TTL, SecureVectorStore
+
+store = SecureVectorStore("gabriel")
+record = store.write_embedding(
+    [0.12, 0.34, 0.56],
+    api_key_id="gabriel:threat-retriever",
+    task_id="audit-2025-02-12",
+    ttl=timedelta(days=3),
+    metadata={"task": "threat-report"},
+)
+print(record.task_id)
+print(record.expires_at - datetime.now(tz=timezone.utc) <= MAX_VECTOR_TTL)
+
+# Purge embeddings older than one hour regardless of TTL to emulate the hourly cleanup job.
+store.purge_stale(timedelta(hours=1))
+```
+
+The helper rejects API keys that are not prefixed with the repository name, enforces
+TTL values of seven days or less, and exposes `purge_stale()` so hourly cleanup jobs
+can remove embeddings older than their task rotation window.
 
 ### Generate prioritized recommendations
 
@@ -499,6 +611,31 @@ print(completion.text)
 before submitting a prompt. The helper never sends telemetry beyond the configured relay URL,
 keeping Gabriel's privacy posture intact.
 
+### Choose inference mode from the CLI
+
+Use the unified `gabriel infer` command to switch between offline completions powered by
+`llama.cpp` and encrypted relay requests. When `GABRIEL_MODEL_PATH` points to a local GGUF model,
+Gabriel defaults to local inference and generates responses without network access:
+
+```bash
+gabriel infer --model-path ~/models/llama3.gguf "Summarize the latest CVE bulletin"
+```
+
+Pass `--mode relay` to override the default and route prompts through token.place instead. Supply
+the relay URL, API key, and optional metadata in a single invocation:
+
+```bash
+gabriel infer --mode relay \
+  --relay-url https://relay.local \
+  --api-key tp_test_123 \
+  --model llama3-70b \
+  --metadata '{"source": "gabriel-demo"}' \
+  "Draft weekend hardening tasks"
+```
+
+The CLI surfaces sampling controls like `--temperature`, `--top-p`, and `--max-tokens` so scripted
+workflows can tune output without touching Python APIs.
+
 ### Offline Usage
 
 For fully local inference, see [OFFLINE.md](docs/gabriel/OFFLINE.md).
@@ -514,11 +651,11 @@ and reduces the chance of copying unintended files into the runtime image.
 
 #### Build the image locally
 
-Use the root `Dockerfile` to produce an image tagged `gabriel`. The build only needs the
-repository checkout; dependencies are installed within the container.
+Use the Dockerfile under `docker/` to produce an image tagged `gabriel`. The build only needs the
+repository checkout; runtime dependencies are installed within the container.
 
 ```bash
-docker build -t gabriel .
+docker build -f docker/Dockerfile -t gabriel .
 ```
 
 The GitHub Actions workflow publishes a multi-architecture image for
@@ -527,13 +664,13 @@ works on modern Intel/AMD and Apple Silicon hosts without additional flags. To
 test other architectures locally, pass the desired platform to Buildx:
 
 ```bash
-docker buildx build --platform linux/arm64 -t gabriel:arm64 .
+docker buildx build --platform linux/arm64 -f docker/Dockerfile -t gabriel:arm64 .
 ```
 
-Every publish run now performs a `trivy` vulnerability scan against the freshly
-built `linux/amd64` image before pushing the multi-architecture manifest. Builds
-fail when high or critical issues surface, keeping the public image aligned with
-our hardening guidance.
+Every pull request and publish run performs a `trivy` vulnerability scan against the freshly
+built `linux/amd64` and `linux/arm64` images before default-branch runs push the
+multi-architecture manifest. Builds fail when high or critical issues surface, keeping the
+public image aligned with our hardening guidance.
 
 Pass `--build-arg PYTHON_VERSION=3.11` to experiment with alternate Python releases that remain
 supported by the Docker base image.
@@ -650,7 +787,7 @@ We use `AGENTS.md` to outline repository-specific instructions for automated age
 
 ## CI & Security
 
-The repository includes GitHub Actions workflows for linting, testing, and documentation.
+The repository includes GitHub Actions workflows for linting, testing, documentation, and recurring security sweeps.
 `flake8` and `bandit` catch style issues and common security mistakes, while coverage results are
 uploaded to [Codecov](https://codecov.io/) and the latest coverage badge is committed to
 [coverage.svg](coverage.svg) after tests run. Coverage builds now exercise Linux, macOS, and Windows
@@ -659,6 +796,8 @@ pre-commit hooks also run `detect-secrets`, `trufflehog`, `pip-audit`, the `lych
 checker, `pymarkdown`, and the custom `gabriel.prompt_lint` scanner to catch secrets, vulnerable
 dependencies, stale references, style regressions, and prompt-injection red flags in Markdown
 content.
+The scheduled [`security.yml`](.github/workflows/security.yml) workflow re-runs CodeQL, Semgrep,
+and dependency audits every Monday at 06:00 UTC so regressions surface even during quieter weeks.
 Dependabot monitors Python dependencies, GitHub Actions workflows, and Docker base image updates weekly.
 
 ## Release management

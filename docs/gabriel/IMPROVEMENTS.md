@@ -103,7 +103,7 @@ This document lists potential enhancements uncovered during a self-audit of the 
       (`viewer/viewer.js`, `.pre-commit-config.yaml`).
 - [x] Add pull request template to standardize contributions (`.github/PULL_REQUEST_TEMPLATE.md`).
       *Aligns with flywheel best practices.*
-- [ ] Generate API docs with Sphinx and publish under `docs/`
+- [x] Generate API docs with Sphinx and publish under `docs/`
       (`gabriel/utils.py`, `docs/`). *Aligns with flywheel best practices.*
 - [ ] Scan Docker images for vulnerabilities in CI using `trivy`
       (`docker/Dockerfile`, `.github/workflows/docker.yml`). *Aligns with flywheel best practices.*

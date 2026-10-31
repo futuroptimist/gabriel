@@ -1,0 +1,10 @@
+{
+  "id": "docker-tag-format-slash",
+  "date": "2025-11-04",
+  "component": "Docker build workflow",
+  "rootCause": "Docker tag format error when using matrix.platform (e.g., 'linux/amd64') directly in tag name. Slashes are not allowed in Docker tags, causing 'invalid reference format' error.",
+  "resolution": "Added a step to convert platform string by replacing '/' with '-' before using in Docker tag. Example: 'linux/amd64' becomes 'linux-amd64' for tag 'scan-linux-amd64'.",
+  "references": [
+    "https://github.com/futuroptimist/gabriel/actions/runs/18831836775"
+  ]
+}

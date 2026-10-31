@@ -110,7 +110,8 @@ agentic coding workflows, regardless of deployment environment.
 - [ ] System prompts stored in `config/prompts/system.md` signed with SLSA provenance.
 - [x] Sanitizer strips HTML, markdown images, and zero-width characters before execution
       (`gabriel.ingestion.text.sanitize_prompt`).
-- [ ] Embedding writes require repo-specific API keys and TTL ≤7 days.
+- [x] Embedding writes require repo-specific API keys and TTL ≤7 days
+      (`gabriel.common.vector_store.SecureVectorStore`).
 - [x] PR templates include a "Prompt Injection Review" checklist referencing
       OWASP LLM01–LLM10 (`.github/PULL_REQUEST_TEMPLATE.md`).
 
@@ -118,13 +119,16 @@ agentic coding workflows, regardless of deployment environment.
 
 - [ ] PAT scopes limited to `contents:read`, `pull_requests:write`, `codespaces:secrets` when needed.
 - [ ] Token broker issues per-task credentials with automatic revocation webhooks.
-- [ ] Audit log reviewed weekly for expired-but-active tokens (NIST AI RMF – Measure).
+- [x] Audit log reviewed weekly for expired-but-active tokens (NIST AI RMF – Measure).
+      (`gabriel.security.analyze_expired_tokens` highlights stale credentials.)
 
 ### Sandboxing & Storage Checklist
 
 - [ ] Tasks execute in disposable containers (`docker run --rm`).
-- [ ] Scratch space mounted under `/tmp/$TASK_ID` and wiped post-run.
-- [ ] Vector stores tagged with task metadata; purge job runs hourly.
+- [x] Scratch space mounted under `/tmp/$TASK_ID` and wiped post-run
+      (`gabriel.common.scratch.ScratchSpace`).
+- [x] Vector stores tagged with task metadata; purge job runs hourly
+      (`gabriel.common.vector_store.SecureVectorStore.purge_stale`).
 
 ### Tooling Policy Snippet
 
@@ -144,7 +148,7 @@ validators:
 
 ### CI/CD Hardening Checklist
 
-- [ ] `.github/workflows/security.yml` runs CodeQL, Semgrep, dependency scans weekly.
+- [x] `.github/workflows/security.yml` runs CodeQL, Semgrep, dependency scans weekly.
 - [ ] `Plan.md` signed with cosign; workflow verifies signature before merge.
 - [x] Prompt-injection linter executes on `docs/**` and `prompts/**` changes.
 - [ ] Branch protection requires two approvals for security-sensitive directories.

@@ -1,0 +1,11 @@
+{
+  "id": "github-pages-not-enabled",
+  "date": "2025-11-04",
+  "component": "MkDocs Pages deployment",
+  "rootCause": "GitHub Pages deployment failing with 404 error. The GitHub Pages feature is not enabled in repository settings, causing deploy-pages action to fail with 'Not Found' error.",
+  "resolution": "This is an infrastructure configuration issue. GitHub Pages must be enabled at https://github.com/futuroptimist/gabriel/settings/pages. Alternatively, the mkdocs-pages.yml workflow should be disabled or conditionally run only when Pages is enabled.",
+  "references": [
+    "https://github.com/futuroptimist/gabriel/actions/runs/18831836749",
+    "https://github.com/futuroptimist/gabriel/settings/pages"
+  ]
+}

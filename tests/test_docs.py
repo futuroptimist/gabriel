@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_readme_includes_docker_commands() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "docker build -t gabriel ." in readme  # nosec B101
+    assert "docker build -f docker/Dockerfile -t gabriel ." in readme  # nosec B101
     assert "docker run --rm -it gabriel gabriel-calc add 2 3" in readme  # nosec B101
     assert '-v "$(pwd)/secrets:/app/secrets"' in readme  # nosec B101
 

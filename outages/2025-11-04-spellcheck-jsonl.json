@@ -1,0 +1,11 @@
+{
+  "id": "spellcheck-jsonl-missing",
+  "date": "2025-11-04",
+  "component": "CI spellcheck",
+  "rootCause": "The word 'jsonl' was missing from the spell check dictionary (dict/allow.txt), causing test_spellcheck_docs to fail in coverage workflow and spellcheck job in docs workflow.",
+  "resolution": "Added 'jsonl' to dict/allow.txt dictionary file.",
+  "references": [
+    "https://github.com/futuroptimist/gabriel/actions/runs/18831836764",
+    "https://github.com/futuroptimist/gabriel/actions/runs/18831836766"
+  ]
+}

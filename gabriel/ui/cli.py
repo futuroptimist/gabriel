@@ -4,11 +4,22 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import sys
 from decimal import Decimal
 from pathlib import Path
 
 from .. import arithmetic
 from .. import secrets as secrets_module
+from ..inference import (
+    DEFAULT_LOCAL_CONTEXT,
+    DEFAULT_LOCAL_MAX_TOKENS,
+    DEFAULT_LOCAL_TEMPERATURE,
+    DEFAULT_LOCAL_TOP_P,
+    InferenceError,
+    parse_metadata,
+    run_inference,
+)
 from ..ingestion import collect_repository_commits
 from ..secrets import delete_secret, get_secret, read_secret_from_input, store_secret
 from .viewer import DEFAULT_HOST, DEFAULT_PORT, serve_viewer
@@ -80,6 +91,77 @@ def main(argv: list[str] | None = None) -> None:
         help="Do not open the default web browser when serving the viewer",
     )
 
+    infer_parser = subparsers.add_parser(
+        "infer",
+        help="Run prompt inference using a local model or token.place relay",
+    )
+    infer_parser.add_argument(
+        "prompt",
+        nargs="?",
+        help="Prompt text; omit to read from stdin",
+    )
+    infer_parser.add_argument(
+        "--mode",
+        choices=("local", "relay"),
+        help="Inference mode to use (defaults to local when GABRIEL_MODEL_PATH is set)",
+    )
+    infer_parser.add_argument(
+        "--model-path",
+        type=Path,
+        help="Path to the local GGUF model (defaults to $GABRIEL_MODEL_PATH)",
+    )
+    infer_parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=DEFAULT_LOCAL_MAX_TOKENS,
+        help="Maximum tokens to generate in local mode (default: %(default)s)",
+    )
+    infer_parser.add_argument(
+        "--temperature",
+        type=float,
+        help="Sampling temperature (defaults to 0.2 for local mode)",
+    )
+    infer_parser.add_argument(
+        "--top-p",
+        type=float,
+        default=DEFAULT_LOCAL_TOP_P,
+        help="Top-p nucleus sampling value for local mode (default: %(default)s)",
+    )
+    infer_parser.add_argument(
+        "--n-ctx",
+        type=int,
+        default=DEFAULT_LOCAL_CONTEXT,
+        help="Context window for local llama.cpp inference (default: %(default)s)",
+    )
+    infer_parser.add_argument(
+        "--n-threads",
+        type=int,
+        help="Thread count override for local inference",
+    )
+    infer_parser.add_argument(
+        "--relay-url",
+        help="Base URL for the token.place relay (required for relay mode)",
+    )
+    infer_parser.add_argument(
+        "--api-key",
+        help="API key for the token.place relay",
+    )
+    infer_parser.add_argument(
+        "--model",
+        dest="relay_model",
+        help="Model identifier to request from the relay",
+    )
+    infer_parser.add_argument(
+        "--metadata",
+        help="JSON object to attach as metadata for relay requests",
+    )
+    infer_parser.add_argument(
+        "--timeout",
+        type=float,
+        default=10.0,
+        help="HTTP timeout in seconds for relay mode (default: %(default)s)",
+    )
+
     crawl_parser = subparsers.add_parser(
         "crawl",
         help="Collect commit metadata across Git repositories",
@@ -143,6 +225,63 @@ def main(argv: list[str] | None = None) -> None:
     if args.command == "viewer":
         serve_viewer(host=args.host, port=args.port, open_browser=not args.no_browser)
         return
+
+    if args.command == "infer":
+        prompt = args.prompt
+        if prompt is None:
+            prompt = sys.stdin.read()
+        if not prompt:
+            raise SystemExit("Prompt text is required for inference.")
+
+        selected_mode = args.mode
+        if selected_mode is None:
+            selected_mode = "local" if "GABRIEL_MODEL_PATH" in os.environ else "relay"
+
+        try:
+            metadata = parse_metadata(args.metadata)
+        except InferenceError as exc:
+            raise SystemExit(str(exc)) from exc
+
+        if selected_mode == "local":
+            temperature = (
+                args.temperature if args.temperature is not None else DEFAULT_LOCAL_TEMPERATURE
+            )
+            try:
+                result = run_inference(
+                    prompt,
+                    mode="local",
+                    model_path=args.model_path,
+                    max_tokens=args.max_tokens,
+                    temperature=temperature,
+                    top_p=args.top_p,
+                    n_ctx=args.n_ctx,
+                    n_threads=args.n_threads,
+                )
+            except InferenceError as exc:
+                raise SystemExit(str(exc)) from exc
+            print(result.text)
+            return
+
+        if selected_mode == "relay":
+            if not args.relay_url:
+                raise SystemExit("--relay-url is required when mode is relay.")
+            try:
+                result = run_inference(
+                    prompt,
+                    mode="relay",
+                    base_url=args.relay_url,
+                    api_key=args.api_key,
+                    model=args.relay_model,
+                    temperature=args.temperature,
+                    metadata=metadata,
+                    timeout=args.timeout,
+                )
+            except InferenceError as exc:
+                raise SystemExit(str(exc)) from exc
+            print(result.text)
+            return
+
+        raise SystemExit(f"Unsupported inference mode: {selected_mode}")
 
     if args.command == "crawl":
         repo_paths = args.paths or [Path.cwd()]

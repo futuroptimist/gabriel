@@ -1,0 +1,4 @@
+# Runtime dependencies used by the packaged Gabriel CLI and library.
+keyring
+publicsuffix2
+PyYAML

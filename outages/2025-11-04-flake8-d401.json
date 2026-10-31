@@ -1,0 +1,10 @@
+{
+  "id": "flake8-d401-imperative-mood",
+  "date": "2025-11-04",
+  "component": "CI lint workflow",
+  "rootCause": "Flake8 D401 error in tests/test_security_audit.py line 22. Docstring began with 'Helper to parse' instead of imperative mood 'Parse'.",
+  "resolution": "Changed docstring from 'Helper to parse ISO timestamps with UTC fallback.' to 'Parse ISO timestamps with UTC fallback.' to comply with D401 rule.",
+  "references": [
+    "https://github.com/futuroptimist/gabriel/actions/runs/18831836754"
+  ]
+}

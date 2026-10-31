@@ -17,6 +17,7 @@ exclude = [
     "^tel:",
     "^geo:",
     "^sms:",
+    "^file://.*/docs/_build/",
 ]
 
 # Skip generated or instruction templates that intentionally include placeholder links.

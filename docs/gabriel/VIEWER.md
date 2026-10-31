@@ -16,6 +16,9 @@ This command starts a threaded HTTP server bound to `127.0.0.1:9000`, opens your
 blocks until you press `Ctrl+C`. Supply `--host 0.0.0.0` to make the viewer
 available to other devices on your LAN, or add `--no-browser` when running on a headless host.
 
+Set `GABRIEL_VIEWER_DIR` only for packaged or container layouts where the static `viewer/`
+assets live outside the source-tree default; the Docker image sets it to `/app/viewer`.
+
 ## Python module
 
 The same helper is also available as a module:

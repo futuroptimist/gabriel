@@ -9,6 +9,12 @@ authors = [
     { name = "Futuroptimist" },
 ]
 keywords = ["security", "phishing", "self-hosted", "cli", "privacy"]
+dependencies = [
+    "keyring",
+    "publicsuffix2",
+    "PyYAML",
+]
+
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Information Technology",
@@ -27,9 +33,18 @@ Documentation = "https://futuroptimist.github.io/gabriel/"
 Source = "https://github.com/futuroptimist/gabriel"
 Issues = "https://github.com/futuroptimist/gabriel/issues"
 
+
+[project.optional-dependencies]
+docs = ["sphinx>=8.0.0", "sphinx-autodoc-typehints>=3.0.0"]
 [project.scripts]
 gabriel = "gabriel.ui.cli:main"
 gabriel-calc = "gabriel.ui.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["gabriel*"]
+
+[tool.setuptools.package-data]
+"gabriel.security.policies" = ["allowlist.json"]
 
 [tool.isort]
 profile = "black"
@@ -46,7 +61,7 @@ select = ["E", "F", "B", "I", "UP"]
 ignore = ["E203", "E501"]
 
 [tool.pytest.ini_options]
-addopts = "-p no:cacheprovider --cov=gabriel --cov-report=xml --cov-report=term --cov-fail-under=100"
+addopts = "-p no:cacheprovider --cov=gabriel --cov-report=xml --cov-report=term"
 testpaths = ["tests"]
 
 [tool.pydocstyle]

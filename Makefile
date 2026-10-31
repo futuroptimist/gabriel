@@ -1,4 +1,4 @@
-.PHONY: preview lint test spell links docs
+.PHONY: preview lint test spell links docs docs-sphinx
 
 preview:
 	python -m gabriel.ui.viewer
@@ -15,5 +15,9 @@ spell:
 links:
 	lychee --config lychee.toml README.md docs
 
-docs:
-	mkdocs build --strict
+docs-sphinx:
+        python scripts/build_sphinx_docs.py --output docs/_build/sphinx
+
+docs: docs-sphinx
+        mkdocs build --strict
+        python scripts/build_sphinx_docs.py --output docs/_build/sphinx --site-dir site/sphinx --skip-build
