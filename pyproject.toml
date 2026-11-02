@@ -35,7 +35,7 @@ Issues = "https://github.com/futuroptimist/gabriel/issues"
 
 
 [project.optional-dependencies]
-docs = ["sphinx>=8.0.0", "sphinx-autodoc-typehints>=3.0.0"]
+docs = ["sphinx>=8.0.0", "sphinx-autodoc-typehints>=3.0.1"]
 [project.scripts]
 gabriel = "gabriel.ui.cli:main"
 gabriel-calc = "gabriel.ui.cli:main"
